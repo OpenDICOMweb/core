@@ -14,6 +14,8 @@ part of odw.sdk.utils.bytes;
 bool showByteValues = false;
 int truncateBytesLength = 16;
 
+typedef Decoder = String Function(Uint8List list, {bool allowInvalid});
+
 /// [BytesMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
 mixin BytesMixin {
@@ -147,7 +149,6 @@ mixin BytesMixin {
     length ??= bdLength - offset;
     return _bd.buffer.asByteData(_absIndex(offset), length);
   }
-
 
   /// Returns a view of the specified region of _this_. [endian] defaults
   /// to the same [endian]ness as _this_.
@@ -388,8 +389,7 @@ mixin BytesMixin {
   }
 
   // Allows the removal of padding characters.
-  Uint8List _asUint8ListFromString([int offset = 0, int length, int padChar]) {
-    assert(padChar == null || padChar == kSpace || padChar == kNull);
+  Uint8List _asUint8ListFromString([int offset = 0, int length]) {
     length ??= bdLength;
     if (length <= offset) return kEmptyUint8List;
     final index = _absIndex(offset);
@@ -404,79 +404,106 @@ mixin BytesMixin {
 
   /// Returns a [String] containing a _ASCII_ decoding of the specified
   /// region of _this_. Also allows the removal of a padding character.
-  String getAscii(
-      {int offset = 0, int length, bool allowInvalid = true, int padChar}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength, padChar);
+  String stringFromAscii(
+      {int offset = 0, int length, bool allowInvalid = true}) {
+    final v = _asUint8ListFromString(offset, length ?? bdLength);
     if (v.isEmpty) return '';
     final s = ascii.decode(v, allowInvalid: allowInvalid);
     final last = s.length - 1;
     final c = s.codeUnitAt(last);
-    // Urgent: kNull should never get here but it does. Fix
-    return (padChar != null && (c == padChar || c == kNull))
-        ? s.substring(0, last)
-        : s;
+    // TODO: kNull should never get here but it does. Fix
+    return (c == kNull) ? s.substring(0, last) : s;
   }
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _ASCII_, and then _split_ing the
   /// resulting [String] using the [separator]. Also allows the
   /// removal of a padding character.
-  List<String> getAsciiList(
+  List<String> stringListFromAscii(
       {int offset = 0,
       int length,
       bool allowInvalid = true,
-      String separator = '\\',
-      int padChar}) {
-    final s = getAscii(
-        offset: offset,
-        length: length,
-        allowInvalid: allowInvalid,
-        padChar: padChar);
+      String separator = '\\'}) {
+    final s = stringFromAscii(
+        offset: offset, length: length, allowInvalid: allowInvalid);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
   /// Also, allows the removal of padding characters.
-  String getUtf8(
-      {int offset = 0, int length, bool allowMalformed = true, int padChar}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength, padChar);
+  String stringFromUtf8(
+      {int offset = 0, int length, bool allowMalformed = true}) {
+    final v = _asUint8ListFromString(offset, length ?? bdLength);
     return v.isEmpty ? '' : utf8.decode(v, allowMalformed: allowMalformed);
   }
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
-  List<String> getUtf8List(
+  List<String> stringListFromUtf8(
       {int offset = 0,
       int length,
       bool allowMalformed = true,
-      String separator = '\\',
-      int padChar}) {
-    final s = getUtf8(
-        offset: offset,
-        length: length,
-        allowMalformed: allowMalformed,
-        padChar: padChar);
+      String separator = '\\'}) {
+    final s = stringFromUtf8(
+        offset: offset, length: length, allowMalformed: allowMalformed);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
+
+  String stringFromLatin(
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String decoder(Uint8List list)}) {
+    final v = _asUint8ListFromString(offset, length ?? bdLength);
+    return v.isEmpty ? '' : latin1.decode(v, allowInvalid: allowInvalid);
+  }
+
+  /// Returns a [List<String>]. This is done by first decoding
+  /// the specified region as _UTF-8_, and then _split_ing the
+  /// resulting [String] using the [separator].
+  List<String> stringListFromLatin(
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String separator = '\\'}) {
+    final s = stringFromLatin(
+        offset: offset, length: length, allowInvalid: allowInvalid);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
-  String getString([int offset = 0, int length]) => getUtf8(
-      offset: offset, length: length ??= bdLength, allowMalformed: true);
+  String getString(
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String separator = '\\',
+      Decoder decoder}) {
+    decoder ??= _utf8Decode;
+    final v = _asUint8ListFromString(offset, length ?? bdLength);
+    return v.isEmpty ? '' : decoder(v, allowInvalid: true);
+  }
+
+  String _utf8Decode(Uint8List list, {bool allowInvalid}) =>
+      utf8.decode(list, allowMalformed: allowInvalid);
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
   List<String> getStringList(
-          {int offset = 0,
-          int length,
-          bool allowMalformed = true,
-          String separator = '\\'}) =>
-      getUtf8List(
-          offset: offset,
-          length: length,
-          allowMalformed: allowMalformed,
-          separator: separator);
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String separator = '\\',
+      Decoder decoder}) {
+    decoder ??= _utf8Decode;
+    final s = getString(
+        offset: offset,
+        length: length,
+        allowInvalid: allowInvalid,
+        separator: separator);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
 
   // ********************** Setters ********************************
 

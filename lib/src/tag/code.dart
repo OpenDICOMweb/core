@@ -11,8 +11,8 @@ import 'package:core/src/tag.dart';
 
 // ignore_for_file: public_member_api_docs
 
-// Urgent Jim: Replace all Tag code related functions throughout core
-// Urgent Jim:  with functions from this file.
+// TODO: Replace all Tag code related functions throughout core
+// TODO:  with functions from this file.
 
 /// Primitive functions related to Tag Codes.
 

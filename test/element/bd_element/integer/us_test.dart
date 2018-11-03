@@ -100,7 +100,7 @@ void main() {
         for (var code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -126,7 +126,7 @@ void main() {
         for (var code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -140,7 +140,7 @@ void main() {
         for (var code in usVM2Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -166,7 +166,7 @@ void main() {
         for (var code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -180,7 +180,7 @@ void main() {
         for (var code in usVM3Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -206,7 +206,7 @@ void main() {
         for (var code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -219,7 +219,7 @@ void main() {
         global.throwOnError = false;
         final e0 = USbytes.fromValues(kAcquisitionMatrix, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
@@ -244,7 +244,7 @@ void main() {
         for (var code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -258,7 +258,7 @@ void main() {
         for (var code in usVM1nTags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 

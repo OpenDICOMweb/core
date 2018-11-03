@@ -47,7 +47,7 @@ abstract class TagDataset {
     return dsNew;
   }
 
-  static const _makeElement = TagElement.makeFromValues;
+  static const _makeElement = TagElement.fromValues;
 
   static void _convertElement(
       Dataset dsNew, Element old, List<Element> badElements) {

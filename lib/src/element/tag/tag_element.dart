@@ -11,8 +11,7 @@ import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/values.dart';
 import 'package:core/src/vr.dart';
 
@@ -38,24 +37,9 @@ abstract class TagElement<V> {
 
   // **** End of Interface
 
-/*
-  /// Returns _true_ if _this_ and [other] are the same [ByteElement],
-  /// and equal byte for byte.
-  // Urgent fix:
-  @override
-  bool operator ==(Object other) =>
-      other is TagElement &&
-      tag == other.tag &&
-      length == other.length &&
-      values == other.values;
-
-  @override
-  int get hashCode => tag.hashCode;
-*/
-
   int get code => tag.code;
 
-//  ETypePredicate get eTypePredicate => throw  UnimplementedError();
+// TODO: ETypePredicate get eTypePredicate => throw  UnimplementedError();
 
   IEType get ieType => IEType.kInstance;
 
@@ -64,8 +48,6 @@ abstract class TagElement<V> {
   String get ieLevel => ieType.level;
 
   int get deIdIndex => 0;
-//  @override
-//  DeIdMethod get deIdMethod => tag.deIdMethod;
 
   /// Returns true if _this_ is a Data Element defined by the DICOM Standard.
   bool get isPublic => tag.isPublic;
@@ -78,7 +60,7 @@ abstract class TagElement<V> {
   }
 
   static PC _getPCTagFromBytes(int code, DicomBytes bytes) {
-    final token = bytes.vfBytes.getUtf8().trim();
+    final token = bytes.vfBytes.stringFromUtf8().trim();
     final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
     return PCtag.fromBytes(tag, bytes.vfBytes);
   }
@@ -95,16 +77,17 @@ abstract class TagElement<V> {
 
   /// Creates a [TagElement] from [DicomBytes] containing a binary encoded
   /// [Element].
-  static Element makeFromBytes(DicomBytes bytes, Dataset ds, {bool isEvr}) {
+  static Element fromBytes(DicomBytes bytes, Dataset ds, {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return _getPCTagFromBytes(code, bytes);
 
     final vrIndex = bytes.vrIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
+    final decoder = ds == null ? utf8.decode : ds.charset.decoder;
     return (index == kSQIndex)
-        ? makeSQFromBytes(ds, <ByteItem>[], bytes)
-        : _bytesMakers[index](tag, bytes.vfBytes);
+        ? sqFromBytes(ds, <ByteItem>[], bytes)
+        : _bytesMakers[index](tag, bytes.vfBytes, decoder);
   }
 
   static final List<Function> _bytesMakers = <Function>[
@@ -129,7 +112,7 @@ abstract class TagElement<V> {
     UStag.fromBytes,
   ];
 
-  static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
+  static Element maybeUndefinedFromBytes(DicomBytes bytes,
       [Dataset ds, TransferSyntax ts]) {
     final code = bytes.code;
     // Note: This shouldn't happen, but it does.
@@ -148,7 +131,7 @@ abstract class TagElement<V> {
     OBtag.fromBytes, OWtag.fromBytes, UNtag.fromBytes
   ];
 
-  static Element makeSQFromBytes(
+  static Element sqFromBytes(
       Dataset parent, List<Item> items, DicomBytes bytes) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
@@ -159,7 +142,7 @@ abstract class TagElement<V> {
     return SQtag.fromBytes(parent, items, tag);
   }
 
-  static Element makePixelDataFromBytes(DicomBytes bytes,
+  static Element pixelDataFromBytes(DicomBytes bytes,
       [Dataset ds, TransferSyntax ts]) {
     final index = getPixelDataVR(bytes.code, bytes.vrIndex, ds, ts);
     return _fromBytesPixelDataMakers[index](bytes.vfBytes, ts);
@@ -174,23 +157,23 @@ abstract class TagElement<V> {
   ];
 
   /// Returns a  [Element] based on the arguments.
-  static Element makeFromValues(
-      int code, int vrIndex, List values, Dataset ds) {
+  static Element fromValues(int code, int vrIndex, List values, Dataset ds,
+      [Charset charset = utf8Charset]) {
     if (_isPrivateCreator(code)) return _getPCTag(code, vrIndex, values);
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
-    return makeFromTag(tag, values, index);
+    return fromTag(tag, values, index);
   }
 
   /// Return a  [TagElement]. This assumes the caller has handled
   /// Private Elements, etc.
-  static Element makeFromTag(Tag tag, Iterable values, int vrIndex,
+  static Element fromTag(Tag tag, Iterable values, int vrIndex,
           [Dataset ds, TransferSyntax ts]) =>
       (tag.code == kPixelData)
-          ? _makePixelDataFromValues(tag, values, vrIndex, ds, ts)
+          ? _pixelDataFromValues(tag, values, vrIndex, ds, ts)
           : _fromValuesMakers[vrIndex](tag, values);
 
-  static Element _makePixelDataFromValues(Tag tag, Iterable values, int vrIndex,
+  static Element _pixelDataFromValues(Tag tag, Iterable values, int vrIndex,
       [Dataset ds, TransferSyntax ts]) {
     final index = getPixelDataVR(tag.code, vrIndex, ds, ts);
     return _fromValuesPixelDataMakers[index](values, ts);
@@ -202,7 +185,6 @@ abstract class TagElement<V> {
     null,
     OBtagPixelData.fromValues,
     OWtagPixelData.fromValues
-
   ];
 
   static final _fromValuesMakers = <Function>[
@@ -210,7 +192,7 @@ abstract class TagElement<V> {
     // SQtag.make
     SQtag.fromValues,
     // Maybe Undefined Lengths
-    OBtag.fromValues, OWtag.fromValues,  // No reformat
+    OBtag.fromValues, OWtag.fromValues, // No reformat
     //  __vrIndexError, __vrIndexError, __vrIndexError,
     // EVR Long
     ODtag.fromValues, OFtag.fromValues, OLtag.fromValues,
@@ -230,7 +212,7 @@ abstract class TagElement<V> {
   ];
 
   /// Creates an [SQtag] [Element].
-  static SQ makeSequenceFromCode(
+  static SQ sqFromCode(
       Dataset parent, int code, List<TagItem> items) {
     final tag = lookupTagByCode(code, kSQIndex, parent);
     assert(tag.vrIndex == kSQIndex, 'vrIndex: ${tag.vrIndex}');
@@ -238,7 +220,7 @@ abstract class TagElement<V> {
     return SQtag(parent, tag, values);
   }
 
-  static SQ makeSequenceFromTag(Dataset parent, Tag tag, List<TagItem> items,
+  static SQ sqFromTag(Dataset parent, Tag tag, List<TagItem> items,
           [int vfLengthField]) =>
       SQtag(parent, tag, items);
 }

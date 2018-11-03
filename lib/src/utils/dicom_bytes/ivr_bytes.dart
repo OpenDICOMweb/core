@@ -19,8 +19,8 @@ class IvrBytes extends DicomBytes {
   IvrBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian);
 
-  /// Urgent: change to empty
-  factory IvrBytes.makeEmpty(
+  /// Returns an [IvrBytes] with an empty Value Field.
+  factory IvrBytes.empty(
       int code,
       int vfLength,
       int vrCode,
@@ -30,6 +30,8 @@ class IvrBytes extends DicomBytes {
       ..ivrSetHeader(code, vfLength, vrCode);
   }
 
+
+  /// Creates an [IvrBytes].
   factory IvrBytes.makeFromBytes(
     int code,
     Bytes vfBytes,

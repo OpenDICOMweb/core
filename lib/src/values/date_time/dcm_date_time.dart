@@ -47,7 +47,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
       int s = 0,
       int ms = 0,
       int us = 0,
-// Urgent Jim Fix time zone not handled correctly
+// TODO Fix: time zone not handled correctly - maybe remove time zone
       int tzh = 0,
       int tzm = 0,
       Issues issues,

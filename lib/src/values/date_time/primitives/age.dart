@@ -14,7 +14,7 @@ import 'package:core/src/error/date_time_errors.dart';
 
 // ignore_for_file: public_member_api_docs
 
-// DICOM Age (AS) constants.
+// TODO(Jim): 000D is legal, but 000W, 000M, and 000Y are not!
 
 /// The valid tokens for DICOM Age (AS) [String]s.
 const String kAgeTokens = 'DWMY';
@@ -22,8 +22,6 @@ const String kAgeTokens = 'DWMY';
 /// The maximum values of the 3 digits in an [Age] [String].
 const int kMaxAgeInteger = 999;
 
-// TODO(Jim): 000D is legal, but 000W, 000M, and 000Y are not!
-// Urgent Unit test for the case able
 /// The minimum number of nDays an Age (AS) may have.
 const int kMinAgeInDays = 0;
 
@@ -43,20 +41,26 @@ const int kAgeDaysInYear = 365;
 /// The maximum Age that can be expressed in years (nnnY).
 const int kMaxAgeYearsInDays = kMaxAgeInteger * kAgeDaysInYear;
 
+/// Returns _true_ if [nDays] is in valid range for DICOM Age Elements.
 bool isValidAge(int nDays) =>
     nDays >= kMinAgeInDays && nDays <= kMaxAgeYearsInDays;
 
+/// Returns a random number that is a valid Age value.
 int randomAgeInDays(int nDays) => Global.rng.nextInt(kMaxAgeDaysInDays);
 
+/// Returns a hash of [nDays].
 int hashAgeInDays(int nDays) => global.hash(nDays) % kMaxAgeDaysInDays;
 
+/// Returns an [int] derived from a sha256 hash of [nDays].
 int sha256AgeInDays(int nDays) => sha256.int64Bit(nDays) % kMaxAgeDaysInDays;
 
+/// Returns a [String] derived from a sha256 hash of [nDays].
 String sha256AgeAsString(int nDays) => ageToString(sha256AgeInDays(nDays));
 
-/// Returns a [String] corresponding to age in days.
+/// Returns a canonical [String] corresponding to age in days.
 /// The [String] is in the format: 'dddt', where 'd' is a decimal
-/// digit and 't' is an age token, one of "D", "W", "M", "Y".
+/// digit and 't' is an age token, one of "D", "W", "M", "Y". 't' is
+/// the least token that is valid for nDays.
 String ageToString(int nDays) {
   if (nDays < 0 || nDays > kMaxAgeYearsInDays) return badAge(nDays);
 
@@ -77,19 +81,24 @@ String ageToString(int nDays) {
 
 String _daysToString(int nDays, int units, String token) {
   final n = nDays ~/ units;
-  return '${n.toString().padLeft(3, '0')}$token';
+  return '${digits3(n)}$token';
 }
 
+// TODO: determine which is faster ageToString or canonicalAgeString
+/// Returns a canonical [String] corresponding to age in days.
+/// The [String] is in the format: 'dddt', where 'd' is a decimal
+/// digit and 't' is an age token, one of "D", "W", "M", "Y". 't' is
+/// the least token that is valid for nDays.
 String canonicalAgeString(int nDays) {
   if (nDays < 0 || nDays > kMaxAgeYearsInDays) return null;
   if (nDays <= kMaxAgeDaysInDays)
     return _daysToString(nDays, kMaxAgeDaysInDays, 'D');
   if (nDays <= kMaxAgeWeeksInDays)
-    return _daysToString(nDays, kMaxAgeWeeksInDays, 'D');
+    return _daysToString(nDays, kMaxAgeWeeksInDays, 'W');
   if (nDays <= kMaxAgeMonthsInDays)
-    return _daysToString(nDays, kMaxAgeMonthsInDays, 'D');
+    return _daysToString(nDays, kMaxAgeMonthsInDays, 'M');
   if (nDays <= kMaxAgeYearsInDays)
-    return _daysToString(nDays, kMaxAgeYearsInDays, 'D');
+    return _daysToString(nDays, kMaxAgeYearsInDays, 'Y');
   return null;
 }
 
@@ -110,6 +119,5 @@ String ageInDaysToString(int nDays) {
   } else {
     return badAge(nDays);
   }
-  // log.debug('nDays: $nDays Age String: "$s"');
   return s;
 }

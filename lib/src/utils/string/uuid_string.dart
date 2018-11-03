@@ -35,14 +35,11 @@ const List<int> kStarts = <int>[0, 9, 14, 19, 24];
 /// The offsets of the end of the hex values in a UUID [String].
 const List<int> kEnds = <int>[8, 13, 18, 23, kUuidStringLength];
 
-/// The ASCII values for the dash (-) character.
-//const int kDash = 0x2D;
-const List<int> _kISOVariantAsLetter = <int>[k8, k9, ka, kb];
 
-// Urgent Jim make sure [s] is a decimal number - NOT a HEXAdecimal number.
-/// Returns _true_ if [uuidString] is a valid UUID. If [type] is _null_
-/// it just validates the format; otherwise, [type] must have a values
-/// between 1 and 5.
+// Urgent Sharath: unit test to make sure this works
+/// Returns _true_ if [uuidString] is a valid UUID [String]. If [type]
+/// is _null_ it just validates the format; otherwise, [type] must have
+/// a value between 1 and 5.
 bool isValidUuidString(String uuidString, [int type]) {
   if (uuidString.length != kUuidStringLength) return false;
   for (var pos in kDashes)
@@ -60,7 +57,7 @@ bool isValidUuidString(String uuidString, [int type]) {
   return true;
 }
 
-/// Returns _true_
+/// Returns _true_ if the version of the UUID [String] are equal to [version].
 bool _isValidStringVersion(String s, int version) {
   if (version < 1 || version > 5)
     invalidUuidString('Invalid version number: $version');
@@ -77,3 +74,7 @@ bool _isISOVariantFromString(String s) {
   final subType = s.codeUnitAt(19);
   return _kISOVariantAsLetter.contains(subType);
 }
+
+/// The ASCII values for the dash (-) character, 0x2D in ASCII or UTF8
+const List<int> _kISOVariantAsLetter = <int>[k8, k9, ka, kb];
+

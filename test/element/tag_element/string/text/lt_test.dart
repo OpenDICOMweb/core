@@ -36,11 +36,11 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 1);
         final bytes = Bytes.fromUtf8List(vList1);
-        final dbTxt0 = bytes.getUtf8List();
+        final dbTxt0 = bytes.stringListFromUtf8();
         log.debug('dbTxt0: $dbTxt0');
         expect(dbTxt0, equals(vList1));
 
-        final dbTxt1 = bytes.getUtf8List();
+        final dbTxt1 = bytes.stringListFromUtf8();
         log.debug('dbTxt1: $dbTxt1');
         expect(dbTxt1, equals(vList1));
       }
@@ -501,7 +501,7 @@ void main() {
       final vList1 = rsg.getLTList(1, 1);
       final bytes = Bytes.fromUtf8List(vList1);
       log.debug('LT.fromBytes(bytes):  $bytes');
-      expect(bytes.getUtf8List(), equals(vList1));
+      expect(bytes.stringListFromUtf8(), equals(vList1));
     });
 
     test('LT isValidTag good values', () {
@@ -773,14 +773,14 @@ void main() {
         final s0 = vList0[0];
         global.throwOnError = false;
         final bytes0 = Bytes.fromUtf8(s0);
-        final s1 = bytes0.getUtf8();
+        final s1 = bytes0.stringFromUtf8();
         log.debug('s1: $s1, s0: $s0');
         expect(s1, equals(s0));
       }
       for (var vList1 in goodLTList) {
         final s0 = vList1[0];
         final bytes1 = Bytes.fromUtf8(s0);
-        final s1 = bytes1.getUtf8();
+        final s1 = bytes1.stringFromUtf8();
         expect(s1, equals(s0));
       }
     });

@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
@@ -369,11 +369,11 @@ void main() {
         final vList = rsg.getSTList(1, 1);
         final s0 = vList[0];
         final bytes = Bytes.fromUtf8(s0);
-        final s1 = bytes.getUtf8();
+        final s1 = bytes.stringFromUtf8();
         log.debug('s1: $s1');
         expect(s1, equals(s0));
 
-        final s2 = bytes.getUtf8();
+        final s2 = bytes.stringFromUtf8();
         log.debug('s2: $s2');
         expect(s2, equals(s1));
       }
@@ -731,14 +731,14 @@ void main() {
         final vList0 = rsg.getSTList(1, 1);
         final s0 = vList0[0];
         final bytes = Bytes.fromUtf8(s0);
-        final s1 = bytes.getUtf8();
+        final s1 = bytes.stringFromUtf8();
         log.debug('s1: $s1, s0: $s0');
         expect(s1, equals(s0));
       }
       for (var vList1 in goodSTList) {
         final s0 = vList1[0];
         final bytes = Bytes.fromUtf8(s0);
-        final s1 = bytes.getUtf8();
+        final s1 = bytes.stringFromUtf8();
         expect(s1, equals(s0));
       }
     });
@@ -748,7 +748,7 @@ void main() {
       final s0 = vList[0];
       final bytes = Bytes.fromUtf8(s0);
       log.debug('ST.fromBytes(bytes):  $bytes');
-      expect(bytes.getUtf8(), equals(s0));
+      expect(bytes.stringFromUtf8(), equals(s0));
     });
 
     test('ST fromUtf8', () {
@@ -756,9 +756,8 @@ void main() {
       final s0 = vList[0];
       log
         ..debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8(s0)}')
-//      if (s0.length.isOdd) s0 = '$s0 ';
         ..debug('s0:"$s0"');
-      final bytes = utf8.encode(vList[0]);
+      final bytes = cvt.utf8.encode(vList[0]);
       expect(Bytes.fromUtf8(s0), equals(bytes));
     });
 
@@ -785,13 +784,13 @@ void main() {
       final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      /*global.throwOnError = false;
-      final toB2 = Bytes.fromUtf8List(null, kMaxShortVF);
-      expect(toB2, isNull);
+      global.throwOnError = false;
+      final toB4 = Bytes.fromUtf8List(null, kMaxShortVF);
+      expect(toB4, isNull);
 
       global.throwOnError = true;
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
-          throwsA(const TypeMatcher<GeneralError>()));*/
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('ST isValidBytesArgs', () {
@@ -807,6 +806,7 @@ void main() {
       final vList0 = rsg.getSTList(1, 1);
       final vfBytes = Bytes.fromUtf8List(vList0);
 
+      global.throwOnError = false;
       final e1 = ST.isValidBytesArgs(null, vfBytes);
       expect(e1, false);
 

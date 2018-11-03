@@ -50,7 +50,7 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   @override
   RootDataset copy([RootDataset rds]) => TagRootDataset.from(rds ?? this);
 
-  static const _makeElement = TagElement.makeFromValues;
+  static const _makeElement = TagElement.fromValues;
 
   // ignore: prefer_constructors_over_static_methods
   static TagRootDataset convert(RootDataset rds) {

@@ -15,9 +15,7 @@ import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/values/string_list.dart';
 import 'package:core/src/values/uid.dart';
 import 'package:core/src/vr.dart';
@@ -91,15 +89,16 @@ abstract class ByteElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  static Element makeFromBytes(DicomBytes bytes, Dataset ds, {bool isEvr}) {
+  static Element fromBytes(DicomBytes bytes, Dataset ds, {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return PCbytes(bytes);
     final vrIndex = isEvr ? bytes.vrIndex : kUNIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
+    final decoder = (ds == null) ? utf8.decoder : ds.charset.decoder;
     return (index == kSQIndex)
-        ? makeSQFromBytes(ds, <ByteItem>[], bytes)
-        : _bytesMakers[index](bytes);
+        ? sqFromBytes(ds, <ByteItem>[], bytes)
+        : _bytesMakers[index](bytes, decoder);
   }
 
   static final List<Function> _bytesMakers = <Function>[
@@ -144,7 +143,7 @@ abstract class ByteElement<V> {
     OBbytes.fromBytes, OWbytes.fromBytes, UNbytes.fromBytes
   ];
 
-  static Element makeSQFromBytes(
+  static Element sqFromBytes(
       Dataset parent, List<Item> items, DicomBytes bytes) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
@@ -156,7 +155,7 @@ abstract class ByteElement<V> {
     return SQbytes.fromBytes(parent, items, bytes);
   }
 
-  static Element makePixelDataFromBytes(DicomBytes bytes,
+  static Element pixelDataFromBytes(DicomBytes bytes,
       [TransferSyntax ts, VFFragmentList fragments, Dataset ds]) {
     final code = bytes.code;
     final index = getPixelDataVR(code, bytes.vrIndex, ds, ts);
@@ -172,7 +171,7 @@ abstract class ByteElement<V> {
   ];
 
   /// Returns a new [Element] based on the arguments.
-  static Element makeFromValues(int code, int vrIndex, Iterable vList,
+  static Element fromValues(int code, int vrIndex, Iterable vList,
       {bool isEvr = true, Dataset ds}) {
     if (_isPrivateCreator(code))
       return PCbytes.fromValues(code, vList, isEvr: isEvr);
@@ -209,8 +208,8 @@ DicomBytes _makeShort<V>(
     int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize) {
   final vfLength = vList.length * eSize;
   return isEvr
-      ? EvrShortBytes.makeEmpty(code, vfLength, vrCode)
-      : IvrBytes.makeEmpty(code, vfLength, vrCode);
+      ? EvrShortBytes.empty(code, vfLength, vrCode)
+      : IvrBytes.empty(code, vfLength, vrCode);
 }
 
 DicomBytes _makeShortString(
@@ -219,21 +218,21 @@ DicomBytes _makeShortString(
   if (tag.vrCode != vrCode) return null;
   final vlf = stringListLength(sList, pad: true);
   return isEvr
-      ? EvrShortBytes.makeEmpty(code, vlf, vrCode)
-      : IvrBytes.makeEmpty(code, vlf, vrCode);
+      ? EvrShortBytes.empty(code, vlf, vrCode)
+      : IvrBytes.empty(code, vlf, vrCode);
 }
 
 DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
   final vfLength = vList.length * eSize;
   return isEvr
-      ? EvrLongBytes.makeEmpty(code, vfLength, vrCode)
-      : IvrBytes.makeEmpty(code, vfLength, vrCode);
+      ? EvrLongBytes.empty(code, vfLength, vrCode)
+      : IvrBytes.empty(code, vfLength, vrCode);
 }
 
 DicomBytes _makeLongString(
     int code, List<String> sList, int vrCode, bool isEvr) {
   final vlf = stringListLength(sList, pad: true);
   return isEvr
-      ? EvrLongBytes.makeEmpty(code, vlf, vrCode)
-      : IvrBytes.makeEmpty(code, vlf, vrCode);
+      ? EvrLongBytes.empty(code, vlf, vrCode)
+      : IvrBytes.empty(code, vlf, vrCode);
 }

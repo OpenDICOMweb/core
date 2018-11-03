@@ -98,8 +98,7 @@ class PTag extends Tag {
   // ignore: prefer_constructors_over_static_methods
   static PTag lookupByCode(int code,
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
- // Urgent Jim: how to handle bad tag code
- //  if (isNotPublicCode(code)) return badTagCode(code, 'Non-Public Tag Code');
+    // TODO: how to handle bad tag code
     if (isNotPublicCode(code)) {
       log.warn('Invalid Public Tag Code: ${dcm(code)}');
       return null;

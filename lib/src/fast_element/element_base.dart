@@ -348,7 +348,6 @@ abstract class OF extends Float with Float32Mixin {
   static const int kMaxVFLength = k32BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
-  //Urgent Jim replace with call to internal proc
   static bool isValidArgs(Tag tag, Iterable<double> vList) {
     if (vList != null && doTestValidity) return isValidValues(tag, vList);
     return true;
@@ -358,13 +357,11 @@ abstract class OF extends Float with Float32Mixin {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  //Urgent Jim replace with call to internal proc
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     return VR.invalidIndex(vrIndex, issues, kVRIndex);
   }
 
-  //Urgent Jim replace with call to internal proc
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
     return VR.invalidCode(vrCode, issues, kVRIndex);

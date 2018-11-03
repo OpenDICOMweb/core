@@ -29,10 +29,6 @@ bool isAllBlanks(String s, int start, int end) {
 /// Returns a [String] containing [count] _space_ (' ') characters.
 String spaces(int count) => ''.padRight(count);
 
-/// _Deprecated_: Uses [spaces] instead.
-@deprecated
-String blanks(int n) => spaces(n);
-
 /// Returns an [Iterable] of [s], where [s] is split at the
 /// separator and then each component of the [Iterable] has
 /// the specified whitespace trimmed.

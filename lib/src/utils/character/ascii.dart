@@ -62,7 +62,7 @@ const int kDc3 = 19;
 const int kDc4 = 20;
 
 /// NAK:  Negative Acknowledge
-const int kMak = 21;
+const int kNak = 21;
 
 /// SYN:  Synchronous Idle
 const int kSyn = 22;

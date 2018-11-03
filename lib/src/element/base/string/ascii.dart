@@ -40,7 +40,7 @@ abstract class Ascii extends StringBase {
       stringListToUint8List(values, maxLength: maxVFLength, isAscii: true);
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.getAsciiList(allowInvalid: global.allowInvalidAscii);
+      bytes.stringListFromAscii(allowInvalid: global.allowInvalidAscii);
 
   Ascii append(String s) => update(values.append(s, maxValueLength));
 
@@ -55,7 +55,7 @@ abstract class Ascii extends StringBase {
       {bool isAscii = true}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.getAsciiList();
+    if (vf is Bytes) return vf.stringListFromAscii();
     if (vf is Uint8List)
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);

@@ -67,11 +67,12 @@ void main() {
     expect(isStringVR(kAEIndex), true);
     expect(isStringVR(VR.kAE.index), true);
 
+    //Urgent Sharath: add expects for rest of VRs
     expect(VR.kAS.index == kASIndex, true);
 
 
     expect(VR.kAT.index == kATIndex, true);
-    //Urgent Jim finish
+
 
 
     expect(VR.kCS.index == kCSIndex, true);

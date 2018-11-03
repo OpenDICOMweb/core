@@ -76,7 +76,7 @@ class FLtag extends FL with TagElement<double>, TagFloatMixin {
       FLtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static FLtag fromBytes(Tag tag, Bytes bytes) =>
+  static FLtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
       FL.isValidBytesArgs(tag, bytes)
           ? FLtag._x(tag, bytes.asFloat32List())
           : badTag(tag, null, FL);
@@ -119,7 +119,7 @@ class OFtag extends OF with TagElement<double>, TagFloatMixin {
       OFtag(tag, vList ?? kEmptyDoubleList);
 
   // ignore: prefer_constructors_over_static_methods
-  static OFtag fromBytes(Tag tag, Bytes bytes) =>
+  static OFtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
       OF.isValidBytesArgs(tag, bytes)
           ? OFtag._x(tag, bytes.asFloat32List())
           : badTag(tag, null, FL);
@@ -161,7 +161,7 @@ class FDtag extends FD with TagElement<double>, TagFloatMixin {
       FDtag(tag, vList ?? kEmptyDoubleList);
 
   // ignore: prefer_constructors_over_static_methods
-  static FDtag fromBytes(Tag tag, Bytes bytes) =>
+  static FDtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
       FD.isValidBytesArgs(tag, bytes)
           ? FDtag._x(tag, bytes.asFloat64List())
           : badTag(tag, null, FL);
@@ -203,7 +203,7 @@ class ODtag extends OD with TagElement<double>, TagFloatMixin {
       ODtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static ODtag fromBytes(Tag tag, Bytes bytes) =>
+  static ODtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
       OD.isValidBytesArgs(tag, bytes)
           ? ODtag._x(tag, bytes.asFloat64List())
           : badTag(tag, null, FL);

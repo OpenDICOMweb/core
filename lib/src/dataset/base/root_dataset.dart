@@ -29,6 +29,8 @@ abstract class RootDataset extends Dataset {
   String path;
   @override
   RDSBytes dsBytes;
+  @override
+  Charset charset = utf8Charset;
 
   /// Constructor
   RootDataset(this.path, Bytes bytes, int fmiEnd)

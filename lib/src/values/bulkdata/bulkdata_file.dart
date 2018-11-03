@@ -19,7 +19,7 @@ import 'package:core/src/values/bulkdata/bulkdata.dart';
 const String bulkdataFileExtension = '.bd';
 final Uint8List kBulkdataFileToken = cvt.ascii.encode('Bulkdata');
 
-// Urgent Jim: document
+/// A object that corresponds to the contents of a file containing Bulkdata.
 class BulkdataFile {
   String path;
   Bytes bytes;

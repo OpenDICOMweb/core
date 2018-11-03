@@ -755,13 +755,13 @@ void main() {
         final vList0 = rsg.getPNList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.fromUtf8List(vList0);
-        final fbd0 = bd0.getUtf8List();
+        final fbd0 = bd0.stringListFromUtf8();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodPNList) {
         final bd0 = Bytes.fromUtf8List(s);
-        final fbd0 = bd0.getUtf8List();
+        final fbd0 = bd0.stringListFromUtf8();
         expect(fbd0, equals(s));
       }
     });
@@ -771,7 +771,7 @@ void main() {
       final vList1 = rsg.getPNList(1, 1);
       final bytes = Bytes.fromUtf8List(vList1);
       log.debug('PN.fromBytes(bytes):  $bytes');
-      expect(bytes.getUtf8List(), equals(vList1));
+      expect(bytes.stringListFromUtf8(), equals(vList1));
     });
 
     test('PN toUint8List', () {

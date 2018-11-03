@@ -834,8 +834,9 @@ void main() {
       //  system.level = Level.info;;
       final vList1 = rsg.getCSList(1, 1);
       final bytes = Bytes.fromAsciiList(vList1);
-      log.debug('bytes.getAsciiList(): ${bytes.getAsciiList()}, bytes: $bytes');
-      expect(bytes.getAsciiList(), equals(vList1));
+      log.debug('bytes.getAsciiList(): ${bytes.stringListFromAscii()}, '
+          'bytes: $bytes');
+      expect(bytes.stringListFromAscii(), equals(vList1));
     });
 
     test('CS Bytes.fromAsciiList', () {
@@ -911,13 +912,13 @@ void main() {
         final vList0 = rsg.getCSList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.fromAsciiList(vList0);
-        final fbd0 = bd0.getAsciiList();
+        final fbd0 = bd0.stringListFromAscii();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodCSList) {
         final bd0 = Bytes.fromAsciiList(s);
-        final fbd0 = bd0.getAsciiList();
+        final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
       }
     });

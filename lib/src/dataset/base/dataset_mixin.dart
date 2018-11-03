@@ -702,6 +702,8 @@ abstract class DatasetMixin {
   /// _Note_: A [RootDataset] is its own [root].
   DatasetMixin get root => isRoot ? this : parent.root;
 
+  Charset get charset => parent.charset;
+
   // **************** Element values accessors
   //TODO: when fast_tag is working replace code with index.
   // Note: currently the variable 'index' in this file means code.
@@ -753,11 +755,7 @@ abstract class DatasetMixin {
   List<int> getPixelData({bool required = false}) => _getPixelData(required);
 
   List<int> _getPixelData(bool required) {
-    //Urgent Jim: cleanup
-    //List<int> _getPixelData(int bitsAllocated, {bool required = false}) {
-    //  if (bitsAllocated == null) log.warn('bitsAllocated == null');
     final e = lookup(kPixelData);
-    // if (e == null || bitsAllocated == null) return pixelDataNotPresent();
     if (e == null) return (required == true) ? pixelDataNotPresent() : null;
 
     if (e.code == kPixelData) {

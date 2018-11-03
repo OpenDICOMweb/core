@@ -56,15 +56,6 @@ abstract class ReadBufferMixin {
     return remaining >= 0;
   }
 
-/* Urgent Jim: flush later
-  int get _rIndex;
-  set _rIndex(int n) {
-    if (_rIndex < 0 || _rIndex > _wIndex)
-      throw RangeError.range(_rIndex, 0, length);
-    _rIndex = n;
-  }
-*/
-
   /// Return a new Big Endian[ReadBuffer] containing the unread
   /// portion of _this_.
   ReadBuffer get asBigEndian =>
@@ -162,7 +153,7 @@ abstract class ReadBufferMixin {
   }
 
   String getAscii(int length) =>
-      bytes.getAscii(offset: _rIndex, length: length);
+      bytes.stringFromAscii(offset: _rIndex, length: length);
 
   String readAscii(int length) {
     final s = getAscii(length);
@@ -170,7 +161,8 @@ abstract class ReadBufferMixin {
     return s;
   }
 
-  String getUtf8(int length) => bytes.getUtf8(offset: _rIndex, length: length);
+  String getUtf8(int length) =>
+      bytes.stringFromUtf8(offset: _rIndex, length: length);
 
   String readUtf8(int length) {
     final s = getUtf8(length);
@@ -261,14 +253,14 @@ abstract class ReadBufferMixin {
   }
 
   List<String> readAsciiList(int length) {
-    final v = bytes.getAsciiList(
+    final v = bytes.stringListFromAscii(
         offset: _rIndex, length: length, allowInvalid: true);
     _rIndex += length;
     return v;
   }
 
   List<String> readUtf8List(int length) {
-    final v = bytes.getUtf8List(
+    final v = bytes.stringListFromUtf8(
         offset: _rIndex, length: length, allowMalformed: true);
     _rIndex += length;
     return v;
@@ -283,8 +275,7 @@ abstract class ReadBufferMixin {
     return offset;
   }
 
-  Uint8List get contentsRead =>
-      bytes.buffer.asUint8List(bytes.offset, _rIndex);
+  Uint8List get contentsRead => bytes.buffer.asUint8List(bytes.offset, _rIndex);
   Uint8List get contentsUnread => bytes.buffer.asUint8List(_rIndex, _wIndex);
 
   Uint8List get contentsWritten => bytes.buffer.asUint8List(_rIndex, _wIndex);
@@ -329,8 +320,7 @@ abstract class ReadBufferMixin {
   }
 
   bool _checkAllZeros(int start, int end) {
-    for (var i = start; i < end; i++)
-      if (bytes.getUint8(i) != 0) return false;
+    for (var i = start; i < end; i++) if (bytes.getUint8(i) != 0) return false;
     return true;
   }
 

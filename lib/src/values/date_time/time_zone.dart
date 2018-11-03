@@ -15,23 +15,21 @@ import 'package:core/src/values/date_time/primitives/time_zone.dart';
 // ignore_for_file: public_member_api_docs
 
 typedef OnTimeZoneError = TimeZone Function(int sign, int h, int m);
-typedef OnTimeZoneParseError= TimeZone Function(String s);
+typedef OnTimeZoneParseError = TimeZone Function(String s);
 typedef OnTimeZoneHashStringError = String Function(String s);
 
-//Urgent jfp: make hour minute, name, microseconds, etc Getters
-// Urgent jfp: consider makeing tz part of DcmDateTime
 /// A Time Zone object. See ISO 8601.
 class TimeZone implements Comparable<TimeZone> {
   final int index;
 
-  /// The [hour] relative to UTC of _this_.
+  /// The [hour] relative to UTC of _this_, where negative numbers
+  /// indicate before UTC and positive numbers indicate after UTC>
   final int hour;
 
-  /// The [minute] relative to UTC of _this_.
+  /// The [minute] relative to UTC of _this_. [minute] is always non-negative.
   final int minute;
 
-  /// The minutes from UTC, where negative numbers indicate before UTC and
-  /// positive numbers indicate after UTC>
+  /// The microseconds from UTC
   final int microseconds;
 
   /// A single uppercase character that is an abbreviation ([token])

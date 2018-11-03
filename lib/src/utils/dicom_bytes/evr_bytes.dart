@@ -62,8 +62,8 @@ class EvrShortBytes extends EvrBytes {
   EvrShortBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian);
 
-  // Urgent: rename .empty
-  factory EvrShortBytes.makeEmpty(int code, int vfLength, int vrCode,
+  /// Returns an [EvrShortBytes] with an empty Value Field.
+  factory EvrShortBytes.empty(int code, int vfLength, int vrCode,
       [Endian endian]) {
     final e = EvrShortBytes(kHeaderLength + vfLength, endian)
       ..evrSetShortHeader(code, vfLength, vrCode);
@@ -114,8 +114,8 @@ class EvrLongBytes extends EvrBytes {
   EvrLongBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian);
 
-  // Urgent: rename .empty
-  factory EvrLongBytes.makeEmpty(int code, int vfLength, int vrCode,
+  /// Returns an [EvrLongBytes] with an empty Value Field.
+  factory EvrLongBytes.empty(int code, int vfLength, int vrCode,
       [Endian endian]) {
     //assert(vfLength.isEven);
     final e = EvrLongBytes(kHeaderLength + vfLength, endian)
@@ -123,8 +123,8 @@ class EvrLongBytes extends EvrBytes {
     return e;
   }
 
-  // Urgent: rename .fromBytes
-  factory EvrLongBytes.makeFromBytes(int code, Bytes vfBytes, int vrCode,
+  /// Creates an [EvrLongBytes].
+  factory EvrLongBytes.fromBytes(int code, Bytes vfBytes, int vrCode,
       [Endian endian]) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);

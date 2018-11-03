@@ -389,7 +389,6 @@ abstract class Tag {
       } else if ((elt >= 0x10) && (elt <= 0xFF)) {
         tag = PCTag.make(code, vrIndex, creator);
       } else if ((elt > 0x00FF) && (elt <= 0xFFFF)) {
-        // Urgent Jim: what to do?
         final c = (creator is String) ? null : creator;
         tag = PDTag.make(code, vrIndex, c);
       } else {

@@ -221,10 +221,10 @@ abstract class DS extends Ascii {
       StringBase.reallyTryParseList(vList, issues, tryParse);
 
   static List<num> tryParseBytes(Bytes vfBytes) =>
-      tryParseList(vfBytes.getAsciiList());
+      tryParseList(vfBytes.stringListFromAscii());
 
   static Iterable<String> validateValueField(Bytes vfBytes) =>
-      vfBytes.getAsciiList();
+      vfBytes.stringListFromAscii();
 }
 
 abstract class IS extends Ascii {
@@ -432,8 +432,8 @@ abstract class IS extends Ascii {
       StringBase.reallyTryParseList(vList, issues, tryParse);
 
   static List<int> tryParseBytes(Bytes vfBytes) =>
-      tryParseList(vfBytes.getAsciiList());
+      tryParseList(vfBytes.stringListFromAscii());
 
   static Iterable<String> validateValueField(Bytes vfBytes) =>
-      vfBytes.getAsciiList();
+      vfBytes.stringListFromAscii();
 }

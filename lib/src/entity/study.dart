@@ -55,7 +55,7 @@ class Study extends Entity {
     return list;
   }
 
-  // Urgent Jim: remove when entity summary works
+  // TODO: remove when entity summary works
   @override
   String get summary {
     final sb = StringBuffer('Study Summary: $uid\n  Patient: $subject '

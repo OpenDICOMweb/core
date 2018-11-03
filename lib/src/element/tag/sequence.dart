@@ -112,7 +112,7 @@ class SQtag extends SQ with TagElement<Item> {
     return SQtag(parent, tag, vList);
   }
 
-  static const _makeSQ = TagElement.makeSequenceFromCode;
+  static const _makeSQ = TagElement.sqFromCode;
 
   // ignore: prefer_constructors_over_static_methods
   static SQtag convert(Dataset parent, SQ e) {

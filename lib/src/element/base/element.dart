@@ -254,10 +254,10 @@ abstract class Element<V> extends ListBase<V> {
   // ******* Value Multiplicity related Getters and Methods *******
   // **************************************************************
 
-  /// The _minimum_ length of a non-empty Value Field for this Element.
+  /// The _minimum_ number of Values for this Element.
   int get vmMin => tag.vmMin;
 
-  /// The _maximum_ length of a non-empty Value Field for this Element.
+  /// The _maximum_ number of Values for this Element.
   int get vmMax => tag.vmMax;
 
   /// The _rank_ or _width_, i.e. the number of columns in the
@@ -265,7 +265,6 @@ abstract class Element<V> extends ListBase<V> {
   /// length must be a multiple of this number.
   int get vmColumns => tag.vmColumns;
 
-  // Urgent Jim: define what this means
   /// The maximum number of values for this element;
   int get maxLength;
 
@@ -344,9 +343,9 @@ abstract class Element<V> extends ListBase<V> {
   Bytes get vfBytes =>
       (checkValues(values)) ? Bytes.typedDataView(typedData) : null;
 
-  String get vfBytesAsAscii => vfBytes.getAscii();
+  String get vfBytesAsAscii => vfBytes.stringFromAscii();
 
-  Iterable<String> get vfBytesAsAsciiList => vfBytes.getAsciiList();
+  Iterable<String> get vfBytesAsAsciiList => vfBytes.stringListFromAscii();
 
   String get vfBytesAsUtf8 => utf8.decode(vfBytes, allowMalformed: true);
 

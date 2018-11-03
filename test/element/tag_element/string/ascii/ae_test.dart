@@ -417,8 +417,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getAEList(1, 10);
-        final e0 =
-            AEtag(PTag.kSelectorAEValue, vList1);
+        final e0 = AEtag(PTag.kSelectorAEValue, vList1);
         expect(e0.hasValidValues, true);
         expect(e0.check(), true);
         expect(e0[0], equals(vList1[0]));
@@ -696,8 +695,9 @@ void main() {
       //  system.level = Level.info;;
       final vList1 = rsg.getAEList(1, 1);
       final bytes = Bytes.fromAsciiList(vList1);
-      log.debug('bytes.getAsciiList(): ${bytes.getAsciiList()}, bytes: $bytes');
-      expect(bytes.getAsciiList(), equals(vList1));
+      log.debug('bytes.getAsciiList(): ${bytes.stringListFromAscii()}, '
+          'bytes: $bytes');
+      expect(bytes.stringListFromAscii(), equals(vList1));
     });
 
     test('AE Bytes.fromAsciiList', () {
@@ -774,13 +774,13 @@ void main() {
         final vList0 = rsg.getAEList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.fromAsciiList(vList0);
-        final fbd0 = bd0.getAsciiList();
+        final fbd0 = bd0.stringListFromAscii();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodAEList) {
         final bd0 = Bytes.fromAsciiList(s);
-        final fbd0 = bd0.getAsciiList();
+        final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
       }
     });

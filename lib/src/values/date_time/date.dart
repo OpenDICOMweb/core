@@ -133,7 +133,7 @@ class Date implements Comparable<Date> {
   /// Returns true if this occurs before other.
   bool isBefore(Date other) => !isAfter(other);
 
-  //TODO: unit test to verify
+  //Urgent Sharath: unit test to verify
   /// Returns a new [Date] whose values is _this_ + other.microseconds;
   Date add(Time other) => Date._(microseconds + other.uSeconds);
 
@@ -159,15 +159,6 @@ class Date implements Comparable<Date> {
   @override
   String toString() => inet;
 
-  // Urgent remove
-  /// Returns _true_ of [s] contains only spaces.
-  static bool isAllBlanks(String s, int start, [int end]) {
-    end ??= s.length;
-    for (var i = start; i < end; i++)
-      if (s.codeUnitAt(i) != kSpace) return false;
-    return true;
-  }
-
   /// Returns a [Date] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
   // ignore: prefer_constructors_over_static_methods
@@ -177,9 +168,8 @@ class Date implements Comparable<Date> {
       Issues issues,
       bool isDicom = true,
       OnDateParseError onError}) {
-    // Urgent Jim: fix
     if (s == null || s.isEmpty) return null;
-    // Urgent Jim: do this in parse of dateTime, time, Integer, Decimal, Uri...
+    // TODO Jim: do this in parse of dateTime, time, Integer, Decimal, Uri...
     if (isAllBlanks(s, start, end))
       return global.allowBlankDateTimes
           ? null

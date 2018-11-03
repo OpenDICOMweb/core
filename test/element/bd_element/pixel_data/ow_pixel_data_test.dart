@@ -26,7 +26,7 @@ void main() {
         log.debug('e0: $e0');
         const ts = TransferSyntax.kExplicitVRLittleEndian;
         final OWbytesPixelData e1 =
-            ByteElement.makePixelDataFromBytes(e0.bytes, ts);
+            ByteElement.pixelDataFromBytes(e0.bytes, ts);
         log.debug('e1: $e1');
         expect(e0 is Element, true);
         expect(e0.hasValidValues, true);

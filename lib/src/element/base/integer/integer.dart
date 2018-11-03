@@ -407,7 +407,7 @@ abstract class OB extends Integer with Uint8 {
               kMaxVFLength,
               kSizeInBytes,
             );
-// Urgent jim: replace all isValidLength with local function
+// TODO: replace all isValidLength with local function
   /// Returns _true_ if [vList].length is valid for [OB].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (!Tag.isValidSpecialTag(tag, issues, kOBIndex, OB)) return false;

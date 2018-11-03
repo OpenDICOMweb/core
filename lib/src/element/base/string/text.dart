@@ -19,7 +19,7 @@ part of odw.sdk.element.base.string;
 //       bool areAllSpacesAllowed = x;
 //       bool isEmptyStringAllowed = x;
 
-abstract class Text extends Utf8 {
+abstract class Text extends Utf8String {
   @override
   bool get isAsciiRequired => false;
   @override
@@ -33,7 +33,7 @@ abstract class Text extends Utf8 {
   StringBase blank([int n = 1]) => update([spaces(n)]);
 
   @override
-  List<String> valuesFromBytes(Bytes bytes) => [bytes.getUtf8()];
+  List<String> valuesFromBytes(Bytes bytes) => [bytes.stringFromUtf8()];
 
   static const bool kIsAsciiRequired = false;
 
@@ -43,7 +43,7 @@ abstract class Text extends Utf8 {
     if (vf.isEmpty ||
         ((vf is List<String>) && vf.length == 1) ||
         vf is StringBulkdata) return vf;
-    if (vf is Bytes) return [vf.getUtf8()];
+    if (vf is Bytes) return [vf.stringFromUtf8()];
     if (vf is Uint8List)
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);

@@ -911,7 +911,7 @@ void main() {
       for (var s in goodDTList) {
         final bytes = Bytes.fromAsciiList(s);
         log.debug('DT.getAsciiList(bytes): $bytes');
-        expect(bytes.getAsciiList(), equals(s));
+        expect(bytes.stringListFromAscii(), equals(s));
       }
     });
 
@@ -944,7 +944,7 @@ void main() {
       final vList1 = ['19500718105630'];
       final bytes = Bytes.fromAsciiList(vList1);
       log.debug('DT.getAsciiList(bytes):  $bytes');
-      expect(bytes.getAsciiList(), equals(vList1));
+      expect(bytes.stringListFromAscii(), equals(vList1));
     });
 
     test('DT toByteData', () {
@@ -974,13 +974,13 @@ void main() {
         final vList0 = rsg.getDTList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.fromAsciiList(vList0);
-        final fbd0 = bd0.getAsciiList();
+        final fbd0 = bd0.stringListFromAscii();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodDTList) {
         final bd0 = Bytes.fromAsciiList(s);
-        final fbd0 = bd0.getAsciiList();
+        final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
       }
     });

@@ -22,7 +22,7 @@ part of odw.sdk.element.base.string;
 // Note: Each [String] in a Value Field must be separated by a backslash ('\)
 //       character. Thus, the minimum length of each string in a Value
 //       Field is 2, unless it is empty.
-abstract class Utf8 extends StringBase {
+abstract class Utf8String extends StringBase {
   @override
   StringList get values;
 
@@ -40,13 +40,14 @@ abstract class Utf8 extends StringBase {
       stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.getUtf8List(allowMalformed: global.allowMalformedUtf8);
+      bytes.stringListFromUtf8(allowMalformed: global.allowMalformedUtf8);
 
-  Utf8 append(String s) => update(values.append(s, maxValueLength));
+  Utf8String append(String s) => update(values.append(s, maxValueLength));
 
-  Utf8 prepend(String s) => update(values.prepend(s, maxValueLength));
+  Utf8String prepend(String s) => update(values.prepend(s, maxValueLength));
 
-  Utf8 truncate(int length) => update(values.truncate(length, maxValueLength));
+  Utf8String truncate(int length) =>
+      update(values.truncate(length, maxValueLength));
 
   bool match(String regexp) => values.match(regexp);
 
@@ -55,7 +56,7 @@ abstract class Utf8 extends StringBase {
       {bool isAscii = false}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.getUtf8List();
+    if (vf is Bytes) return vf.stringListFromUtf8();
     if (vf is Uint8List)
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);
@@ -63,7 +64,7 @@ abstract class Utf8 extends StringBase {
 }
 
 /// A Long String (LO) Element
-abstract class LO extends Utf8 {
+abstract class LO extends Utf8String {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -154,12 +155,9 @@ abstract class LO extends Utf8 {
           s, issues, kMinValueLength, kMaxValueLength);
 
   static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false}) {
-    if (s == null || !isValidValueLength(s, issues)) return false;
-    final ok = isDcmString(s, 64);
-    if (allowOversizedStrings || allowInvalidCharsInStrings) return true;
-    return ok ? ok : invalidString('Invalid Long String (LO): "$s"', issues);
-  }
+          {Issues issues, bool allowInvalid = false}) =>
+      _isValidDcmValue(
+          s, issues, allowInvalid, kMinValueLength, kMaxValueLength);
 }
 
 /// A Private Creator [Element] is a subtype of [LO]. It always has a tag
@@ -214,7 +212,7 @@ abstract class PC extends LO {
 }
 
 /// A Person Name ([PN]) [Element].
-abstract class PN extends Utf8 {
+abstract class PN extends Utf8String {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -316,15 +314,13 @@ abstract class PN extends Utf8 {
   // **** Specialized static methods
 
   static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false}) {
-    if (s == null || !isValidValueLength(s, issues)) return false;
-    if (isDcmString(s, 5 * 64)) return true;
-    return invalidString('Invalid Person Name String (PN): "$s"', issues);
-  }
+          {Issues issues, bool allowInvalid = false}) =>
+      _isValidDcmValue(
+          s, issues, allowInvalid, kMinValueLength, kMaxValueLength);
 }
 
 /// A Short String (SH) Element
-abstract class SH extends Utf8 {
+abstract class SH extends Utf8String {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -416,20 +412,14 @@ abstract class SH extends Utf8 {
 
   // **** Specialized static methods
 
-  //Urgent jim: create is valid value internal routine
   static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false}) {
-    if (s == null || !isValidValueLength(s, issues)) return false;
-    if (isDcmString(s, kMaxValueLength)) return true;
-    if (allowInvalidValueLengths ||
-        allowOversizedStrings ||
-        allowInvalidCharsInStrings) return true;
-    return invalidString('Invalid Short String (SH): "$s"', issues);
-  }
+          {Issues issues, bool allowInvalid = false}) =>
+      _isValidDcmValue(
+          s, issues, allowInvalid, kMinValueLength, kMaxValueLength);
 }
 
 /// An Unlimited Characters (UC) Element
-abstract class UC extends Utf8 {
+abstract class UC extends Utf8String {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -525,10 +515,21 @@ abstract class UC extends Utf8 {
   // **** Specialized static methods
 
   static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false}) {
-    if (s == null || !isValidValueLength(s, issues)) return false;
-    if (isDcmString(s, kMaxLongVF)) return true;
-    return invalidString(
-        'Invalid Unlimited Characters String (UC): "$s"', issues);
-  }
+          {Issues issues, bool allowInvalid = false}) =>
+      _isValidDcmValue(
+          s, issues, allowInvalid, kMinValueLength, kMaxValueLength);
+}
+
+bool _isNotValidValueLength(String s, Issues issues, int min, int max) =>
+    !StringBase.isValidValueLength(s, issues, min, max);
+
+bool _isValidDcmValue(
+    String s, Issues issues, bool allowInvalid, int min, int max) {
+  if (s == null || _isNotValidValueLength(s, issues, min, max)) return false;
+  if (allowInvalidValueLengths ||
+      allowOversizedStrings ||
+      allowInvalidCharsInStrings ||
+      isDcmString(s, kMaxLongVF)) return true;
+  return invalidString(
+      'Invalid Unlimited Characters String (UC): "$s"', issues);
 }

@@ -48,7 +48,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   int end = 0;
 
   // **** Section Start: Dataset as List
-  // Note: super classes must implement
+  // Note: subclasses must implement
   @override
   Element operator [](int i);
 

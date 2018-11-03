@@ -257,7 +257,8 @@ void main() {
         final vList1 = rsg.getUCList(1, 1);
         final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final e0 = UCtag.fromBytes(PTag.kStrainDescription, bytes);
+        final e0 =
+            UCtag.fromBytes(PTag.kStrainDescription, bytes, utf8.decoder);
         log.debug('e0: ${e0.info}');
         expect(e0.hasValidValues, true);
       }
@@ -269,7 +270,8 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = Bytes();
-          final e1 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
+          final e1 =
+              UCtag.fromBytes(PTag.kSelectorUCValue, bytes0, utf8.decoder);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
         }
@@ -283,11 +285,14 @@ void main() {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = Bytes();
-          final e1 = UCtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          final e1 =
+              UCtag.fromBytes(PTag.kSelectorCSValue, bytes0, utf8.decoder);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => UCtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+          expect(
+              () =>
+                  UCtag.fromBytes(PTag.kSelectorCSValue, bytes0, utf8.decoder),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }
@@ -723,13 +728,13 @@ void main() {
         final vList0 = rsg.getUCList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.fromUtf8List(vList0);
-        final fbd0 = bd0.getUtf8List();
+        final fbd0 = bd0.stringListFromUtf8();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodUCList) {
         final bd0 = Bytes.fromUtf8List(s);
-        final fbd0 = bd0.getUtf8List();
+        final fbd0 = bd0.stringListFromUtf8();
         expect(fbd0, equals(s));
       }
     });
@@ -739,7 +744,7 @@ void main() {
       final vList1 = rsg.getUCList(1, 1);
       final bytes = Bytes.fromUtf8List(vList1);
       log.debug('UC.fromBytes(bytes):  $bytes');
-      expect(bytes.getUtf8List(), equals(vList1));
+      expect(bytes.stringListFromUtf8(), equals(vList1));
     });
 
     test('UC toUint8List', () {

@@ -291,8 +291,8 @@ $i: $x | $y')
 	  "${String.fromCharCode(x)}" | "${String.fromCharCode(y)}"
 	    '    $a')
       '    $b')
-      '    ${a.getAscii()}')
-      '    ${b.getAscii()}');
+      '    ${a.stringFromAscii()}')
+      '    ${b.stringFromAscii()}');
 ''');
 }
 

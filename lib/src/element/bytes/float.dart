@@ -29,7 +29,7 @@ class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
 
   //TODO: fix all static constructors when constructors can be used as tear offs
   // ignore: prefer_constructors_over_static_methods
-  static FLbytes fromBytes(DicomBytes bytes) => FLbytes(bytes);
+  static FLbytes fromBytes(DicomBytes bytes, [Decoder _]) => FLbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static FLbytes fromValues(int code, Iterable<double> vList,
@@ -48,7 +48,7 @@ class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
   OFbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OFbytes fromBytes(DicomBytes bytes) => OFbytes(bytes);
+  static OFbytes fromBytes(DicomBytes bytes, [Decoder _]) => OFbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static OFbytes fromValues(int code, List<double> vList,
@@ -79,7 +79,7 @@ class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
   FDbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static FDbytes fromBytes(DicomBytes bytes, [Dataset ds]) => FDbytes(bytes);
+  static FDbytes fromBytes(DicomBytes bytes, [Decoder _]) => FDbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static FDbytes fromValues(int code, List<double> vList,
@@ -98,7 +98,7 @@ class ODbytes extends OD with ByteElement<double>, BytesFloat64Mixin {
   ODbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ODbytes fromBytes(DicomBytes bytes, [Dataset ds]) => ODbytes(bytes);
+  static ODbytes fromBytes(DicomBytes bytes, [Decoder _]) => ODbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static ODbytes fromValues(int code, List<double> vList,

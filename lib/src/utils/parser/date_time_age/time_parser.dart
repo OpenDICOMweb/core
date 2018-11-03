@@ -10,7 +10,6 @@ part of odw.sdk.core.parser;
 
 // ignore_for_file: public_member_api_docs
 
-// Urgent Jim: rewrite
 /// Returns the number of microseconds represented by [s].
 int parseDcmTime(String s,
     {int start = 0, int end, Issues issues, OnParseError onError}) {
@@ -28,7 +27,7 @@ int parseDcmTime(String s,
   }
 }
 
-// TODO: unit test and when working replace parseDcmTime
+// Urgent Sharath: unit test and when working replace parseDcmTime
 int parseTime(String s,
     {int start = 0,
     int end,
@@ -145,7 +144,6 @@ int _parseTime(String s, int start, int end, Issues issues,
   return timeToMicroseconds(h, m, ss, f ~/ 1000, f % 1000);
 }
 
-// Urgent Jim: this seems backwards
 bool _isNotValidTimeStringLength(int length) =>
     !(kValidTimeStringLengths.contains(length) || (length > 8 && length <= 13));
 
