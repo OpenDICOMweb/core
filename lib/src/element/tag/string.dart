@@ -686,7 +686,7 @@ class TMtag extends TM with TagElement<String> {
   StringList _values;
 
   factory TMtag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, TM.kTrim);
     return TM.isValidArgs(tag, v) ? TMtag._(tag, v) : badValues(v, null, tag);
   }
 
