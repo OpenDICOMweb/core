@@ -209,8 +209,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
     return hashCode;
   }
 
-  // **** End of DIcom extensions.
-
   static const int kMinLength = 16;
   static const int kDefaultLength = 1024;
 

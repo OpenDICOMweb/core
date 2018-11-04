@@ -20,6 +20,8 @@ mixin BytesMixin {
   ByteData get _bd;
   Endian get endian;
 
+  // **** End of Interface
+
   // **** TypedData interface.
   int get elementSizeInBytes => 1;
 
