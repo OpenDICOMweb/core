@@ -106,6 +106,12 @@ void main() {
         final uuid0 = Uuid.isValidString(uuid);
         expect(uuid0, true);
       }
+
+      for (var uuid in badUuidList0) {
+        global.throwOnError = false;
+        final uuid0 = Uuid.isValidString(uuid);
+        expect(uuid0, false);
+      }
     });
 
     test('isValid', () {
