@@ -13,7 +13,7 @@ import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: public_member_api_docs
 
-final Map<Uid, Uid> idedToDeIded = <Uid, Uid>{};
+final Map<Uid, Uid> idToDeId = <Uid, Uid>{};
 
 List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
@@ -35,12 +35,12 @@ UI replaceUIFast(UI e) {
   final uids =  List<String>(length);
   for (var i = 0; i < length; i++) {
     final oldUid = oldUids.elementAt(i);
-    var newUid = idedToDeIded[oldUid];
+    var newUid = idToDeId[oldUid];
     if (newUid != null) {
       uids[i] = newUid.asString;
     } else {
       newUid =  Uid();
-      idedToDeIded[oldUid] = newUid;
+      idToDeId[oldUid] = newUid;
       uids[i] = newUid.asString;
     }
   }
@@ -53,7 +53,7 @@ UI replaceUIGeneral(UI e) {
   final uids =  List<String>(length);
   for (var i = 0; i < length; i++) {
     final old = oldUids.elementAt(i);
-    var newUid = idedToDeIded[old];
+    var newUid = idToDeId[old];
     if (newUid != null) {
       uids[i] = newUid.asString;
     } else if (old.isWellKnown) {
@@ -62,7 +62,7 @@ UI replaceUIGeneral(UI e) {
       uids[i] = old.asString;
     } else {
       newUid =  Uid();
-      idedToDeIded[old] = newUid;
+      idToDeId[old] = newUid;
       uids[i] = newUid.asString;
     }
   }

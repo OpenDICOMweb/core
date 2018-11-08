@@ -14993,6 +14993,10 @@ class PTag extends Tag {
       //(300A,0082)
       = PTag._('BeamDoseSpecificationPoint', 0x300A0082,
           'Beam Dose Specification Point', kDSIndex, VM.k3, false);
+  static const PTag kReferencedDoseReferenceUID
+      //(300A,0083)
+      = PTag._('Referenced​Dose​Reference​UID', 0x300A0083,
+          'Referenced Dose Reference UID', kUIIndex, VM.k1, false);
   static const PTag kBeamDose
       //(300A,0084)
       = PTag._('BeamDose', 0x300A0084, 'Beam Dose', kDSIndex, VM.k1, false);

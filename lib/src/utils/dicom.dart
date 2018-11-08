@@ -3539,6 +3539,7 @@ const int kRepeatFractionCycleLength = 0x300a007a;
 const int kFractionPattern = 0x300a007b;
 const int kNumberOfBeams = 0x300a0080;
 const int kBeamDoseSpecificationPoint = 0x300a0082;
+const int kReferencedDoseReferenceUID = 0x300a0083;
 const int kBeamDose = 0x300a0084;
 const int kBeamMeterset = 0x300a0086;
 const int kBeamDosePointDepth = 0x300a0088;

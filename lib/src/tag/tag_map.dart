@@ -3236,6 +3236,7 @@ const Map<int, PTag> tagMap = <int, PTag>{
   0x300A007B: PTag.kFractionPattern,
   0x300A0080: PTag.kNumberOfBeams,
   0x300A0082: PTag.kBeamDoseSpecificationPoint,
+  0x300A0083: PTag.kReferencedDoseReferenceUID,
   0x300A0084: PTag.kBeamDose,
   0x300A0086: PTag.kBeamMeterset,
   0x300A0088: PTag.kBeamDosePointDepth,

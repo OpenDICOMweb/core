@@ -3704,6 +3704,7 @@ const Map<String, PTag> pTagKeywords = <String, PTag>{
   'FractionPattern': PTag.kFractionPattern,
   'NumberOfBeams': PTag.kNumberOfBeams,
   'BeamDoseSpecificationPoint': PTag.kBeamDoseSpecificationPoint,
+  'Referenced​Dose​Reference​UID': PTag.kReferencedDoseReferenceUID,
   'BeamDose': PTag.kBeamDose,
   'BeamMeterset': PTag.kBeamMeterset,
   'BeamDosePointDepth': PTag.kBeamDosePointDepth,
