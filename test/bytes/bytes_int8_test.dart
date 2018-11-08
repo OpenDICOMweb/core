@@ -223,5 +223,22 @@ void main() {
     }
   });
 
+  test('DicomReadBuffer', () {
+    for (var i = 1; i < 10; i++) {
+      final vList1 = rng.int8List(1, i);
+      final bytes1 = Bytes.fromList(vList1);
+      final dReadBuffer1 = DicomReadBuffer(bytes1);
+      log.debug('dReadBuffer1: $dReadBuffer1');
+
+      expect(dReadBuffer1.buffer == bytes1.buffer, true);
+      expect(dReadBuffer1.bytes == bytes1, true);
+      expect(dReadBuffer1.length == bytes1.length, true);
+      expect(dReadBuffer1.buffer.lengthInBytes == bytes1.buffer.lengthInBytes,
+          true);
+      expect(dReadBuffer1.rIndex == 0, true);
+      expect(dReadBuffer1.wIndex == bytes1.length, true);
+    }
+  });
+
   // });
 }

@@ -164,6 +164,29 @@ void main() {
     expect(slft1, kEmptyStringList);
   });
 
+  test('stringToByteData', () {
+    for (var i = 1; i < 10; i++) {
+      final vList = rsg.getAEList(1, i);
+      final uint8List0 = cvt.ascii.encode(vList.join('\\'));
+      final sBytesData0 = stringToByteData(vList.join('\\'));
+
+      expect(uint8List0, equals(sBytesData0.buffer.asUint8List()));
+      expect(
+          uint8List0.lengthInBytes == sBytesData0.buffer.lengthInBytes, true);
+      expect(
+          uint8List0.length == sBytesData0.buffer.asUint8List().length, true);
+      expect(sBytesData0.elementSizeInBytes == uint8List0.elementSizeInBytes,
+          true);
+      expect(sBytesData0.offsetInBytes == uint8List0.offsetInBytes, true);
+    }
+    final sBytesData1 = stringToByteData(null);
+    expect(sBytesData1, isNull);
+
+    const vList = '';
+    final sBytesData2 = stringToByteData(vList);
+    expect(sBytesData2.buffer.asUint8List().isEmpty == vList.isEmpty, true);
+  });
+
   group('StringList', () {
     const replaceFirst = <List<String>>[
       <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6L3pw'],
