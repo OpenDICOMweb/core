@@ -311,5 +311,22 @@ void main() {
       expect(idsBytes0.getUint32(vList.length),
           equals(bytes.getUint32(vList.length)));
     });
+
+    test('DicomReadBuffer', () {
+      final vList0 = ['1q221', 'sadaq223'];
+      final bytes0 = Bytes.asciiFromList(vList0);
+      final dReadBuffer0 = DicomReadBuffer(bytes0);
+      log.debug('dReadBuffer0:$dReadBuffer0');
+
+      expect(dReadBuffer0.buffer == bytes0.buffer, true);
+      expect(dReadBuffer0.bytes == bytes0, true);
+      expect(dReadBuffer0.length == bytes0.length, true);
+      expect(dReadBuffer0.buffer.lengthInBytes == bytes0.buffer.lengthInBytes,
+          true);
+      expect(dReadBuffer0.rIndex == 0, true);
+      expect(dReadBuffer0.wIndex == bytes0.length, true);
+
+      print(dReadBuffer0.readCode());
+    });
   });
 }
