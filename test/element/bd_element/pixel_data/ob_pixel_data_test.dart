@@ -34,6 +34,18 @@ void main() {
         expect(e1.hasValidValues, true);
         expect(e1 == e0, true);
         expect(e1.vfBytes == bytes, true);
+
+        expect(e0.code == e0.bytes.code, true);
+        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.vrCode == e0.bytes.vrCode, true);
+        expect(e0.vrIndex == e0.bytes.vrIndex, true);
+        expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
+        expect(e0.vfLengthField == e0.bytes.vfLengthField, true);
+        expect(e0.vfLength == e0.bytes.vfLength, true);
+        expect(e0.vfOffset == e0.bytes.vfOffset, true);
+        expect(e0.vfBytes == e0.bytes.vfBytes, true);
+        expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
+        expect(e0.hashCode == e0.bytes.hashCode, true);
       }
     });
   });

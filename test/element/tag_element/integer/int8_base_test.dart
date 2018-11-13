@@ -278,4 +278,24 @@ void main() {
       expect(getLen0 == length, true);
     }
   });
+
+  test('toInt8List', () {
+    for (var i = 1; i < 10; i++) {
+      global.throwOnError = false;
+      final vList0 = rng.int8List(1, i);
+      final int8List0 = Int8.toInt8List(vList0);
+      log.debug('int8List0: $int8List0');
+      expect(vList0 is Int8List, true);
+      expect(int8List0 == vList0, true);
+
+      final vList1 = rng.int16List(1, i);
+      final int8List1 = Int8.toInt8List(vList1);
+      expect(vList1 is Int8List, false);
+      expect(int8List1, isNull);
+
+      global.throwOnError = true;
+      expect(() => Int8.toInt8List(vList1),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
+    }
+  });
 }
