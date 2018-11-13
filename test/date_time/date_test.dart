@@ -11,6 +11,8 @@ import 'package:test/test.dart';
 
 import 'date_time_test_data/date_data.dart';
 
+final rng = RNG();
+
 void main() {
   Server.initialize(
       name: 'date_test', minYear: 1900, maxYear: 2100, level: Level.info);
@@ -366,7 +368,6 @@ void main() {
   });
 
   test('Hash Random Dates', () {
-    final rng = RNG();
     for (var i = 0; i < 1000; i++) {
       final eDay = rng.nextInt(global.minYear, global.maxYear);
       final date0 = Date.fromEpochDay(eDay);
@@ -655,5 +656,40 @@ void main() {
 
     final mtDate1 = microsecondToDateString(kMicrosecondsPerDay + 1);
     expect(mtDate1 == '19700102', true);
+  });
+
+  test('dayInYear', () {
+    for (var s in goodDcmDateList) {
+      final date0 = Date.parse(s);
+      final dayInYear0 = date0.dayInYear;
+      log.debug('dayInYear0: $dayInYear0');
+      final firstOfYear = DateTime(date0.year, 1, 1);
+      final epochDayOfCurrentYear =
+          firstOfYear.microsecondsSinceEpoch ~/ kMicrosecondsPerDay;
+      expect(dayInYear0, equals(date0.epochDay - epochDayOfCurrentYear));
+    }
+  });
+
+  test('hashDateInMicroseconds', () {
+    final date0 = Date(1978, 12, 21);
+    final hashDate0 = Date.hashDateInMicroseconds(date0.microseconds);
+    log.debug('hashDate0: $hashDate0');
+    expect(hashDate0 == date0.hash.microseconds, true);
+
+    for (var s in goodDcmDateList) {
+      final date1 = Date.parse(s);
+      final hashDate1 = Date.hashDateInMicroseconds(date1.microseconds);
+      log.debug('hashDate0: $hashDate1');
+      expect(hashDate1 == date1.hash.microseconds, true);
+    }
+  });
+
+  test('hashEpochDay', () {
+    for (var i = 0; i < 10; i++) {
+      final eDay = rng.nextInt(global.minYear, global.maxYear);
+      final hasheDay0 = Date.hashEpochDay(eDay);
+      log.debug('hasheDay0: $hasheDay0');
+      expect(hasheDay0, isNotNull);
+    }
   });
 }
