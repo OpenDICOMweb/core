@@ -76,6 +76,15 @@ abstract class Element<V> extends ListBase<V> {
   /// The length in bytes of [values].
   int get lengthInBytes;
 
+  /// Returns the [Bytes] encoding for _this_.
+  Bytes get bytes => unimplementedError();
+
+  /// Returns the [json] encoding for _this_.
+  String get json => unimplementedError();
+
+  /// Returns the [xml] encoding for _this_.
+  String get xml => unimplementedError();
+
   // **** End of Interface
 
   @override

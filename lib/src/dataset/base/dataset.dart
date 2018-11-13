@@ -77,10 +77,11 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   /// Returns the length in bytes of _this_ if encoded in binary.
   int get lengthInBytes => end - start;
 
-  /// Removes the [Element] [e] from _this_ and returns it. If [e] is not
+/*  /// Removes the [Element] [e] from _this_ and returns it. If [e] is not
   /// present returns _null_.
   @override
-  bool remove(Object e) => ((e is Element) && elements.remove(e)) || false;
+  bool remove(Object e) => (e is Element) ? elements.remove(e) :
+  return in;*/
 
   // **** Section Start: Element related Getters and Methods
 

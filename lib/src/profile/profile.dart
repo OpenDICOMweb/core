@@ -35,7 +35,7 @@ class Profile {
   final GlobalRule globals;
   final Map<String, Object> trialMap;
   final Map<String, String> parameters;
-  final List<int> groupsToRetail;
+  final List<int> groupsToRetain;
   final List<int> groupsToRemove;
   final List<int> keysToRetain;
   final List<int> keysToRemove;
@@ -48,7 +48,7 @@ class Profile {
       this.name, this.url, this.trialServer, this.quarantineUrl, this.trialMap)
       : globals = GlobalRule(),
         parameters = {},
-        groupsToRetail = [],
+        groupsToRetain = [],
         groupsToRemove = [],
         keysToRetain = [],
         keysToRemove = [],
@@ -71,7 +71,7 @@ class Profile {
       this.globals,
       this.trialMap,
       this.parameters,
-      this.groupsToRetail,
+      this.groupsToRetain,
       this.groupsToRemove,
       this.keysToRetain,
       this.keysToRemove,

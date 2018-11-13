@@ -15,15 +15,6 @@ import 'package:core/src/utils/primitives.dart';
 // ignore_for_file: type_annotate_public_apis
 // ignore_for_file: public_member_api_docs
 
-// TODO: add kEncryptedAttributeDataset
-class DeIdentify {
-  final TagRootDataset rds;
-
-  DeIdentify(this.rds);
-
-  void addPatientIdentityRemoved(TagRootDataset rds) {}
-}
-
 // TODO: Determine the correct codeValue and URL.
 const acrDeIdCodeValue = 'ACR OpenDICOMWeb SDK De-Identifier';
 const acrDeIdUrn = 'http://dicom.acr.org/odw/deidentifier.html';

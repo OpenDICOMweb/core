@@ -33,6 +33,7 @@ class SQtag extends SQ with TagElement<Item> {
   @override
   final Dataset parent;
 
+  @override
   final Bytes bytes;
 
   /// Creates a  [SQtag] instance.

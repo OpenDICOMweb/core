@@ -40,19 +40,19 @@ void main() {
 
       final aeList0 = rsg.getAEList(1, 1);
       final ae0 = AEtag(PTag.kSelectorAEValue, aeList0);
-      final updateUidList3 = rootDS0.updateUidList(ae0.index, aeList0);
+      final updateUidList3 = rootDS0.updateUids(ae0.index, aeList0);
       log.debug('updateUidList3: $updateUidList3');
       expect(updateUidList3, isNull);
       expect(updateUidList3 == ae0, false);
       expect(updateUidList3 is AE, false);
 
       rootDS0.add(ae0);
-      final updateUidList4 = rootDS0.updateUidList(ae0.index, aeList0);
+      final updateUidList4 = rootDS0.updateUids(ae0.index, aeList0);
       log.debug('updateUidList4: $updateUidList4');
       expect(updateUidList4, isNull);
 
       global.throwOnError = true;
-      expect(() => rootDS0.updateUidList(ae0.index, aeList0),
+      expect(() => rootDS0.updateUids(ae0.index, aeList0),
           throwsA(const TypeMatcher<InvalidElementError>()));
     });
     test('update', () {
@@ -220,7 +220,7 @@ void main() {
       final uiList0 = rsg.getUIList(1, 1);
       final ui0 = UItag(PTag.kRelatedGeneralSOPClassUID, uiList0);
 
-      final updateUidList0 = rootDS0.updateUidList(ui0.index, uiList0);
+      final updateUidList0 = rootDS0.updateUids(ui0.index, uiList0);
       log.debug('updateUidList0: $updateUidList0');
       expect(updateUidList0, isNull);
       expect(updateUidList0 == ui0, false);
@@ -228,19 +228,19 @@ void main() {
 
       global.throwOnError = false;
       final updateUidList1 =
-          rootDS0.updateUidList(ui0.index, uiList0, required: true);
+          rootDS0.updateUids(ui0.index, uiList0, required: true);
       log.debug('updateUidList1: $updateUidList1');
       expect(updateUidList1, isNull);
       expect(updateUidList1 == ui0, false);
       expect(updateUidList1 is UI, false);
 
       global.throwOnError = true;
-      expect(() => rootDS0.updateUidList(ui0.index, uiList0, required: true),
+      expect(() => rootDS0.updateUids(ui0.index, uiList0, required: true),
           throwsA(const TypeMatcher<ElementNotPresentError>()));
 
       global.throwOnError = false;
       rootDS0.add(ui0);
-      final updateUidList2 = rootDS0.updateUidList(ui0.index, uiList0);
+      final updateUidList2 = rootDS0.updateUids(ui0.index, uiList0);
       log.debug('updateUidList1: $updateUidList2');
       expect(updateUidList2 == ui0, true);
       expect(updateUidList2 is UI, true);
@@ -249,19 +249,19 @@ void main() {
 
       final aeList0 = rsg.getAEList(1, 1);
       final ae0 = AEtag(PTag.kSelectorAEValue, aeList0);
-      final updateUidList3 = rootDS0.updateUidList(ae0.index, aeList0);
+      final updateUidList3 = rootDS0.updateUids(ae0.index, aeList0);
       log.debug('updateUidList3: $updateUidList3');
       expect(updateUidList3, isNull);
       expect(updateUidList3 == ae0, false);
       expect(updateUidList3 is AE, false);
 
       rootDS0.add(ae0);
-      final updateUidList4 = rootDS0.updateUidList(ae0.index, aeList0);
+      final updateUidList4 = rootDS0.updateUids(ae0.index, aeList0);
       log.debug('updateUidList4: $updateUidList4');
       expect(updateUidList4, isNull);
 
       global.throwOnError = true;
-      expect(() => rootDS0.updateUidList(ae0.index, aeList0),
+      expect(() => rootDS0.updateUids(ae0.index, aeList0),
           throwsA(const TypeMatcher<InvalidElementError>()));
     });
 

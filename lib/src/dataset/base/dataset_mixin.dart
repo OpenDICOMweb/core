@@ -210,17 +210,17 @@ abstract class DatasetMixin {
   /// [Element] is not present a [elementNotPresentError] is called.
   /// It is an error if [sList] is _null_.  It is an error if the [Element]
   /// corresponding to [index] does not have a VR of UI.
-  Element updateUidList(int index, Iterable<String> sList,
+  Element updateUids<V>(int index, Iterable<V> sList,
       {bool recursive = true, bool required = false}) {
-    assert(index != null && sList != null);
-    final old = lookup(index, required: required);
-    if (old == null) return required ? elementNotPresentError(index) : null;
-    if (old is! UI) return badUidElement(old);
+      assert(index != null && sList != null);
+      final old = lookup(index, required: required);
+      if (old == null) return required ? elementNotPresentError(index) : null;
+      if (old is! UI) return badUidElement(old);
 
-    // If [e] has noValues, and [uids] == null, just return [e],
-    // because there is no discernible difference.
-    if (old.values.isEmpty && sList.isEmpty) return old;
-    return old.update(sList);
+      // If [e] has noValues, and [uids] == null, just return [e],
+      // because there is no discernible difference.
+      if (old.values.isEmpty && sList.isEmpty) return old;
+      return old.update((sList is List<String>) ? sList: sList.toList(growable: false));
   }
 
   /// Update the [Element] with [index] to have a values that is [uids].
@@ -377,8 +377,8 @@ abstract class DatasetMixin {
       for (var e in elements) {
         if (e is SQ) {
           for (var item in e.items) {
-            final deleted = item.delete(index);
-            if (deleted != null) results.add(deleted);
+            final deleted = item.deleteAll(index, recursive: recursive);
+            if (deleted != null) results.addAll(deleted);
           }
         }
       }

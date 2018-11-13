@@ -20,17 +20,26 @@ class TagGroup {
   int get min => group << 16;
   int get max => (group << 16) + 0xFFFF;
 
-  static const TagGroup group18 = TagGroup('Group 18', 0x0018);
-  static const TagGroup group20 = TagGroup('Group 20', 0x0020);
-  static const TagGroup group28 = TagGroup('Group 28', 0x0028);
-  static const TagGroup group50 = TagGroup('Group 50', 0x0050);
-  static const TagGroup group60 = TagGroup('Group 60', 0x0060);
-  static const TagGroup curves = group50;
-  static const TagGroup overLays = group60;
-
-  void keep(Profile profile) => profile.groupsToRetail.add(group);
+  void keep(Profile profile) => profile.groupsToRetain.add(group);
 
   void remove(Dataset ds) => ds.deletePrivateGroup(group);
+
+  static const TagGroup kGroup18 = TagGroup('Group 18', 0x0018);
+  static const TagGroup kGroup20 = TagGroup('Group 20', 0x0020);
+  static const TagGroup kGroup28 = TagGroup('Group 28', 0x0028);
+  static const TagGroup kGroup50 = TagGroup('Group 50', 0x0050);
+  static const TagGroup kGroup60 = TagGroup('Group 60', 0x0060);
+  static const TagGroup kCurves = kGroup50;
+  static const TagGroup kOverLays = kGroup60;
+
+  static const List<TagGroup> validGroups =
+      [kGroup18, kGroup20, kGroup28, kGroup50, kGroup60]; // No reformat
+
+  static const List<TagGroup> defaultKeepGroups =
+      [kGroup18, kGroup20, kGroup28];  // No reformat
+
+  static const List<TagGroup> defaultRemoveGroups =
+      [kGroup50, kGroup60];  // No reformat
 }
 
 class GlobalRule {

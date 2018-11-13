@@ -12,27 +12,30 @@ import 'package:core/src/utils/primitives.dart';
 // ignore_for_file: public_member_api_docs
 
 const List<int> deIdFmiUidCodes = <int>[kMediaStorageSOPInstanceUID];
+
 const List<int> deIdUidCodes = <int>[
   kRequestedSOPInstanceUID,
   kReferencedSOPInstanceUIDInFile,
   kSOPInstanceUID,
   kContextGroupExtensionCreatorUID,
-//  kReferencedStudySequence,
-// kReferencedPatientSequence,
   kReferencedSOPInstanceUID,
   kTransactionUID,
-// kSourceImageSequence,
   kCreatorVersionUID,
   kStudyInstanceUID,
   kSeriesInstanceUID,
   kSynchronizationFrameOfReferenceUID,
-
   kUID,
   kTemplateExtensionOrganizationUID,
   kTemplateExtensionCreatorUID,
   kStorageMediaFileSetUID,
   kDigitalSignatureUID,
   kRelatedFrameOfReferenceUID,
+];
+
+const List<int> deleteSequenceUidCodes = <int>[
+  kReferencedStudySequence,
+  kReferencedPatientSequence,
+  kSourceImageSequence,
 ];
 
 const List<int> updateUidCodes = <int>[
@@ -57,7 +60,6 @@ const List<int> updateUidCodes = <int>[
   kReferencedDoseReferenceUID,
   kReferencedFrameOfReferenceUID,
   kReferencedGeneralPurposeScheduledProcedureStepTransactionUID,
-//??  kReferencedImageSequenceU*,
   kReferencedObservationUIDTrial,
   kReferencedSOPInstanceUID,
   kReferencedSOPInstanceUIDInFile,
@@ -65,10 +67,7 @@ const List<int> updateUidCodes = <int>[
   kRequestedSOPInstanceUID,
   kSeriesInstanceUID,
   kSOPInstanceUID,
-//  kSourceImageSequenceU*,
   kStorageMediaFileSetUID,
-//  kReferencedStudySequence,
-//  kReferencedPatientSequence,
   kStudyInstanceUID,
   kSynchronizationFrameOfReferenceUID,
   kTargetUID,
@@ -77,6 +76,13 @@ const List<int> updateUidCodes = <int>[
   kTrackingUID,
   kTransactionUID,
   kUID,
+];
+
+const List<int> updateSequenceUidCodes = <int>[
+  kReferencedImageSequence,
+  kSourceImageSequence,
+  kReferencedStudySequence,
+  kReferencedPatientSequence,
 ];
 
 const List<int> deleteUidCodes = <int>[

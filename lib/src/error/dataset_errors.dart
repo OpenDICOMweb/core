@@ -44,7 +44,6 @@ class InvalidValueFieldError extends Error {
   String toString() => msg;
 }
 
-/*
 class RetainedElementError<K> extends Error {
   K key;
   String msg;
@@ -64,7 +63,7 @@ Null retainedElementError<K>(K key, [String msg]) {
   if (throwOnError) throw  RetainedElementError(key);
   return null;
 }
-*/
+
 
 class DeletedElementError<K> extends Error {
   K key;
