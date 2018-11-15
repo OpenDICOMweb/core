@@ -10,7 +10,7 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/list_dataset/list_dataset.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/error/dataset_errors.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
@@ -51,9 +51,8 @@ class ListRootDataset extends RootDataset with ListDataset {
   RootDataset copy([RootDataset rds]) => ListRootDataset.from(rds ?? this);
 }
 
-class FmiList extends Fmi with ListDataset {
+class FmiList extends Fmi {
   /// A sorted [List] of Tag Codes increasing order.
-  @override
   List<int> codes;
 
   /// A sorted [List] of [Element]s in Tag Code order.
@@ -98,6 +97,12 @@ class FmiList extends Fmi with ListDataset {
       return true;
     }
   }
+
+  @override
+  int get length => elements.length;
+
+  @override
+  set length(int n) => unsupportedError();
 
   @override
   String toString() => '$runtimeType: $length elements';

@@ -49,15 +49,6 @@ abstract class ByteElement<V> {
 
   // **** Getters and Setters special to ByteElement
 
-  /// Returns _true_ if _this_ and [other] are the same [ByteElement],
-  /// and equal byte for byte.
-  @override
-  bool operator ==(Object other) =>
-      other is ByteElement && bytes == other.bytes;
-
-  @override
-  int get hashCode => bytes.hashCode;
-
   /// The Tag Code of _this_.
   int get code => bytes.code;
 
@@ -97,7 +88,7 @@ abstract class ByteElement<V> {
     final index = getValidVR(vrIndex, tag.vrIndex);
     final charset = (ds == null) ? utf8 : ds.charset;
     return (index == kSQIndex)
-        ? sqFromBytes(ds, <ByteItem>[], bytes)
+        ? SQbytes.fromBytes(ds, <ByteItem>[], bytes)
         : _bytesMakers[index](bytes, charset);
   }
 
@@ -141,33 +132,6 @@ abstract class ByteElement<V> {
   static final List<Function> _undefinedBytesMakers = <Function>[
     SQbytes.fromBytes, // stop reformat
     OBbytes.fromBytes, OWbytes.fromBytes, UNbytes.fromBytes
-  ];
-
-  static Element sqFromBytes(
-      Dataset parent, List<Item> items, DicomBytes bytes) {
-    final code = bytes.code;
-    if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
-
-    final tag = lookupTagByCode(code, bytes.vrIndex, parent);
-    assert(tag.vrIndex == kSQIndex, 'vrIndex: ${tag.vrIndex}');
-    if (tag.vrIndex != kSQIndex)
-      log.warn('** Non-Sequence Tag $tag for $bytes');
-    return SQbytes.fromBytes(parent, items, bytes);
-  }
-
-  static Element pixelDataFromBytes(DicomBytes bytes,
-      [TransferSyntax ts, VFFragmentList fragments, Dataset ds]) {
-    final code = bytes.code;
-    final index = getPixelDataVR(code, bytes.vrIndex, ds, ts);
-    return _fromBytesPixelDataMakers[index](bytes, ts, fragments);
-  }
-
-  // Elements that may have undefined lengths.
-  static final List<Function> _fromBytesPixelDataMakers = <Function>[
-    UNbytesPixelData.fromBytes,
-    null,
-    OBbytesPixelData.fromBytes,
-    OWbytesPixelData.fromBytes
   ];
 
   /// Returns a new [Element] based on the arguments.

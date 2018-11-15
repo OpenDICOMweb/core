@@ -22,21 +22,23 @@ int mapHash(Map<int, Element> map) => mapEquality.hash(map);
 abstract class MapDataset {
   /// A [Map] from key to [Element].
   Map<int, Element> get eMap;
+  int get total;
 
   /// Returns the [Element] with [code].
   Element operator [](int code) => eMap[code];
 
-  // *** Primitive only for internal use Stores e in eMap
-  void store(int index, Element e) {
-    final code = e.code;
-    assert(index == code);
-
-    eMap[e.code] = e;
-  }
-
+  // TODO(Jim): should this be checking that parents are equal? It doesn't
+  /// Returns true if [other] has the same [Element]s as _this_.
   @override
-  bool operator ==(Object other) =>
-      other is MapDataset && mapsEqual(eMap, other.eMap);
+  bool operator ==(Object other) {
+    if (other is MapDataset && total == other.total) {
+      for (var e in elements) {
+        if (e != other.eMap[e.code]) return false;
+      }
+      return true;
+    }
+    return false;
+  }
 
   @override
   int get hashCode => mapHash(eMap);
@@ -49,6 +51,13 @@ abstract class MapDataset {
   Iterable<int> get codes => keys;
 
   List<Element> get elements => eMap.values.toList(growable: false);
+
+  // *** Primitive only for internal use Stores e in eMap
+  void store(int code, Element e) {
+    final other = e.code;
+    assert(other == code);
+    eMap[e.code] = e;
+  }
 
   // TODO(high): determine how expensive this is?
   Element elementAt(int index) => eMap.values.elementAt(index);
@@ -68,7 +77,4 @@ abstract class MapDataset {
   /// Returns the [Element]s in _this_ as a [List<Element>]
   List<Element> toList({bool growable = false}) =>
       elements.toList(growable: false);
-
-  @override
-  String toString() => '$runtimeType: ${eMap.length} elements';
 }

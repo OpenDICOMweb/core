@@ -26,6 +26,8 @@ bool _isEmpty(Iterable<int> vList) => vList == null || vList.isEmpty;
 
 /// PixelDataMixin class
 abstract class TagPixelData {
+  final Tag tag = PTag.kPixelData;
+
   // [_values] MUST always be List<int> and [TypedData].
   List<int> get _values;
 
@@ -72,7 +74,8 @@ abstract class TagPixelData {
 ///
 // _Note_: Pixel Data Tag Elements do not have [VFFragments].
 //         [VFFragments] must be converted before they are created.
-class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
+class OBtagPixelData extends OB
+    with PixelDataMixin, TagElement<int>, TagPixelData, OBPixelData {
   @override
   List<int> _values;
   @override
@@ -149,7 +152,8 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
 //
 // _Note_: Pixel Data Tag Elements do not have [VFFragments].
 //         [VFFragments] must be converted before they are created.
-class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
+class UNtagPixelData extends UN
+    with PixelDataMixin, TagElement<int>, TagPixelData, UNPixelData {
   @override
   List<int> _values;
   @override
@@ -225,7 +229,8 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
 ///
 // _Note_: Pixel Data Tag Elements do not have [VFFragments].
 //         [VFFragments] must be converted before they are created.
-class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
+class OWtagPixelData extends OW
+    with PixelDataMixin, TagElement<int>, TagPixelData, OWPixelData {
   @override
   List<int> _values;
   @override

@@ -15,8 +15,6 @@ abstract class BytePixelData {
   VFFragmentList get fragments;
   int get vfLengthField;
 
-
-
   // **** End Interface
 
   /// A [Uint32List] of offsets into [fragments].
@@ -27,16 +25,13 @@ abstract class BytePixelData {
 // **** Integer Elements
 // **** 8-bit Integer Elements (OB, UN)
 
-class OBbytesPixelData extends OBPixelData
-    with ByteElement<int>, Uint8Mixin, BytePixelData {
-  @override
-  final DicomBytes bytes;
-  @override
+class OBbytesPixelData extends OBbytes
+    with ByteElement<int>, Uint8Mixin, BytePixelData, OBPixelData {
   TransferSyntax ts;
   @override
   VFFragmentList fragments;
 
-  OBbytesPixelData(this.bytes, [this.ts, this.fragments]);
+  OBbytesPixelData(DicomBytes bytes, [this.ts, this.fragments]) : super(bytes);
 
   @override
   int get vrIndex => kOBIndex;
@@ -50,16 +45,13 @@ class OBbytesPixelData extends OBPixelData
       OBbytesPixelData(bytes, ts, fragments);
 }
 
-class UNbytesPixelData extends UNPixelData
-    with ByteElement<int>, Uint8Mixin, BytePixelData {
-  @override
-  final DicomBytes bytes;
-  @override
+class UNbytesPixelData extends UNbytes
+    with ByteElement<int>, Uint8Mixin, BytePixelData, UNPixelData {
   TransferSyntax ts;
   @override
   VFFragmentList fragments;
 
-  UNbytesPixelData(this.bytes, [this.ts, this.fragments]);
+  UNbytesPixelData(DicomBytes bytes, [this.ts, this.fragments]) : super(bytes);
 
   @override
   int get vrIndex => kUNIndex;
@@ -75,17 +67,14 @@ class UNbytesPixelData extends UNPixelData
 
 // **** 16-bit Integer Elements (SS, US, OW)
 
-class OWbytesPixelData extends OWPixelData
-    with ByteElement<int>, Uint16Mixin, BytePixelData {
-  @override
-  final DicomBytes bytes;
-  @override
+class OWbytesPixelData extends OWbytes
+    with ByteElement<int>, Uint16Mixin, BytePixelData, OWPixelData {
   TransferSyntax ts;
   // Note: OW should _never_ have fragments, but it does happen
   @override
   VFFragmentList fragments;
 
-  OWbytesPixelData(this.bytes, [this.ts, this.fragments]);
+  OWbytesPixelData(DicomBytes bytes, [this.ts, this.fragments]) : super(bytes);
 
   @override
   int get vrIndex => kOWIndex;

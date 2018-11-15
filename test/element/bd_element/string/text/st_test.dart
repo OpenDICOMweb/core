@@ -67,7 +67,7 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-          expect(e0.hashCode == e0.bytes.hashCode, true);
+//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });

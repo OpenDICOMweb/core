@@ -31,8 +31,21 @@ class SQbytes extends SQ with ByteElement<Item> {
   /// for complete sequence.
   // ignore: prefer_constructors_over_static_methods
   static SQbytes fromBytes(Dataset parent,
-          [Iterable<Item> values, DicomBytes bytes]) =>
-      SQbytes(parent, values, bytes);
+      [Iterable<Item> items, DicomBytes bytes]) {
+    final code = bytes.code;
+    if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
+
+    final tag = lookupTagByCode(code, bytes.vrIndex, parent);
+    assert(tag.vrIndex == kSQIndex, 'vrIndex: ${tag.vrIndex}');
+    if (tag.vrIndex != kSQIndex)
+      log.warn('** Non-Sequence Tag $tag for $bytes');
+    return SQbytes.fromBytes(parent, items, bytes);
+  }
+
+  static bool _isPrivateCreator(int code) {
+    final pCode = code & 0x1FFFF;
+    return pCode >= 0x10010 && pCode <= 0x100FF;
+  }
 
   // ignore: prefer_constructors_over_static_methods
   static SQbytes fromValues(int code, List<String> vList,

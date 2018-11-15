@@ -53,9 +53,10 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   static const _makeElement = TagElement.fromValues;
 
   // ignore: prefer_constructors_over_static_methods
-  static TagRootDataset convert(RootDataset rds) {
+  static TagRootDataset convert(RootDataset rds, [Issues issues]) {
     final tagRds = TagRootDataset.empty();
     for (var e in rds.fmi.elements) {
+      if (issues != null) e.check(issues);
       final te = _makeElement(e.code, e.vrIndex, e.values, rds);
       tagRds.fmi.add(te);
     }

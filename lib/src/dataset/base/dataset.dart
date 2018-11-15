@@ -55,33 +55,12 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   // Note: super classes should not override
   @override
   void operator []=(int i, Element e) {
-    assert(i == e.index);
+    assert(i == e.code);
     tryAdd(e);
   }
 
-  // TODO(Jim): should this be checking that parents are equal? It doesn't
-  /// Returns true if [other] has the same [Element]s as _this_.
-  @override
-  bool operator ==(Object other) {
-    if (other is Dataset && length == other.length) {
-      for (var e in elements) if (e != other[e.index]) return false;
-      return true;
-    }
-    return false;
-  }
-
-  // Implement Equality
-  @override
-  int get hashCode => global.hasher.nList(elements);
-
   /// Returns the length in bytes of _this_ if encoded in binary.
   int get lengthInBytes => end - start;
-
-/*  /// Removes the [Element] [e] from _this_ and returns it. If [e] is not
-  /// present returns _null_.
-  @override
-  bool remove(Object e) => (e is Element) ? elements.remove(e) :
-  return in;*/
 
   // **** Section Start: Element related Getters and Methods
 

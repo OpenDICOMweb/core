@@ -13,7 +13,7 @@ import 'package:core/src/utils/primitives.dart';
 
 /// A [List] of Tag Code that should be deleted from according to
 /// the DICOM Basic De-Identification Profile (see PS3.15 Annex E).
-const List<int> basicDeIdCodes = <int>[
+const List<int> deidNonUidOrDateCodes = <int>[
   kStudyDate,
   kSeriesDate,
   kAcquisitionDate,
@@ -231,7 +231,7 @@ const List<int> basicDeIdCodes = <int>[
 ];
 
 
-const List<PTag> deIdNotUidTags = <PTag>[
+const List<PTag> deidNonUidOrDateTags = <PTag>[
   PTag.kStudyDate,
   PTag.kSeriesDate,
   PTag.kAcquisitionDate,
@@ -449,6 +449,8 @@ const List<PTag> deIdNotUidTags = <PTag>[
 ];
 
 
+// Issue: is this needed?
+/*
 const Map<int, String> deIdNonUidCodeToKeywordMap = <int, String>{
   0x00080020: 'StudyDate',
   0x00080021: 'SeriesDate',
@@ -665,6 +667,7 @@ const Map<int, String> deIdNonUidCodeToKeywordMap = <int, String>{
   0xfffafffa: 'DigitalSignaturesSequence',
   0xfffcfffc: 'DataSetTrailingPadding',
 };
+*/
 
 
 

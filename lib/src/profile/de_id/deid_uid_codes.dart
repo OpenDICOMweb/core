@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
@@ -34,7 +33,7 @@ const List<int> deIdUidCodes = <int>[
   kRelatedFrameOfReferenceUID,
 ];
 
-const List<int> deleteSequenceUidCodes = <int>[
+const List<int> deidDeleteUidSequenceCodes = <int>[
   kReferencedStudySequence,
   kReferencedPatientSequence,
   kSourceImageSequence,
@@ -151,6 +150,7 @@ List<int> keptUids = <int>[
   kTransactionUID
 ];
 
+/*
 const Map<int, String> deIdUidCodeToKeywordMap = <int, String>{
   0x00001000: 'AffectedSOPInstanceUID',
   0x00001001: 'RequestedSOPInstanceUID',
@@ -184,3 +184,4 @@ const Map<int, String> deIdUidCodeToKeywordMap = <int, String>{
   0x300600c2: 'RelatedFrameOfReferenceUID',
   0x300a0013: 'DoseReferenceUID',
 };
+*/

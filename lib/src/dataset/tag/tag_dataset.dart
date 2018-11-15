@@ -16,7 +16,18 @@ import 'package:core/src/utils.dart';
 
 /// An [TagDataset] is a Dataset containing TagElements.
 abstract class TagDataset {
+  Map<int, Element> get eMap;
+
+  List<Element> get elements => eMap.values.toList(growable: false);
+
   PrivateGroups get pGroups;
+
+  /// Returns _false_ because [TagDataset]s are mutable.
+  bool isImmutable = false;
+
+  int keyToIndex(int code) => code;
+
+  Tag getTag(int key, [int vrIndex, Object creator]) => Tag.lookupByCode(key);
 
   /// If _true_ Elements with invalid values are stored in the
   /// [Dataset]; otherwise, an InvalidValuesError is thrown.
@@ -34,12 +45,6 @@ abstract class TagDataset {
   /// Issues when they are accessed from the Dataset.
   bool checkIssuesOnAccess = false;
 
-  bool isImmutable = false;
-
-  int keyToIndex(int code) => code;
-
-  Tag getTag(int key, [int vrIndex, Object creator]) => Tag.lookupByCode(key);
-
   static Dataset convert(Dataset dsOld, Dataset dsNew, [Bytes bytes]) {
     final badElements = <Element>[];
     for (var old in dsOld.elements) _convertElement(dsNew, old, badElements);
@@ -47,6 +52,7 @@ abstract class TagDataset {
     return dsNew;
   }
 
+  // TODO: remove when tear offs work
   static const _makeElement = TagElement.fromValues;
 
   static void _convertElement(
@@ -61,9 +67,6 @@ abstract class TagDataset {
     }
   }
 
-  static SQ _convertSQ(
-    Dataset parent,
-    SQ oldSQ,
-  ) =>
+  static SQ _convertSQ(Dataset parent, SQ oldSQ) =>
       SQtag.convert(parent, oldSQ);
 }

@@ -22,9 +22,6 @@ part of odw.sdk.element.base.string;
 /// DICOM Age (AS) Value Representation
 abstract class AS extends Ascii {
   @override
-  bool operator ==(Object other) => other is AS && value == other.value;
-
-  @override
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
@@ -42,6 +39,7 @@ abstract class AS extends Ascii {
   Trim get trim => kTrim;
 
   @override
+  // ignore: hash_and_equals
   int get hashCode {
     if (values.isEmpty) return 0;
     return (values.length == 1 && Age.isValidString(values[0]))

@@ -8,6 +8,7 @@
 //
 import 'package:collection/collection.dart';
 import 'package:core/src/element/base.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/error/general_errors.dart';
 
 // ignore_for_file: public_member_api_docs
@@ -36,6 +37,8 @@ abstract class ListDataset {
   /// A sorted [List] of [Element]s in Tag Code order.
   List<Element> get elements;
 
+  int get total;
+
   /// Returns the [Element] with [code].
   Element operator [](int code) {
     final index = codes.indexOf(code);
@@ -53,6 +56,32 @@ abstract class ListDataset {
     }
   }
 
+  // TODO(Jim): should this be checking that parents are equal? It doesn't
+  /// Returns true if [other] has the same [Element]s as _this_.
+  @override
+  bool operator ==(Object other) {
+    if (other is ListDataset && total == other.total) {
+      for (var e in elements) {
+        if (e != other[e.code]) return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  // Implement Equality
+  @override
+  int get hashCode => global.hasher.nList(elements);
+
+  int get length => elements.length;
+
+  set length(int _) => unsupportedError();
+
+  int indexOf(Object e, [int start = 0]) =>
+      e is Element ? codes.indexOf(e.code, start) : null;
+
+  Iterable<int> get keys => codes;
+
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
     final code = e.code;
@@ -65,22 +94,6 @@ abstract class ListDataset {
       elements.add(e);
     }
   }
-
-  @override
-  bool operator ==(Object other) =>
-      other is ListDataset && listsEqual(elements, other.elements);
-
-  @override
-  int get hashCode => mapHash(elements);
-
-  int get length => elements.length;
-
-  set length(int _) => unsupportedError();
-
-  int indexOf(Object e, [int start = 0]) =>
-      e is Element ? codes.indexOf(e.code, start) : null;
-
-  Iterable<int> get keys => codes;
 
   Element elementAt(int index) => elements.elementAt(index);
 
@@ -104,8 +117,5 @@ abstract class ListDataset {
 
   /// Returns the [Element]s in _this_ as a [List<Element>]
   List<Element> toList({bool growable = true}) =>
-      elements.toList(growable: false);
-
-  @override
-  String toString() => '$runtimeType: ${elements.length} elements';
+      (elements is List) ? elements : elements.toList(growable: false);
 }

@@ -9,7 +9,6 @@
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag.dart';
-import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/values.dart';
@@ -86,7 +85,7 @@ abstract class TagElement<V> {
     final index = getValidVR(vrIndex, tag.vrIndex);
     final charset = ds == null ? utf8 : ds.charset;
     return (index == kSQIndex)
-        ? sqFromBytes(ds, <ByteItem>[], bytes)
+        ? SQtag.fromBytes(ds, <ByteItem>[], bytes)
         : _bytesMakers[index](tag, bytes.vfBytes, charset);
   }
 
@@ -129,31 +128,6 @@ abstract class TagElement<V> {
   static final List<Function> _undefinedBytesMakers = <Function>[
     SQtag.fromBytes, // stop reformat
     OBtag.fromBytes, OWtag.fromBytes, UNtag.fromBytes
-  ];
-
-  static Element sqFromBytes(
-      Dataset parent, List<Item> items, DicomBytes bytes) {
-    final code = bytes.code;
-    if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
-
-    final tag = lookupTagByCode(code, bytes.vrIndex, parent);
-    if (tag.vrIndex != kSQIndex)
-      log.warn('** Non-Sequence Tag $tag for $bytes');
-    return SQtag.fromBytes(parent, items, tag);
-  }
-
-  static Element pixelDataFromBytes(DicomBytes bytes,
-      [Dataset ds, TransferSyntax ts]) {
-    final index = getPixelDataVR(bytes.code, bytes.vrIndex, ds, ts);
-    return _fromBytesPixelDataMakers[index](bytes.vfBytes, ts);
-  }
-
-  // Elements that may have undefined lengths.
-  static final List<Function> _fromBytesPixelDataMakers = <Function>[
-    UNtagPixelData.fromBytes,
-    null,
-    OBtagPixelData.fromBytes,
-    OWtagPixelData.fromBytes
   ];
 
   /// Returns a  [Element] based on the arguments.

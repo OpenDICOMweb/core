@@ -15,7 +15,6 @@ import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/parser/parse_errors.dart';
-import 'package:core/src/utils/string/decimal.dart';
 import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/values/date_time.dart';
 

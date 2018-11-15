@@ -11,6 +11,11 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
+// Urgent Sharath: create unit test that verify that these Lists and Map
+// contain the same codes and tags. check length first then compare element
+// by element
+
+/// Date codes that must be de-identified.
 const List<int> deIdDateCodes = <int>[
   // Added by JFPhilbin
   kInstanceCreationDate,
@@ -30,7 +35,47 @@ const List<int> deIdDateCodes = <int>[
   kPerformedProcedureStepEndDate,
 ];
 
+/// Date codes that must be de-identified.
+const List<int> deIdDeleteDateCodes = <int>[
+  // Added by JFPhilbin
+  kInstanceCreationDate,
+  // Defined in PS3.15
+  kStudyDate,
+  kSeriesDate,
+  kAcquisitionDate,
+  kContentDate,
+  kOverlayDate,
+  kCurveDate,
+  kPatientBirthDate,
+  kLastMenstrualDate,
+  kAdmittingDate,
+  kScheduledProcedureStepStartDate,
+  kScheduledProcedureStepEndDate,
+  kPerformedProcedureStepStartDate,
+  kPerformedProcedureStepEndDate,
+];
 
+/// Date codes that must be de-identified.
+const List<int> deIdUpdateDateCodes = <int>[
+  // Added by JFPhilbin
+  kInstanceCreationDate,
+  // Defined in PS3.15
+  kStudyDate,
+  kSeriesDate,
+  kAcquisitionDate,
+  kContentDate,
+  kOverlayDate,
+  kCurveDate,
+  kPatientBirthDate,
+  kLastMenstrualDate,
+  kAdmittingDate,
+  kScheduledProcedureStepStartDate,
+  kScheduledProcedureStepEndDate,
+  kPerformedProcedureStepStartDate,
+  kPerformedProcedureStepEndDate,
+];
+
+/// Date [PTag]s that must be de-identified.
 const List<PTag> deIdDateTags = <PTag>[
   // Added by JFPhilbin
   PTag.kInstanceCreationDate,
@@ -50,7 +95,10 @@ const List<PTag> deIdDateTags = <PTag>[
   PTag.kPerformedProcedureStepEndDate,
 ];
 
-
+// Issue: decide if this Map is needed or used. It can be generated from
+// deIdDateTags if needed.
+/*
+/// A Map from Date Code to Keyword
 const Map<int, String> deIdDateCodeToKeywordMap = <int, String>{
   0x00080020: 'StudyDate',
   0x00080021: 'SeriesDate',
@@ -66,5 +114,6 @@ const Map<int, String> deIdDateCodeToKeywordMap = <int, String>{
   0x00400244: 'PerformedProcedureStepStartDate',
   0x00400250: 'PerformedProcedureStepEndDate',
 };
+*/
 
 

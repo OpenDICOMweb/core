@@ -22,7 +22,7 @@ int parseTime(String s, {int start = 0, int end, Issues issues}) =>
 /// Parses a time in DICOM format. If successful, returns the time in
 /// microseconds, which is always a non-negative integer; otherwise, _null_.
 int parseDicomTime(String t,
-    {int start = 0, int end, Issues issues, int onError(String s)}) {
+    {int start = 0, int end, Issues issues}) {
   assert(t != null && start != null);
   return _parseTime(t, start, end ?? t.length, 2, 13, issues);
 }
@@ -30,7 +30,7 @@ int parseDicomTime(String t,
 /// Parses a time in DICOM format. If successful, returns the time in
 /// microseconds, which is always a non-negative integer; otherwise, _null_.
 int parseInternetTime(String t,
-    {int start = 0, int end, Issues issues, int onError(String s)}) {
+    {int start = 0, int end, Issues issues}) {
   assert(t != null && start != null);
   return _parseTime(t, start, end ?? t.length, 2, 15, issues, kColon);
 }

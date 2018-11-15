@@ -21,6 +21,12 @@ import 'package:core/src/values/uid.dart';
 
 /// PixelDataMixin class
 abstract class PixelDataMixin {
+  /// The [TransferSyntax] of _this_.
+  TransferSyntax get ts;
+
+  /// Returns _true_ if [frames] are compressed.
+  bool get isCompressed => ts.isEncapsulated;
+
   /// The FrameList for _this_.
   Iterable<Frame> get frames => _frames;
   set frames(Iterable<Frame> vList) => _frames = vList;
@@ -32,12 +38,6 @@ abstract class PixelDataMixin {
 
   /// A [Uint8List] created from [frames].
   Uint8List get bulkdata => _frames.bulkdata;
-
-  /// The [TransferSyntax] of _this_.
-  TransferSyntax get ts;
-
-  /// Returns _true_ if [frames] are compressed.
-  bool get isCompressed => ts.isEncapsulated;
 
   // **** End Interface
 
@@ -51,17 +51,11 @@ abstract class PixelDataMixin {
   bool get isEncapsulated => isCompressed;
 }
 
-abstract class OBPixelData extends OB with PixelDataMixin {
-  @override
-  final Tag tag = PTag.kPixelDataOB;
+abstract class OBPixelData {
+  Tag get tag => PTag.kPixelDataOB;
 
-  @override
-  int get maxLength => OB.kMaxLength;
-
-  @override
   List<int> get emptyList => kEmptyUint8List;
 
-  @override
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
       allowInvalid || v >= 0 && v <= 255;
 
@@ -86,18 +80,8 @@ abstract class OBPixelData extends OB with PixelDataMixin {
   }
 }
 
-abstract class UNPixelData extends UN with PixelDataMixin {
-  @override
+abstract class UNPixelData {
   Tag get tag => PTag.kPixelDataUN;
-
-  @override
-  TransferSyntax get ts;
-
-  @override
-  int get maxLength => UN.kMaxLength;
-
-  @override
-  bool get isCompressed => ts.isEncapsulated;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [UN].
   /// If [doTestElementValidity] is _false_ then no validation is done.
@@ -123,16 +107,8 @@ abstract class UNPixelData extends UN with PixelDataMixin {
   }
 }
 
-abstract class OWPixelData extends OW with PixelDataMixin {
-  @override
+abstract class OWPixelData {
   final Tag tag = PTag.kPixelDataOW;
-  @override
-  TransferSyntax get ts;
-
-  @override
-  int get maxLength => OW.kMaxLength;
-  @override
-  bool get isCompressed => ts.isEncapsulated;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OW].
   /// If [doTestElementValidity] is _false_ then no validation is done.

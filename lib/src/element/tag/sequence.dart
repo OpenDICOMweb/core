@@ -13,9 +13,9 @@ import 'package:core/src/dataset/tag.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/logger.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
@@ -108,9 +108,21 @@ class SQtag extends SQ with TagElement<Item> {
   }
 
   // ignore: prefer_constructors_over_static_methods
-  static SQtag fromBytes(Dataset parent, List<Item> vList, Tag tag) {
-    if (tag.vrIndex != kSQIndex) return null;
+  static SQtag fromBytes(Dataset parent, List<Item> vList, DicomBytes bytes) {
+    final code = bytes.code;
+    if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
+
+    final tag = lookupTagByCode(code, bytes.vrIndex, parent);
+    if (tag.vrIndex != kSQIndex) {
+      log.warn('** Non-Sequence Tag $tag for $bytes');
+      return null;
+    }
     return SQtag(parent, tag, vList);
+  }
+
+  static bool _isPrivateCreator(int code) {
+    final pCode = code & 0x1FFFF;
+    return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
   static const _makeSQ = TagElement.sqFromCode;
