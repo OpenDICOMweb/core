@@ -45,6 +45,33 @@ const List<int> deIdUidCodes = <int>[
   kDoseReferenceUID,
 ];
 
+const List<int> deleteUidCodes = <int>[
+  kAffectedSOPInstanceUID,
+  kRequestedSOPInstanceUID,
+  kReferencedSOPInstanceUIDInFile,
+  kSOPInstanceUID,
+  kContextGroupExtensionCreatorUID,
+  kReferencedSOPInstanceUID,
+  kTransactionUID,
+  kCreatorVersionUID,
+  kStudyInstanceUID,
+  kSeriesInstanceUID,
+  kSynchronizationFrameOfReferenceUID,
+  kUID,
+  kTemplateExtensionOrganizationUID,
+  kTemplateExtensionCreatorUID,
+  kStorageMediaFileSetUID,
+  kDigitalSignatureUID,
+  kRelatedFrameOfReferenceUID,
+];
+
+
+const List<int> deleteSequenceUidCodes = <int>[
+  kReferencedStudySequence,
+  kReferencedPatientSequence,
+  kSourceImageSequence,
+];
+
 const List<PTag> deIdUidTags = <PTag>[
   PTag.kAffectedSOPInstanceUID,
   PTag.kRequestedSOPInstanceUID,

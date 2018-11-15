@@ -9,9 +9,53 @@
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/values/date_time.dart';
+import 'package:core/src/utils.dart';
 
 // ignore_for_file: only_throw_errors
 // ignore_for_file: public_member_api_docs
+
+/// Returns the hour part of microseconds ([us]).
+int microsecondsToHour(int us) => us ~/ kMicrosecondsPerHour;
+
+/// Returns the minute part of microseconds ([us]).
+int microsecondToMinute(int us) =>
+    (us - (microsecondsToHour(us) * kMicrosecondsPerHour)) ~/
+        kMicrosecondsPerMinute;
+
+/// Returns the second part of microseconds ([us]).
+int microsecondsToSecond(int us) =>
+    (us - (microsecondToMinute(us) * kMicrosecondsPerMinute)) ~/
+        kMicrosecondsPerSecond;
+
+/// Returns the millisecond part of microseconds ([us]).
+int microsecondsToMillisecond(int us) =>
+    (us - (microsecondsToSecond(us) * kMicrosecondsPerSecond)) ~/
+        kMicrosecondsPerMillisecond;
+
+/// Returns the microsecond part of microseconds ([us]).
+int microsecondsToMicrosecond(int us) =>
+    us - (microsecondsToMillisecond(us) * kMicrosecondsPerMillisecond);
+
+/// Returns the fraction part of microseconds ([us]).
+int microsecondsToFraction(int us) =>
+    us - (microsecondsToSecond(us) * kMicrosecondsPerSecond);
+
+// Unit test
+String microsecondsToString(int us) {
+  final h = microsecondsToHour(us);
+  final m = microsecondToMinute(us);
+  final s = microsecondsToSecond(us);
+  final f = microsecondsToFraction(us);
+  return '${digits2(h)}${digits2(m)}${digits2(s)}.${digits6(f)}';
+}
+
+/// Returns a new time [String] that is the hash of the [s] argument.
+String hashDcmTimeString(String s) {
+  var us = parseDicomTime(s);
+  if (us == null) return null;
+  us = hashTimeMicroseconds(us);
+  return microsecondsToString(us);
+}
 
 bool isValidTimeMicroseconds(int us) => us >= 0 && us <= kMicrosecondsPerDay;
 bool isNotValidTimeMicroseconds(int us) => !isValidTimeMicroseconds(us);

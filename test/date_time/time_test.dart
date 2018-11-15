@@ -13,6 +13,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'time_test', level: Level.info, throwOnError: true);
 
+  // Urgent Sharath: move to time_data.dart
   const goodDcmTimes = <String>[
     '000000',
     '190101',
@@ -61,8 +62,10 @@ void main() {
     '235959.111111',
   ];
 
-  group('Time Tests', () {
-    test('Good Time.parse', () {
+  // Urgent Sharath: create Internet Time tests
+  group('DICOM Time Tests', () {
+
+    test('Good DICOM Time.parse', () {
       log.debug('Good Times');
       for (var s in goodDcmTimes) {
         log.debug('Time: $s');
@@ -78,7 +81,7 @@ void main() {
       }
     });
 
-    test('Good Time.parse', () {
+    test('Good Time isValidString', () {
       log.debug('Good Times.isValid');
       for (var s in goodDcmTimes) {
         log.debug('Times.isValid: $s');
@@ -129,7 +132,10 @@ void main() {
     });
   });
 
+  // Urgent Sharath: create Bad Internet Time tests
   group('Bad DCM Time tests', () {
+
+    // Urgent Sharath: move to time_data.dart
     const badDcmTimes = <String>[
       '241318', // bad hour
       '006132', // bad minute
@@ -242,7 +248,7 @@ void main() {
     });
 
     test('hashString time', () {
-      global.throwOnError = true;
+      global.throwOnError = false;
 
       for (var s in goodDcmTimes) {
         final hs0 = Time.hashString(s);
@@ -258,7 +264,7 @@ void main() {
     });
 
     test('hashStringList', () {
-      global.throwOnError = true;
+      global.throwOnError = false;
 
       final hs0 = Time.hashStringList(goodDcmTimes);
       log.debug('hs0:$hs0');

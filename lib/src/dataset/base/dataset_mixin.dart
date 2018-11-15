@@ -212,15 +212,16 @@ abstract class DatasetMixin {
   /// corresponding to [index] does not have a VR of UI.
   Element updateUids<V>(int index, Iterable<V> sList,
       {bool recursive = true, bool required = false}) {
-      assert(index != null && sList != null);
-      final old = lookup(index, required: required);
-      if (old == null) return required ? elementNotPresentError(index) : null;
-      if (old is! UI) return badUidElement(old);
+    assert(index != null && sList != null);
+    final old = lookup(index, required: required);
+    if (old == null) return required ? elementNotPresentError(index) : null;
+    if (old is! UI) return badUidElement(old);
 
-      // If [e] has noValues, and [uids] == null, just return [e],
-      // because there is no discernible difference.
-      if (old.values.isEmpty && sList.isEmpty) return old;
-      return old.update((sList is List<String>) ? sList: sList.toList(growable: false));
+    // If [e] has noValues, and [uids] == null, just return [e],
+    // because there is no discernible difference.
+    if (old.values.isEmpty && sList.isEmpty) return old;
+    return old.update(
+        (sList is List<String>) ? sList : sList.toList(growable: false));
   }
 
   /// Update the [Element] with [index] to have a values that is [uids].

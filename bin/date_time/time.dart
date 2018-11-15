@@ -15,7 +15,7 @@ void main() {
   log.debug('Good parseDcmTime');
   const s = '24, 10, 20';
   log.debug('  parseDcmTime: $s');
-  final us = parseDcmTime(s);
+  final us = parseDicomTime(s);
   log.debug('    parseDcmTime: $us');
 }
 

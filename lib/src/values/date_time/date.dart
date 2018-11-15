@@ -186,7 +186,7 @@ class Date implements Comparable<Date> {
   /// Returns _true_ if [s] is a valid DICOM [Date] [String].
   static bool isValidString(String s,
           {int start = 0, int end, Issues issues}) =>
-      isValidDcmDateString(s, start: start, end: end, issues: issues);
+      parseDicomDate(s, start: start, end: end, issues: issues) != null;
 
   /// Returns a [Issues] object if there are errors or warnings related to [s];
   /// otherwise, returns _null_.

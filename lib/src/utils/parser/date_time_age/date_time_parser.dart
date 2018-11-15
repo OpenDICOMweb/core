@@ -27,7 +27,7 @@ int parseDcmDateTime(String s,
     _checkArgs(s, start, end, 4, 26, 'parseDcmDateTime', issues);
     final dateEnd = (end < 8) ? end : 8;
     date = _parsePartialDcmDate(s, index, dateEnd, issues);
-    assert(date != null);
+    if (date == null) throw FormatException('Bad Date: "$s"');
     int timeEnd;
     int tzStart;
     if ((index += 8) < end) {
@@ -40,8 +40,8 @@ int parseDcmDateTime(String s,
       }
       tzStart = timeEnd;
 //      final timeEnd = (end < 21) ? end : 21;
-      time = _parseDcmTime(s, index, timeEnd, issues);
-      assert(time != null);
+      time = _parseTime(s, index, timeEnd, 0, 13, issues);
+      if (time == null) throw FormatException('Bad time: "$s"');
       if (tzStart != end) tz = _parseDcmTimeZone(s, tzStart, end, issues);
       assert(tz != null);
     }

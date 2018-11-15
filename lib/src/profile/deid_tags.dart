@@ -34,7 +34,7 @@ class DeIdTags {
   // static void retain(Dataset ds, Tag tag) => ds.retain(tag);
 
 /* FLush or Fix
-  //TODO: deidentifySequence has to be at a higher level
+  //TODO: deIdentifySequence has to be at a higher level
   /// retain (unchanged for non-sequence attributes, cleaned for sequences)';
   static void retainBlank(Dataset ds, Tag tag) => ds.retain(tag);
 */

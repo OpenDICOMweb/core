@@ -33,6 +33,25 @@ const List<String> badDcmDateList = [
   '1970011a', // bad character in day
 ];
 
+//Bad dates
+const List<String> badInetDateList = [
+  '1950-13-18', // bad month
+  '2004-13-13', // bad month
+  '1980-43-12', //bad month
+  '0000-00-32', // bad month and day
+  '0000-00-00', // bad month and day
+  '1980-05-41', //bad day
+  '1950-10-32', // bad day
+  '-970-01-01', // bad character in year
+  '1b70-01-01', // bad character in year
+  '19c0-01-01', // bad character in year
+  '197d-01-01', // bad character in year
+  '1970-a1-01', // bad character in month
+  '1970-0b-01', // bad character in month
+  '1970-01-a1', // bad character in day
+  '1970-01-1a', // bad character in day
+];
+
 
 
 

@@ -8,84 +8,36 @@
 //
 import 'package:core/src/values/uid.dart';
 
-// ignore_for_file: public_member_api_docs
-
-/*
-class StudyUids {
-  final Uid idedStudyUid;
-  final Uid deidedStudyUid;
-  final Map<Uid, UidMap> studiesMap;
-
-  StudyUids()
-      : deidedStudyUid = new Uid(),
-        studiesMap = new UidMap();
-
-  Uid lookup(Uid study, [Uid series, Uid instance]) {
-    if (study == idedStudyUid && series == null) return deidedStudyUid;
-    final deIdSeries = seriesMap[series];
-      if (deIdSeries != null) return series;
-      final seriesMap = new DeIdUidSeriesMap(series);
-      seriesUids[series] = new DeIdUidSeriesMap(series);
-        return deIdSeries;
-      } else {
-        var deIdInstance = seriesUids[instance];
-        if (deIdInstance != null) return deIdInstance;
-        deIdInstance = new Uid();
-        seriesUids[instance] = deIdInstance;
-      }
-    }
-  }
-}
-
-class SeriesUids {
-  final Uid idSeriesUid;
-  final UidMap uidMap;
-
-  SeriesUids(this.idSeriesUid)
-      : uidMap = new UidMap(idSeriesUid);
-
-
-  Uid get deIdSeriesUid => uidMap.parentDeIdUid;
-  Uid operator [](Uid instance) => lookup(instance);
-
-  Uid lookup(Uid instance, [Uid series]) {
-    if (series != null && series != uidMap.parentUid)
-      throw 'Invalid Parent Uid: ${uidMap.parentUid}'
-    {
-      return idedSeriesUid;
-    } else {
-      final deIdInstance = uidMap[instance];
-      if (deIdInstance != null) {
-        return deIdInstance;
-      } else {
-        return null;
-      }
-    }
-  }
-
-  void add(Uid idUid) {
-    final out = uidMap.putIfAbsent(idUid, () => new Uid());
-    if (out)
-  }
-}
-*/
-
+/// A [Map] from Identified [Uid]s to De-Identified [Uid]s.
+/// The [parentUid] if present is the [Uid] of the containing
+/// Information Entity.
 class UidMap {
+  /// The Information Entity containing these [Uid]s.
   final Uid parentUid;
+  /// The
   final Uid parentDeIdUid;
   final _uidMap = <Uid, Uid>{};
 
-  UidMap(this.parentUid) : parentDeIdUid = Uid();
+  /// Constructor. If [parentDeIdUid] is not provided a new [Uid] is created.
+  UidMap(this.parentUid, [Uid parentDeIdUid])
+      : parentDeIdUid = parentDeIdUid ?? Uid();
 
-  Uid operator [](Uid instance) => lookup(instance);
+  /// Returns the De-Identified [Uid] associated with [idUid],
+  /// an Identified [Uid].
+  Uid operator [](Uid idUid) => lookup(idUid);
 
+  /// Returns the De-Identified [Uid] associated with [idUid],
+  /// an Identified [Uid]. if [parent] is present it must be
+  /// equal to [parentUid] or _null_ is returned.
   Uid lookup(Uid idUid, [Uid parent]) {
-    assert(parentUid == null || parent == parentUid);
-    final deIdUid = _uidMap[idUid];
-    if (deIdUid != null) return deIdUid;
-    final newDeIdUid = Uid();
-    final result = _uidMap.putIfAbsent(idUid, () => newDeIdUid);
-    assert(newDeIdUid == result);
-    return newDeIdUid;
+    if (parentUid == null || parent == parentUid) {
+      final deIdUid = _uidMap[idUid];
+      if (deIdUid != null) return deIdUid;
+      final newDeIdUid = Uid();
+      final result = _uidMap.putIfAbsent(idUid, () => newDeIdUid);
+      assert(newDeIdUid == result);
+      return newDeIdUid;
+    }
+    return null;
   }
 }

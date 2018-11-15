@@ -16,7 +16,7 @@ void main() {
 
   log.debug('Test Dates');
   const s = '230718.1234';
-  final us = parseDcmTime(s);
+  final us = parseDicomTime(s);
   log.debug('  Time "$s": $us');
 
   goodDcmDates();

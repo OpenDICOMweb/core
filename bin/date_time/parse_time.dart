@@ -46,7 +46,7 @@ void main() {
   for (var i = 0; i < goodTimeStringsWOFractions.length; i++) {
     final s = goodTimeStringsWOFractions[i];
     log.debug('  Parse Good Fraction: "$s"');
-    final us = parseDcmTime(s);
+    final us = parseDicomTime(s);
     log.debug('                   $us');
     final v = goodTimeValuesWOFractions[i];
     final usv = listToUSeconds(v);
@@ -58,7 +58,7 @@ void main() {
   for (var i = 0; i < badTimeStringsWOFractions.length; i++) {
     final s = badTimeStringsWOFractions[i];
     log.debug('  Parse Bad Fraction: "$s"');
-    final f = parseDcmTime(s);
+    final f = parseDicomTime(s);
     log.debug('                       $f');
     if (f != null) throw '    Non-Null Value: f: $f';
   }
@@ -81,7 +81,7 @@ void main() {
     final s = badTimeStringsWOFractions[i];
     log.debug('  Parse Bad Time Fraction: "$s"');
     final issues = Issues('Bad Time Fraction: "$s"');
-    parseDcmTime(s, issues: issues);
+    parseDicomTime(s, issues: issues);
     log.debug('  $issues');
     if (issues.isEmpty)
       throw '  Issues is empty: ${issues.isEmpty}, issues: "$issues"';

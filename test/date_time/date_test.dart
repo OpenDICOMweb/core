@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 
 import 'date_time_test_data/date_data.dart';
 
-final rng = RNG();
+final RNG rng = RNG();
 
 void main() {
   Server.initialize(
@@ -562,10 +562,11 @@ void main() {
     }
   });
 
-  test('parseDate', () {
+  test('parse DICOM Date', () {
 //    global.throwOnError = false;
 
-    const goodDateList = [
+    /// Urgent Sharath: move to date_data
+    const goodDcmDateList = [
       '19500718',
       '19000101',
       '19700101',
@@ -577,13 +578,43 @@ void main() {
       '1998-12-19'
     ];
 
-    for (var date in goodDateList) {
+    for (var date in goodDcmDateList) {
       final pd0 = parseDate(date);
       log.debug('date: $date pd0: $pd0');
       expect(pd0, isNotNull);
     }
 
     for (var date in badDcmDateList) {
+      global.throwOnError = false;
+      final pd0 = parseDate(date);
+      log.debug('pd0: $pd0');
+      expect(pd0, isNull);
+    }
+  });
+
+  test('Parse Internet Date', () {
+//    global.throwOnError = false;
+
+  /// Urgent Sharath: move to date_data
+    const goodInetDateList = [
+      '1950-07-18',
+      '1900-01-01',
+      '1970-01-01',
+      '1993-10-10',
+      '2017-12-31',
+      '2017-11-30',
+      '2050-12-31',
+      '2018-03-05',
+      '1998-12-19'
+    ];
+
+    for (var date in goodInetDateList) {
+      final pd0 = parseDate(date);
+      log.debug('date: $date pd0: $pd0');
+      expect(pd0, isNotNull);
+    }
+
+    for (var date in badInetDateList) {
       global.throwOnError = false;
       final pd0 = parseDate(date);
       log.debug('pd0: $pd0');

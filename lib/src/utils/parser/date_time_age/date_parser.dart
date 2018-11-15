@@ -13,39 +13,26 @@ part of odw.sdk.core.parser;
 /// Returns the Epoch Day in microseconds, which is negative if before
 /// Epoch Day Zero, if [s] is valid; otherwise, returns
 /// [kInvalidEpochMicroseconds].
-int parseDate(String s,
-        {int start = 0, int end, Issues issues, int onError(String s)}) =>
+int parseDate(String s, {int start = 0, int end, Issues issues}) =>
     (s.contains('-'))
-        ? parseInternetDate(s,
-            start: start, end: end, issues: issues, onError: onError)
-        : parseDicomDate(s,
-            start: start, end: end, issues: issues, onError: onError);
+        ? parseInternetDate(s, start: start, end: end, issues: issues)
+        : parseDicomDate(s, start: start, end: end, issues: issues);
 
 /// Parses a date in DICOM format.
 /// Returns the Epoch Day in microseconds, which is negative if before
 /// Epoch Day Zero, if [s] is valid; otherwise, returns
 /// [kInvalidEpochMicroseconds].
-int parseDicomDate(String s,
-    {int start = 0, int end, Issues issues, int onError(String s)}) {
+int parseDicomDate(String s, {int start = 0, int end, Issues issues}) {
   assert(s != null && start != null);
-  return _parseDate(s, start, end, 8, 8, issues, onError);
+  return _parseDate(s, start, end ?? s.length, 8, 8, issues);
 }
 
 /// Returns the Epoch Day in microseconds, which is negative if before
 /// Epoch Day Zero, if [s] is valid; otherwise, returns
 /// [kInvalidEpochMicroseconds].
-int parseInternetDate(String s,
-    {int start = 0, int end, Issues issues, int onError(String s)}) {
+int parseInternetDate(String s, {int start = 0, int end, Issues issues}) {
   assert(s != null && start != null);
-  return _parseDate(s, start, end, 10, 10, issues, onError, kDash);
-}
-
-/// Returns true is [s] contains a valid DICOM date.
-// Note: checkArgs is done by [parseDcmDate].
-bool isValidDcmDateString(String s, {int start = 0, int end, Issues issues}) {
-  //TODO: is this the best place to allow blanks?
-  if (allowBlankDates && s.trim().isEmpty) return true;
-  return parseDate(s, start: start, end: end, issues: issues) != null;
+  return _parseDate(s, start, end ?? s.length, 10, 10, issues, kDash);
 }
 
 // **** Internal below this line
@@ -53,38 +40,36 @@ bool isValidDcmDateString(String s, {int start = 0, int end, Issues issues}) {
 
 /// Returns a valid Epoch Day in microseconds or _null_.
 int _parseDate(String s, int start, int end, int min, int max, Issues issues,
-    [int onError(String s), int separator]) {
-  assert(s != null && start != null);
-  const _fName = '_parseDate';
+    [int separator]) {
+  assert(s != null && start != null && end != null);
   try {
     _checkArgs(s, start, end, min, max, _fName, issues);
-    return __parseDate(s, start, issues, onError, separator);
+    return __parseDate(s, start, end, issues, separator);
   } on FormatException {
     // ignore: avoid_returning_null
     if (allowBlankDates && (s.trim().isEmpty)) return null;
-    return (onError != null)
-        ? onError(s)
-        : throwOnError
-            ? invalidDateString(s.substring(start, end), issues)
-            : null;
+    return throwOnError ? badDateString(s.substring(start, end), issues) : null;
   }
 }
 
 /// Returns a valid Epoch Day in microseconds or _null_.
-int __parseDate(String s, int start, Issues issues,
-    [int onError(String s), int separator]) {
+int __parseDate(String s, int start, int end, Issues issues, [int separator]) {
+  var m = 1, d = 1;
   var index = start;
   final y = _parseYear(s, index, issues);
-  index += 4;
-  if (separator != null) _parseSeparator(s, index++, issues, separator);
-  final m = _parseMonth(s, index, issues);
-  index += 2;
-  if (separator != null) _parseSeparator(s, index++, issues, separator);
-  final d = _parseDay(y, m, s, index, issues);
-  if (y == null || m == null || d == null)
-    return (onError != null)
-        ? onError(s)
-        : invalidDateString('Invalid Date: "${s.substring(start, start + 8)}');
+  if ((index += 4) < end) {
+    if (separator != null) _parseSeparator(s, index++, issues, separator);
+    m = _parseMonth(s, index, issues);
+    if ((index += 2) < end) {
+      if (separator != null) _parseSeparator(s, index++, issues, separator);
+      d = _parseDay(y, m, s, index, issues);
+      if (y == null || m == null || d == null) {
+        return throwOnError
+            ? badDateString('Invalid Date: "${s.substring(start, start + 8)}')
+            : null;
+      }
+    }
+  }
   return dateToEpochMicroseconds(y, m, d);
 }
 

@@ -175,14 +175,14 @@ class Time implements Comparable<Time> {
   /// Returns _true_ if [s] is a valid DICOM [Time] [String].
   static bool isValidString(String s,
           {int start = 0, int end, Issues issues}) =>
-      isValidDcmTimeString(s, start: start, end: end, issues: issues);
+      parseDicomTime(s, start: start, end: end, issues: issues) != null;
 
   /// Returns a [Time] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
   // ignore: prefer_constructors_over_static_methods
   static Time parse(String s,
       {int start = 0, int end, Issues issues, OnTimeParseError onError}) {
-    final us = parseDcmTime(s, start: start, end: end);
+    final us = parseDicomTime(s, start: start, end: end);
     if (us == null)
       return (onError != null) ? onError(s) : badTimeString(s, issues);
     return Time.fromMicroseconds(us);
@@ -196,7 +196,7 @@ class Time implements Comparable<Time> {
     int end,
   }) {
     final issues = Issues('Time: "$s"');
-    parseDcmTime(s, issues: issues);
+    parseDicomTime(s, issues: issues);
     return issues;
   }
 
