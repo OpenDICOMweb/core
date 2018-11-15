@@ -8,20 +8,7 @@
 //
 part of odw.sdk.core.parser;
 
-/*
-const String kAgeTokens = 'DWMY';
-
-const int kDaysInWeek =7;
-const int kDaysInMonth =30;
-const int kDaysInYear = 365;
-const int kMaxCount = 999;
-const int kMaxDayAge = kMaxCount;
-const int kMaxWeekAge = kMaxCount * kDaysInWeek;
-const int kMaxMonthAge = kMaxCount * kDaysInMonth;
-const int global.maxYearAge = kMaxCount * kDaysInYear;
-
-*/
-
+// Issue: do we need this? JFP: I don't think so.
 /// Returns the number of days corresponding to [s], which is a 4 character
 /// DICOM age (AS) [String]. [s] must be in the format: 'dddt',
 /// where 'd' is a decimal  digit and 't' is an age token,
