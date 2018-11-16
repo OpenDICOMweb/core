@@ -10,6 +10,7 @@ export 'package:core/src/profile/de_id/basic_profile.dart';
 export 'package:core/src/profile/de_id/deid_dates.dart';
 export 'package:core/src/profile/de_id/deid_non_uids.dart';
 export 'package:core/src/profile/de_id/deid_remove.dart';
+export 'package:core/src/profile/de_id/patient_identity_removed.dart';
 export 'package:core/src/profile/deid_tags.dart';
 export 'package:core/src/profile/deid_uids.dart';
 export 'package:core/src/profile/deid_uid_map.dart';

@@ -9,62 +9,13 @@
 
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
+import 'package:core/src/values/date_time/primitives/time.dart';
+import 'date_time_test_data/time_data.dart';
 
 void main() {
   Server.initialize(name: 'time_test', level: Level.info, throwOnError: true);
 
-  // Urgent Sharath: move to time_data.dart
-  const goodDcmTimes = <String>[
-    '000000',
-    '190101',
-    '235959',
-    '010101.1',
-    '010101.11',
-    '010101.111',
-    '010101.1111',
-    '010101.11111',
-    '010101.111111',
-    '000000.0',
-    '000000.00',
-    '000000.000',
-    '000000.0000',
-    '000000.00000',
-    '000000.000000',
-    '00',
-    '0000',
-    '000000',
-    '000000.1',
-    '000000.111111',
-    '01',
-    '0101',
-    '010101',
-    '010101.1',
-    '010101.111111',
-    '10',
-    '1010',
-    '101010',
-    '101010.1',
-    '101010.111111',
-    '22',
-    '2222',
-    '222222',
-    '222222.1',
-    '222222.111111',
-    '23',
-    '2323',
-    '232323',
-    '232323.1',
-    '232323.111111',
-    '23',
-    '2359',
-    '235959',
-    '235959.1',
-    '235959.111111',
-  ];
-
-  // Urgent Sharath: create Internet Time tests
   group('DICOM Time Tests', () {
-
     test('Good DICOM Time.parse', () {
       log.debug('Good Times');
       for (var s in goodDcmTimes) {
@@ -132,27 +83,7 @@ void main() {
     });
   });
 
-  // Urgent Sharath: create Bad Internet Time tests
   group('Bad DCM Time tests', () {
-
-    // Urgent Sharath: move to time_data.dart
-    const badDcmTimes = <String>[
-      '241318', // bad hour
-      '006132', // bad minute
-      '006060', // bad minute and second
-      '000060', // bad month and day
-      '-00101', // bad character in hour
-      'a00101', // bad character in hour
-      '0a0101', // bad character in hour
-      'ad0101', // bad characters in hour
-      '19a101', // bad character in minute
-      '190b01', // bad character in minute
-      '1901a1', // bad character in second
-      '19011a', // bad character in second
-      '999999.9', '999999.99', '999999.999',
-      '999999.9999', '999999.99999', '999999.999999', //don't format
-    ];
-
     const badDcmTimesInt = <int>[
       241318, // bad hour
       006132, // bad minute
@@ -429,6 +360,39 @@ void main() {
             }
           }
         }
+      }
+    });
+
+    test('parseTime good values', () {
+      for (var s in goodInetTime) {
+        final internetTime0 = parseTime(s);
+        log.debug('internetTime0: $internetTime0');
+        expect(internetTime0, isNotNull);
+
+        final h = s.substring(0, 2);
+        final m = s.substring(3, 5);
+        final sc = s.substring(6, 8);
+        var ms = 0;
+        var us = 0;
+        if (s.contains('.')) {
+          ms = int.parse(s.substring(9, 12));
+        }
+        final itm0 = timeInMicroseconds(
+            int.parse(h), int.parse(m), int.parse(sc), ms, us);
+        log.debug('itm0: $itm0');
+        expect(internetTime0 == itm0, true);
+      }
+    });
+
+    test('parseTime bad values', () {
+      for (var s in badInetTime) {
+        global.throwOnError = false;
+        final internetTime0 = parseTime(s);
+        log.debug('internetTime0: $internetTime0');
+        expect(internetTime0, isNull);
+
+        global.throwOnError = true;
+        expect(() => parseTime(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
   });

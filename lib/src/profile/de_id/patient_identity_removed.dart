@@ -20,7 +20,6 @@ class DeIdentify {
 
   DeIdentify(this.rds);
 
-  // Urgent Sharath: Unit test
   void addPatientIdentityRemoved(TagRootDataset rds) {
     const values = ['YES'];
     final e = rds.lookup(kPatientIdentityRemoved);

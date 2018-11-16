@@ -9,9 +9,25 @@
 
 //Good dates
 const List<String> goodDcmDateList = [
-  '19500718', '19000101', '19700101',
-  '19931010', '20171231', '20171130',
+  '19500718',
+  '19000101',
+  '19700101',
+  '19931010',
+  '20171231',
+  '20171130',
   '20501231'
+];
+
+const goodDcmParseDateList = [
+  '19500718',
+  '19000101',
+  '19700101',
+  '19931010',
+  '20171231',
+  '20171130',
+  '20501231',
+  '2018-03-05',
+  '1998-12-19'
 ];
 
 //Bad dates
@@ -33,6 +49,18 @@ const List<String> badDcmDateList = [
   '1970011a', // bad character in day
 ];
 
+const goodInetDateList = [
+  '1950-07-18',
+  '1900-01-01',
+  '1970-01-01',
+  '1993-10-10',
+  '2017-12-31',
+  '2017-11-30',
+  '2050-12-31',
+  '2018-03-05',
+  '1998-12-19'
+];
+
 //Bad dates
 const List<String> badInetDateList = [
   '1950-13-18', // bad month
@@ -51,7 +79,3 @@ const List<String> badInetDateList = [
   '1970-01-a1', // bad character in day
   '1970-01-1a', // bad character in day
 ];
-
-
-
-
