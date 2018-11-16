@@ -6,13 +6,15 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/element/base/integer/integer.dart';
+import 'dart:typed_data';
 
+import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/values/uid.dart';
+import 'package:core/src/values.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -22,8 +24,14 @@ mixin PixelDataMixin {
   TransferSyntax get ts;
   int get length;
   int get sizeInBytes;
+  Iterable<Frame> get frames;
+  Uint32List get offsets;
+  Uint8List get bulkdata;
+  VFFragmentList get fragments;
 
   // **** End Interface
+
+  int get code => kPixelData;
 
   /// The [Tag] for this Element.
   Tag get tag => PTag.kPixelData;

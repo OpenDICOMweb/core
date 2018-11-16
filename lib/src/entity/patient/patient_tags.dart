@@ -378,7 +378,7 @@ class PatientTag {
       EType.kUnknown,
       isRetired: false);
 
-  //*** 0040
+  // *** 0040
   static  PatientTag kLocalNamespaceEntityID =  PatientTag(
       'LocalNamespaceEntityID',
       0x00400031,

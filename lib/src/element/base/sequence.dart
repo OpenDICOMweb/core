@@ -33,7 +33,7 @@ abstract class SQ extends Element<Item> {
   /// The DICOM name for Sequence values, which are Items.
   List<Item> get items => (values is List) ? values : values.toList();
 
-  //**** End of Interface
+  // **** End of Interface
   @override
   @override
   int get vrIndex => kVRIndex;
@@ -225,17 +225,6 @@ Summary $tag
   @override
   List<Item> replaceF(List<Item> f(List<Item> vList)) => unsupportedError();
 
-/*
-  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
-    final result = <Iterable<V>>[];
-    for (var item in items) {
-      final old = item.replace(index, vList);
-      result.add(old);
-    }
-    return result;
-  }
-*/
-
   Iterable<V> _replaceF<V>(Iterable<V> vList) => vList;
 
   Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) =>
@@ -259,12 +248,6 @@ Summary $tag
     forEach((item) => result.add(item.delete(index)));
     return result;
   }
-
-/*
-  /// Returns a formatted [String]. See [Formatter].
-  String format(Formatter z) =>
-		  '${z(this)} ${z.fmt("$runtimeType(${items.length})", items)}';
-*/
 
   /// Returns a formatted [String]. See [Formatter].
   String format(Formatter z) => z.fmt(this, items);

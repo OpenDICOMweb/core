@@ -8,12 +8,5 @@
 //
 export 'package:core/src/utils/buffer/bytes_buffer.dart';
 
-/*
-export 'package:core/src/utils/buffer/read_buffer.dart';
-export 'package:core/src/utils/buffer/read_buffer_mixin.dart';
-export 'package:core/src/utils/buffer/write_buffer.dart';
-export 'package:core/src/utils/buffer/write_buffer_mixin.dart';
-
-*/
 
 

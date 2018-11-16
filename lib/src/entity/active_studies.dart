@@ -166,7 +166,7 @@ ActiveStudies:
   String toString() =>
       '$runtimeType: ${_patients.length} Patients, ${_studies.length} Studies';
 
-  //**** Static methods ****
+  // **** Static methods ****
 
   /// A [Map] from a [Patient] PID to the associated [Patient].
   static final Map<String, Patient> _subjectsByPid = <String, Patient>{};
@@ -203,10 +203,6 @@ ActiveStudies:
 
     // Get the Patient
     final patient = Patient.fromRootDataset(rds);
-/* Patient is handled by study
-    if (patient != null) addPatientIfAbsent(patient);
-    entity ??= patient;
-*/
 
     // Get the Study
     var study = lookupStudy(rds.getUid(kStudyInstanceUID));

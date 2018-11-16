@@ -7,13 +7,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-/*
-import 'package:core/src/utils/buffer.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/dicom_bytes.dart';
-import 'package:core/src/vr.dart';
-*/
-
 part of odw.sdk.core.buffer;
 
 // ignore_for_file: public_member_api_docs

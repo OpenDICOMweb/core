@@ -49,7 +49,7 @@ class RetainedElementError<K> extends Error {
   String msg;
 
   RetainedElementError(this.key,
-  [this.msg = 'Attempt to change a Retained Element']);
+      [this.msg = 'Attempt to change a Retained Element']);
 
   @override
   String toString() => _msg(key, msg);
@@ -60,10 +60,9 @@ class RetainedElementError<K> extends Error {
 
 Null retainedElementError<K>(K key, [String msg]) {
   log.error(RetainedElementError._msg(key, msg));
-  if (throwOnError) throw  RetainedElementError(key);
+  if (throwOnError) throw RetainedElementError(key);
   return null;
 }
-
 
 class DeletedElementError<K> extends Error {
   K key;
@@ -120,29 +119,6 @@ Null duplicateElementError(Element oldE, Element E) {
   if (throwOnError) throw DuplicateElementError(oldE, E);
   return null;
 }
-
-/* Flush when working
-class InvalidElementError extends Error {
-  final Element e;
-
-  InvalidElementError(this.e);
-
-  @override
-  String toString() => _msg(e);
-
-  static String _msg(Element e) => (e == null)
-      ? 'null'
-      : 'InvalidElementError:\n'
-      '\n  element: ${e.info}'
-      '\n   values: ${e.values}';
-}
-
-Null invalidElementError<V>(Element e) {
-  log.error(InvalidElementError._msg(e));
-  if (throwOnError) throw  InvalidElementError(e);
-  return null;
-}
-*/
 
 class InvalidTransferSyntax extends Error {
   final TransferSyntax ts;

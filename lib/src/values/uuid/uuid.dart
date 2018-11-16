@@ -164,61 +164,6 @@ class Uuid {
   static bool isValidString(String s, [int version]) =>
       isValidUuidString(s, version);
 
-/*
-  static bool _isValidString(String s, [int version]) {
-    if (s.length != kUuidStringLength) return false;
-    for (var pos in kDashes) if (s.codeUnitAt(pos) != kDash) return false;
-    final lc = s.toLowerCase();
-    for (var i = 0; i < kStarts.length; i++) {
-      final start = kStarts[i];
-      final end = kEnds[i];
-      for (var j = start; j < end; j++) {
-        final c = lc.codeUnitAt(j);
-        if (!isHexChar(c)) return false;
-      }
-    }
-    return (version == null) ? true : _isValidStringVersion(lc, version);
-  }
-
-  static bool isValidUuidString(String uuidString, [int type]) {
-    if (uuidString.length != kUuidStringLength) return false;
-    for (var pos in kDashes)
-      if (uuidString.codeUnitAt(pos) != kDash) return false;
-    final s = uuidString.toLowerCase();
-    for (var i = 0; i < kStarts.length; i++) {
-      final start = kStarts[i];
-      final end = kEnds[i];
-      for (var j = start; j < end; j++) {
-        final c = s.codeUnitAt(j);
-        if (!isHexChar(c)) return false;
-      }
-    }
-    return (type == null) ? true : _isValidStringVersion(s, type);
-  }
-*/
-
-/*
-  /// Returns _true_
-  static bool _isValidStringVersion(String s, int version) {
-    if (version < 1 || version > 5)
-      invalidUuidString('Invalid version number: $version');
-    final _version = _getVersionNumberFromString(s);
-    if (!_isISOVariantFromString(s) || _version != version) return false;
-    // For certain versions, the checks we did up to this point are fine.
-    if (_version != 3 || _version != 5) return true;
-    throw UnimplementedError('Version 3 & 5 are not yet implemented');
-  }
-
-  static int _getVersionNumberFromString(String s) => s.codeUnitAt(14) - k0;
-
-  static const List<int> _kISOVariantAsLetter = const <int>[k8, k9, ka, kb];
-
-  static bool _isISOVariantFromString(String s) {
-    final subType = s.codeUnitAt(19);
-    return _kISOVariantAsLetter.contains(subType);
-  }
-*/
-
   static bool isNotValidString(String s, [int version]) =>
       !isValidString(s, version);
 

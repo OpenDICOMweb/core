@@ -32,20 +32,6 @@ int _checkRange(int value, int min, int max, [Issues issues]) {
   return value;
 }
 
-/* Flush if not used
-bool _inRange(int v, int min, int max, [Issues issues]) {
-  if (v == null) return parseNullError();
-  if (v < min || v > max) {
-	  final msg = 'Range Error: min($min) <= values($v) <= max($max)';
-    parseError(msg, issues);
-  }
-  return true;
-}
-
-bool _notInRange(int v, int min, int max, [Issues issues]) =>
-    _notInRange(v, min, max, issues);
-*/
-
 /// Checks the arguments of a public function in the parse package.
 ///
 /// Checks that [start], [end], [min], and [max] are all valid for

@@ -82,7 +82,7 @@ class PersonName {
   @override
   String toString() => dcm;
 
-  //**** Static Methods *****
+  // **** Static Methods *****
 
   /// Returns true if the [PersonName] component is valid.
   static bool isValidList(List<String> list) {
@@ -258,15 +258,6 @@ bool _filteredTest(String s, bool filter(int c)) {
 
 bool _isPNNameChar(int c) => _isPNChar(c) && c != kEqual;
 
-/*
-/// Returns _true_ if all characters pass the filter.
-bool _hasValidPNChars(String s) {
-  for (int i = 0; i < s.length; i++) {
-    if (!_isPNNameChar(s.codeUnitAt(i))) return false;
-  }
-  return true;
-}
-*/
 /// Returns _true_ if all characters pass the filter.
 bool _hasValidNameChars(String s) {
   for (var i = 0; i < s.length; i++) {

@@ -142,34 +142,6 @@ class FrameDescriptor {
     _checkValidity(this);
   }
 
-/* Flush if not needed
-  FrameDescriptor.from(FrameDescriptor desc)
-      : ts = desc.ts,
-        samplesPerPixel = desc.samplesPerPixel,
-        photometricInterpretation = desc.photometricInterpretation,
-        rows = desc.rows,
-        columns = desc.columns,
-        bitsAllocated = desc.bitsAllocated,
-        bitsStored = desc.bitsStored,
-        highBit = desc.highBit,
-        pixelRepresentation = desc.pixelRepresentation,
-        planarConfiguration = desc.planarConfiguration,
-        pixelAspectRatio = desc.pixelAspectRatio,
-        smallestImagePixelValue = desc.smallestImagePixelValue,
-        largestImagePixelValue = desc.largestImagePixelValue,
-        redLUTDescriptor = desc.redLUTDescriptor,
-        greenLUTDescriptor = desc.greenLUTDescriptor,
-        blueLUTDescriptor = desc.blueLUTDescriptor,
-        alphaLUTDescriptor = desc.alphaLUTDescriptor,
-        redLUTData = desc.redLUTData,
-        greenLUTData = desc.greenLUTData,
-        blueLUTData = desc.blueLUTData,
-        alphaLUTData = desc.alphaLUTData,
-        iccProfile = desc.iccProfile,
-        colorSpace = desc.colorSpace,
-        pixelPaddingRangeLimit = desc.pixelPaddingRangeLimit;
-*/
-
   FrameDescriptor.fromDataset(RootDataset ds)
       : ts = ds.transferSyntax,
         samplesPerPixel = ds.samplesPerPixel,

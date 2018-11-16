@@ -12,8 +12,8 @@ import 'package:core/src/tag.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef ElementPredicate =
-    bool Function(Dataset ds, Element e, [DatasetPredicate dsp]);
+typedef ElementPredicate = bool Function(Dataset ds, Element e,
+    [DatasetPredicate dsp]);
 
 typedef DatasetPredicate = bool Function(Dataset ds, Element e);
 
@@ -28,12 +28,7 @@ class AType {
   const AType(this.index, this.name, this.predicate, {this.isConditional});
 
   //TODO: fix a_type
-  bool call(Dataset ds, Tag tag, Element e) {
-    throw UnimplementedError();
-/*    Element e = ds.lookup(tag.code);
-    bool v = tag.predicate(ds, e);
-    return (e.is == null) ? v : dsPredicate(ds, e);*/
-  }
+  bool call(Dataset ds, Tag tag, Element e) => throw UnimplementedError();
 
   /// Use this when the EType is not known.
   static const AType kUnknown = AType(0, '0', null, isConditional: false);
@@ -77,37 +72,3 @@ class AType {
   static bool _type1c(Dataset ds, Element e, [DatasetPredicate dsp]) =>
       (e != null && e.values.isNotEmpty) && (dsp != null && dsp(ds, e));
 }
-/*
-class AType {
-  final EType eType;
-  final ElementPredicate predicate;
-
-  const AType(this.eType, this.predicate);
-
-  bool call(Element e) => predicate(e);
-
-  static type3(Element e)
-
-}
-
-bool type3(Element e) => true;
-
-bool aType2(Element e) {
-  if (e == null || e.values == null || !e.hasValidValues) {
-    invalidElementError(e);
-    return false;
-  }
-  return true;
-}
-
-bool aType1(Element e) {
-  if (e == null ||
-      e.values == null ||
-      e.values.length == 0 ||
-      !e.hasValidValues) {
-    invalidElementError(e);
-    return false;
-  }
-  return true;
-}
-*/

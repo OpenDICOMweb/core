@@ -7,39 +7,15 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-/*
-import 'dart:typed_data';
-
-import 'package:core/src/utils/bytes/constants.dart';
-
-import 'package:core/src/utils/buffer.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
-*/
 part of odw.sdk.core.buffer;
 
 /// A [WriteBuffer] for binary DICOM objects.
 class DicomWriteBuffer extends WriteBuffer {
-/*
-  @override
-  final GrowableDicomBytes _bytes;
-  @override
-  final int _rIndex;
-  @override
-  int _wIndex;
-*/
-
   /// Creates an empty [DicomWriteBuffer].
   DicomWriteBuffer(
       [int length = kDefaultLength,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-
-/*
-      : _rIndex = 0,
-        _wIndex = 0,
-        _bytes = GrowableDicomBytes(length, endian, limit);
-*/
       : super(length, endian, limit);
 
   /// Creates a [DicomWriteBuffer] from a [WriteBuffer].
@@ -48,12 +24,6 @@ class DicomWriteBuffer extends WriteBuffer {
       int length,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-/*
-      : _rIndex = offset,
-        _wIndex = offset,
-        _bytes =
-            GrowableDicomBytes.from(wb._bytes, offset, length, endian, limit);
-*/
       : super.from(wb, offset, length, endian, limit);
 
   /// Creates a [DicomWriteBuffer] from a [GrowableBytes].
@@ -66,12 +36,6 @@ class DicomWriteBuffer extends WriteBuffer {
       int lengthInBytes,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-/*
-      : _rIndex = offset ?? 0,
-        _wIndex = lengthInBytes ?? td.lengthInBytes,
-        _bytes = GrowableDicomBytes.typedDataView(td, offset ?? 0,
-            lengthInBytes ?? td.lengthInBytes, endian ?? Endian.host, limit);
-*/
       : super.typedDataView(td, offset, lengthInBytes, endian, limit);
 
   /// Write a DICOM Tag Code to _this_.
@@ -87,9 +51,7 @@ class DicomWriteBuffer extends WriteBuffer {
   /// Peek at next tag - doesn't move the [_wIndex].
   void writeVRCode(int vrCode) {
     assert(_wIndex.isEven && hasRemaining(4), '@$_wIndex : $remaining');
-    bytes
-      ..setUint8(4, vrCode >> 8)
-      ..setUint8(5, vrCode & 0xFF);
+    bytes..setUint8(4, vrCode >> 8)..setUint8(5, vrCode & 0xFF);
     _wIndex += 2;
   }
 

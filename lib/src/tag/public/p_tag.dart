@@ -36,14 +36,6 @@ class PTag extends Tag {
   @override
   final bool isRetired;
 
-  ///TODO: Tag and Tag.public are inconsistent when Tag, PrivateTag... files
-  ///      are generated make them consistent.
-/*
-  const PTag(int code, int vrIndex, this.vm, this.keyword, this.name,
-      [this.isRetired = false, this.type = EType.kUnknown])
-      : super();
-*/
-
   factory PTag(int code, [int vrIndex = kUNIndex, String name = '']) {
     final tag = lookupByCode(code, vrIndex);
     return (tag != null) ? tag : PTag.unknown(code, vrIndex, name);
@@ -130,7 +122,7 @@ class PTag extends Tag {
     if ((code >= 0x00280818) && (code <= 0x002808F8))
       return PTag.kImageDataLocation;
 
-    //**** (1000,xxxy ****
+    // **** (1000,xxxy ****
     // (1000,04X2)
     if ((code >= 0x10000000) && (code <= 0x1000FFF0))
       return PTag.kEscapeTriplet;
@@ -240,14 +232,14 @@ class PTag extends Tag {
     return keywordError(keyword);
   }
 
-  //**** Message Data Elements begin here ****
+  // **** Message Data Elements begin here ****
   static const PTag kAffectedSOPInstanceUID = PTag._('AffectedSOPInstanceUID',
       0x00001000, 'Affected SOP Instance UID ', kUIIndex, VM.k1, false);
 
   static const PTag kRequestedSOPInstanceUID = PTag._('RequestedSOPInstanceUID',
       0x00001001, 'Requested SOP Instance UID', kUIIndex, VM.k1, false);
 
-  //**** File Meta Information Data Elements begin here ****
+  // **** File Meta Information Data Elements begin here ****
   static const PTag kFileMetaInformationGroupLength = PTag._(
       'FileMetaInformationGroupLength',
       0x00020000,
@@ -324,7 +316,7 @@ class PTag extends Tag {
   static const PTag kPrivateInformation = PTag._('PrivateInformation',
       0x00020102, 'Private Information', kOBIndex, VM.k1, false);
 
-  //**** DICOM Directory Tags begin here ****
+  // **** DICOM Directory Tags begin here ****
   static const PTag kFileSetID =
       PTag._('FileSetID', 0x00041130, 'File-set ID', kCSIndex, VM.k1, false);
 
@@ -434,7 +426,7 @@ class PTag extends Tag {
   static const PTag kNumberOfReferences = PTag._('NumberOfReferences',
       0x00041600, 'Number of References', kULIndex, VM.k1, true);
 
-  //**** Standard Dataset Tags begin here ****
+  // **** Standard Dataset Tags begin here ****
 
   static const PTag kLengthToEnd
       //(0008,0001) '00080001'
@@ -17143,17 +17135,6 @@ class PTag extends Tag {
   static const PTag kPixelData =
       PTag._('PixelData', 0x7FE00010, 'Pixel Data', kOBOWIndex, VM.k1, false);
 
-/*
-  static const PTag kPixelDataOB = PTag._(
-      'PixelData', 0x7FE00010, 'Pixel Data', kOBIndex, VM.k1, false);
-
-  static const PTag kPixelDataOW = PTag._(
-      'PixelData', 0x7FE00010, 'Pixel Data', kOWIndex, VM.k1, false);
-
-  static const PTag kPixelDataUN = PTag._(
-      'PixelData', 0x7FE00010, 'Pixel Data', kOBOWIndex, VM.k1, false);
-*/
-
   static const PTag kPixelDataOB = PixelDataTag.kPixelDataOB;
   static const PTag kPixelDataOW = PixelDataTag.kPixelDataOW;
   static const PTag kPixelDataUN = PixelDataTag.kPixelDataUN;
@@ -17199,7 +17180,7 @@ class PTag extends Tag {
       = PTag._('DataSetTrailingPadding', 0xFFFCFFFC,
           'Data Set Trailing Padding', kOBIndex, VM.k1, false);
 
-  //**** Special Elements where multiple tag codes map to the same definition
+  // **** Special Elements where multiple tag codes map to the same definition
 
   //(0028,04X0)
   static const PTag kRowsForNthOrderCoefficients = PTag._(
@@ -17232,11 +17213,11 @@ class PTag extends Tag {
       VM.k1_n,
       true);
 
-  //**** DcmDir Group Length Tags - Note: these are not included in PS3.6 ****
+  // **** DcmDir Group Length Tags - Note: these are not included in PS3.6 ****
   static const PTag kGroup4Length = PTag._(
       'Group4Length', 0x00040000, 'Group 0004 Length', kULIndex, VM.k1, true);
 
-  //**** Public Group Length Tags - Note: these are not included in PS3.6 ****
+  // **** Public Group Length Tags - Note: these are not included in PS3.6 ****
   static const PTag kGroup8Length = PTag._(
       'Group8Length', 0x00080000, 'Group 0008 Length', kULIndex, VM.k1, true);
 
@@ -17468,11 +17449,6 @@ class PTagGroupLength extends PTag {
             VM.k1,
             true,
             EType.k3);
-
-/*
-  static Tag maker(int code, VR _, [__]) => PTagGroupLength(code);
-*/
-
 }
 
 //Flush not used

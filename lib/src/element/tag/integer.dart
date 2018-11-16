@@ -60,33 +60,31 @@ class SStag extends SS with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [SStag] Element.
-  factory SStag(Tag tag, [Iterable<int> vList]) => SStag._(tag, vList);
-
-  factory SStag.bulkdata(Tag tag, Uri url) =>
-      SStag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory SStag._(Tag tag, Iterable<int> vList) {
+  factory SStag(Tag tag, [Iterable<int> vList]) {
     final v = Int16.fromList(vList);
-    return SS.isValidArgs(tag, v) ? SStag._x(tag, v) : badValues(v, null, tag);
+    return SS.isValidArgs(tag, v) ? SStag._(tag, v) : badValues(v, null, tag);
   }
 
-  SStag._x(this.tag, this._values)
+  factory SStag.bulkdata(Tag tag, Uri url) =>
+      SStag(tag, IntBulkdataRef(tag.code, url));
+
+  SStag._(this.tag, this._values)
       : assert(tag.vrIndex == kSSIndex),
         assert(_values is Int16List);
 
   @override
-  SStag update([Iterable<int> vList]) => SStag._(tag, vList);
+  SStag update([Iterable<int> vList]) => SStag(tag, vList);
 
   @override
   List<int> replace([Iterable<int> vList]) => _replace(Int16.fromList(vList));
 
   // ignore: prefer_constructors_over_static_methods
   static SStag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
-      SStag._(tag, vList);
+      SStag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static SStag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      SStag._(tag, bytes.asInt16List());
+      SStag(tag, bytes.asInt16List());
 }
 
 /// Short VRLength Signed Long
@@ -98,31 +96,30 @@ class SLtag extends SL with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [SLtag] Element.
-  factory SLtag(Tag tag, [Iterable<int> vList]) => SLtag._(tag, vList);
-
-  factory SLtag.bulkdata(Tag tag, Uri url) =>
-      SLtag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory SLtag._(Tag tag, Iterable<int> vList) {
+  factory SLtag(Tag tag, [Iterable<int> vList]) {
     final v = Int32.fromList(vList);
     return SL.isValidArgs(tag, vList)
-        ? SLtag._x(tag, v)
+        ? SLtag._(tag, v)
         : badValues(vList, null, tag);
   }
-  SLtag._x(this.tag, this._values)
+
+  factory SLtag.bulkdata(Tag tag, Uri url) =>
+      SLtag(tag, IntBulkdataRef(tag.code, url));
+
+  SLtag._(this.tag, this._values)
       : assert(tag.vrIndex == kSLIndex),
         assert(_values is Int32List);
 
   @override
-  SLtag update([Iterable<int> vList]) => SLtag._(tag, vList);
+  SLtag update([Iterable<int> vList]) => SLtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static SLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
-      SLtag._(tag, vList);
+      SLtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static SLtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      SLtag._(tag, bytes.asInt32List());
+      SLtag(tag, bytes.asInt32List());
 }
 
 /// 8-bit unsigned integer.
@@ -134,32 +131,30 @@ class OBtag extends OB with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [OBtag] Element.
-  factory OBtag(Tag tag, Iterable<int> vList) => OBtag._(tag, vList);
-
-  factory OBtag.bulkdata(Tag tag, Uri url) =>
-      OBtag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory OBtag._(Tag tag, Iterable<int> vList) {
+  factory OBtag(Tag tag, [Iterable<int> vList]) {
     assert(tag.code != kPixelData);
     final v = Uint8.fromList(vList);
     if (!OB.isValidArgs(tag, v)) return badValues(vList, null, tag);
-    return OBtag._x(tag, v);
+    return OBtag._(tag, v);
   }
 
-  OBtag._x(this.tag, this._values)
+  factory OBtag.bulkdata(Tag tag, Uri url) =>
+      OBtag(tag, IntBulkdataRef(tag.code, url));
+
+  OBtag._(this.tag, this._values)
       : assert(tag.vrIndex == kOBIndex || tag.vrIndex == kOBOWIndex),
         assert(_values is Uint8List);
 
   @override
-  OBtag update([Iterable<int> vList = kEmptyIntList]) => OBtag._(tag, vList);
+  OBtag update([Iterable<int> vList = kEmptyIntList]) => OBtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static OBtag fromValues(Tag tag, Iterable<int> vList) =>
-      OBtag._(tag, Uint8.fromList(vList));
+      OBtag(tag, Uint8.fromList(vList));
 
   // ignore: prefer_constructors_over_static_methods
   static OBtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      OBtag._(tag, bytes.asUint8List());
+      OBtag(tag, bytes.asUint8List());
 }
 
 /// Unsigned 8-bit integer with unknown VR (VR.kUN).
@@ -171,29 +166,27 @@ class UNtag extends UN with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [UNtag] Element.
-  factory UNtag(Tag tag, Iterable<int> vList) => UNtag._(tag, vList);
-
-  factory UNtag.bulkdata(Tag tag, Uri url) =>
-      UNtag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory UNtag._(Tag tag, Iterable<int> vList) {
+  factory UNtag(Tag tag, [Iterable<int> vList]) {
     assert(tag.code != kPixelData);
     final v = Uint8.fromList(vList);
     if (!UN.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    return UNtag._x(tag, v);
+    return UNtag._(tag, v);
   }
 
-  UNtag._x(this.tag, this._values) : assert(_values is Uint8List);
+  factory UNtag.bulkdata(Tag tag, Uri url) =>
+      UNtag(tag, IntBulkdataRef(tag.code, url));
+
+  UNtag._(this.tag, this._values) : assert(_values is Uint8List);
 
   @override
   UNtag update([Iterable<int> vList = kEmptyIntList]) => UNtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static UNtag fromValues(Tag tag, Iterable<int> vList) => UNtag._(tag, vList);
+  static UNtag fromValues(Tag tag, Iterable<int> vList) => UNtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static UNtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      UNtag._(tag, bytes.asUint8List());
+      UNtag(tag, bytes.asUint8List());
 }
 
 /// Unsigned Short
@@ -205,21 +198,19 @@ class UStag extends US with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [UStag] Element.
-  factory UStag(Tag tag, [Iterable<int> vList]) => UStag._(tag, vList);
-
-  factory UStag.bulkdata(Tag tag, Uri url) =>
-      UStag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory UStag._(Tag tag, Iterable<int> vList) {
+  factory UStag(Tag tag, [Iterable<int> vList]) {
     final v = Uint16.fromList(vList);
-    return US.isValidArgs(tag, v) ? UStag._x(tag, v) : badValues(v, null, tag);
+    return US.isValidArgs(tag, v) ? UStag._(tag, v) : badValues(v, null, tag);
   }
 
-  UStag._x(this.tag, this._values)
+  factory UStag.bulkdata(Tag tag, Uri url) =>
+      UStag(tag, IntBulkdataRef(tag.code, url));
+
+  UStag._(this.tag, this._values)
       : assert(tag.vrIndex == kUSIndex || tag.vrIndex == kUSSSIndex);
 
   @override
-  UStag update([Iterable<int> vList]) => UStag._(tag, vList);
+  UStag update([Iterable<int> vList]) => UStag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static UStag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
@@ -227,7 +218,7 @@ class UStag extends US with TagElement<int>, TagIntegerMixin {
 
   // ignore: prefer_constructors_over_static_methods
   static UStag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      UStag._(tag, bytes.asUint16List());
+      UStag(tag, bytes.asUint16List());
 }
 
 /// Other Word VR
@@ -240,19 +231,17 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [OWtag] Element.
-  factory OWtag(Tag tag, Iterable<int> vList) => OWtag._(tag, vList);
-
-  factory OWtag._bulkdata(Tag tag, Uri url) =>
-      OWtag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory OWtag._(Tag tag, Iterable<int> vList) {
+  factory OWtag(Tag tag, [Iterable<int> vList]) {
     assert(tag.code != kPixelData);
     final v = Uint16.fromList(vList);
     if (!OW.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    return OWtag._x(tag, v);
+    return OWtag._(tag, v);
   }
 
-  OWtag._x(this.tag, this._values)
+  factory OWtag.bulkdata(Tag tag, Uri url) =>
+      OWtag(tag, IntBulkdataRef(tag.code, url));
+
+  OWtag._(this.tag, this._values)
       : assert(tag.vrIndex == kOWIndex || tag.vrIndex == kOBOWIndex),
         assert(_values is Uint16List);
 
@@ -264,7 +253,7 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
 
   // ignore: prefer_constructors_over_static_methods
   static OWtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      OWtag._(tag, bytes.asUint16List());
+      OWtag(tag, bytes.asUint16List());
 }
 
 /// Other Long
@@ -276,30 +265,28 @@ class OLtag extends OL with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [OLtag] Element.
-  factory OLtag(Tag tag, [Iterable<int> vList]) => OLtag._(tag, vList);
-
-  factory OLtag.bulkdata(Tag tag, Uri url) =>
-      OLtag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory OLtag._(Tag tag, Iterable<int> vList) {
+  factory OLtag(Tag tag, [Iterable<int> vList]) {
     final v = Uint32.fromList(vList);
-    return OL.isValidArgs(tag, v) ? OLtag._x(tag, v) : badValues(v, null, tag);
+    return OL.isValidArgs(tag, v) ? OLtag._(tag, v) : badValues(v, null, tag);
   }
 
-  OLtag._x(this.tag, this._values)
+  factory OLtag.bulkdata(Tag tag, Uri url) =>
+      OLtag(tag, IntBulkdataRef(tag.code, url));
+
+  OLtag._(this.tag, this._values)
       : assert(tag.vrIndex == kOLIndex),
         assert(_values is Uint32List);
 
   @override
-  OLtag update([Iterable<int> vList]) => OLtag._(tag, vList);
+  OLtag update([Iterable<int> vList]) => OLtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static OLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
-      OLtag._(tag, vList);
+      OLtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static OLtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      OLtag._(tag, bytes.asUint32List());
+      OLtag(tag, bytes.asUint32List());
 }
 
 /// Unsigned Short
@@ -311,51 +298,47 @@ class ULtag extends UL with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [ULtag] Element.
-  factory ULtag(Tag tag, [Iterable<int> vList]) => ULtag._(tag, vList);
-
-  factory ULtag.bulkdata(Tag tag, Uri url) =>
-      ULtag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory ULtag._(Tag tag, Iterable<int> vList) {
+  factory ULtag(Tag tag, [Iterable<int> vList]) {
     final v = Uint32.fromList(vList);
-    return UL.isValidArgs(tag, v) ? ULtag._x(tag, v) : badValues(v, null, tag);
+    return UL.isValidArgs(tag, v) ? ULtag._(tag, v) : badValues(v, null, tag);
   }
 
-  ULtag._x(this.tag, this._values)
+  factory ULtag.bulkdata(Tag tag, Uri url) =>
+      ULtag(tag, IntBulkdataRef(tag.code, url));
+
+  ULtag._(this.tag, this._values)
       : assert(tag.vrIndex == kULIndex),
         assert(_values is Uint32List);
 
   @override
-  ULtag update([Iterable<int> vList]) => ULtag._(tag, vList);
+  ULtag update([Iterable<int> vList]) => ULtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static ULtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
-      ULtag._(tag, vList);
+      ULtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static ULtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      ULtag._(tag, bytes.asUint32List());
+      ULtag(tag, bytes.asUint32List());
 }
 
 /// Unsigned Short
 class GLtag extends ULtag {
   /// Creates an [GLtag] Element.
-  factory GLtag(Tag tag, [Iterable<int> vList]) => GLtag._(tag, vList);
-
-  factory GLtag.bulkdata(Tag tag, Uri url) =>
-      GLtag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory GLtag._(Tag tag, Iterable<int> vList) {
+  factory GLtag(Tag tag, [Iterable<int> vList]) {
     final v = Uint32.fromList(vList);
     return GL.isValidArgs(tag, vList)
-        ? GLtag._x(tag, v)
+        ? GLtag._(tag, v)
         : badValues(vList, null, tag);
   }
 
-  GLtag._x(Tag tag, Iterable<int> values) : super._x(tag, values);
+  factory GLtag.bulkdata(Tag tag, Uri url) =>
+      GLtag(tag, IntBulkdataRef(tag.code, url));
+
+  GLtag._(Tag tag, Iterable<int> values) : super._(tag, values);
 
   @override
-  GLtag update([Iterable<int> vList]) => GLtag._(tag, vList);
+  GLtag update([Iterable<int> vList]) => GLtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static GLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
@@ -363,7 +346,7 @@ class GLtag extends ULtag {
 
   // ignore: prefer_constructors_over_static_methods
   static GLtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      GLtag._x(tag, bytes.asUint32List());
+      GLtag(tag, bytes.asUint32List());
 }
 
 /// Immutable Attribute Tags
@@ -378,30 +361,28 @@ class ATtag extends AT with TagElement<int>, TagIntegerMixin {
   List<int> _values;
 
   /// Creates an [ATtag] Element.
-  factory ATtag(Tag tag, [Iterable<int> vList]) => ATtag._(tag, vList);
-
-  factory ATtag.bulkdata(Tag tag, Uri url) =>
-      ATtag._(tag, IntBulkdataRef(tag.code, url));
-
-  factory ATtag._(Tag tag, Iterable<int> vList) {
+  factory ATtag(Tag tag, [Iterable<int> vList]) {
     final v = Uint32.fromList(vList);
     return AT.isValidArgs(tag, vList)
-        ? ATtag._x(tag, v)
+        ? ATtag._(tag, v)
         : badValues(vList, null, tag);
   }
 
-  ATtag._x(this.tag, this._values)
+  factory ATtag.bulkdata(Tag tag, Uri url) =>
+      ATtag(tag, IntBulkdataRef(tag.code, url));
+
+  ATtag._(this.tag, this._values)
       : assert(tag.vrIndex == kATIndex),
         assert(_values is Uint32List);
 
   @override
-  ATtag update([Iterable<int> vList]) => ATtag._(tag, vList);
+  ATtag update([Iterable<int> vList]) => ATtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static ATtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
-      ATtag._(tag, vList);
+      ATtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
   static ATtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
-      ATtag._(tag, bytes.asUint32List());
+      ATtag(tag, bytes.asUint32List());
 }

@@ -86,19 +86,6 @@ String _getUid(RootDataset rds, int index, String suffix) {
   return badUidElement(e);
 }
 
-/*
-//TODO move to utilities
- List<Filename> listFromDirectory(String source, [String ext = '.dcm']) {
-log.debug('source: $source');
-final files = getFilesFromDirectory(source, ext);
-log.debug('Total FSEntities: ${files.length}');
-final fNames = new List(files.length);
-for (var i = 0; i < files.length; i++)
-fNames[i] = new Filename(files[i].path);
-return fNames;
-}
-*/
-
 //TODO move to utilities
 /// Returns a [List] of [File]s with extension [ext] from the
 /// specified [Directory].

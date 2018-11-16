@@ -60,30 +60,6 @@ bool isValidShortLength(
       (length % width == 0 && min <= length && length <= realMax);
 }
 
-/*
-Uint32List getOffsetsFromFragments(List<Uint8List> fragments) =>
-    (fragments.length > 0) ? getUint32List(fragments[0]) : null;
-
-/// Returns a [Uint8List] that combines the pixel data in [fragments].
-/// Note: The pixel data is contained in fragments 1 - n. Fragment 0
-/// contains the Basic Offset Table.
-Uint8List getPixelsFromFragments(List<Uint8List> fragments) {
-  int pixelsLength = 0;
-  for (int j = 1; j < fragments.length; j++) {
-    pixelsLength += fragments[j].lengthInBytes;
-  }
-  var pixels =  Uint8List(pixelsLength);
-  var i = 0;
-  for (int j = 1; j < fragments.length; j++) {
-    if (fragments[j].length > 0) {
-      Uint8List chunk = fragments[j];
-      for (int k = 0; k < chunk.length; k++, i++) pixels[i] = chunk[k];
-    }
-  }
-  return pixels;
-}
-*/
-
 bool isAligned(int offsetInBytes, int sizeInBytes) =>
     offsetInBytes % sizeInBytes == 0;
 

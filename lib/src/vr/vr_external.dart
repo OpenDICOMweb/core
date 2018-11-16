@@ -156,18 +156,6 @@ abstract class VR<T> {
     return false;
   }
 
-/*
-  /// [target] is a valid _VR Code_. One of the constants (kXXIndex)
-  /// is be used.
-  static bool isValidSpecialCode(int vrCode, Issues issues, int target) {
-    if (vrCode == target ||
-        (vrCode >= kOB && vrCode <= kVRSpecialIndexMax)
-    if (vrIndex == null) return false;
-    if (vrCode == target || isSpecialVRIndex(vrIndex)) return true;
-    return invalidCode(vrCode, issues, target);
-  }
-
-*/
   // ignore: prefer_void_to_null
   static Null _doError(String message, Issues issues,
       [int badIndex, int goodIndex]) {
@@ -205,14 +193,6 @@ class VRFloat extends VR<double> {
       (vfLength >= minLengthInBytes(vmMin) &&
           vfLength <= maxLengthInBytes(vmMax));
 
-/*
-  @override
-  bool isValidVFLength(int vfLength, int vmMin, int vmMax) {
-    final max = vmMax == -1 ? maxLength : vmMax;
-    return vfLength >= (vmMin * sizeInBytes) && vfLength <= (max * sizeInBytes);
-  }
-*/
-
   static const kFL = VRFloat(kFLIndex, 'FL', kFLCode, 2, k32BitMaxShortVF, 4);
   static const kFD = VRFloat(kFDIndex, 'FD', kFDCode, 2, k64BitMaxShortVF, 8);
   static const kOF =
@@ -238,11 +218,6 @@ class VRInt extends VR<int> {
   @override
   int get maxLength => maxVFLength ~/ sizeInBytes;
 
-/*
-  @override
-  bool isValid(int vrIndex) => isValid(vrIndex);
-*/
-
   int minLengthInBytes(int vmMin) => vmMin * sizeInBytes;
   int maxLengthInBytes(int vmMax) => vmMax * sizeInBytes;
 
@@ -251,14 +226,6 @@ class VRInt extends VR<int> {
       vfLength == 0 ||
       (vfLength >= minLengthInBytes(vmMin) &&
           vfLength <= maxLengthInBytes(vmMax));
-
-/*
-  @override
-  bool isValidVFLength(int vfLength, int vmMin, int vmMax) {
-    final max = vmMax == -1 ? maxLength : vmMax;
-    return vfLength >= (vmMin * sizeInBytes) && vfLength <= (max * sizeInBytes);
-  }
-*/
 
   static const kUN =
       VRInt(kUNIndex, 'UN', kUNCode, 4, k8BitMaxLongVF, 1, 0, 255, true);
@@ -334,33 +301,6 @@ class VRAscii extends VRString {
     final v = vfLength >= (vmMin * minVLength) && vfLength <= maxVFL;
     return v ? v : invalidValueField('bad length: $vfLength');
   }
-
-/*
-  ///
-  @override
-  bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) {
-    if (s.isEmpty) return true;
-    if (s.length < minVLength || s.length > maxVLength) return false;
-
-    var i = 0;
-    // Skip leading spaces
-    for (; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) break;
-    // If s is all space characters it is illegal
-    if (i >= s.length) return false;
-
-    for (; i < s.length; i++) {
-      final c = s.codeUnitAt(i);
-      if (c <= kSpace || c >= kDelete) break;
-    }
-    // No trailing spaces
-    if (i >= s.length) return true;
-
-    // Skip trailing spaces
-    for (; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) return false;
-    // Had trailing spaces
-    return true;
-  }
-*/
 
   static const kAS = VRAscii._(kASIndex, 'AS', kASCode, 2, _shortVF, 4, 4);
   static const kDA = VRAscii._(kDAIndex, 'DA', kDACode, 2, _shortVF, 8, 8);

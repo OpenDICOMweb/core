@@ -62,21 +62,10 @@ bool isCSChar(int c) =>
 
 int checkCSChar(int c) => (isCSChar(c)) ? c : false;
 
-///Returns _true_ if c is legal in a DICOM Date VR DA.
-/*
-CharPredicate isDAChar = isDigitChar;
-int checkDAChar(int c) => (isDigitChar(c)) ? c : false;
-*/
 ///Returns _true_ if [c] is legal in a DICOM Date VR DA.
 bool isDSChar(int c) =>
     isDigitChar(c) || isSignChar(c) || isDotChar(c) || isExponentChar(c);
 int checkDSChar(int c) => (isDSChar(c)) ? c : false;
-
-///Returns _true_ if c is legal in a DICOM DateTime VR DT.
-/*
-bool isDTChar(int c) => isTMChar(c) || isSignChar(c);
-int checkDTChar(int c) => (isDTChar(c)) ? c : false;
-*/
 
 ///Returns _true_ if [c] is legal in a DICOM Integer VR IS.
 bool isISChar(int c) => isDigitChar(c) || isSignChar(c);
@@ -105,11 +94,6 @@ const CharChecker checkSTChar = checkDcmTextChar;
 bool _isDigitOrDot(int c) => isDigitChar(c) || (c == kDot);
 int _checkDigitOrDot(int c) => (_isDigitOrDot(c)) ? c : null;
 
-/*
-///Returns _true_ if c is legal in a DICOM String with Time VR TM.
-const CharPredicate isTMChar = _isDigitOrDot;
-const CharChecker checkTMChar = _checkDigitOrDot;
-*/
 ///Returns _true_ if c is legal in a DICOM String with VR UC.
 const CharPredicate isUCChar = isDcmStringChar;
 const CharChecker checkUCChar = checkDcmStringChar;

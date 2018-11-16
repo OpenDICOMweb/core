@@ -20,13 +20,6 @@ class Issues {
 
   Issues(this.type, this.value, [this.start = 0, this.end, this._issues]);
 
-/*
-  Issues operator +(String issue) {
-    add(issue);
-    return this;
-  }
-*/
-
   List<String> get issues => _issues ??= <String>[];
 
   bool get isEmpty => issues.isEmpty;
@@ -54,6 +47,5 @@ class Issues {
   String get info => '$type "$value" $term $this';
 
   @override
-  String toString() =>
-      (issues.isEmpty) ? '' : '$type:\n${issues.join('\n  ')}';
+  String toString() => (issues.isEmpty) ? '' : '$type:\n${issues.join('\n  ')}';
 }

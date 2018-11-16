@@ -73,38 +73,8 @@ Tag _lookupPrivateDataTag(int code, int vrIndex, Dataset ds, int group) {
   return PDTag.make(code, vrIndex, creator);
 }
 
-/*
-int __getCorrectVR(int vrIndex, Tag tag) {
-  var vrIndexNew = vrIndex;
-  final tagVRIndex = tag.vrIndex;
-  if (tagVRIndex > kVRNormalIndexMax) {
-    //TODO: This should be returning something better than UN!
-    log.info1('Tag has VR ${vrIdFromIndex(tagVRIndex)} using '
-        '${vrIdFromIndex(vrIndex)}');
-  } else if (vrIndex == kUNIndex && tagVRIndex != kUNIndex) {
-    log.info1('Converting VR from UN to ${vrIdFromIndex(tagVRIndex)}');
-    vrIndexNew = tagVRIndex;
-  } else if (vrIndex == kUNIndex && tagVRIndex != vrIndex) {
-    log.info1('Converting from UN to ${vrIdFromIndex(tagVRIndex)}');
-    vrIndexNew = tagVRIndex;
-  }
-  return vrIndexNew;
-}
-*/
-
 int _getCorrectVR(int vrIndex, int tagVRIndex) =>
     (tagVRIndex > kMaxNormalVRIndex) ? vrIndex : tagVRIndex;
-
-/*
-Tag _getCorrectTag(int code, int vrIndex) {
-  var tag = Tag.lookupPublicByCode(code, vrIndex);
-  if (!_isDefinedVRIndex(tag.vrIndex)) {
-    final newVRIndex = _getCorrectVR(vrIndex, tag.vrIndex);
-    return PTag.lookupByCode(code, newVRIndex);
-  }
-  return tag;
-}
-*/
 
 /// Returns a [PCTag] corresponding to [code].
 Tag lookupPCTagByCode(Dataset ds, int code, String token, int vrIndex) {

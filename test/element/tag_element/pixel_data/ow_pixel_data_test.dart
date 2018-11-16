@@ -27,7 +27,6 @@ void main() {
     for (var i = 0; i < pixels0.length; i++) pixels0[i] = 4095;
 
     final pixels1 = Uint16List.fromList(pixels0);
-//    final bytes1 = pixels1.buffer.asUint8List();
     final bytes1 = Bytes.typedDataView(pixels1);
 
     final pixels2 = Uint16List.fromList([4095, 4095]);

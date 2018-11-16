@@ -383,7 +383,7 @@ typedef CharPredicate = bool Function(int c);
 /// The type of a character checker.
 typedef CharChecker = int Function(int c);
 
-//**** Predicates ****
+// **** Predicates ****
 
 /// Returns True if the [c] is an Ascii control character.
 bool isControlChar(int c) => ((c >= 0) && (c <= kUs)) || (c == kDelete);

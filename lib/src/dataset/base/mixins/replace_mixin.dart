@@ -41,19 +41,6 @@ mixin ReplaceMixin<V> {
 
 // **** End Interface
 
-/*
-  /// Replaces the _values_ of the [Element] with [index] with [vList].
-  /// Returns the original _values_.
-  Iterable<V> replace<V>(int index, Iterable<V> vList,
-      {bool required = false}) {
-    final e = elements.lookup(index, required: required);
-    if (e == null) return const <V>[];
-    final old = e.values;
-    e.values = vList;
-    return old;
-  }
-*/
-
   /// Replaces the [Element.values] at [index] with [vList].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
@@ -94,8 +81,7 @@ mixin ReplaceMixin<V> {
     return result;
   }
 
-  Iterable<Iterable<V>> replaceAllF(
-      int index, Iterable<V> f(List<V> vList)) {
+  Iterable<Iterable<V>> replaceAllF(int index, Iterable<V> f(List<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (var e in elements)
@@ -115,23 +101,12 @@ mixin ReplaceMixin<V> {
     return true;
   }
 
-/*
-  Iterable<String> replaceUid(int index, Iterable<Uid> uids,
-          {bool required = false}) =>
-      elements.replaceUid(index, uids);
-*/
-
   List<Uid> replaceUids(int index, Iterable<Uid> uids,
       {bool required = false}) {
     final old = lookup(index);
     if (old == null) return required ? elementNotPresentError(index) : null;
     return (old is UI) ? old.replaceUid(uids) : badUidElement(old);
   }
-
-/*
-  Iterable<Element> replaceAllUids(int index, Iterable<Uid> uids) =>
-      elements.replaceAllUids(index, uids);
-*/
 
   List<Element> replaceAllUids(int index, Iterable<Uid> uids) {
     final v = updateUid(index, uids);

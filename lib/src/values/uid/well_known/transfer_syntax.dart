@@ -79,7 +79,7 @@ class TransferSyntax extends WKUid {
 
   static List<String> get strings => _map.keys;
 
-  //*****   Constant Values   *****
+  // ****   Constant Values   ****
 
   static const String kName = 'Transfer Syntax';
 

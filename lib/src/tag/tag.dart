@@ -88,15 +88,6 @@ abstract class Tag {
   int get vmMax => vm.max(vr.maxLength);
   int get vmColumns => vm.columns;
 
-/*
-  /// The maximum number of values allowed for _this_ .
-  int get maxValues {
-    if (vmMax != -1) return vmMax;
-    final n = vr.maxLength - (vr.maxLength % vmColumns);
-    assert(n % vmColumns == 0);
-    return n;
-  }
-*/
   bool get isRetired => true;
   EType get type => EType.k3;
 
@@ -448,24 +439,8 @@ abstract class Tag {
       group.isOdd && group >= 0x0009 && group <= 0xFFFF;
 
   static Tag lookupByKeyword(String keyword,
-      [int vrIndex = kUNIndex, Object creator]) {
-/*    Tag tag = Tag.lookupKeyword(keyword, vr);
-    if (tag != null) return tag;
-    tag = Tag.lookupPrivateCreatorKeyword(keyword, vr) {
-      if (Tag.isPrivateGroupLengthKeyword(keyword))
-        return PrivateGroupLengthTagFromKeyword(keyword, vr);
-      if (Tag.isPrivateCreatorKeyword(keyword))
-        return PCTag.keyword(keyword, vr, creator);
-      if (Tag.isPrivateDataKeyword(keyword))
-        return PDTag.keyword(keyword, vr, creator);
-      throw 'Error: Unknown Private Tag Code$keyword';
-    } else {
-      // This should never happen
-      //throw 'Error: Unknown Tag Code${Tag.toDcm(code)}';
-      return null;
-    }*/
-    throw UnimplementedError();
-  }
+          [int vrIndex = kUNIndex, Object creator]) =>
+      throw UnimplementedError();
 
   static bool allowInvalidVR = false;
 
@@ -551,19 +526,6 @@ abstract class Tag {
     }
     return (msgs == null) ? null : msgs;
   }
-
-/*
-  // Issue: should checkRange be global
-  /// Returns_true_ if [code] is a valid Public Code, but
-  /// _does not check that [code] is defined by the DICOM Standard.
-  static bool isPublicCode(int code, {bool checkRange = true}) {
-    final group = code >> 16;
-    if (group.isEven) {
-      return (checkRange) ? group >= 0x0002 && group <= 0xFFFC : true;
-    }
-    return false;
-  }
-*/
 
 //  static bool isNotPublicCode(int code, {bool checkRange: true}) =>
 //      !isPublicCode(code, checkRange: checkRange);
@@ -683,7 +645,7 @@ abstract class Tag {
   static int privateCreatorLimit(int code) =>
       (isNotPCCode(code)) ? null : ((code & 0xFFFF) << 8) + 0xFF;
 
-  //**** Private Tag Code 'Constructors' ****
+  // **** Private Tag Code 'Constructors' ****
   static bool isPCIndex(int pcIndex) => 0x0010 <= pcIndex && pcIndex <= 0x00FF;
 
   /// Returns a valid [PCTag], or -1 .
@@ -741,15 +703,6 @@ abstract class Tag {
 
   /// Returns [code] in DICOM format '(gggg,eeee)'.
   static String toHex(int code) => hex32(code);
-
-/*
-  /// Returns [code] in DICOM format '(gggg,eeee)'.
-  static String toDcm(int code) {
-    if (code == null) return '"null"';
-    return '(${hex16(Group.fromTag(code), prefix: '')},'
-        '${hex16(Elt.fromTag(code), prefix: '')})';
-  }
-*/
 
   /// Returns a [List] of DICOM tag codes in '(gggg,eeee)' format
   static Iterable<String> listToDcm(List<int> tags) => tags.map(toDcm);

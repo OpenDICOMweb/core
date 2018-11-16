@@ -11,7 +11,7 @@ import 'package:core/src/utils/string/hexadecimal.dart';
 
 // ignore_for_file: public_member_api_docs
 
-//**** DICOM Constants ****
+// **** DICOM Constants ****
 
 const int k16BitMax = 0xFFFF;
 

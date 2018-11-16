@@ -6,15 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-/*
-import 'dart:typed_data';
-
-import 'package:core/src/utils/bytes.dart';
-
-import 'bytes_buffer.dart';
-import 'write_buffer_mixin.dart';
-*/
-
 part of odw.sdk.core.buffer;
 
 /// A writable [ByteBuffer].

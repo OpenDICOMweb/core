@@ -11,11 +11,11 @@ import 'package:core/src/tag/public/p_tag.dart';
 
 /// An ordered List of all DICOM Data Elements.  See PS3.6.
 const Map<int, PTag> tagMap = <int, PTag>{
-  //**** Beginning of the Command Tags
+  // **** Beginning of the Command Tags
   0x00001000: PTag.kAffectedSOPInstanceUID,
   0x00001001: PTag.kRequestedSOPInstanceUID,
 
-  //**** Beginning of File Meta Information Tags
+  // **** Beginning of File Meta Information Tags
   0x00020000: PTag.kFileMetaInformationGroupLength,
   0x00020001: PTag.kFileMetaInformationVersion,
   0x00020002: PTag.kMediaStorageSOPClassUID,
@@ -29,7 +29,7 @@ const Map<int, PTag> tagMap = <int, PTag>{
   0x00020100: PTag.kPrivateInformationCreatorUID,
   0x00020102: PTag.kPrivateInformation,
 
-  //**** Beginning of DICOM Directory Tags
+  // **** Beginning of DICOM Directory Tags
   0x00041130: PTag.kFileSetID,
   0x00041141: PTag.kFileSetDescriptorFileID,
   0x00041142: PTag.kSpecificCharacterSetOfFileSetDescriptorFile,
@@ -49,7 +49,7 @@ const Map<int, PTag> tagMap = <int, PTag>{
   0x0004151a: PTag.kReferencedTransferSyntaxUIDInFile,
   0x00041600: PTag.kNumberOfReferences,
 
-  //**** begining of Dataset Tags
+  // **** begining of Dataset Tags
   0x00080001: PTag.kLengthToEnd,
   0x00080005: PTag.kSpecificCharacterSet,
   0x00080006: PTag.kLanguageCodeSequence,

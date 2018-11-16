@@ -54,7 +54,7 @@ class WKUid extends Uid {
 
   static List<String> get strings => wellKnownUids.keys;
 
-  //*****   Constant Values   *****
+  // ****   Constant Values   ****
 
   static const WKUid kDicomApplicationContextName = WKUid(
     '1.2.840.10008.3.1.1.1',
