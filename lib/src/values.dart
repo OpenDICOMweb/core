@@ -14,3 +14,4 @@ export 'package:core/src/values/person.dart';
 export 'package:core/src/values/string_list.dart';
 export 'package:core/src/values/uid.dart';
 export 'package:core/src/values/uuid.dart';
+export 'package:core/src/values/vf_fragments.dart';

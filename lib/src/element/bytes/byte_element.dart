@@ -12,16 +12,16 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/bytes/vf_fragments.dart';
+import 'package:core/src/values/vf_fragments.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/values/string_list.dart';
-import 'package:core/src/values/uid.dart';
+import 'package:core/src/values.dart';
 import 'package:core/src/vr.dart';
 
 part 'float.dart';
 part 'integer.dart';
+part 'integer_mixin.dart';
 part 'pixel_data.dart';
 part 'sequence.dart';
 part 'string.dart';

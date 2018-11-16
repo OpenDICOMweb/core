@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/dicom.dart';
@@ -75,6 +76,8 @@ abstract class DicomBytesMixin {
 
   /// The Element _element_ Field.
   int get elt => getUint16(_kEltOffset);
+
+  Tag get tag => Tag.lookup(code);
 
   /// Returns the length in bytes of _this_ Element.
   int get eLength => bdLength;

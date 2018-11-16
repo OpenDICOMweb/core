@@ -10,7 +10,6 @@ part of odw.sdk.core.parser;
 
 // ignore_for_file: public_member_api_docs
 
-
 /// Parses a time. If [s] contains a ':', it is parsed as an Internet
 /// time; otherwise, as a DICOM time. If successful, returns the time in
 /// microseconds, which is always a non-negative integer; otherwise, _null_.
@@ -21,16 +20,14 @@ int parseTime(String s, {int start = 0, int end, Issues issues}) =>
 
 /// Parses a time in DICOM format. If successful, returns the time in
 /// microseconds, which is always a non-negative integer; otherwise, _null_.
-int parseDicomTime(String t,
-    {int start = 0, int end, Issues issues}) {
+int parseDicomTime(String t, {int start = 0, int end, Issues issues}) {
   assert(t != null && start != null);
   return _parseTime(t, start, end ?? t.length, 2, 13, issues);
 }
 
 /// Parses a time in DICOM format. If successful, returns the time in
 /// microseconds, which is always a non-negative integer; otherwise, _null_.
-int parseInternetTime(String t,
-    {int start = 0, int end, Issues issues}) {
+int parseInternetTime(String t, {int start = 0, int end, Issues issues}) {
   assert(t != null && start != null);
   return _parseTime(t, start, end ?? t.length, 2, 15, issues, kColon);
 }

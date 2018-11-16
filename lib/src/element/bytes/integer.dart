@@ -8,18 +8,7 @@
 //
 part of odw.sdk.element.bytes;
 
-// ignore_for_file: public_member_api_docs
-
-/// 16-bit signed integer Elements (SS)
-mixin Int16Mixin {
-  int get vfLength;
-  Bytes get vfBytes;
-
-  int get length => Int16.getLength(vfLength);
-
-  Int16List get values => vfBytes.asInt16List();
-}
-
+/// Signed Short (SS)
 class SSbytes extends SS with ByteElement<int>, Int16Mixin {
   @override
   final DicomBytes bytes;
@@ -41,16 +30,6 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
     assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);
     return fromBytes(bytes);
   }
-}
-
-/// 32-bit signed integer Elements (SL)
-mixin Int32Mixin {
-  int get vfLength;
-  Bytes get vfBytes;
-
-  int get length => Int32.getLength(vfLength);
-
-  Int32List get values => vfBytes.asInt32List();
 }
 
 /// Signed Long (SL)
@@ -76,19 +55,9 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
   }
 }
 
-/// Unsigned 8-bit Integer Elements (OB, UN)
-mixin Uint8Mixin {
-  int get vfLength;
-  Bytes get vfBytes;
-
-  int get length => Uint8.getLength(vfLength);
-
-  Uint8List get values => vfBytes.asUint8List();
-}
-
-// **** Integer Elements
 // **** 8-bit Integer Elements (OB, UN)
 
+/// Other Bytes (OB).
 class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
   @override
   final DicomBytes bytes;
@@ -114,6 +83,7 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
   }
 }
 
+/// Unknown (UN).
 class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
   @override
   final DicomBytes bytes;
@@ -139,16 +109,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
   }
 }
 
-/// 16-bit unsigned integer Elements (US, OW)
-mixin Uint16Mixin {
-  int get vfLength;
-  Bytes get vfBytes;
-
-  int get length => Uint16.getLength(vfLength);
-
-  Uint16List get values => vfBytes.asUint16List();
-}
-
+/// Unsigned Short (US).
 class USbytes extends US with ByteElement<int>, Uint16Mixin {
   @override
   final DicomBytes bytes;
@@ -171,6 +132,7 @@ class USbytes extends US with ByteElement<int>, Uint16Mixin {
   }
 }
 
+/// Other Word (OW).
 class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
   @override
   final DicomBytes bytes;
@@ -195,16 +157,6 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
         ? OWbytesPixelData.fromBytes(bytes)
         : fromBytes(bytes);
   }
-}
-
-/// 32-bit unsigned integer Elements (AT, UL, GL, OL)
-mixin Uint32Mixin {
-  int get vfLength;
-  Bytes get vfBytes;
-
-  int get length => Uint32.getLength(vfLength);
-
-  Uint32List get values => vfBytes.asUint32List();
 }
 
 /// Attribute (Element) Code (AT)
@@ -297,6 +249,9 @@ class GLbytes extends ULbytes {
     return fromBytes(bytes);
   }
 
+  /// The VR keyword for _this_.
   static const String kVRKeyword = 'GL';
+
+  /// The VR name for _this_.
   static const String kVRName = 'Group Length';
 }

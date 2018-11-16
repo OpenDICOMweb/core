@@ -10,7 +10,7 @@ import 'dart:typed_data';
 
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
-import 'package:core/src/element/bytes/vf_fragments.dart';
+import 'package:core/src/values/vf_fragments.dart';
 
 import 'test_pixel_data.dart';
 

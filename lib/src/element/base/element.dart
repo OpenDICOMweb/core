@@ -11,7 +11,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
-import 'package:core/src/element/bytes/vf_fragments.dart';
+import 'package:core/src/values/vf_fragments.dart';
 import 'package:core/src/element/element_formatter.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
@@ -99,7 +99,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Returns a [hashCode] for _this_.
   @override
-  int get hashCode => Hash64.k2(tag, Hash64.list(values));
+  int get hashCode => Hash64.k2(code, Hash64.list(values));
 
   /// Returns the number of [values] of _this_.
   @override

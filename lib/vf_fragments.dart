@@ -7,6 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 /// _Note_: This file is only for use by core/src/converter
-export 'package:core/src/element/bytes/vf_fragments.dart';
+export 'package:core/src/values/vf_fragments.dart';
 
 

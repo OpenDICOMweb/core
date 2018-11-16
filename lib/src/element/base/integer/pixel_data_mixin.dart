@@ -9,7 +9,7 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/bytes/vf_fragments.dart';
+import 'package:core/src/values/vf_fragments.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';

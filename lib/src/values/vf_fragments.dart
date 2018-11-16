@@ -9,13 +9,13 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/utils.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
 
 /// [VFFragmentList[ contains the Value Field of an _encapsulated_
-/// (i.e. compressed) OBPixelData Element. This class is used
-/// to convert the [fragments]s to [bulkdata].
+/// (i.e. compressed) PixelData Element. Among other things, this
+/// class is used to convert the [fragments]s to [bulkdata].
 class VFFragmentList {
   /// The fragments contained in the Value Field without their Item headers.
   final List<Uint8List> fragments;
@@ -67,9 +67,9 @@ class VFFragmentList {
   /// trailing kSequenceDelimiterItem and delimiter length have been removed
   /// from [vf].
   // ignore: prefer_constructors_over_static_methods
-  static VFFragmentList parse(Uint8List vf) {
-    final bd = vf.buffer.asByteData(vf.offsetInBytes, vf.lengthInBytes);
-    final endOfVF = vf.lengthInBytes;
+  static VFFragmentList parse(Bytes vf) {
+    final bd = vf.asByteData();
+    final endOfVF = vf.length;
     var rIndex = 0;
 
     // Read 32-bit Little Endian unsigned integer.

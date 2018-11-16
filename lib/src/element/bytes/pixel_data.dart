@@ -13,20 +13,27 @@ part of odw.sdk.element.bytes;
 /// PixelDataMixin class
 mixin BytePixelData {
   DicomBytes get bytes;
-  VFFragmentList get fragments;
+
+  VFFragmentList get fragments => VFFragmentList.parse(bytes.vfBytes);
 
   int get lengthInBytes => bytes.vfLength;
 
   /// A [Uint32List] of offsets into [fragments].
   Uint32List get offsets =>
       (fragments == null) ? kEmptyUint32List : fragments.offsets;
+
+  Uint8List get bulkdata =>
+      (fragments == null) ? bytes.vfBytes : fragments.bulkdata;
+
+  FrameList get frames => unimplementedError();
 }
 
 // **** Integer Elements
 // **** 8-bit Integer Elements (OB, UN)
 
 class OBbytesPixelData extends OBbytes
-    with ByteElement<int>, Uint8Mixin, BytePixelData, OBPixelData {
+    with PixelDataMixin, BytePixelData, OBPixelData {
+  @override
   TransferSyntax ts;
   @override
   VFFragmentList fragments;
@@ -40,7 +47,8 @@ class OBbytesPixelData extends OBbytes
 }
 
 class UNbytesPixelData extends UNbytes
-    with ByteElement<int>, Uint8Mixin, BytePixelData, UNPixelData {
+    with PixelDataMixin, BytePixelData, UNPixelData {
+  @override
   TransferSyntax ts;
   @override
   VFFragmentList fragments;
@@ -56,7 +64,8 @@ class UNbytesPixelData extends UNbytes
 // **** 16-bit Integer Elements (SS, US, OW)
 
 class OWbytesPixelData extends OWbytes
-    with ByteElement<int>, Uint16Mixin, BytePixelData, OWPixelData {
+    with PixelDataMixin, BytePixelData, OWPixelData {
+  @override
   TransferSyntax ts;
   // Note: OW should _never_ have fragments, but it does happen
   @override

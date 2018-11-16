@@ -7,6 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/element.dart';
+import 'package:core/src/utils/dicom.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -179,9 +180,9 @@ class DebugEFormatter extends ElementFormatter with ByteElementMixin {
 mixin ByteElementMixin {
   String get vlfName => 'vfLengthField';
 
-  String vfLengthField(int vfLengthField) => (vfLengthField == null)
+  String vfLengthFieldName(int vfLengthField) => (vfLengthField == null)
       ? ''
-      : (vfLengthField == 0xFFFFFFFF)
+      : (vfLengthField == kUndefinedLength)
           ? 'kUndefineLength'
           : '$vlfName: $vfLengthField';
 }
