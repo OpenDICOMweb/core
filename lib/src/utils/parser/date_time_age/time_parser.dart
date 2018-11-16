@@ -16,8 +16,8 @@ part of odw.sdk.core.parser;
 /// microseconds, which is always a non-negative integer; otherwise, _null_.
 int parseTime(String s, {int start = 0, int end, Issues issues}) =>
     (s.contains(':'))
-        ? parseInternetDate(s, start: start, end: end, issues: issues)
-        : parseDicomDate(s, start: start, end: end, issues: issues);
+        ? parseInternetTime(s, start: start, end: end, issues: issues)
+        : parseDicomTime(s, start: start, end: end, issues: issues);
 
 /// Parses a time in DICOM format. If successful, returns the time in
 /// microseconds, which is always a non-negative integer; otherwise, _null_.

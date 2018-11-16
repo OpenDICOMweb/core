@@ -6,6 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+
+import 'dart:typed_data';
+
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -14,19 +17,19 @@ RSG rsg = RSG(seed: 1);
 RNG rng = RNG(1);
 
 void main() {
-  Server.initialize(name: 'bd_element/pixel_data', level: Level.info);
+  Server.initialize(
+      name: 'bd_element/pixel_data/un_pixel_data_test.dart', level: Level.info);
 
-  group('OBbytes', () {
-    test('OBbytes from VM.k1', () {
+  group('UNbytes', () {
+    test('UNbytes from VM.k1', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint8List(1, i);
         final bytes = Bytes.fromList(vList0);
         global.throwOnError = false;
-        final e0 = OBbytes.fromValues(kPixelData, vList0);
-        //final e0 = OBbytesPixelData(bytes);
+        final e0 = UNbytes.fromValues(kPixelData, vList0);
         log.debug('e0: $e0');
         const ts = TransferSyntax.kExplicitVRLittleEndian;
-        final e1 = OBbytesPixelData.fromBytes(e0.bytes, ts);
+        final e1 = UNbytesPixelData.fromBytes(e0.bytes, ts);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes == bytes, true);
@@ -45,7 +48,6 @@ void main() {
         expect(e0.vfOffset == e0.bytes.vfOffset, true);
         expect(e0.vfBytes == e0.bytes.vfBytes, true);
         expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//        expect(e0.hashCode == e0.bytes.hashCode, true);
       }
     });
   });
