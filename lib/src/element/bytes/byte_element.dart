@@ -73,6 +73,8 @@ mixin ByteElement<V> {
 
   int get vfBytesLast => bytes.vfBytesLast;
 
+  Uint8List get bulkdata => unsupportedError();
+
   // **** Getters and Setters special to ByteElement
 
   static bool _isPrivateCreator(int code) {

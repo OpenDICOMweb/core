@@ -23,18 +23,20 @@ import 'package:core/src/utils/primitives.dart';
 
 /// A mixin class for 8-bit signed integer [Element]s.
 mixin Int8 {
-  int get length;
   List<int> get values;
   Element update(TypedData vList);
+  // **** End of Interface ****
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
+  int get length => values.length;
   int get minValue => kMinValue;
   int get maxValue => kMaxValue;
 
+  List<int> get emptyList => kEmptyInt8List;
   Int8List get typedData => fromList(values);
-
-  Integer get sha256 => update(Sha256.int16(typedData));
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
+  Integer get sha256 => update(Sha256.int8(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
       Integer.isValidValue(v, issues, kMinValue, kMaxValue);
@@ -149,17 +151,19 @@ mixin Int8 {
 
 /// A mixin class for 16-bit signed integer [Element]s.
 mixin Int16 {
-  int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
+  // **** End of Interface ****
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
+  int get length => values.length;
   int get minValue => kMinValue;
   int get maxValue => kMaxValue;
 
+  List<int> get emptyList => kEmptyInt16List;
   Int16List get typedData => fromList(values);
-
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.int16(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -273,18 +277,19 @@ mixin Int16 {
 
 /// A mixin class for 32-bit signed integer [Element]s.
 mixin Int32 {
-  int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
+  // **** End of Interface ****
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
+  int get length => values.length;
   int get minValue => kMinValue;
   int get maxValue => kMaxValue;
 
-  Int32List get typedData =>
-      (values is Int32List) ? values : Int32List.fromList(values);
-
+  List<int> get emptyList => kEmptyInt16List;
+  Int32List get typedData => fromList(values);
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.int32(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -396,17 +401,19 @@ mixin Int32 {
 
 /// A mixin class for 64-bit signed integer [Element]s.
 mixin Int64 {
-  int get length;
   List<int> get values;
   Element<int>  update([Iterable<int> vList]);
+  // **** End of Interface ****
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
+  int get length => values.length;
   int get minValue => kMinValue;
   int get maxValue => kMaxValue;
 
+  List<int> get emptyList => kEmptyInt16List;
   Int64List get typedData => fromList(values);
-
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.int64(values));
 
   /// Returns a [Int64List.view] of [values].
@@ -518,17 +525,18 @@ mixin Int64 {
 
 /// A mixin class for 8-bit unsigned integer [Element]s.
 mixin Uint8 {
-  int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
-
+  // **** End of Interface ****
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
+  int get length => values.length;
   int get minValue => kMinValue;
   int get maxValue => kMaxValue;
 
+  List<int> get emptyList => kEmptyInt16List;
   Uint8List get typedData => fromList(values);
-
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.uint8(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -648,17 +656,19 @@ mixin Uint8 {
 
 /// A mixin class for 16-bit unsigned integer [Element]s.
 mixin Uint16 {
-  int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
+  // **** End of Interface ****
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
+  int get length => values.length;
   int get minValue => kMinValue;
   int get maxValue => kMaxValue;
 
+  List<int> get emptyList => kEmptyInt16List;
   Uint16List get typedData => fromList(values);
-
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.uint16(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -790,17 +800,19 @@ mixin Uint16 {
 
 /// A mixin class for 32-bit unsigned integer [Element]s.
 mixin Uint32 {
-  int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
+  // **** End of Interface ****
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
+  int get length => values.length;
   int get minValue => kMinValue;
   int get maxValue => kMaxValue;
 
+  List<int> get emptyList => kEmptyInt16List;
   Uint32List get typedData => fromList(values);
-
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.uint32(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -926,18 +938,20 @@ mixin Uint32 {
 
 /// An mixin class for 64-bit unsigned integers.
 mixin Uint64 {
-  int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
+  // **** End of Interface ****
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
+  int get length => values.length;
   int get minValue => kMinValue;
   int get maxValue => kMaxValue;
 
+  List<int> get emptyList => kEmptyInt16List;
   Uint64List get typedData => fromList(values);
-
-  Element<int> get sha256 => update(Sha256.int64(values));
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
+  Integer get sha256 => update(Sha256.uint64(values));
 
   /// Returns a [Uint64List.view] of [values].
   Uint64List view([int start = 0, int length]) =>

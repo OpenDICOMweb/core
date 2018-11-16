@@ -31,17 +31,19 @@ mixin Float32Mixin {
 
   /// The number of bytes in a [Float32Mixin] element.
   int get sizeInBytes => kSizeInBytes;
-
+  int get lengthInBytes => length * sizeInBytes;
   int get length => values.length;
 
-  int get lengthInBytes => length * sizeInBytes;
+  List<double> get emptyList => kEmptyFloat32List;
+
+  Float32List get typedData =>
+      (values is Float32List) ? values : fromList(values);
+
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
 
   Float get sha256 => update(Sha256.float32(values));
 
-  Float32List get typedData =>
-      (values is Float32List) ? values : Float32List.fromList(values);
 
-  List<double> get emptyList => kEmptyFloat32List;
 
   /// Returns a [Float32List.view] of [values].
   Float view([int start = 0, int length]) => update(
@@ -175,6 +177,8 @@ mixin Float64Mixin {
 
   Float64List get typedData =>
       (values is Float64List) ? values : Float64List.fromList(values);
+
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
 
   List<double> get emptyList => kEmptyFloat64List;
 

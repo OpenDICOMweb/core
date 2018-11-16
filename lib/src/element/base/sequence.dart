@@ -24,16 +24,14 @@ bool _inRange(int v, int min, int max) => v >= min && v <= max;
 int level = 0;
 
 abstract class SQ extends Element<Item> {
-  // **** Interface
-
   /// The [tag] corresponding to _this_.
   @override
   Tag get tag;
+  // **** End of Interface
 
   /// The DICOM name for Sequence values, which are Items.
   List<Item> get items => (values is List) ? values : values.toList();
 
-  // **** End of Interface
   @override
   @override
   int get vrIndex => kVRIndex;
@@ -70,6 +68,9 @@ abstract class SQ extends Element<Item> {
   @override
   TypedData get typedData =>
       throw UnsupportedError('Sequence VR does not support this Getter.');
+
+  @override
+  Uint8List get bulkdata => typedData;
 
   /// Returns the total number of Elements in _this_.
   @override

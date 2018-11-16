@@ -52,7 +52,7 @@ class FLtag extends FL with TagElement<double>, TagFloatMixin {
   factory FLtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       FLtag._(tag, vList);
 
-  factory FLtag.bulkdata(Tag tag, Uri url) =>
+  factory FLtag.fromBulkdata(Tag tag, Uri url) =>
       FLtag._(tag, FloatBulkdataRef(tag.code, url));
 
   factory FLtag._(Tag tag, Iterable<double> vList) {
@@ -95,7 +95,7 @@ class OFtag extends OF with TagElement<double>, TagFloatMixin {
   factory OFtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       OFtag._(tag, vList);
 
-  factory OFtag.bulkdata(Tag tag, Uri url) =>
+  factory OFtag.fromBulkdata(Tag tag, Uri url) =>
       OFtag._(tag, FloatBulkdataRef(tag.code, url));
 
   factory OFtag._(Tag tag, Iterable<double> vList) {
@@ -136,7 +136,7 @@ class FDtag extends FD with TagElement<double>, TagFloatMixin {
   factory FDtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       FDtag._(tag, vList);
 
-  factory FDtag.bulkdata(Tag tag, Uri url) =>
+  factory FDtag.fromBulkdata(Tag tag, Uri url) =>
       FDtag._(tag, FloatBulkdataRef(tag.code, url));
 
   factory FDtag._(Tag tag, Iterable<double> vList) {
@@ -179,7 +179,7 @@ class ODtag extends OD with TagElement<double>, TagFloatMixin {
   factory ODtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       ODtag._(tag, vList);
 
-  factory ODtag.bulkdata(Tag tag, Uri url) =>
+  factory ODtag.fromBulkdata(Tag tag, Uri url) =>
       ODtag._(tag, FloatBulkdataRef(tag.code, url));
 
   factory ODtag._(Tag tag, Iterable<double> vList) {

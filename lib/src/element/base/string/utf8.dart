@@ -39,6 +39,9 @@ abstract class Utf8String extends StringBase {
   TypedData get typedData =>
       stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
 
+  @override
+  Uint8List get bulkdata => typedData;
+
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.stringListFromUtf8(allowInvalid: global.allowMalformedUtf8);
 

@@ -33,6 +33,14 @@ class Sha256<E> {
       _trim(v, uint8(v).buffer.asUint32List());
 
   /// Returns a Message [Digest] from a [Iterable<int>].
+  static Uint64List uint64(Iterable<int> v) =>
+      _trim(v, uint8(v).buffer.asUint64List());
+
+  /// Returns a Message [Digest] from a [Iterable<int>].
+  static Int8List int8(Iterable<int> v) =>
+      _trim(v, uint8(v).buffer.asInt8List());
+
+  /// Returns a Message [Digest] from a [Iterable<int>].
   static Int16List int16(Iterable<int> v) =>
       _trim(v, uint8(v).buffer.asInt16List());
 

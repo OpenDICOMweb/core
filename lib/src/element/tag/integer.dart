@@ -65,7 +65,7 @@ class SStag extends SS with TagElement<int>, TagIntegerMixin {
     return SS.isValidArgs(tag, v) ? SStag._(tag, v) : badValues(v, null, tag);
   }
 
-  factory SStag.bulkdata(Tag tag, Uri url) =>
+  factory SStag.fromBulkdata(Tag tag, Uri url) =>
       SStag(tag, IntBulkdataRef(tag.code, url));
 
   SStag._(this.tag, this._values)
@@ -103,7 +103,7 @@ class SLtag extends SL with TagElement<int>, TagIntegerMixin {
         : badValues(vList, null, tag);
   }
 
-  factory SLtag.bulkdata(Tag tag, Uri url) =>
+  factory SLtag.fromBulkdata(Tag tag, Uri url) =>
       SLtag(tag, IntBulkdataRef(tag.code, url));
 
   SLtag._(this.tag, this._values)
@@ -138,7 +138,7 @@ class OBtag extends OB with TagElement<int>, TagIntegerMixin {
     return OBtag._(tag, v);
   }
 
-  factory OBtag.bulkdata(Tag tag, Uri url) =>
+  factory OBtag.fromBulkdata(Tag tag, Uri url) =>
       OBtag(tag, IntBulkdataRef(tag.code, url));
 
   OBtag._(this.tag, this._values)
@@ -173,7 +173,7 @@ class UNtag extends UN with TagElement<int>, TagIntegerMixin {
     return UNtag._(tag, v);
   }
 
-  factory UNtag.bulkdata(Tag tag, Uri url) =>
+  factory UNtag.fromBulkdata(Tag tag, Uri url) =>
       UNtag(tag, IntBulkdataRef(tag.code, url));
 
   UNtag._(this.tag, this._values) : assert(_values is Uint8List);
@@ -203,7 +203,7 @@ class UStag extends US with TagElement<int>, TagIntegerMixin {
     return US.isValidArgs(tag, v) ? UStag._(tag, v) : badValues(v, null, tag);
   }
 
-  factory UStag.bulkdata(Tag tag, Uri url) =>
+  factory UStag.fromBulkdata(Tag tag, Uri url) =>
       UStag(tag, IntBulkdataRef(tag.code, url));
 
   UStag._(this.tag, this._values)
@@ -238,7 +238,7 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
     return OWtag._(tag, v);
   }
 
-  factory OWtag.bulkdata(Tag tag, Uri url) =>
+  factory OWtag.fromBulkdata(Tag tag, Uri url) =>
       OWtag(tag, IntBulkdataRef(tag.code, url));
 
   OWtag._(this.tag, this._values)
@@ -270,7 +270,7 @@ class OLtag extends OL with TagElement<int>, TagIntegerMixin {
     return OL.isValidArgs(tag, v) ? OLtag._(tag, v) : badValues(v, null, tag);
   }
 
-  factory OLtag.bulkdata(Tag tag, Uri url) =>
+  factory OLtag.fromBulkdata(Tag tag, Uri url) =>
       OLtag(tag, IntBulkdataRef(tag.code, url));
 
   OLtag._(this.tag, this._values)
@@ -303,7 +303,7 @@ class ULtag extends UL with TagElement<int>, TagIntegerMixin {
     return UL.isValidArgs(tag, v) ? ULtag._(tag, v) : badValues(v, null, tag);
   }
 
-  factory ULtag.bulkdata(Tag tag, Uri url) =>
+  factory ULtag.fromBulkdata(Tag tag, Uri url) =>
       ULtag(tag, IntBulkdataRef(tag.code, url));
 
   ULtag._(this.tag, this._values)
@@ -332,7 +332,7 @@ class GLtag extends ULtag {
         : badValues(vList, null, tag);
   }
 
-  factory GLtag.bulkdata(Tag tag, Uri url) =>
+  factory GLtag.fromBulkdata(Tag tag, Uri url) =>
       GLtag(tag, IntBulkdataRef(tag.code, url));
 
   GLtag._(Tag tag, Iterable<int> values) : super._(tag, values);
@@ -368,7 +368,7 @@ class ATtag extends AT with TagElement<int>, TagIntegerMixin {
         : badValues(vList, null, tag);
   }
 
-  factory ATtag.bulkdata(Tag tag, Uri url) =>
+  factory ATtag.fromBulkdata(Tag tag, Uri url) =>
       ATtag(tag, IntBulkdataRef(tag.code, url));
 
   ATtag._(this.tag, this._values)

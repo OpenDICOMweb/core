@@ -6,6 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:typed_data';
+
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag.dart';
@@ -33,6 +35,8 @@ mixin TagElement<V> {
   List<V> get emptyList;
 
   bool get hasValidValues;
+
+  Uint8List get bulkdata;
 
   // **** End of Interface
 

@@ -25,7 +25,6 @@ part of odw.sdk.element.base.string;
 abstract class Ascii extends StringBase {
   @override
   StringList get values;
-
   // **** End of Interface
 
   @override
@@ -38,6 +37,9 @@ abstract class Ascii extends StringBase {
   @override
   TypedData get typedData =>
       stringListToUint8List(values, maxLength: maxVFLength, isAscii: true);
+
+  @override
+  Uint8List get bulkdata => typedData;
 
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.stringListFromAscii(allowInvalid: global.allowInvalidAscii);

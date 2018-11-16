@@ -11,7 +11,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
-import 'package:core/src/values/vf_fragments.dart';
 import 'package:core/src/element/element_formatter.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
@@ -19,6 +18,7 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/hash.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/values.dart';
 import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
@@ -84,6 +84,17 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Returns the [xml] encoding for _this_.
   String get xml => unimplementedError();
+
+  /// Encapsulated Pixel Data Fragments.
+  VFFragmentList get fragments => unimplementedError();
+
+  /// Pixel Data Basic Offset Table.
+  Uint32List get offsets => unimplementedError();
+
+  /// Pixel Data Frames if Multi-Frame.
+  Iterable<Frame> get frames => unimplementedError();
+
+  Uint8List get bulkdata;
 
   // **** End of Interface
 
@@ -309,8 +320,6 @@ abstract class Element<V> extends ListBase<V> {
 
   /// The Element Type predicate of this Element.
   Condition get eTypePredicate => unimplementedError();
-
-  VFFragmentList get fragments => unimplementedError();
 
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
