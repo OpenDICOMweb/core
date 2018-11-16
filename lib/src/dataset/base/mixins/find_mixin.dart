@@ -11,7 +11,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/error/dataset_errors.dart';
 
 /// A Mixin that implement an Element with no values.
-abstract class NoValuesMixin {
+mixin NoValuesMixin {
   /// An [Iterable<Element>] of the [Element]s contained in _this_.
   ///
   // Design Note: It is expected that [ElementList] will have

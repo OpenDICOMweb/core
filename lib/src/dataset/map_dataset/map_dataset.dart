@@ -19,7 +19,7 @@ bool mapsEqual(Map<int, Element> map0, Map<int, Element> map1) =>
 
 int mapHash(Map<int, Element> map) => mapEquality.hash(map);
 
-abstract class MapDataset {
+mixin MapDataset {
   /// A [Map] from key to [Element].
   Map<int, Element> get eMap;
   int get total;
@@ -30,15 +30,8 @@ abstract class MapDataset {
   // TODO(Jim): should this be checking that parents are equal? It doesn't
   /// Returns true if [other] has the same [Element]s as _this_.
   @override
-  bool operator ==(Object other) {
-    if (other is MapDataset && total == other.total) {
-      for (var e in elements) {
-        if (e != other.eMap[e.code]) return false;
-      }
-      return true;
-    }
-    return false;
-  }
+  bool operator ==(Object other) =>
+    other is MapDataset && total == other.total && mapsEqual(eMap, other.eMap);
 
   @override
   int get hashCode => mapHash(eMap);

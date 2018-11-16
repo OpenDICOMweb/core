@@ -20,7 +20,7 @@ import 'package:core/src/vr.dart';
 ///
 /// This mixin defines the interface to DICOM Tags, where a Tag is
 /// a semantic identifier for an element.
-abstract class TagElement<V> {
+mixin TagElement<V> {
   V operator [](int index);
 
   /// The DICOM Element Definition. In the _ODW_ _SDK_ this is called a "_Tag_".

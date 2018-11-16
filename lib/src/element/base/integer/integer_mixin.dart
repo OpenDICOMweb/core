@@ -9,10 +9,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:collection/collection.dart';
-import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/element/base/integer/int_bulkdata_ref.dart';
 import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/utils.dart';
 import 'package:core/src/element/base/utils.dart';
@@ -23,7 +22,7 @@ import 'package:core/src/utils/primitives.dart';
 // ignore_for_file: public_member_api_docs
 
 /// A mixin class for 8-bit signed integer [Element]s.
-abstract class Int8 {
+mixin Int8 {
   int get length;
   List<int> get values;
   Element update(TypedData vList);
@@ -149,7 +148,7 @@ abstract class Int8 {
 }
 
 /// A mixin class for 16-bit signed integer [Element]s.
-abstract class Int16 {
+mixin Int16 {
   int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
@@ -273,7 +272,7 @@ abstract class Int16 {
 }
 
 /// A mixin class for 32-bit signed integer [Element]s.
-abstract class Int32 {
+mixin Int32 {
   int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
@@ -396,7 +395,7 @@ abstract class Int32 {
 }
 
 /// A mixin class for 64-bit signed integer [Element]s.
-abstract class Int64 {
+mixin Int64 {
   int get length;
   List<int> get values;
   Element<int>  update([Iterable<int> vList]);
@@ -518,7 +517,7 @@ abstract class Int64 {
 }
 
 /// A mixin class for 8-bit unsigned integer [Element]s.
-abstract class Uint8 {
+mixin Uint8 {
   int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
@@ -648,7 +647,7 @@ abstract class Uint8 {
 }
 
 /// A mixin class for 16-bit unsigned integer [Element]s.
-abstract class Uint16 {
+mixin Uint16 {
   int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
@@ -790,7 +789,7 @@ abstract class Uint16 {
 }
 
 /// A mixin class for 32-bit unsigned integer [Element]s.
-abstract class Uint32 {
+mixin Uint32 {
   int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
@@ -926,7 +925,7 @@ abstract class Uint32 {
 }
 
 /// An mixin class for 64-bit unsigned integers.
-abstract class Uint64 {
+mixin Uint64 {
   int get length;
   List<int> get values;
   Element<int> update([Iterable<int> vList]);
@@ -1057,25 +1056,6 @@ abstract class Uint64 {
     if (vf is Uint8List) return fromUint8List(vf);
     return badValues(vf);
   }
-}
-
-class IntBulkdataRef extends DelegatingList<int> with BulkdataRef<int> {
-  @override
-  int code;
-  @override
-  Uri uri;
-  List<int> _values;
-
-  IntBulkdataRef(this.code, this.uri, [this._values]) : super(_values);
-
-  IntBulkdataRef.fromString(this.code, String s, [this._values])
-      : uri = Uri.parse(s),
-        super(_values);
-
-  List<int> get delegate => _values;
-
-  @override
-  List<int> get values => _values ??= getBulkdata(code, uri);
 }
 
 int _toLength(int length, int vLength) =>

@@ -36,7 +36,7 @@ import 'package:core/src/utils/primitives.dart';
 
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
-abstract class DatasetMixin {
+mixin DatasetMixin {
   // **** Start of Interface ****
 
   /// Returns the Element with [index], if present; otherwise, returns _null_.

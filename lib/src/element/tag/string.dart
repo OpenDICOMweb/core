@@ -24,7 +24,7 @@ StringList _toValues(Iterable<String> vList, [Trim doTrim = Trim.none]) {
   return _isEmpty(vList) ? StringList.kEmptyList : StringList.from(vList);
 }
 
-abstract class TagStringMixin {
+mixin TagStringMixin {
   /// Values will always have [Type] [StringList].
   StringList get _values;
   Trim get trim;

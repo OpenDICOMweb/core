@@ -295,8 +295,7 @@ abstract class DA extends Ascii {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    if (s.isEmpty) return true;
-
+    if (s.isEmpty || allowBlankDates && s.trim().isEmpty) return true;
     final ok = Date.isValidString(s, issues: issues);
     return ok ? ok : invalidString('Invalid Date String (DA): "$s"', issues);
   }
@@ -417,6 +416,7 @@ abstract class DT extends Ascii {
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
     final s0 = s.trimRight();
+    if (s0.isEmpty) return true;
     final ok = DcmDateTime.isValidString(s0, issues: issues);
     return ok ? ok : invalidString('Invalid Date Time (DT): "$s0"', issues);
   }

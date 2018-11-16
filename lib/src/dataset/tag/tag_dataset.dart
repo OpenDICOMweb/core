@@ -15,7 +15,7 @@ import 'package:core/src/utils.dart';
 // ignore_for_file: public_member_api_docs
 
 /// An [TagDataset] is a Dataset containing TagElements.
-abstract class TagDataset {
+mixin TagDataset {
   Map<int, Element> get eMap;
 
   List<Element> get elements => eMap.values.toList(growable: false);

@@ -11,7 +11,7 @@ part of odw.sdk.element.bytes;
 // ignore_for_file: public_member_api_docs
 
 /// 32-bit Float Elements (FL, OF)
-abstract class BytesFloat32Mixin {
+mixin BytesFloat32Mixin {
   int get vfLength;
   Bytes get vfBytes;
 
@@ -63,7 +63,7 @@ class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
 // **** 64-Bit Float Elements (OD, OF)
 
 /// Long Float Elements (FD, OD)
-abstract class BytesFloat64Mixin {
+mixin BytesFloat64Mixin {
   int get vfLength;
   Bytes get vfBytes;
 

@@ -13,7 +13,7 @@ import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: public_member_api_docs
 
-abstract class UpdateMixin {
+mixin UpdateMixin {
   /// An [Iterable<Element>] of the [Element]s contained in _this_.
   ///
   // Design Note: It is expected that [ElementList] will have

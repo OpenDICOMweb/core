@@ -11,11 +11,11 @@ part of odw.sdk.element.bytes;
 // ignore_for_file: public_member_api_docs
 
 /// PixelDataMixin class
-abstract class BytePixelData {
+mixin BytePixelData {
+  DicomBytes get bytes;
   VFFragmentList get fragments;
-  int get vfLengthField;
 
-  // **** End Interface
+  int get lengthInBytes => bytes.vfLength;
 
   /// A [Uint32List] of offsets into [fragments].
   Uint32List get offsets =>
@@ -33,12 +33,6 @@ class OBbytesPixelData extends OBbytes
 
   OBbytesPixelData(DicomBytes bytes, [this.ts, this.fragments]) : super(bytes);
 
-  @override
-  int get vrIndex => kOBIndex;
-
-  @override
-  int get lengthInBytes => bytes.vfLength;
-
   // ignore: prefer_constructors_over_static_methods
   static OBbytesPixelData fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragmentList fragments]) =>
@@ -52,12 +46,6 @@ class UNbytesPixelData extends UNbytes
   VFFragmentList fragments;
 
   UNbytesPixelData(DicomBytes bytes, [this.ts, this.fragments]) : super(bytes);
-
-  @override
-  int get vrIndex => kUNIndex;
-
-  @override
-  int get lengthInBytes => bytes.vfLength;
 
   // ignore: prefer_constructors_over_static_methods
   static UNbytesPixelData fromBytes(DicomBytes bytes,
@@ -75,12 +63,6 @@ class OWbytesPixelData extends OWbytes
   VFFragmentList fragments;
 
   OWbytesPixelData(DicomBytes bytes, [this.ts, this.fragments]) : super(bytes);
-
-  @override
-  int get vrIndex => kOWIndex;
-
-  @override
-  int get lengthInBytes => bytes.vfLength;
 
   // ignore: prefer_constructors_over_static_methods
   static OWbytesPixelData fromBytes(DicomBytes bytes,

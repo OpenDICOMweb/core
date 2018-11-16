@@ -33,7 +33,7 @@ typedef DecodeBinaryVF = Element Function(DicomBytes bytes, int vrIndex);
 typedef BDElementMaker = Element Function(
     int code, int vrIndex, DicomBytes bytes);
 
-abstract class ByteElement<V> {
+mixin ByteElement<V> {
   V operator [](int index);
 
   DicomBytes get bytes;

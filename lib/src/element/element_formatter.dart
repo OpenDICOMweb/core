@@ -176,7 +176,7 @@ class DebugEFormatter extends ElementFormatter with ByteElementMixin {
   }
 }
 
-abstract class ByteElementMixin {
+mixin ByteElementMixin {
   String get vlfName => 'vfLengthField';
 
   String vfLengthField(int vfLengthField) => (vfLengthField == null)

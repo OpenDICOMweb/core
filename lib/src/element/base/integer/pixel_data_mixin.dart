@@ -6,52 +6,48 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:typed_data';
-
 import 'package:core/src/element/base/integer/integer.dart';
 
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/values/image.dart';
 import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: public_member_api_docs
 
 /// PixelDataMixin class
-abstract class PixelDataMixin {
+mixin PixelDataMixin {
   /// The [TransferSyntax] of _this_.
   TransferSyntax get ts;
-
-  /// Returns _true_ if [frames] are compressed.
-  bool get isCompressed => ts.isEncapsulated;
-
-  /// The FrameList for _this_.
-  Iterable<Frame> get frames => _frames;
-  set frames(Iterable<Frame> vList) => _frames = vList;
-  FrameList _frames;
-
-  /// The Basic Offset Table (See PS3.5) for _this_.
-  /// A [Uint32List] of offsets into [bulkdata].
-  Uint32List get offsets => _frames.offsets;
-
-  /// A [Uint8List] created from [frames].
-  Uint8List get bulkdata => _frames.bulkdata;
+  int get length;
+  int get sizeInBytes;
 
   // **** End Interface
 
+  /// The [Tag] for this Element.
+  Tag get tag => PTag.kPixelData;
+
+  /// The Value Field length.
+  int get vfLength => length * sizeInBytes;
+
+  /// The length is always value for OB, OW, and UN.
   bool get isLengthAlwaysValid => true;
+
+  /// The undefined lengths are always allowed for OB, OW, and UN.
   bool get isUndefinedLengthAllowed => true;
 
-  /// Synonym for [isCompressed]. Returns _true_ if [frames] are compressed.
+  /// Returns _true_ if compressed.
   ///
   /// Note: If _this_ [isCompressed] and has more than one Frame,
   ///       It should have a non-empty [offsets].
+  bool get isCompressed => ts.isEncapsulated;
+
+  /// Synonym for [isCompressed]. Returns _true_ if compressed.
   bool get isEncapsulated => isCompressed;
 }
 
-abstract class OBPixelData {
+mixin OBPixelData {
   Tag get tag => PTag.kPixelDataOB;
 
   List<int> get emptyList => kEmptyUint8List;
@@ -80,23 +76,24 @@ abstract class OBPixelData {
   }
 }
 
-abstract class UNPixelData {
+mixin UNPixelData {
   Tag get tag => PTag.kPixelDataUN;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [UN].
   /// If [doTestElementValidity] is _false_ then no validation is done.
-  static bool isValidArgs(Tag tag, Iterable<int> vList,
+  static bool isValidArgs(Iterable<int> vList,
       [int vfLengthField, TransferSyntax ts, Issues issues]) {
-    if (!isValidTag(tag, issues)) return false;
-    return UN.isValidArgs(tag, vList, vfLengthField, ts, issues);
+    if (!isValidTag(PTag.kPixelDataUN, issues)) return false;
+    return UN.isValidArgs(PTag.kPixelDataUN, vList, vfLengthField, ts, issues);
   }
 
-  /// Returns _true_ if both [tag] and [vfBytes] are valid for [UN].
+  /// Returns _true_ if [vfBytes] is valid for [UN].
   /// If [doTestElementValidity] is _false_ then no validation is done.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
+  static bool isValidBytesArgs(Bytes vfBytes, int vfLengthField,
       [Issues issues]) {
-    if (!isValidTag(tag, issues)) return false;
-    return UN.isValidBytesArgs(tag, vfBytes, vfLengthField, issues);
+    if (!isValidTag(PTag.kPixelDataUN, issues)) return false;
+    return UN.isValidBytesArgs(
+        PTag.kPixelDataUN, vfBytes, vfLengthField, issues);
   }
 
   /// Returns _true_ if [tag] is valid for [UN].
@@ -107,24 +104,20 @@ abstract class UNPixelData {
   }
 }
 
-abstract class OWPixelData {
+mixin OWPixelData {
   final Tag tag = PTag.kPixelDataOW;
 
-  /// Returns _true_ if both [tag] and [vList] are valid for this [OW].
+  /// Returns _true_ if [vList] is valid for this [OW].
   /// If [doTestElementValidity] is _false_ then no validation is done.
-  static bool isValidArgs(Tag tag, Iterable<int> vList,
-      [int vfLengthField, TransferSyntax ts, Issues issues]) {
-    if (!isValidTag(tag, issues)) return false;
-    return OW.isValidArgs(tag, vList, vfLengthField, ts, issues);
-  }
+  static bool isValidArgs(Iterable<int> vList,
+          [int vfLengthField, TransferSyntax ts, Issues issues]) =>
+      OW.isValidArgs(PTag.kPixelDataOW, vList, vfLengthField, ts, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [OW].
   /// If [doTestElementValidity] is _false_ then no validation is done.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
-      [Issues issues]) {
-    if (!isValidTag(tag, issues)) return false;
-    return OW.isValidBytesArgs(tag, vfBytes, vfLengthField, issues);
-  }
+  static bool isValidBytesArgs(Bytes vfBytes, int vfLengthField,
+          [Issues issues]) =>
+      OW.isValidBytesArgs(PTag.kPixelDataOW, vfBytes, vfLengthField, issues);
 
   /// Returns _true_ if [tag] is valid for [OW].
   /// If [doTestElementValidity] is _false_ then no validation is done.

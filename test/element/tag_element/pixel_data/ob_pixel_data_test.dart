@@ -32,7 +32,7 @@ void main() {
     for (var i = 0; i < pixels1.length; i++) pixels1[i] = 128;
 
     test('Create Unencapsulated OBtagPixelData', () {
-      final ob0 = OBtagPixelData.fromPixels(pixels);
+      final ob0 = OBtagPixelData(pixels);
       log.debug('tag: ${PTag.kPixelDataOB}');
       expect(ob0.vrIndex == kOBOWIndex, false);
       ob0.values;
@@ -382,19 +382,19 @@ void main() {
     });
 
     test('OBtagPixelData isValidArgs', () {
-      final e0 = OBtagPixelData.isValidArgs(pixels, ts);
+      final e0 = OBPixelData.isValidArgs(pixels, ts);
       expect(e0, true);
 
-      final e1 = OBtagPixelData.isValidArgs(null, ts);
+      final e1 = OBPixelData.isValidArgs(null, ts);
       expect(e1, false);
     });
 
     test('OBtagPixelData isValidBytesArgs', () {
       final vfBytes = Bytes.fromList(pixels);
-      final e0 = OBtagPixelData.isValidBytesArgs(vfBytes);
+      final e0 = OBPixelData.isValidBytesArgs(vfBytes, vfBytes.length);
       expect(e0, true);
 
-      final e1 = OBtagPixelData.isValidBytesArgs(null);
+      final e1 = OBPixelData.isValidBytesArgs(null, 0);
       expect(e1, false);
     });
   });

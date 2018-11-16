@@ -30,7 +30,7 @@ bool listsEqual(List<Element> map0, List<Element> map1) =>
 
 int mapHash(List<Element> list) => listEquality.hash(list);
 
-abstract class ListDataset {
+mixin ListDataset {
   /// A sorted [List] of Tag Codes increasing order.
   List<int> get codes;
 

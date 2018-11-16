@@ -17,7 +17,7 @@ import 'package:core/src/tag.dart';
 ///
 /// This mixin defines the interface to DICOM Tags, where a Tag is
 /// a semantic identifier for an element.
-abstract class TagMixinBase<V> {
+mixin TagMixinBase<V> {
   int get field;
 
   // **** Tag Identifiers

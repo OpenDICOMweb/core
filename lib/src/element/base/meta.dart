@@ -14,7 +14,7 @@ import 'package:core/src/tag.dart';
 
 // ignore_for_file: public_member_api_docs
 
-abstract class MetaElementMixin  {
+mixin MetaElementMixin  {
   Element get e;
 
   List get emptyList => e.emptyList;

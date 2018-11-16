@@ -13,7 +13,7 @@ import 'package:core/src/tag.dart';
 // ignore_for_file: public_member_api_docs
 
 /// A [ByteDataset] is a DICOM [Dataset].
-abstract class ByteDataset {
+mixin ByteDataset {
   Map<int, Element> get eMap;
 
   List<Element> get elements => eMap.values.toList(growable: false);

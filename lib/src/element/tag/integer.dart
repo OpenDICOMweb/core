@@ -25,7 +25,7 @@ List<int> _toValues(Iterable<int> vList) {
   return _isEmpty(vList) ? kEmptyIntList : vList;
 }
 
-abstract class TagIntegerMixin {
+mixin TagIntegerMixin {
   /// Values will always have [Type] [List<int>] and [TypedData].
   List<int> get _values;
 

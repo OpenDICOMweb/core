@@ -24,7 +24,7 @@ import 'package:core/src/utils/primitives.dart';
 // ignore_for_file: public_member_api_docs
 
 /// A mixin class for 32-bit floating point [Element]s.
-abstract class Float32Mixin {
+mixin Float32Mixin {
   List<double> get values;
   Element<double> update([Iterable<double> vList]);
   // **** End of Interface ****
@@ -158,7 +158,7 @@ abstract class Float32Mixin {
 }
 
 /// A mixin class for 64-bit floating point [Element]s.
-abstract class Float64Mixin {
+mixin Float64Mixin {
   List<double> get values;
 
   Element<double> update([Iterable<double> vList]);

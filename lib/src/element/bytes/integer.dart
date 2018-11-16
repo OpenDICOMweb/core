@@ -11,7 +11,7 @@ part of odw.sdk.element.bytes;
 // ignore_for_file: public_member_api_docs
 
 /// 16-bit signed integer Elements (SS)
-abstract class Int16Mixin {
+mixin Int16Mixin {
   int get vfLength;
   Bytes get vfBytes;
 
@@ -44,7 +44,7 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
 }
 
 /// 32-bit signed integer Elements (SL)
-abstract class Int32Mixin {
+mixin Int32Mixin {
   int get vfLength;
   Bytes get vfBytes;
 
@@ -77,7 +77,7 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
 }
 
 /// Unsigned 8-bit Integer Elements (OB, UN)
-abstract class Uint8Mixin {
+mixin Uint8Mixin {
   int get vfLength;
   Bytes get vfBytes;
 
@@ -140,7 +140,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
 }
 
 /// 16-bit unsigned integer Elements (US, OW)
-abstract class Uint16Mixin {
+mixin Uint16Mixin {
   int get vfLength;
   Bytes get vfBytes;
 
@@ -198,7 +198,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
 }
 
 /// 32-bit unsigned integer Elements (AT, UL, GL, OL)
-abstract class Uint32Mixin {
+mixin Uint32Mixin {
   int get vfLength;
   Bytes get vfBytes;
 

@@ -17,7 +17,7 @@ import 'package:core/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
 
-abstract class TagFloatMixin {
+mixin TagFloatMixin {
   List<double> get _values;
   set _values(List<double> v);
 

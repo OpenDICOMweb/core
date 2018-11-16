@@ -39,7 +39,7 @@ class SQbytes extends SQ with ByteElement<Item> {
     assert(tag.vrIndex == kSQIndex, 'vrIndex: ${tag.vrIndex}');
     if (tag.vrIndex != kSQIndex)
       log.warn('** Non-Sequence Tag $tag for $bytes');
-    return SQbytes.fromBytes(parent, items, bytes);
+    return SQbytes(parent, items, bytes);
   }
 
   static bool _isPrivateCreator(int code) {

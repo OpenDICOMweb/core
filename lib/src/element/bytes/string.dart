@@ -11,7 +11,7 @@ part of odw.sdk.element.bytes;
 // ignore_for_file: public_member_api_docs
 
 /// [String] [Element]s that only have ASCII values.
-abstract class StringMixin {
+mixin StringMixin {
   int get vfLength;
   Bytes get vfBytes;
   int get vfBytesLast;
@@ -36,7 +36,7 @@ abstract class StringMixin {
 }
 
 /// [String] [Element]s that only have ASCII values.
-abstract class AsciiMixin {
+mixin AsciiMixin {
   bool get hasPadding;
   int get vfLength;
   Bytes get vfBytes;
@@ -239,7 +239,7 @@ class TMbytes extends TM with ByteElement<String>, StringMixin, AsciiMixin {
 // **** Utf8 Classes
 
 /// [String] [Element]s that may have UTF-8 values.
-abstract class Utf8Mixin {
+mixin Utf8Mixin {
   bool get hasPadding;
   int get vfLength;
   Bytes get vfBytes;
@@ -361,7 +361,7 @@ class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
 // **** Text Classes
 
 /// Text ([String]) [Element]s that may only have 1 UTF-8 values.
-abstract class TextMixin {
+mixin TextMixin {
   Bytes get vfBytes;
 
   int get length => 1;

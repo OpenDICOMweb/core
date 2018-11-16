@@ -395,24 +395,24 @@ void main() {
     });
 
     test('UNtagPixelData isValidArgs', () {
-      final e0 = UNtagPixelData.isValidArgs(pixels, ts);
+      final e0 = UNPixelData.isValidArgs(pixels, pixels.length, ts);
       expect(e0, true);
 
-      final e1 = UNtagPixelData.isValidArgs(null, ts);
+      final e1 = UNPixelData.isValidArgs(null, 0, ts);
       expect(e1, false);
     });
 
     test('UNtagPixelData isValidBytesArgs', () {
       final vfBytes = Bytes.fromList(pixels);
-      final e0 = UNtagPixelData.isValidBytesArgs(vfBytes);
+      final e0 = UNPixelData.isValidBytesArgs(vfBytes, vfBytes.length);
       expect(e0, true);
 
-      final e1 = UNtagPixelData.isValidBytesArgs(null);
+      final e1 = UNPixelData.isValidBytesArgs(null, 0);
       expect(e1, false);
     });
 
     test('Create Unencapsulated UNtagPixelData.fromPixels', () {
-      final e0 = UNtagPixelData.fromPixels(pixels);
+      final e0 = UNtagPixelData(pixels);
       log.debug('tag: ${PTag.kPixelDataUN}');
       expect(e0.vrIndex == kOBOWIndex, false);
       expect(e0.vrIndex == kUNIndex, true);
@@ -448,9 +448,9 @@ void main() {
     test('Create Unencapsulated UNtagPixelData.fromPixels hashCode and ==', () {
       global.throwOnError = false;
 
-      final e0 = UNtagPixelData.fromPixels(pixels);
-      final e1 = UNtagPixelData.fromPixels(pixels);
-      final e2 = UNtagPixelData.fromPixels(pixels1);
+      final e0 = UNtagPixelData(pixels);
+      final e1 = UNtagPixelData(pixels);
+      final e2 = UNtagPixelData(pixels1);
 
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);

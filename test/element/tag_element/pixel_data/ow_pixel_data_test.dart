@@ -248,24 +248,24 @@ void main() {
     });
 
     test('OWtagPixelData isValidArgs', () {
-      final e0 = OWtagPixelData.isValidArgs(pixels1, ts);
+      final e0 = OWPixelData.isValidArgs(pixels1, pixels1.lengthInBytes, ts);
       expect(e0, true);
 
-      final e1 = OWtagPixelData.isValidArgs(null, ts);
+      final e1 = OWPixelData.isValidArgs(null, 0, ts);
       expect(e1, false);
     });
 
     test('OWtagPixelData isValidBytesArgs', () {
       final vfBytes = Bytes.fromList(pixels1);
-      final e0 = OWtagPixelData.isValidBytesArgs(vfBytes);
+      final e0 = OWPixelData.isValidBytesArgs(vfBytes, vfBytes.length);
       expect(e0, true);
 
-      final e1 = OWtagPixelData.isValidBytesArgs(null);
+      final e1 = OWPixelData.isValidBytesArgs(null, 0);
       expect(e1, false);
     });
 
     test('Create OWtagPixelData.fromPixels', () {
-      final e0 = OWtagPixelData.fromPixels(pixels0);
+      final e0 = OWtagPixelData(pixels0);
       log.debug('tag: ${PTag.kPixelDataOW}');
       expect(e0.vrIndex == kOBOWIndex, false);
       expect(e0.vrIndex == kOWIndex, true);
@@ -301,9 +301,9 @@ void main() {
     test('Create OWtagPixelData.fromPixels hashCode and ==', () {
       global.throwOnError = false;
 
-      final e0 = OWtagPixelData.fromPixels(pixels0);
-      final e1 = OWtagPixelData.fromPixels(pixels0);
-      final e2 = OWtagPixelData.fromPixels(pixels2);
+      final e0 = OWtagPixelData(pixels0);
+      final e1 = OWtagPixelData(pixels0);
+      final e2 = OWtagPixelData(pixels2);
 
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
