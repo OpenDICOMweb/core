@@ -15,7 +15,6 @@ typedef Decoder = String Function(Uint8List list, {bool allowInvalid});
 
 typedef Encoder = Uint8List Function(String s);
 
-// Urgent Sharath: Unit test classes in this file
 
 /// The base Charset is the ASCII (or US-ASCII) Character Set.
 /// This is the base class for all character sets.
@@ -30,7 +29,7 @@ class Charset {
   final List<String> identifiers;
 
   /// Internal constant constructor.
-  const Charset._(this.name, this.language, this.identifiers);
+  const Charset(this.name, this.language, this.identifiers);
 
   /// The minimum value.
   int get min => kMin;
@@ -73,15 +72,9 @@ class Charset {
     return true;
   }
 
-  /// Returns an ASCII decoder
-//  Decoder get decoder => cvt.ascii.decode;
-
   /// Decode [list] into a [String].
   String decode(Uint8List list, {bool allowInvalid = true}) =>
       cvt.ascii.decode(list, allowInvalid: allowInvalid);
-
-  /// Returns an ASCII encoder.
-//  Encoder get encoder => cvt.ascii.encode;
 
   /// Encode [s] into a [Uint8List].
   Uint8List encode(String s) => cvt.ascii.encode(s);
@@ -110,8 +103,8 @@ class Charset {
 
 /// The Latin (ISO-8859-1) Character Sets.
 class Latin extends Charset {
-  const Latin._(String name, String language, List<String> identifiers)
-      : super._(name, language, identifiers);
+  const Latin(String name, String language, List<String> identifiers)
+      : super(name, language, identifiers);
 
   @override
   int get min => kMin;
@@ -165,8 +158,8 @@ class Latin extends Charset {
 
 /// The Latin 1 (ISO-8859-1) Character Set.
 class Utf8 extends Charset {
-  const Utf8._(String name, List<String> identifiers)
-      : super._(name, 'all', identifiers);
+  const Utf8(String name, List<String> identifiers)
+      : super(name, 'all', identifiers);
 
   @override
   int get min => kMin;
@@ -250,47 +243,47 @@ class Utf8 extends Charset {
 }
 
 /// Constant definition of ASCII character set.
-const Charset ascii = Charset._(
+const Charset ascii = Charset(
     'ASCII-1', 'US English', ['ASCII', 'US-ASCII', 'ISO_IR 6', 'ISO/IEC 646']);
 
 /// Constant definition of [latin1] character set.
-const Latin latin1 = Latin._('Latin1', 'Western Europe',
+const Latin latin1 = Latin('Latin1', 'Western Europe',
     ['ISO-8859-1', 'ISO-IR 100', 'Latin1', 'Latin-1']);
 
 /// Constant definition of [latin2] character set.
-const Latin latin2 = Latin._('Latin2', 'Eastern Europe',
+const Latin latin2 = Latin('Latin2', 'Eastern Europe',
     ['ISO-8859-1', 'ISO-IR 101', 'Latin2', 'Latin-2']);
 
 /// Constant definition of [latin3] character set.
-const Latin latin3 = Latin._(
+const Latin latin3 = Latin(
     'Latin3', 'Europe', ['ISO-8859-1', 'ISO-IR 109', 'Latin3', 'Latin-3']);
 
 /// Constant definition of [latin4] character set.
-const Latin latin4 = Latin._(
+const Latin latin4 = Latin(
     'Latin4', 'Europe', ['ISO-8859-1', 'ISO-IR 110', 'Latin4', 'Latin-4']);
 
 /// Constant definition of [latin5] character set.
-const Latin latin5 = Latin._(
+const Latin latin5 = Latin(
     'Latin5', 'Cyrillic', ['ISO-8859-1', 'ISO-IR 144', 'Latin5', 'Latin-5']);
 
 /// Constant definition of [latin6] character set.
-const Latin latin6 = Latin._(
+const Latin latin6 = Latin(
     'Latin6', 'Arabic', ['ISO-8859-1', 'ISO-IR 127', 'Latin6', 'Latin-6']);
 
 /// Constant definition of [latin7] character set.
-const Latin latin7 = Latin._(
+const Latin latin7 = Latin(
     'Latin7', 'Greek', ['ISO-8859-7', 'ISO-IR 126', 'Latin7', 'Latin-7']);
 
 /// Constant definition of [latin8] character set.
-const Latin latin8 = Latin._(
+const Latin latin8 = Latin(
     'Latin8', 'Hebrew', ['ISO-8859-8', 'ISO-IR 138', 'Latin8', 'Latin-8']);
 
 /// Constant definition of [latin9] character set.
-const Latin latin9 = Latin._('Latin9', 'Latin Alphabet 5',
+const Latin latin9 = Latin('Latin9', 'Latin Alphabet 5',
     ['ISO-8859-9', 'ISO-IR 148', 'Latin9', 'Latin-9']);
 
 /// Constant definition of UTF8 character set.
-const Utf8 utf8 = Utf8._('UTF8', ['UTF8', 'ISO-IR 192', 'UTF-8']);
+const Utf8 utf8 = Utf8('UTF8', ['UTF8', 'ISO-IR 192', 'UTF-8']);
 
 /// Pseudonym for [utf8]
 const Utf8 utf8Charset = utf8;
