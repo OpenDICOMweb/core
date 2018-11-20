@@ -469,7 +469,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        print(vList0);
+        log.debug('vList0: $vList0');
         final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
