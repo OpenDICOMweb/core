@@ -373,7 +373,7 @@ void main() {
         final m = s.substring(3, 5);
         final sc = s.substring(6, 8);
         var ms = 0;
-        var us = 0;
+        const us = 0;
         if (s.contains('.')) {
           ms = int.parse(s.substring(9, 12));
         }

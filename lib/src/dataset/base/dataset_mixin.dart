@@ -359,8 +359,9 @@ abstract class DatasetMixin {
   /// Deletes all [Element]s in _this_ that have a Tag Code in [codes].
   /// If there is no [Element] with one of the codes _this_ does nothing.
   List<Element> deleteCodes(List<int> codes) {
-    assert(codes != null && codes.isNotEmpty);
+    assert(codes != null);
     final deleted = <Element>[];
+    if (codes.isEmpty) return deleted;
     for (var code in codes) {
       final e = deleteCode(code);
       if (e != null) deleted.add(e);
@@ -458,18 +459,31 @@ abstract class DatasetMixin {
   List<int> findAllPrivateCodes({bool recursive = false}) {
     final privates = <int>[];
     for (var e in elements) if (e.isPrivate) privates.add(e.code);
+    if (recursive) {
+      for (var sq in sequences) {
+        for (var i = 0; i < sq.items.length; i++) {
+          final Iterable<int> codes =
+            sq.items.elementAt(i).findAllPrivateCodes(recursive: true);
+          privates.addAll(codes);
+        }
+      }
+    }
     return privates;
   }
 
+  // Urgent: change the structure of privates and deleted to be:
+  // code or [sqCode [codes]]
   List<Element> deleteAllPrivate({bool recursive = false}) {
     final privates = findAllPrivateCodes(recursive: recursive);
+    if (privates.isEmpty && recursive == false) return <Element>[];
+    print('privates(${privates.length}): $privates');
     final deleted = deleteCodes(privates);
     if (recursive) {
       // Fix: you cant tell what sequence the element was in.
       for (var sq in sequences) {
-        for (var i = 0; i < sq.items.length; i++) {
-          final Iterable<int> codes =
-              sq.items.elementAt(i).findAllPrivateCodes();
+        final items = sq.items;
+        for (var item in items) {
+          final Iterable<int> codes = item.findAllPrivateCodes(recursive: true);
           final elements = deleteCodes(codes);
           deleted.addAll(elements);
         }

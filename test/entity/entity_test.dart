@@ -179,8 +179,7 @@ void main() {
       final e0 = CStag(PTag.kPatientIdentityRemoved, values0);
       rds0.add(e0);
 
-      final dI0 = DeIdentify(rds0);
-      dI0.addPatientIdentityRemoved(rds0);
+      DeIdentify(rds0).addPatientIdentityRemoved(rds0);
       expect(rds0.lookup(e0.index).values == values0, true);
 
       final rds1 = TagRootDataset.empty();
@@ -188,22 +187,19 @@ void main() {
       final e1 = CStag(PTag.kPatientIdentityRemoved, values1);
       rds1.add(e1);
 
-      final dI1 = DeIdentify(rds1);
-      dI1.addPatientIdentityRemoved(rds1);
+      DeIdentify(rds1).addPatientIdentityRemoved(rds1);
       expect(rds1.lookup(e1.index).values == values1, false);
       expect(e1.values == values0, true);
 
       final rds2 = TagRootDataset.empty();
-      final dI2 = DeIdentify(rds2);
-      dI2.addPatientIdentityRemoved(rds2);
+      DeIdentify(rds2).addPatientIdentityRemoved(rds2);
       expect(rds2.lookup(e0.index).values == values0, true);
 
       final rds3 = TagRootDataset.empty();
       final e2 = CStag(PTag.kSmokingStatus, values0);
       rds3.add(e2);
 
-      final dI3 = DeIdentify(rds3);
-      dI3.addPatientIdentityRemoved(rds3);
+      DeIdentify(rds3).addPatientIdentityRemoved(rds3);
       expect(rds3.lookup(e2.index).values == values0, true);
     });
   });

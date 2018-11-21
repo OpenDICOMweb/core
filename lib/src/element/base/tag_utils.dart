@@ -49,11 +49,14 @@ Tag lookupTagByCode(int code, int vrIndex, Dataset ds) {
 int getPixelDataVR(int code, int vrIndex, Dataset ds, TransferSyntax ts) {
   if (code != kPixelData) return badTagCode(code, 'Not Pixel Data Tag Code');
   if (vrIndex == kOBIndex || vrIndex == kOWIndex) return vrIndex;
-  if (vrIndex == kUNIndex || vrIndex == kOBOWIndex) {
+  if (vrIndex != kUNIndex) return badVRIndex(vrIndex, null, -1);
+
+  if (ds != null && (vrIndex == kUNIndex || vrIndex == kOBOWIndex)) {
     final int pixelSize = ds[kBitsAllocated].value;
     return (pixelSize == 16) ? kOWIndex : kOBIndex;
   }
-  return badVRIndex(vrIndex, null, -1);
+  if (ts != null && ts.isEncapsulated) return kOBIndex;
+  return kUNIndex;
 }
 
 /// Returns a valid [vrIndex] given the current [vrIndex] and

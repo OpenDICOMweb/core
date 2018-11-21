@@ -18,7 +18,7 @@ const List<String> goodDcmDateList = [
   '20501231'
 ];
 
-const goodDcmParseDateList = [
+const List<String> goodDcmParseDateList = [
   '19500718',
   '19000101',
   '19700101',
@@ -49,7 +49,7 @@ const List<String> badDcmDateList = [
   '1970011a', // bad character in day
 ];
 
-const goodInetDateList = [
+const List<String> goodInetDateList = [
   '1950-07-18',
   '1900-01-01',
   '1970-01-01',

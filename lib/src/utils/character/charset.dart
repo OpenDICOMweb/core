@@ -103,6 +103,7 @@ class Charset {
 
 /// The Latin (ISO-8859-1) Character Sets.
 class Latin extends Charset {
+  /// Constructor.
   const Latin(String name, String language, List<String> identifiers)
       : super(name, language, identifiers);
 
@@ -158,6 +159,7 @@ class Latin extends Charset {
 
 /// The Latin 1 (ISO-8859-1) Character Set.
 class Utf8 extends Charset {
+  /// Constructor.
   const Utf8(String name, List<String> identifiers)
       : super(name, 'all', identifiers);
 
