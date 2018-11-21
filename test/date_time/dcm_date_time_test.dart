@@ -9,56 +9,14 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
+import 'date_time_test_data/date_data.dart';
+import 'date_time_test_data/date_time_data.dart';
+import 'date_time_test_data/time_data.dart';
+
 void main() {
   Server.initialize(
       name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.info);
 
-  const goodDcmDateTimeList = <String>[
-    '19500718105630',
-    '00000101010101',
-    '19700101000000',
-    '20161229000000',
-    '19991025235959',
-    '20170223122334.111111',
-    '20170223122334.111111+1100',
-    '20170223122334.111111-1000',
-    '20170223122334.111111+0930',
-    '20120228105630', // leap year
-    '20080229105630', // leap year
-    '20160229105630', // leap year
-    '20200125105630', // leap year
-    '20240229105630', // leap year
-  ];
-
-  const badDcmDateTimeList = <String>[
-    '19501318',
-    '19501318105630', //bad months
-    '19501032105630', // bad day
-    '00000000000000', // bad month and day
-    '19501032105660', // bad day and second
-    '00000032240212', // bad month and day and hour
-    '20161229006100', // bad minute
-    '-9700101226a22', // bad character in year minute
-    '1b7001012a1045', // bad character in year and hour
-    '19c001012210a2', // bad character in year and sec
-    '197d0101105630', // bad character in year
-    '1970a101105630', // bad character in month
-    '19700b01105630', // bad character in month
-    '197001a1105630', // bad character in day
-    '1970011a105630', // bad character in day
-    '20120230105630', // bad day in leap year
-    '20160231105630', // bad day in leap year
-    '20130229105630', // bad day in year
-    '20230229105630', // bad day in year
-    '20210229105630', // bad day in year
-    '20170223122334.111111+0', // bad timezone
-    '20170223122334.111111+01', // bad timezone
-    '20170223122334.111111+013', // bad timezone
-    '20170223122334.111111+1545', // bad timezone
-    '20170223122334.111111-1015', // bad timezone
-    '20170223122334.111111+0960', // bad timezone
-    '20170223122334.111111*0945', // bad timezone: special character
-  ];
   group('DcmDateTime', () {
     test('Good DcmDateTime', () {
       log.debug('Good DcmDateTime');
@@ -304,17 +262,16 @@ void main() {
       }
 
       final dt1 = DcmDateTime.fromMicroseconds(0);
-      print(dt1);
-      print(dt1.microseconds);
+      log..debug('dt1: $dt1')..debug(dt1.microseconds);
       expect(dt0.microseconds == 0, true);
 
-      print(dt0.inet);
-      print('microseconds: ${dt0.microseconds}');
-      print('year: ${dt0.year}');
-      print('month: ${dt0.month}');
-      print('day: ${dt0.day}');
-      print('hour: ${dt0.hour}');
-      print('minute: ${dt0.minute}');
+      log.debug('''dt0.inet:${dt0.inet})
+        microseconds: ${dt0.microseconds}')
+        year: ${dt0.year}')
+        month: ${dt0.month}')
+        day: ${dt0.day}')
+        hour: ${dt0.hour}')
+        minute: ${dt0.minute}''');
       //final add0 = dcmDT0.add();
       //print(add0);
     });
@@ -330,6 +287,10 @@ void main() {
         log.debug('add0.month: $add0');
         expect(add0.month == dt0.month + i, true);
       }
+
+      const months0 = 11;
+      final add0 = dt0.add(months: months0);
+      log.debug(add0.month);
     });
 
     test('DcmDateTime add day', () {
@@ -351,13 +312,14 @@ void main() {
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
 
-      print('dt0.hour: ${dt0.hour}');
+      log.debug('dt0.hour: ${dt0.hour}');
       const hours = 23;
       for (var i = 1; i < hours; i++) {
         final add0 = dt0.add(hours: i);
         //log.debug('add0.hours: $add0');
-        print('add0.hour: ${add0.hour}');
-        print('add0.hour: ${(dt0.hour + i) % 24}');
+        log
+          ..debug('add0.hour: ${add0.hour}')
+          ..debug('add0.hour: ${(dt0.hour + i) % 24}');
         expect(add0.hour == ((dt0.hour + i) % 24), true);
       }
     });
@@ -422,6 +384,25 @@ void main() {
       final sub0 = dt0.subtract(days: days);
       log.debug('sub0.day: $sub0');
       expect(sub0.day == dt0.day - days, true);
+    });
+
+    test('DcmDateTime fromDateTime', () {
+      for (var s0 in goodDcmDateList) {
+        final date = Date.parse(s0);
+        for (var s1 in goodDcmTimes) {
+          final time = Time.parse(s1);
+          for (var s2 in kValidDcmTZStrings) {
+            final tz = TimeZone.parse(s2);
+
+            final dt0 = DcmDateTime.fromDateTime(date, time, tz);
+            log.debug('dt0: $dt0');
+            expect(
+                dt0.microseconds ==
+                    (date.microseconds + time.microsecond + tz.microseconds),
+                true);
+          }
+        }
+      }
     });
   });
 }

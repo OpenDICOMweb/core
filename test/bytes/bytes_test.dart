@@ -326,7 +326,7 @@ void main() {
       expect(dReadBuffer0.rIndex == 0, true);
       expect(dReadBuffer0.wIndex == bytes0.length, true);
 
-      print(dReadBuffer0.readCode());
+      log.debug('dReadBuffer0.readCode(): ${dReadBuffer0.readCode()}');
     });
   });
 }

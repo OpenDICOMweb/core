@@ -69,11 +69,11 @@ void main() {
 
     test('sha256AgeAsString', () {
       final ham0 = sha256AgeAsString(kMaxAgeYearsInDays);
-      print('ham0: $ham0');
+      log.debug('ham0: $ham0');
       expect(ham0 == '613D', true);
 
       final ham1 = sha256AgeAsString(kMinAgeInDays);
-      print('ham1: $ham1');
+      log.debug('ham1: $ham1');
       expect(ham1 == '925D', true);
     });
 

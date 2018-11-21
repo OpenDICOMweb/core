@@ -598,7 +598,7 @@ void main() {
       final bd = Uint8.toByteData(testFrame);
 
       final uint8 = Uint8.fromByteData(bd);
-      print('L1: ${uint8.length}');
+      log.debug('L1: ${uint8.length}');
       expect(uint8, equals(frame.asUint8List()));
     });
   });
