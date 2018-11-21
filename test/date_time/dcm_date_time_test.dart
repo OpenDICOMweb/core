@@ -265,14 +265,13 @@ void main() {
       log..debug('dt1: $dt1')..debug(dt1.microseconds);
       expect(dt0.microseconds == 0, true);
 
-      log
-        ..debug(dt0.inet)
-        ..debug('microseconds: ${dt0.microseconds}')
-        ..debug('year: ${dt0.year}')
-        ..debug('month: ${dt0.month}')
-        ..debug('day: ${dt0.day}')
-        ..debug('hour: ${dt0.hour}')
-        ..debug('minute: ${dt0.minute}');
+      log.debug('''dt0.inet:${dt0.inet})
+        microseconds: ${dt0.microseconds}')
+        year: ${dt0.year}')
+        month: ${dt0.month}')
+        day: ${dt0.day}')
+        hour: ${dt0.hour}')
+        minute: ${dt0.minute}''');
       //final add0 = dcmDT0.add();
       //print(add0);
     });
