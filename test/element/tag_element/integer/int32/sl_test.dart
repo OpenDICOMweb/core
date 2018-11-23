@@ -455,8 +455,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList1 = rng.int32List(2, 2);
-        final e0 = SLtag(
-            PTag.kDisplayedAreaTopLeftHandCorner, vList1);
+        final e0 = SLtag(PTag.kDisplayedAreaTopLeftHandCorner, vList1);
         expect(e0.hasValidValues, true);
         expect(e0.check(), true);
         expect(e0[0], equals(vList1[0]));
@@ -481,6 +480,20 @@ void main() {
         final e1 = SLtag(PTag.kSelectorSLValue, vList1);
         log.debug('e0: $e0 , e1: $e1');
         expect(e0.valuesEqual(e1), false);
+      }
+    });
+
+    test('SL bulkdata and typedData', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.int32List(1, i);
+        final uint8List0 = vList.buffer.asUint8List();
+        final e0 = SLtag(PTag.kSelectorSLValue, vList);
+        expect(e0.hasValidValues, true);
+
+        log.debug('e0.bulkdata: ${e0.bulkdata}, e0.typedData: ${e0.typedData}');
+        expect(e0.bulkdata, equals(uint8List0));
+        expect(e0.bulkdata, equals(e0.typedData.buffer.asUint8List()));
+        expect(e0.typedData, equals(vList));
       }
     });
   });

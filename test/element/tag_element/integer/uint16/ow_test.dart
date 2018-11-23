@@ -433,6 +433,20 @@ void main() {
         expect(e0.valuesEqual(e1), false);
       }
     });
+
+    test('OW bulkdata and typedData', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.uint16List(1, i);
+        final uint8List0 = vList.buffer.asUint8List();
+        final e0 = OWtag(PTag.kSelectorOWValue, vList);
+        expect(e0.hasValidValues, true);
+
+        log.debug('e0.bulkdata: ${e0.bulkdata}, e0.typedData: ${e0.typedData}');
+        expect(e0.bulkdata, equals(uint8List0));
+        expect(e0.bulkdata, equals(e0.typedData.buffer.asUint8List()));
+        expect(e0.typedData, equals(vList));
+      }
+    });
   });
 
   group('OW Element', () {

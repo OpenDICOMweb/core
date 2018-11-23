@@ -386,13 +386,13 @@ void main() {
     test('OB equal', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint8List(1, i);
-        final bytesA =  Bytes.typedDataView(vList);
+        final bytesA = Bytes.typedDataView(vList);
         final uInt8List0 = bytesA.buffer.asUint8List();
-        final bytesB =  Bytes.typedDataView(vList);
+        final bytesB = Bytes.typedDataView(vList);
         final uInt8List1 = bytesB.buffer.asUint8List();
 
         final vList0 = rng.uint8List(2, 2);
-        final bytesC =  Bytes.typedDataView(vList0);
+        final bytesC = Bytes.typedDataView(vList0);
         final uInt8List2 = bytesC.buffer.asUint8List();
 
         final equal0 = Uint8.equal(uInt8List0, uInt8List1);
@@ -445,6 +445,19 @@ void main() {
       }
     });
 
+    test('OB bulkdata and typedData', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.uint8List(1, i);
+        final uint8List0 = vList.buffer.asUint8List();
+        final e0 = OBtag(PTag.kSelectorOBValue, vList);
+        expect(e0.hasValidValues, true);
+
+        log.debug('e0.bulkdata: ${e0.bulkdata}, e0.typedData: ${e0.typedData}');
+        expect(e0.bulkdata, equals(uint8List0));
+        expect(e0.bulkdata, equals(e0.typedData.buffer.asUint8List()));
+        expect(e0.typedData, equals(vList));
+      }
+    });
   });
 
   group('OB Element', () {
