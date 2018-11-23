@@ -51,14 +51,14 @@ void main() {
         final vList0 = Float64List.fromList(vList);
         final bd0 = vList0.buffer.asByteData();
         final lBd0 = Float64Mixin.toByteData(vList0);
-        log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
-            .asUint8List()}');
+        log.debug('lBd0: ${lBd0.buffer.asUint8List()},'
+            ' bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd0.buffer == bd0.buffer, true);
 
         final lBd1 = Float64Mixin.toByteData(vList0, asView: false);
-        log.debug('lBd1: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer
-            .asUint8List()}');
+        log.debug('lBd1: ${lBd1.buffer.asUint8List()},'
+            ' bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd1.buffer == bd0.buffer, false);
 
@@ -67,8 +67,8 @@ void main() {
         final bd1 = float32List0.buffer.asByteData();
         final lBd2 = Float64Mixin.toByteData(float32List0);
 
-        log.debug('lBd2: ${lBd2.buffer.asUint8List()}, bd1: ${bd1.buffer
-            .asUint8List()}');
+        log.debug('lBd2: ${lBd2.buffer.asUint8List()},'
+            ' bd1: ${bd1.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), isNot(bd1.buffer.asUint8List()));
         expect(lBd2.buffer == bd1.buffer, false);
       }
@@ -164,6 +164,15 @@ void main() {
       final u8List1 = float32.buffer.asUint8List();
       final uInt8List3 = Float64Mixin.toUint8List(vList1);
       expect(uInt8List3, isNot(u8List1));
+    });
+
+    test('float646Base getLength', () {
+      for (var i = 8; i < 80; i += 8) {
+        final vList = rng.float64List(i, i);
+        final getLen0 = Float64Mixin.getLength(vList.length);
+        final length = vList.length ~/ Float64Mixin.kSizeInBytes;
+        expect(getLen0 == length, true);
+      }
     });
   });
 }
