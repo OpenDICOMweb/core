@@ -6,27 +6,29 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.bytes;
+import 'dart:typed_data';
 
+import 'package:core/src/utils/bytes/byte_data_mixin.dart';
+import 'package:core/src/utils/bytes/new_bytes.dart';
 // ignore_for_file: public_member_api_docs
 
 abstract class GrowableMixin {
   /// The upper bound on the length of this [Bytes]. If [limit]
   /// is _null_ then its length cannot be changed.
   int get limit;
-  ByteData get _bd;
+  ByteData get bd;
   bool grow(int newLength);
 
-  int get length => _bd.lengthInBytes;
+  int get length => bd.lengthInBytes;
 
   set length(int newLength) {
-    if (newLength < _bd.lengthInBytes) return;
+    if (newLength < bd.lengthInBytes) return;
     grow(newLength);
   }
 
-  /// Ensures that [_bd] is at least [length] long, and grows
+  /// Ensures that [bd] is at least [length] long, and grows
   /// the buf if necessary, preserving existing data.
-  bool ensureLength(int length) => _ensureLength(_bd, length);
+  bool ensureLength(int length) => _ensureLength(bd, length);
 
   /// Ensures that [bd] is at least [minLength] long, and grows
   /// the buf if necessary, preserving existing data.
@@ -35,14 +37,14 @@ abstract class GrowableMixin {
 
 }
 
-class GrowableBytes extends Bytes with GrowableMixin {
+class GrowableBytes extends Bytes with ByteDataMixin, GrowableMixin {
   /// The upper bound on the length of this [Bytes]. If [limit]
   /// is _null_ then its length cannot be changed.
   @override
   final int limit;
 
   /// Returns a new [Bytes] of [length].
-  GrowableBytes([int length, Endian endian, this.limit = kDefaultLimit])
+  GrowableBytes([int length, Endian endian, this.limit = Bytes.kDefaultLimit])
       : super(length, endian);
 
   /// Returns a new [Bytes] of [length].
@@ -50,7 +52,7 @@ class GrowableBytes extends Bytes with GrowableMixin {
       : super(length, endian);
 
   GrowableBytes.from(Bytes bytes,
-      [int offset = 0, int length, Endian endian, this.limit = k1GB])
+      [int offset = 0, int length, Endian endian, this.limit = Bytes.kDefaultLimit])
       : super.from(bytes, offset, length, endian);
 
   GrowableBytes.typedDataView(TypedData td,
@@ -58,7 +60,7 @@ class GrowableBytes extends Bytes with GrowableMixin {
           int lengthInBytes,
           Endian endian,
           int limit])
-      : limit = limit ?? k1GB,
+      : limit = limit ?? Bytes.kDefaultLimit,
         super.typedDataView(td, offset, lengthInBytes, endian);
 
   /// Creates a new buffer of length at least [minLength] in size, or if
@@ -67,12 +69,12 @@ class GrowableBytes extends Bytes with GrowableMixin {
   /// Finally, the new buffer becomes the buffer for _this_.
   @override
   bool grow([int minLength]) {
-    final old = _bd;
-    _bd = _grow(old, minLength ??= old.lengthInBytes * 2);
-    return _bd == old;
+    final old = bd;
+    bd = _grow(old, minLength ??= old.lengthInBytes * 2);
+    return bd == old;
   }
 
-  static const int kMaximumLength = k1GB;
+  static const int kMaximumLength = Bytes.kDefaultLimit;
 }
 
 /// If [minLength] is less than or equal to the current length of
@@ -88,7 +90,7 @@ ByteData _reallyGrow(ByteData bd, int minLength) {
   var newLength = minLength;
   do {
     newLength *= 2;
-    if (newLength >= kDefaultLimit) return null;
+    if (newLength >= Bytes.kDefaultLimit) return null;
   } while (newLength < minLength);
   final newBD = ByteData(newLength);
   for (var i = 0; i < bd.lengthInBytes; i++) newBD.setUint8(i, bd.getUint8(i));

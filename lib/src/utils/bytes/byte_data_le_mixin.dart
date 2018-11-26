@@ -8,8 +8,6 @@
 //
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/bytes.dart';
-
 // ignore_for_file: public_member_api_docs
 
 // Move to global
@@ -26,23 +24,33 @@ mixin ByteDataLEMixin {
   String get endianness => 'LE';
 
   /// Returns an 8-bit integer values at [offset].
-  int getInt8(int offset) => bd.getInt8(offset);
-
   int getInt16(int offset) => bd.getInt16(offset, Endian.little);
-
   int getInt32(int offset) => bd.getInt32(offset, Endian.little);
-
   int getInt64(int offset) => bd.getInt64(offset, Endian.little);
 
-  int getUint8(int offset) => bd.getUint8(offset);
-
   int getUint16(int offset) => bd.getUint16(offset, Endian.little);
-
   int getUint32(int offset) => bd.getUint32(offset, Endian.little);
-
   int getUint64(int offset) => bd.getUint64(offset, Endian.little);
 
   double getFloat32(int offset) => bd.getFloat32(offset, Endian.little);
-
   double getFloat64(int offset) => bd.getFloat64(offset, Endian.little);
+
+  void setInt16(int offset, int value) =>
+      bd.setInt16(offset, value, Endian.little);
+  void setInt32(int offset, int value) =>
+      bd.setInt32(offset, value, Endian.little);
+  void setInt64(int offset, int value) =>
+      bd.setInt64(offset, value, Endian.little);
+
+  void setUint16(int offset, int value) =>
+      bd.setUint16(offset, value, Endian.little);
+  void setUint32(int offset, int value) =>
+      bd.setUint32(offset, value, Endian.little);
+  void setUint64(int offset, int value) =>
+      bd.setUint64(offset, value, Endian.little);
+
+  void setFloat32(int offset, double value) =>
+      bd.setFloat32(offset, value, Endian.little);
+  void setFloat64(int offset, double value) =>
+      bd.setFloat64(offset, value, Endian.little);
 }

@@ -9,7 +9,7 @@
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/utils/bytes/new_bytes.dart';
 import 'package:core/src/utils/bytes/constants.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/character/charset.dart';
@@ -22,33 +22,32 @@ import 'package:core/src/system.dart';
 bool showByteValues = false;
 int truncateBytesLength = 16;
 
-/// [BytesMixin] is a class that provides a read-only byte array that
+/// [ByteDataMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
 mixin ByteDataMixin {
   ByteData get bd;
-  int get bdLength;
-  Endian get endianness;
+  int get length;
+  String get endianness;
 
-  int getInt8(int i);
-  int getInt16(int i);
-  int getInt32(int i);
-  int getInt64(int i);
+  int getInt8(int offset);
+  int getInt16(int offset);
+  int getInt32(int offset);
+  int getInt64(int offset);
 
-  int getUint8(int i);
-  int getUint16(int i);
-  int getUint32(int i);
-  int getUint64(int i);
+  int getUint8(int offset);
+  int getUint16(int offset);
+  int getUint32(int offset);
+  int getUint64(int offset);
 
-  double getFloat32(int i);
-  double getFloat64(int i);
+  double getFloat32(int offset);
+  double getFloat64(int offset);
 
   // **** End of Interface
   // **** Extensions ****
 
-
-  Int32x4 getInt32x4(int index) {
-    assert(bdLength >= index + 16);
-    var i = index;
+  Int32x4 getInt32x4(int offset) {
+    assert(length >= offset + 16);
+    var i = offset;
     final w = getInt32(i);
     final x = getInt32(i += 4);
     final y = getInt32(i += 4);
@@ -56,9 +55,9 @@ mixin ByteDataMixin {
     return Int32x4(w, x, y, z);
   }
 
-  Float32x4 getFloat32x4(int index) {
-    assert(bdLength >= index + 16);
-    var i = index;
+  Float32x4 getFloat32x4(int offset) {
+    assert(length >= offset + 16);
+    var i = offset;
     final w = getFloat32(i);
     final x = getFloat32(i += 4);
     final y = getFloat32(i += 4);
@@ -66,27 +65,24 @@ mixin ByteDataMixin {
     return Float32x4(w, x, y, z);
   }
 
-  Float64x2 getFloat64x2(int index) {
-    assert(bdLength >= index + 16);
-    var i = index;
+  Float64x2 getFloat64x2(int offset) {
+    assert(length >= offset + 16);
+    var i = offset;
     final x = getFloat64(i);
     final y = getFloat64(i += 8);
     return Float64x2(x, y);
   }
 
-
   // **** Internal methods for creating copies and views of sub-regions.
-
 
   /// Returns the number of 32-bit elements from [offset] to
   /// [bd].lengthInBytes, where [offset] is the absolute offset in [bd].
   int _length64(int offset) {
-    final length = bdLength - offset;
-    if (length % 8 != 0) return -1;
-    return length ~/ 8;
+    final len = length - offset;
+    return (len % 8 != 0) ? -1 : len ~/ 8;
   }
 
-  bool _isAligned(int index, int size) => (index % size) == 0;
+  bool _isAligned(int offset, int size) => (offset % size) == 0;
 
   // offset is in bytes
   bool _isAligned16(int offset) => _isAligned(offset, 2);
@@ -97,7 +93,7 @@ mixin ByteDataMixin {
 
   /// Returns an [ByteData] view of the specified region of _this_.
   ByteData _viewOfBDRegion([int offset = 0, int length]) {
-    length ??= bdLength - offset;
+    length ??= length - offset;
     return bd.buffer.asByteData(_absIndex(offset), length);
   }
 
@@ -109,11 +105,11 @@ mixin ByteDataMixin {
 
   /// Creates an [ByteData] view of the specified region of _this_.
   ByteData asByteData([int offset = 0, int length]) =>
-      _viewOfBDRegion(offset, (length ??= bdLength) - offset);
+      _viewOfBDRegion(offset, (length ??= length) - offset);
 
   /// Creates an [Int8List] view of the specified region of _this_.
   Int8List asInt8List([int offset = 0, int length]) {
-    length ??= bdLength - offset;
+    length ??= length - offset;
     return bd.buffer.asInt8List(_absIndex(offset), length);
   }
 
@@ -125,19 +121,18 @@ mixin ByteDataMixin {
     length ??= _length16(offset);
     return (_isAligned16(index))
         ? bd.buffer.asInt16List(index, length)
-        : _getInt16List(offset, length);
+        : getInt16List(offset, length);
   }
 
   /// Returns the number of 32-bit elements from [offset] to
   /// [bd].lengthInBytes, where [offset] is the absolute offset in [bd].
   int _length16(int offset) {
-    final length = bdLength - offset;
-    if (length % 2 != 0) return -1;
-    return length ~/ 2;
+    final len = length - offset;
+    return (len % 2 != 0) ? -1 : len ~/ 2;
   }
 
   /// Creates an [Int16List] copy of the specified region of _this_.
-  Int16List _getInt16List([int offset = 0, int length]) {
+  Int16List getInt16List([int offset = 0, int length]) {
     length ??= _length16(offset);
     final list = Int16List(length);
     for (var i = 0, j = offset; i < length; i++, j += 2) list[i] = getInt16(j);
@@ -147,9 +142,8 @@ mixin ByteDataMixin {
   /// Returns the number of 32-bit elements from [offset] to
   /// [bd].lengthInBytes, where [offset] is the absolute offset in [bd].
   int _length32(int offset) {
-    final length = bdLength - offset;
-    if (length % 4 != 0) return -1;
-    return length ~/ 4;
+    final len = length - offset;
+    return (len % 4 != 0) ? -1 : len ~/ 4;
   }
 
   /// If [offset] is aligned on an 8-byte boundary, returns a [Int32List]
@@ -171,7 +165,6 @@ mixin ByteDataMixin {
     return list;
   }
 
-
   /// If [offset] is aligned on an 8-byte boundary, returns a [Int64List]
   /// view of the specified region; otherwise, creates a [Int64List] that
   /// is a copy of the specified region and returns it.
@@ -185,7 +178,7 @@ mixin ByteDataMixin {
 
   // Allows the removal of padding characters.
   Uint8List asUint8List([int offset = 0, int length]) {
-    length ??= bdLength;
+    length ??= length;
     final index = _absIndex(offset);
     return bd.buffer.asUint8List(index, length);
   }
@@ -250,7 +243,7 @@ mixin ByteDataMixin {
 
   /// Returns a [ByteData] that iss a copy of the specified region of _this_.
   ByteData _copyBDRegion(int offset, int length) {
-    final _length = length ?? bdLength;
+    final _length = length ?? length;
     final bdNew = ByteData(_length);
     for (var i = 0, j = offset; i < _length; i++, j++)
       bdNew.setUint8(i, bd.getUint8(j));
@@ -259,7 +252,7 @@ mixin ByteDataMixin {
 
   /// Creates a new [Bytes] from _this_ containing the specified region.
   Bytes sublist([int start = 0, int end]) {
-    final bd = _copyBDRegion(start, (end ??= bdLength) - start);
+    final bd = _copyBDRegion(start, (end ??= length) - start);
     return Bytes.fromByteData(bd, Endian.little);
   }
 
@@ -275,7 +268,7 @@ mixin ByteDataMixin {
 
   /// Creates an [Int8List] copy of the specified region of _this_.
   Int8List getInt8List([int offset = 0, int length]) {
-    length ??= bdLength;
+    length ??= length;
     final list = Int8List(length);
     for (var i = 0, j = offset; i < length; i++, j++) list[i] = bd.getInt8(j);
     return list;
@@ -292,7 +285,7 @@ mixin ByteDataMixin {
   // **** Unsigned Integer Lists
 
   Uint8List getUint8List([int offset = 0, int length]) {
-    length ??= bdLength;
+    length ??= length;
     final list = Uint8List(length);
     for (var i = 0, j = offset; i < length; i++, j++) list[i] = bd.getInt8(j);
     return list;
@@ -302,8 +295,7 @@ mixin ByteDataMixin {
   Uint16List getUint16List([int offset = 0, int length]) {
     length ??= _length16(offset);
     final list = Uint16List(length);
-    for (var i = 0, j = offset; i < length; i++, j += 2)
-      list[i] = getUint16(j);
+    for (var i = 0, j = offset; i < length; i++, j += 2) list[i] = getUint16(j);
     return list;
   }
 
@@ -311,8 +303,7 @@ mixin ByteDataMixin {
   Uint32List getUint32List([int offset = 0, int length]) {
     length ??= _length32(offset);
     final list = Uint32List(length);
-    for (var i = 0, j = offset; i < length; i++, j += 4)
-      list[i] = getUint32(j);
+    for (var i = 0, j = offset; i < length; i++, j += 4) list[i] = getUint32(j);
     return list;
   }
 
@@ -320,8 +311,7 @@ mixin ByteDataMixin {
   Uint64List getUint64List([int offset = 0, int length]) {
     length ??= _length64(offset);
     final list = Uint64List(length);
-    for (var i = 0, j = offset; i < length; i++, j += 8)
-      list[i] = getUint64(j);
+    for (var i = 0, j = offset; i < length; i++, j += 8) list[i] = getUint64(j);
     return list;
   }
 
@@ -356,7 +346,7 @@ mixin ByteDataMixin {
 
   // Allows the removal of padding characters.
   Uint8List _asUint8ListFromString([int offset = 0, int length]) {
-    length ??= bdLength;
+    length ??= length;
     if (length <= offset) return kEmptyUint8List;
     final index = _absIndex(offset);
     final lastIndex = length - 1;
@@ -372,7 +362,7 @@ mixin ByteDataMixin {
   /// region of _this_. Also allows the removal of a padding character.
   String stringFromAscii(
       {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength);
+    final v = _asUint8ListFromString(offset, length ?? length);
     return v.isEmpty ? '' : cvt.ascii.decode(v, allowInvalid: allowInvalid);
 //    final last = s.length - 1;
 //    final c = s.codeUnitAt(last);
@@ -398,7 +388,7 @@ mixin ByteDataMixin {
   /// Also, allows the removal of padding characters.
   String stringFromUtf8(
       {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength);
+    final v = _asUint8ListFromString(offset, length ?? length);
     return v.isEmpty ? '' : cvt.utf8.decode(v, allowMalformed: allowInvalid);
   }
 
@@ -417,7 +407,7 @@ mixin ByteDataMixin {
 
   String stringFromLatin(
       {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength);
+    final v = _asUint8ListFromString(offset, length ?? length);
     return v.isEmpty ? '' : cvt.latin1.decode(v, allowInvalid: allowInvalid);
   }
 
@@ -440,7 +430,7 @@ mixin ByteDataMixin {
       int length,
       bool allowInvalid = true,
       String separator = '\\'}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength);
+    final v = _asUint8ListFromString(offset, length ?? length);
     return v.isEmpty ? '' : charset.decode(v, allowInvalid: true);
   }
 
@@ -472,8 +462,8 @@ mixin ByteDataMixin {
   void _setInt32(int i, int v) => bd.setInt32(i, v, Endian.little);
   void _setInt64(int i, int v) => bd.setInt64(i, v, Endian.little);
 
-  void _setInt32x4(int index, Int32x4 v) {
-    var i = index;
+  void _setInt32x4(int offset, Int32x4 v) {
+    var i = offset;
     _setInt32(i, v.w);
     _setInt32(i += 4, v.x);
     _setInt32(i += 4, v.y);
@@ -489,16 +479,16 @@ mixin ByteDataMixin {
 
   void _setFloat64(int i, double v) => bd.setFloat64(i, v, Endian.little);
 
-  void _setFloat32x4(int index, Float32x4 v) {
-    var i = index;
+  void _setFloat32x4(int offset, Float32x4 v) {
+    var i = offset;
     _setFloat32(i, v.w);
     _setFloat32(i += 4, v.x);
     _setFloat32(i += 4, v.y);
     _setFloat32(i += 4, v.z);
   }
 
-  void _setFloat64x2(int index, Float64x2 v) {
-    var i = index;
+  void _setFloat64x2(int offset, Float64x2 v) {
+    var i = offset;
     _setFloat64(i, v.x);
     _setFloat64(i += 4, v.y);
   }
@@ -582,7 +572,6 @@ mixin ByteDataMixin {
       _setByteData(start, bd, offset, length);
 
   void _setByteData(int start, ByteData other, int offset, int length) {
-    length ?? bdLength;
     assert(_checkLength(offset, length, kUint8Size));
     for (var i = offset, j = start; i < length; i++, j++)
       _setUint8(j, other.getUint8(i));
@@ -803,7 +792,7 @@ mixin ByteDataMixin {
 
   // **** Internals
 
-  /// Checks that _bd[bdOffset, bdLength] >= vLengthInBytes
+  /// Checks that _bd[bdOffset, length] >= vLengthInBytes
   bool _checkLength(int bdOffset, int vLength, int size) {
     final vLengthInBytes = vLength * size;
     final bdLength = bd.lengthInBytes - (bd.offsetInBytes + bdOffset);
