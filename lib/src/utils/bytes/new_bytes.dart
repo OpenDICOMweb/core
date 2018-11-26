@@ -32,40 +32,44 @@ bool ignorePadding = true;
 
 /// [Bytes] is a class that provides a read-only byte array that supports both
 /// [Uint8List] and [ByteData] interfaces.
-class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
+abstract class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
-  ByteData _bd;
-
+  ByteData bd;
+  @override
+  Endian get endian;
+  @override
+  String get endianness;
 
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [kDefaultLength] and [endian] defaults
   /// to [Endian.host].
-  factory Bytes([int length = kDefaultLength, Endian endian]) {
+  factory Bytes([int length = kDefaultLength, Endian endian = Endian.little]) {
       endian ??= Endian.host;
-      return endian == Endian.little ? BytesLE._(length) : BytesBE._(length);
+      return endian == Endian.big ? BytesBE._(length) : BytesLE._(length);
   }
 
-  Bytes.view(Bytes bytes, [int offset = 0, int length, Endian endian])
-      : endian = endian ?? Endian.host,
-        _bd = _bdView(bytes._bd, offset, length ?? bytes.length);
-
+  factory Bytes.view(Bytes bytes, [int offset = 0, int length, Endian endian]) {
+    endian = endian ?? bytes.endian;
+    return endian == Endian.big ? BytesBE.view(bytes, offset, length)
+        : BytesLE.view(bytes, offset, length);
+  }
   /// Creates a new [Bytes] from [bytes] containing the specified region
   /// and [endian]ness. [endian] defaults to [Endian.host].
   Bytes.from(Bytes bytes, [int offset = 0, int length, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = _copyByteData(bytes._bd, offset, length ?? bytes.length);
+        bd = _copyByteData(bytes.bd, offset, length ?? bytes.length);
 
   /// Creates a new [Bytes] from [bd]. [endian] defaults to [Endian.host].
   Bytes.fromByteData(ByteData bd, [Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = bd;
+        bd = bd;
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.  [endian] defaults to [Endian.host].
   Bytes.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
+        bd = td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
             lengthInBytes ?? td.lengthInBytes);
 
   /// Creates a new [Bytes] from a [List<int>].  [endian] defaults
@@ -73,7 +77,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// are truncated.
   Bytes.fromList(List<int> list, [Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = (list is Uint8List)
+        bd = (list is Uint8List)
             ? list.buffer.asByteData()
             : Uint8List.fromList(list).buffer.asByteData();
 
@@ -231,38 +235,36 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
 class BytesLE extends ListBase<int> with BytesMixin, ByteDataLEMixin
     implements Comparable<Bytes> {
   @override
-  ByteData _bd;
+  ByteData bd;
 
 
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [kDefaultLength] and [endian] defaults
   /// to [Endian.host].
-  factory Bytes([int length = kDefaultLength, Endian endian]) {
-    endian ??= Endian.host;
-    return endian == Endian.little ? BytesLE._(length) : BytesBE._(length);
-  }
+  BytesLE._(int length) :bd = ByteData(length)
 
-  Bytes.view(Bytes bytes, [int offset = 0, int length, Endian endian])
-      : endian = endian ?? Endian.host,
-        _bd = _bdView(bytes._bd, offset, length ?? bytes.length);
+
+  Bytes.view(Bytes bytes, [int offset = 0, int length])
+      : length ??= bytes.length,
+        bd = bdView(bytes.bd, offset, length ?? bytes.length);
 
   /// Creates a new [Bytes] from [bytes] containing the specified region
   /// and [endian]ness. [endian] defaults to [Endian.host].
   Bytes.from(Bytes bytes, [int offset = 0, int length, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = _copyByteData(bytes._bd, offset, length ?? bytes.length);
+        bd = _copyByteData(bytes.bd, offset, length ?? bytes.length);
 
   /// Creates a new [Bytes] from [bd]. [endian] defaults to [Endian.host].
   Bytes.fromByteData(ByteData bd, [Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = bd;
+        bd = bd;
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.  [endian] defaults to [Endian.host].
   Bytes.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
+        bd = td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
             lengthInBytes ?? td.lengthInBytes);
 
   /// Creates a new [Bytes] from a [List<int>].  [endian] defaults
@@ -270,7 +272,7 @@ class BytesLE extends ListBase<int> with BytesMixin, ByteDataLEMixin
   /// are truncated.
   Bytes.fromList(List<int> list, [Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = (list is Uint8List)
+        bd = (list is Uint8List)
             ? list.buffer.asByteData()
             : Uint8List
             .fromList(list)
