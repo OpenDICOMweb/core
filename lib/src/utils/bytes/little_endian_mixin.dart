@@ -8,15 +8,10 @@
 //
 import 'dart:typed_data';
 
-// ignore_for_file: public_member_api_docs
-
-// Move to global
-bool showByteValues = false;
-int truncateBytesLength = 16;
-
-/// [BytesMixin] is a class that provides a read-only byte array that
+/// [LittleEndianMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
-mixin ByteDataLEMixin {
+mixin LittleEndianMixin {
+  /// The ByteData buffer
   ByteData get bd;
 
   Endian get endian => Endian.little;

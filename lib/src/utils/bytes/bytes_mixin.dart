@@ -16,12 +16,6 @@ import 'package:core/src/utils/character/charset.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/system.dart';
 
-// ignore_for_file: public_member_api_docs
-
-// Move to global
-bool showByteValues = false;
-int truncateBytesLength = 16;
-
 /// [ByteDataMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
 mixin ByteDataMixin {
@@ -790,6 +784,12 @@ mixin ByteDataMixin {
     return '$sb';
   }
 
+  /// If _true_ [toBDDescriptor] will include the values of individual bytes.
+  static bool showByteValues = false;
+
+  /// The length at which ByteData values will be truncated.
+  static  int truncateBytesLength = 16;
+
   // **** Internals
 
   /// Checks that _bd[bdOffset, length] >= vLengthInBytes
@@ -804,16 +804,24 @@ mixin ByteDataMixin {
   }
 }
 
+/// A class used to throw ByteData alignment errors.
 class AlignmentError extends Error {
+  /// ByteData
   final ByteData bd;
-  final int offsetInBytes;
-  final int lengthInBytes;
+  /// The start index in [bd].
+  final int start;
+  /// The length of [bd].
+  final int length;
+  /// The size of the alignment that caused this error.
   final int sizeInBytes;
 
+  /// Thrown when a ByteData alignment error occurs.
   AlignmentError(
-      this.bd, this.offsetInBytes, this.lengthInBytes, this.sizeInBytes);
+      this.bd, this.start, this.length, this.sizeInBytes);
 }
 
+/// A function that throws an [AlignmentError] if [throwOnError] is _true_;
+/// otherwise, returns _null_.
 // ignore: prefer_void_to_null
 Null alignmentError(
     ByteData bd, int offsetInBytes, int lengthInBytes, int sizeInBytes) {

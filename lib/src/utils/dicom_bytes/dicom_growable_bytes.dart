@@ -6,36 +6,66 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.dicom_bytes;
+import 'dart:typed_data';
+
+import 'package:core/src/utils/bytes/new_bytes.dart';
+import 'package:core/src/utils/bytes/growable_bytes.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 
 // ignore_for_file: public_member_api_docs
 
 /// A growable [DicomBytes].
-class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
+abstract class DicomGrowableBytes extends DicomBytes {
   /// Creates a growable [DicomBytes].
-  GrowableDicomBytes([int length, Endian endian, int limit = kDefaultLimit])
-      : super(length, endian, limit);
-
-  /// Returns a new [Bytes] of [length].
-  GrowableDicomBytes._(int length, Endian endian, int limit)
-      : super(length, endian, limit);
+  factory DicomGrowableBytes(
+          [int length = Bytes.kDefaultLength,
+          Endian endian = Endian.little,
+          int limit = Bytes.kDefaultLimit]) =>
+      endian == Endian.big
+          ? DicomGrowableBytesBE(length, limit)
+          : DicomGrowableBytesLE(length, limit);
 
   /// Creates a growable [DicomBytes] from [bytes].
-  factory GrowableDicomBytes.from(Bytes bytes,
+  factory DicomGrowableBytes.from(Bytes bytes,
           [int offset = 0,
           int length,
-          Endian endian,
-          int limit = kDefaultLimit]) =>
-      GrowableDicomBytes._from(bytes, offset, length, endian, limit);
-
-  GrowableDicomBytes._from(Bytes bytes, int offset, int length, Endian endian,
-      [int limit = kDefaultLimit])
-      : super.from(bytes, offset, length, endian, limit);
+          Endian endian = Endian.little,
+          int limit = Bytes.kDefaultLimit]) =>
+      endian == Endian.big
+          ? DicomGrowableBytesBE.from(bytes, offset, length, limit)
+          : DicomGrowableBytesLE.from(bytes, offset, length, limit);
 
   /// Creates a growable [DicomBytes] from a view of [td].
-  GrowableDicomBytes.typedDataView(TypedData td,
-      [int offset = 0, int lengthInBytes, Endian endian, int limit = k1GB])
-      : super.typedDataView(td, offset, lengthInBytes, endian, limit);
+  factory DicomGrowableBytes.typedDataView(TypedData td,
+          [int offset = 0,
+          int length,
+          Endian endian = Endian.little,
+          int limit = Bytes.kDefaultLimit]) =>
+      endian == Endian.big
+          ? DicomGrowableBytesBE._typedDataView(td, offset, length, limit)
+          : DicomGrowableBytesLE._typedDataView(td, offset, length, limit);
+}
+
+class DicomGrowableBytesLE extends DicomBytesLE with GrowableMixin {
+  /// The upper bound on the length of this [Bytes]. If [limit]
+  /// is _null_ then its length cannot be changed.
+  @override
+  final int limit;
+
+  /// Returns a new little endian [GrowableBytes] of [length].
+  DicomGrowableBytesLE._([int length, this.limit = Bytes.kDefaultLimit])
+      : super(length);
+
+  /// Returns a new little endian [GrowableBytes] copied from [bytes].
+  DicomGrowableBytesLE._from(Bytes bytes,
+      [int offset = 0, int length, this.limit = Bytes.kDefaultLimit])
+      : super.from(bytes, offset, length);
+
+  /// Returns a little endian [GrowableBytes]view of [td].
+  DicomGrowableBytesLE._typedDataView(TypedData td,
+      [int offset = 0, int lengthInBytes, this.limit = Bytes.kDefaultLimit])
+      : super.typedDataView(td, offset, lengthInBytes);
 }
 
 abstract class DicomWriterMixin {

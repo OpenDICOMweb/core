@@ -19,7 +19,6 @@ import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
 
-part 'package:core/src/utils/dicom_bytes/dicom_growable_bytes.dart';
 part 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
 part 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
 
@@ -35,20 +34,25 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
               ? EvrLongBytes.view(bytes, offset, end, endian)
               : EvrShortBytes.view(bytes, offset, end, endian);
 
-  DicomBytes._(int length, Endian endian) : super(length, endian);
-
   /// Creates a [DicomBytes] from a copy of [bytes].
-  DicomBytes.from(Bytes bytes, int start, int end, Endian endian)
-      : super.from(bytes, start, end, endian);
+  factory DicomBytes.from(Bytes bytes, int start, int end, Endian endian) =>
+      endian == Endian.big
+          ? BytesBE.from(bytes, start, end)
+          : BytesLE.from(bytes, start, end);
 
-  DicomBytes._view(Bytes bytes, [int offset = 0, int end, Endian endian])
-      : super.view(bytes, offset, end, endian);
+  factory DicomBytes._view(Bytes bytes,
+          [int offset = 0, int end, Endian endian = Endian.little]) =>
+      endian == Endian.big
+          ? BytesBE.view(bytes, offset, end)
+          : BytesLE.view(bytes, offset, end);
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.  [endian] defaults to [Endian.host].
-  DicomBytes.typedDataView(TypedData td,
-      [int offsetInBytes = 0, int lengthInBytes, Endian endian])
-      : super.typedDataView(td, offsetInBytes, lengthInBytes, endian);
+  factory DicomBytes.typedDataView(TypedData td,
+      [int offset = 0, int length, Endian endian = Endian.little]) =>
+      endian == Endian.big
+          ? BytesBE.typedDataView(td, offset, length)
+          : BytesLE.typedDataView(td, offset, length);
 
   @override
   String toString() {
@@ -101,6 +105,10 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
       bdNew.setUint8(i, bd.getUint8(j));
     return bdNew;
   }
+}
+
+class DicomBytesLE extends DicomBytes with LittleEndianMixin {
+
 }
 
 /// Checks the Value Field length.

@@ -16,19 +16,17 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-abstract class DicomBytesMixin {
-  bool get isEvr;
+mixin DicomBytesMixin {
   ByteData get bd;
+  bool get isEvr;
   int get vrCode;
   int get vrIndex;
   String get vrId;
   Endian get endian;
-  int get bdOffset;
-  int get bdLength;
   int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
-  int get length;
+
 
   int getUint16(int offset);
   int getUint8(int offset);
@@ -80,13 +78,13 @@ abstract class DicomBytesMixin {
   Tag get tag => Tag.lookup(code);
 
   /// Returns the length in bytes of _this_ Element.
-  int get eLength => bdLength;
+  int get eLength => bd.lengthInBytes;
 
   /// Returns _true_ if [vfLengthField] equals [kUndefinedLength].
   bool get hasUndefinedLength => vfLengthField == kUndefinedLength;
 
   /// Returns the actual length of the Value Field.
-  int get vfLength => bdLength - vfOffset;
+  int get vfLength => bd.lengthInBytes - vfOffset;
 
   /// Returns the Value Field bytes.
   Bytes get vfBytes => asBytes(vfOffset, vfLength);
@@ -100,7 +98,7 @@ abstract class DicomBytesMixin {
 
   /// Returns the Value Field as a Uint8List.
   Uint8List get vfUint8List =>
-      bd.buffer.asUint8List(bdOffset + vfOffset, vfLength);
+      bd.buffer.asUint8List(bd.offsetInBytes + vfOffset, vfLength);
 
   // ** Primitive Getters
 

@@ -10,8 +10,8 @@ part of odw.sdk.utils.dicom_bytes;
 
 // ignore_for_file: public_member_api_docs
 
-abstract class EvrBytes extends DicomBytes {
-  factory EvrBytes.from(Bytes bytes, int start, int vrIndex, int end) {
+class EvrDicomBytes extends DicomBytes {
+  factory EvrDicomBytes.from(Bytes bytes, int start, int vrIndex, int end) {
     if (isEvrShortVRIndex(vrIndex)) {
       return EvrShortBytes.from(bytes, start, end);
     } else if (isEvrLongVR(vrIndex)) {
@@ -21,12 +21,12 @@ abstract class EvrBytes extends DicomBytes {
     }
   }
 
-  EvrBytes._(int eLength, Endian endian) : super._(eLength, endian);
+  EvrDicomBytes._(int eLength, Endian endian) : super._(eLength, endian);
 
-  EvrBytes._from(Bytes bytes, int start, int end, Endian endian)
+  EvrDicomBytes._from(Bytes bytes, int start, int end, Endian endian)
       : super.from(bytes, start, end, endian ?? Endian.host);
 
-  factory EvrBytes.view(
+  factory EvrDicomBytes.view(
       Bytes bytes, int start, int vrIndex, int end, Endian endian) {
     if (isEvrShortVRIndex(vrIndex)) {
       return EvrShortBytes.view(bytes, start, end, endian);
@@ -37,7 +37,7 @@ abstract class EvrBytes extends DicomBytes {
     }
   }
 
-  EvrBytes._view(Bytes bytes, int offset, int length, Endian endian)
+  EvrDicomBytes._view(Bytes bytes, int offset, int length, Endian endian)
       : super._view(bytes, offset, length, endian);
 
   @override
@@ -53,7 +53,7 @@ abstract class EvrBytes extends DicomBytes {
   static const int kVROffset = 4;
 }
 
-class EvrShortBytes extends EvrBytes {
+class EvrShortBytes extends EvrDicomBytes {
   EvrShortBytes(int eLength, [Endian endian]) : super._(eLength, endian);
 
   EvrShortBytes.from(Bytes bytes, [int start = 0, int end, Endian endian])
@@ -105,7 +105,7 @@ class EvrShortBytes extends EvrBytes {
   static const int kHeaderLength = kVFOffset;
 }
 
-class EvrLongBytes extends EvrBytes {
+class EvrLongBytes extends EvrDicomBytes {
   EvrLongBytes(int eLength, [Endian endian]) : super._(eLength, endian);
 
   EvrLongBytes.from(Bytes bytes, [int start = 0, int end, Endian endian])

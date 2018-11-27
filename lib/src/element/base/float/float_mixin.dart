@@ -16,7 +16,7 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/element/base/float/float.dart';
 import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/utils/bytes/new_bytes.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 

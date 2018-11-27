@@ -17,9 +17,9 @@ import 'package:core/src/system.dart';
 import 'package:core/src/utils/character/charset.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string/string_lists.dart';
-import 'package:core/src/utils/bytes/byte_data_le_mixin.dart';
-import 'package:core/src/utils/bytes/byte_data_be_mixin.dart';
-import 'package:core/src/utils/bytes/byte_data_mixin.dart';
+import 'package:core/src/utils/bytes/little_endian_mixin.dart';
+import 'package:core/src/utils/bytes/big_endian_mixin.dart';
+import 'package:core/src/utils/bytes/bytes_mixin.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -46,10 +46,10 @@ abstract class Bytes extends ListBase<int>
   /// to [Endian.host].
   factory Bytes([int length = kDefaultLength, Endian endian = Endian.little]) {
     endian ??= Endian.host;
-    return endian == Endian.big ? BytesBE._(length) : BytesLE._(length);
+    return endian == Endian.big ? BytesBE(length) : BytesLE(length);
   }
 
-  Bytes._(this.bd);
+  Bytes.internal(this.bd);
 
   factory Bytes.view(Bytes bytes, [int offset = 0, int length, Endian endian]) {
     endian = endian ?? bytes.endian;
@@ -258,43 +258,42 @@ abstract class Bytes extends ListBase<int>
   static const int kMinLength = 16;
   static const int kDefaultLength = 1024;
   static const int kDefaultLimit = k1GB;
+
+  /// The canonical empty (zero length) [Bytes] object.
+  static final Bytes kEmptyBytes = Bytes(0);
 }
 
-/// The canonical empty (zero length) [Bytes] object.
-final Bytes kEmptyBytes = Bytes(0);
+
 
 /// [BytesLE] is a class that provides a read-only Little Endian byte array
 /// that supports both [Uint8List] and [ByteData] interfaces.
-class BytesLE extends Bytes with ByteDataLEMixin implements Comparable<Bytes> {
+class BytesLE extends Bytes with LittleEndianMixin implements Comparable<Bytes> {
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [Bytes.kDefaultLength].
-  factory BytesLE([int length = Bytes.kDefaultLength]) => BytesLE._(length);
-
-  /// Creates a new [Bytes] containing [length] zero elements.
-  /// [length] defaults to [Bytes.kDefaultLength].
-  BytesLE._(int length) : super._(ByteData(length));
+  BytesLE([int length = Bytes.kDefaultLength])
+      : super.internal(ByteData(length));
 
   BytesLE.view(Bytes bytes, [int offset = 0, int length])
-      : super._(_bdView(bytes.bd, offset, length ?? bytes.length));
+      : super.internal(_bdView(bytes.bd, offset, length ?? bytes.length));
 
   /// Creates a new [Bytes] from [bytes] containing the specified region.
   BytesLE.from(Bytes bytes, [int offset = 0, int length])
-      : super._(_copyByteData(bytes.bd, offset, length ?? bytes.length));
+      : super.internal(_copyByteData(bytes.bd, offset, length ?? bytes.length));
 
   /// Creates a new [Bytes] from [bd].
-  BytesLE.fromByteData(ByteData bd) : super._(bd);
+  BytesLE.fromByteData(ByteData bd) : super.internal(bd);
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.
   BytesLE.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes])
-      : super._(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
+      : super.internal(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
             lengthInBytes ?? td.lengthInBytes));
 
   /// Creates a new [Bytes] from a [List<int>]. Any values in [list]
   /// that are larger than 8-bits are truncated.
   BytesLE.fromList(List<int> list)
-      : super._(list is Uint8List
+      : super.internal(list is Uint8List
             ? list.buffer.asByteData()
             : Uint8List.fromList(list).buffer.asByteData());
 
@@ -391,42 +390,43 @@ class BytesLE extends Bytes with ByteDataLEMixin implements Comparable<Bytes> {
           _listToString(vList, maxLength, separator), charset ?? utf8);
 
   /// The canonical empty (zero length) [Bytes] object.
-  static final BytesLE kEmptyBytes = BytesLE._(0);
+  static final BytesLE kEmptyBytes = BytesLE(0);
 }
 
 
 /// [BytesBE] is a class that provides a read-only Little Endian byte array
 /// that supports both [Uint8List] and [ByteData] interfaces.
-class BytesBE extends Bytes with ByteDataBEMixin implements Comparable<Bytes> {
+class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [Bytes.kDefaultLength].
-  factory BytesBE([int length = Bytes.kDefaultLength]) => BytesBE._(length);
+  BytesBE([int length = Bytes.kDefaultLength])
+      : super.internal(ByteData(length));
 
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [Bytes.kDefaultLength].
-  BytesBE._(int length) : super._(ByteData(length));
+//  BytesBE._(int length) : super.internal(ByteData(length));
 
   BytesBE.view(Bytes bytes, [int offset = 0, int length])
-      : super._(_bdView(bytes.bd, offset, length ?? bytes.length));
+      : super.internal(_bdView(bytes.bd, offset, length ?? bytes.length));
 
   /// Creates a new [Bytes] from [bytes] containing the specified region.
   BytesBE.from(Bytes bytes, [int offset = 0, int length])
-      : super._(_copyByteData(bytes.bd, offset, length ?? bytes.length));
+      : super.internal(_copyByteData(bytes.bd, offset, length ?? bytes.length));
 
   /// Creates a new [Bytes] from [bd].
-  BytesBE.fromByteData(ByteData bd) : super._(bd);
+  BytesBE.fromByteData(ByteData bd) : super.internal(bd);
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.
   BytesBE.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes])
-      : super._(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
+      : super.internal(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
       lengthInBytes ?? td.lengthInBytes));
 
   /// Creates a new [Bytes] from a [List<int>]. Any values in [list]
   /// that are larger than 8-bits are truncated.
   BytesBE.fromList(List<int> list)
-      : super._(list is Uint8List
+      : super.internal(list is Uint8List
       ? list.buffer.asByteData()
       : Uint8List.fromList(list).buffer.asByteData());
 
@@ -523,7 +523,7 @@ class BytesBE extends Bytes with ByteDataBEMixin implements Comparable<Bytes> {
           _listToString(vList, maxLength, separator), charset ?? utf8);
 
   /// The canonical empty (zero length) [Bytes] object.
-  static final BytesBE kEmptyBytes = BytesBE._(0);
+  static final BytesBE kEmptyBytes = BytesBE(0);
 }
 
 String _listToString(List<String> vList, int maxLength, String separator) {
