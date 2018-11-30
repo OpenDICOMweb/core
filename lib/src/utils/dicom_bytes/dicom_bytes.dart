@@ -6,8 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-library odw.sdk.utils.dicom_bytes;
-
 import 'dart:typed_data';
 
 import 'package:core/src/global.dart';
@@ -18,21 +16,31 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
-
-part 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
-part 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
+import 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
+import 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
 
 /// A abstract subclass of [Bytes] that supports Explicit Value
 /// Representations (EVR) and Implicit Value Representations (IVR).
 abstract class DicomBytes extends Bytes with DicomBytesMixin {
   /// Creates a [DicomBytes] view of [bytes].
   factory DicomBytes.view(Bytes bytes, int vrIndex,
-          {bool isEvr = true, int offset = 0, int end, Endian endian}) =>
-      (!isEvr)
-          ? IvrBytes.view(bytes, offset, end, endian)
-          : (isEvrLongVR(vrIndex))
-              ? EvrLongBytes.view(bytes, offset, end, endian)
-              : EvrShortBytes.view(bytes, offset, end, endian);
+          {bool isEvr = true, int offset = 0, int end, Endian endian = Endian.little}) {
+    if (isEvr) {
+      if (isEvrLongVR(vrIndex)) {
+        return endian == Endian.big
+            ? EvrLongBE(bytes, offset, end)
+            : EvrLongLE(bytes, offset, end);
+      } else {
+        return endian == Endian.big
+            ? EvrShortBE(bytes, offset, end)
+            : EvrShortLE(bytes, offset, end);
+      }
+    } else {
+      return endian == Endian.bug
+          ? IvrBytesBE.view(bytes, offset, end)
+          : IvrBytesBE.view(bytes, offset, end);
+    }
+  }
 
   /// Creates a [DicomBytes] from a copy of [bytes].
   factory DicomBytes.from(Bytes bytes, int start, int end, Endian endian) =>
@@ -107,12 +115,8 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
   }
 }
 
-class DicomBytesLE extends DicomBytes with LittleEndianMixin {
-
-}
-
 /// Checks the Value Field length.
-bool _checkVFLengthField(int vfLengthField, int vfLength) {
+bool isValidVFLengthField(int vfLengthField, int vfLength) {
   if (vfLengthField != vfLength && vfLengthField != kUndefinedLength) {
     log.warn('** vfLengthField($vfLengthField) != vfLength($vfLength)');
     if (vfLengthField == vfLength + 1) {

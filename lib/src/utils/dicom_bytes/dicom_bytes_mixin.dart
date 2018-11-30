@@ -22,7 +22,6 @@ mixin DicomBytesMixin {
   int get vrCode;
   int get vrIndex;
   String get vrId;
-  Endian get endian;
   int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
@@ -59,7 +58,7 @@ mixin DicomBytesMixin {
 
   String toBDDescriptor(ByteData bd);
 
-  Bytes asBytes([int offset = 0, int length, Endian endian]);
+  Bytes asBytes([int offset = 0, int length]);
 
   // **** End of Interface
 

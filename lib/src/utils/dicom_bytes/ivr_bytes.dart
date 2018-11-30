@@ -6,63 +6,66 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.dicom_bytes;
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
+import 'package:core/src/vr.dart';
 
-// ignore_for_file: public_member_api_docs
+mixin IvrMixin {
+  int get vfLength;
+  int getUint32(int offset);
+  bool _checkVFLengthField(int vlf, int vfLength);
+  // **** End of Interface
 
-class IvrBytes extends DicomBytes {
-  IvrBytes(int eLength) : super._(eLength, Endian.little);
-
-  IvrBytes.from(Bytes bytes, int start, int end)
-      : super.from(bytes, start, end, Endian.little);
-
-  IvrBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
-      : super._view(bytes, start, end, endian);
-
-  /// Returns an [IvrBytes] with an empty Value Field.
-  factory IvrBytes.empty(
-      int code,
-      int vfLength,
-      int vrCode,
-      ) {
-    assert(vfLength.isEven);
-    return IvrBytes(kHeaderLength + vfLength)
-      ..ivrSetHeader(code, vfLength, vrCode);
-  }
-
-
-  /// Creates an [IvrBytes].
-  factory IvrBytes.makeFromBytes(
-    int code,
-    Bytes vfBytes,
-    int vrCode,
-  ) {
-    final vfLength = vfBytes.length;
-    assert(vfLength.isEven);
-    return IvrBytes(kHeaderLength + vfLength)
-      ..ivrSetHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes.bd);
-  }
-
-  @override
+  // int get kHeaderLength => kVFOffset;
   bool get isEvr => false;
-  @override
+
   int get vrCode => kUNCode;
-  @override
+
   int get vrIndex => kUNIndex;
-  @override
+
   String get vrId => vrIdFromIndex(vrIndex);
+
   VR get vr => VR.kUN;
-  @override
+
   int get vfOffset => kVFOffset;
-  @override
+
   int get vfLengthOffset => kVFLengthOffset;
 
-  @override
   int get vfLengthField {
     final vlf = getUint32(kVFLengthOffset);
     assert(_checkVFLengthField(vlf, vfLength));
     return vlf;
+  }
+
+  static const int kVFLengthOffset = 4;
+  static const int kVFOffset = 8;
+  static const int kHeaderLength = 8;
+}
+
+
+class IvrBytesLE extends BytesLE with DicomBytesMixin, IvrMixin {
+  IvrBytesLE(int eLength) : super(eLength);
+
+  IvrBytesLE.from(Bytes bytes, int start, int end)
+      : super.from(bytes, start, end);
+
+  IvrBytesLE.view(Bytes bytes, [int start = 0, int end])
+      : super.view(bytes, start, end);
+
+  /// Returns an [IvrBytesLE] with an empty Value Field.
+  factory IvrBytesLE.empty(int code, int vfLength, int vrCode) {
+    assert(vfLength.isEven);
+    return IvrBytesLE(IvrMixin.kHeaderLength + vfLength)
+      ..ivrSetHeader(code, vfLength, vrCode);
+  }
+
+  /// Creates an [IvrBytesLE].
+  factory IvrBytesLE.makeFromBytes(int code, Bytes vfBytes, int vrCode) {
+    final vfLength = vfBytes.length;
+    assert(vfLength.isEven);
+    return IvrBytesLE(IvrMixin.kHeaderLength + vfLength)
+      ..ivrSetHeader(code, vfLength, vrCode)
+      ..setByteData(IvrMixin.kVFOffset, vfBytes.bd);
   }
 
   /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
@@ -70,10 +73,40 @@ class IvrBytes extends DicomBytes {
   /// An error occurs if [start] is outside the range 0 .. [length],
   /// or if [end] is outside the range [start] .. [length].
   @override
-  IvrBytes sublist([int start = 0, int end]) =>
-      IvrBytes.from(this, start, (end ?? length) - start);
+  BytesLE sublist([int start = 0, int end]) =>
+      IvrBytesLE.from(this, start, (end ?? length) - start);
+}
 
-  static const int kVFLengthOffset = 4;
-  static const int kVFOffset = 8;
-  static const int kHeaderLength = 8;
+class IvrBytesBE extends BytesLE with DicomBytesMixin, IvrMixin {
+  IvrBytesBE(int eLength) : super(eLength);
+
+  IvrBytesBE.from(Bytes bytes, int start, int end)
+      : super.from(bytes, start, end);
+
+  IvrBytesBE.view(Bytes bytes, [int start = 0, int end])
+      : super.view(bytes, start, end);
+
+  /// Returns an [IvrBytesBE] with an empty Value Field.
+  factory IvrBytesBE.empty(int code, int vfLength, int vrCode) {
+    assert(vfLength.isEven);
+    return IvrBytesBE(IvrMixin.kHeaderLength + vfLength)
+      ..ivrSetHeader(code, vfLength, vrCode);
+  }
+
+  /// Creates an [IvrBytesBE].
+  factory IvrBytesBE.makeFromBytes(int code, Bytes vfBytes, int vrCode) {
+    final vfLength = vfBytes.length;
+    assert(vfLength.isEven);
+    return IvrBytesBE(IvrMixin.kHeaderLength + vfLength)
+      ..ivrSetHeader(code, vfLength, vrCode)
+      ..setByteData(IvrMixin.kVFOffset, vfBytes.bd);
+  }
+
+  /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
+  /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
+  /// An error occurs if [start] is outside the range 0 .. [length],
+  /// or if [end] is outside the range [start] .. [length].
+  @override
+  BytesLE sublist([int start = 0, int end]) =>
+      IvrBytesBE.from(this, start, (end ?? length) - start);
 }
