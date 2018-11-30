@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/character/ascii.dart';
@@ -15,6 +16,19 @@ import 'package:core/src/utils/dicom.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
+
+/// Checks the Value Field length.
+bool checkVFLengthField(int vfLengthField, int vfLength) {
+  if (vfLengthField != vfLength && vfLengthField != kUndefinedLength) {
+    log.warn('** vfLengthField($vfLengthField) != vfLength($vfLength)');
+    if (vfLengthField == vfLength + 1) {
+      log.warn('** vfLengthField: Odd length field: $vfLength');
+      return true;
+    }
+    return false;
+  }
+  return true;
+}
 
 mixin DicomBytesMixin {
   ByteData get bd;
