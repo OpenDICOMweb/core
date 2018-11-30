@@ -29,7 +29,6 @@ void main() {
         expect(bytes.offset == 0, true);
         expect(bytes.buffer == bytes.bd.buffer, true);
         expect(bytes.length == count, true);
-        expect(bytes.length == count, true);
         expect(bytes.length == bytes.length, true);
 
         expect(bytes.hashCode is int, true);
@@ -85,7 +84,6 @@ void main() {
 
         expect(bytes0.elementSizeInBytes == 1, true);
         expect(bytes0.offset == 0, true);
-        expect(bytes0.length == count, true);
         expect(bytes0.length == count, true);
         expect(bytes0.length == bytes.length, true);
 
@@ -161,8 +159,6 @@ void main() {
       expect(byteF0.offset == 0, true);
       expect(byteF0.buffer == byteF0.bd.buffer, true);
       expect(byteF0.length == bytes.length, true);
-      expect(byteF0.length == bytes.length, true);
-      expect(byteF0.length == byteF0.length, true);
       expect(byteF0.hashCode is int, true);
     });
 
@@ -176,8 +172,6 @@ void main() {
       expect(byteFL0.offset == 0, true);
       expect(byteFL0.buffer == byteFL0.bd.buffer, true);
       expect(byteFL0.length == list0.length, true);
-      expect(byteFL0.length == byteFL0.length, true);
-      expect(byteFL0.length == byteFL0.length, true);
       expect(byteFL0.hashCode is int, true);
     });
 
@@ -191,8 +185,6 @@ void main() {
       expect(byteFTD0.offset == 0, true);
       expect(byteFTD0.buffer == byteFTD0.bd.buffer, true);
       expect(byteFTD0.length == list0.length, true);
-      expect(byteFTD0.length == byteFTD0.length, true);
-      expect(byteFTD0.length == byteFTD0.length, true);
       expect(byteFTD0.hashCode is int, true);
 
       final floats = <double>[0.0, 1.0, 2.0, 3.0];
@@ -223,6 +215,19 @@ void main() {
 
       for (var i = 0; i < fl32List0.length; i++)
         expect(fl32List0[i] == fl32List3[i], true);
+    });
+
+    test('bytes fromByteData', () {
+      final list0 = rng.uint8List(1, 1);
+      final bd = list0.buffer.asByteData();
+      final byteFD0 = Bytes.fromByteData(bd);
+      log.debug('byteFD0: $byteFD0');
+
+      expect(byteFD0.endian == Endian.little, true);
+      expect(byteFD0.elementSizeInBytes == 1, true);
+      expect(byteFD0.offset == 0, true);
+      expect(byteFD0.length == list0.length, true);
+      expect(byteFD0.hashCode is int, true);
     });
 
     test('DSBytes', () {
@@ -327,6 +332,28 @@ void main() {
       expect(dReadBuffer0.wIndex == bytes0.length, true);
 
       log.debug('dReadBuffer0.readCode(): ${dReadBuffer0.readCode()}');
+    });
+
+    test('ReadBuffer', () {
+      final vList0 = rng.uint8List(1, 10);
+      final bytes = Uint8.toBytes(vList0);
+      final readBuffer0 = ReadBuffer(bytes);
+      log.debug('readBuffer0: $readBuffer0');
+
+      expect(readBuffer0.rIndex == bytes.offset, true);
+      expect(readBuffer0.wIndex == bytes.length, true);
+      expect(readBuffer0.buffer.asUint8List().elementAt(0) == vList0[0], true);
+      expect(readBuffer0.offset == bytes.offset, true);
+      expect(readBuffer0.bytes == bytes, true);
+
+      final readBuffer1 = ReadBuffer.fromList(vList0);
+      log.debug('readBuffer1: $readBuffer1');
+
+      expect(readBuffer1.rIndex == bytes.offset, true);
+      expect(readBuffer1.wIndex == bytes.length, true);
+      expect(readBuffer1.buffer.asUint8List().elementAt(0) == vList0[0], true);
+      expect(readBuffer1.offset == bytes.offset, true);
+      expect(readBuffer1.bytes == bytes, true);
     });
   });
 }

@@ -194,7 +194,7 @@ void main() {
 
     test('isValidHour', () {
       for (var h = 0; h < 24; h++) {
-        final isValid = isValidHour(23);
+        final isValid = isValidHour(h);
         log.debug('hour: $h');
         expect(isValid, true);
       }
@@ -239,7 +239,7 @@ void main() {
       }
 
       const inValidMillisecond = 1000;
-      final isValid = isValidHour(inValidMillisecond);
+      final isValid = isValidMillisecond(inValidMillisecond);
       log.debug('inValidMillisecond: $inValidMillisecond');
       expect(isValid, false);
     });

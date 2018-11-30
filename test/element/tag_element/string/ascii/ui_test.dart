@@ -1056,6 +1056,17 @@ void main() {
         log.debug('parseList0: $parseList0');
         expect(parseList0.elementAt(0).value, equals(vList[0]));
       }
+
+      global.throwOnError = false;
+      final parseList1 = UI.parseList(['asdf3f#4hg']);
+      expect(parseList1, isNull);
+
+      final parseList2 = UI.parseList(['as_%']);
+      expect(parseList2, isNull);
+
+      global.throwOnError = true;
+      expect(() => UI.parseList(['asdf3f#4gh']),
+          throwsA(const TypeMatcher<InvalidUidError>()));
     });
 
     test('UI tryParseList', () {
@@ -1065,6 +1076,15 @@ void main() {
         log.debug('tryParseList0: $tryParseList0');
         expect(tryParseList0.elementAt(0).value, equals(vList[0]));
       }
+
+      global.throwOnError = false;
+      final vList = rsg.getAEList(1, 1);
+      final tryParseList1 = UI.tryParseList(vList);
+      expect(tryParseList1, isNull);
+
+      global.throwOnError = true;
+      expect(() => UI.tryParseList(vList),
+          throwsA(const TypeMatcher<InvalidUidError>()));
     });
   });
 }

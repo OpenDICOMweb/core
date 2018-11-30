@@ -92,8 +92,7 @@ void main() {
     final tag4 = PTag.lookupByCode(kSeriesTime);
     final tag5 = PTag.lookupByCode(kAcquisitionDate);
     rootDS0
-      ..add(
-          UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+      ..add(UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
       ..add(UItag(tag2, [kExplicitVRLittleEndian]))
       ..add(UItag(tag3,
           ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
@@ -190,8 +189,7 @@ void main() {
       final tag4 = PTag.lookupByCode(kSeriesTime);
       final tag5 = PTag.lookupByCode(kAcquisitionDate);
       rootDS0
-        ..add(UItag(
-            tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+        ..add(UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
         ..add(UItag(tag2, [kExplicitVRLittleEndian]))
         ..add(UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
@@ -200,8 +198,7 @@ void main() {
 
       // rootDS1
       final rootDS1 = TagRootDataset.empty()
-        ..add(UItag(
-            tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+        ..add(UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
         ..add(UItag(tag2, [kExplicitVRLittleEndian]))
         ..add(UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
@@ -213,8 +210,7 @@ void main() {
 
       // rootDS2
       final rootDS2 = TagRootDataset.empty()
-        ..add(UItag(
-            tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+        ..add(UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
         ..add(UItag(tag2, [kExplicitVRLittleEndian]))
         ..add(UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
@@ -397,10 +393,8 @@ void main() {
       // Make Item with 3 Elements
       //    final rds0 = TagRootDataset.empty();
       rds[kRecognitionCode] = SHtag(PTag.kRecognitionCode, ['foo bar']);
-      rds[kInstitutionAddress] =
-          STtag(PTag.kInstitutionAddress, ['foo bar']);
-      rds[kExtendedCodeMeaning] =
-          LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
+      rds[kInstitutionAddress] = STtag(PTag.kInstitutionAddress, ['foo bar']);
+      rds[kExtendedCodeMeaning] = LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
       valuesList.add(TagItem.fromList(rds, rds));
       expect(rds.length == 3, true);
 
@@ -848,9 +842,31 @@ void main() {
       final sl0 = SLtag(PTag.kReferencePixelX0, [458]);
 
       final rootDS0 = TagRootDataset.empty()..add(da0)..add(sl0);
-      expect(rootDS0.normalizeDate(da0.index, Date.parse('19930822')),
-          equals(da0));
-      //expect(rootDS0.normalizeDate(sl0.index, Date.parse('19930822')));
+
+      final normalizeDA =
+          rootDS0.normalizeDate(da0.index, Date.parse('19930822'));
+      expect(normalizeDA, equals(da0));
+      expect(normalizeDA.values == da0.values, true);
+      expect(normalizeDA.values.isEmpty, false);
+
+      final normalizeDA0 =
+          rootDS0.normalizeDate(sl0.index, Date.parse('19930822'));
+      expect(normalizeDA0, isNull);
+
+      final normalizeDA1 =
+          rootDS0.normalizeDate(sl0.index, Date.parse('199308622'));
+      expect(normalizeDA1, isNull);
+
+      final normalizeDA2 =
+          rootDS0.normalizeDate(da0.index, Date.parse('199308622'));
+      expect(normalizeDA2, isNotNull);
+      expect(normalizeDA2.values == da0.values, true);
+      expect(normalizeDA2.values == <String>[], true);
+      expect(normalizeDA2.values.isEmpty, true);
+
+      global.throwOnError = true;
+      expect(() => rootDS0.normalizeDate(sl0.index, Date.parse('19930822')),
+          throwsA(const TypeMatcher<InvalidElementError>()));
     });
 
     test('[] and []=', () {
