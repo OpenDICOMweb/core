@@ -6,16 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:typed_data';
-
-import 'package:core/src/global.dart';
-import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/dicom.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/utils/string.dart';
-import 'package:core/src/vr.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
+import 'package:core/src/vr.dart';
 
 mixin EvrMixin {
   Map<int, VR> get vrByIndex;
@@ -41,12 +34,8 @@ mixin EvrMixin {
 mixin EvrShortMixin {
   int get vfLength;
   int getUint16(int vfLengthOffset);
-  bool _checkVFLengthField(int vlf, int vfLength);
+  bool checkVFLengthField(int vlf, int vfLength);
   // **** End of Interface
-
-  int get kVFLengthOffset => 6;
-  int get kVFOffset => 8;
-  int get kHeaderLength => kVFOffset;
 
   int get vfOffset => kVFOffset;
 
@@ -54,48 +43,52 @@ mixin EvrShortMixin {
 
   int get vfLengthField {
     final vlf = getUint16(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
+    assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
+
+  /// The offset of the Value Field Length field.
+  static const int kVFLengthOffset = 6;
+
+  /// The offset of the Value Field field.
+  static const int kVFOffset = 8;
+
+  /// The length of a short EVR header.
+  static const int kHeaderLength = kVFOffset;
 }
 
-class EvrShortLE extends BytesLE
-    with DicomBytesMixin, EvrMixin, EvrShortMixin {
-  EvrShortLE(int eLength) : super(eLength);
+/// A class implementing short EVR little endian DicomBytes.
+class EvrShortLE extends BytesLE with DicomBytesMixin, EvrMixin, EvrShortMixin {
+  /// Creates an empty short EVR little endian DicomBytes with [length].
+  EvrShortLE(int length) : super(length);
 
+  /// Creates a short EVR little endian DicomBytes from [bytes].
   EvrShortLE.from(Bytes bytes, [int start = 0, int end])
       : super.from(bytes, start, end);
 
+  /// Creates a short EVR little endian DicomBytes view of [bytes].
   EvrShortLE.view(Bytes bytes, [int start = 0, int end])
       : super.view(bytes, start, end);
 
-  // Urgent: rename .empty
-  factory EvrShortLE.makeEmpty(int code, int vfLength, int vrCode,
-     ) {
-    final e = EvrShortLE(kHeaderLength + vfLength, )
-      ..evrSetShortHeader(code, vfLength, vrCode);
+  /// Creates a short EVR little endian DicomBytes with a Value Field
+  /// containing all zeros.
+  factory EvrShortLE.empty(int code, int vfLength, int vrCode) {
+    final e = EvrShortLE(
+      EvrShortMixin.kHeaderLength + vfLength,
+    )..evrSetShortHeader(code, vfLength, vrCode);
     return e;
   }
 
-  factory EvrShortLE.makeFromBytes(int code, Bytes vfBytes, int vrCode) {
+  /// Returns a new short EVR DicomBytes.
+  factory EvrShortLE.fromBytes(int code, Bytes vfBytes, int vrCode) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = EvrShortLE(kHeaderLength + vfLength, )
+    final e = EvrShortLE(
+      EvrShortMixin.kHeaderLength + vfLength,
+    )
       ..evrSetShortHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes.bd);
+      ..setByteData(EvrShortMixin.kVFOffset, vfBytes.bd);
     return e;
-  }
-
-  @override
-  int get vfOffset => kVFOffset;
-  @override
-  int get vfLengthOffset => kVFLengthOffset;
-
-  @override
-  int get vfLengthField {
-    final vlf = getUint16(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
-    return vlf;
   }
 
   /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
@@ -107,46 +100,38 @@ class EvrShortLE extends BytesLE
       EvrShortLE.from(this, start, (end ?? length) - start);
 }
 
-class EvrShortBE extends BytesLE
-    with DicomBytesMixin, EvrMixin, EvrShortMixin {
-  EvrShortBE(int eLength) : super(eLength);
+/// A class implementing short EVR big endian DicomBytes.
+class EvrShortBE extends BytesLE with DicomBytesMixin, EvrMixin, EvrShortMixin {
+  /// Creates an empty short EVR big endian DicomBytes with [length].
+  EvrShortBE(int length) : super(length);
 
+  /// Creates a short EVR big endian DicomBytes from [bytes].
   EvrShortBE.from(Bytes bytes, [int start = 0, int end])
       : super.from(bytes, start, end);
 
+  /// Creates a short EVR big endian DicomBytes view of [bytes].
   EvrShortBE.view(Bytes bytes, [int start = 0, int end])
       : super.view(bytes, start, end);
 
-  // Urgent: rename .empty
-  factory EvrShortBE.makeEmpty(int code, int vfLength, int vrCode,
-      ) {
-    final e = EvrShortBE(kHeaderLength + vfLength, )
-      ..evrSetShortHeader(code, vfLength, vrCode);
+  /// Creates a short EVR DicomBytes with an empty (all zeros) Value Field.
+  factory EvrShortBE.empty(int code, int vfLength, int vrCode) {
+    final e = EvrShortBE(
+      EvrShortMixin.kHeaderLength + vfLength,
+    )..evrSetShortHeader(code, vfLength, vrCode);
     return e;
   }
 
-  factory EvrShortBE.makeFromBytes(int code, Bytes vfBytes, int vrCode) {
+  /// Creates a short EVR DicomBytes.
+  factory EvrShortBE.fromBytes(int code, Bytes vfBytes, int vrCode) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = EvrShortBE(kHeaderLength + vfLength, )
+    final e = EvrShortBE(
+      EvrShortMixin.kHeaderLength + vfLength,
+    )
       ..evrSetShortHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes.bd);
+      ..setByteData(EvrShortMixin.kVFOffset, vfBytes.bd);
     return e;
   }
-
-/*
-  @override
-  int get vfOffset => kVFOffset;
-  @override
-  int get vfLengthOffset => kVFLengthOffset;
-
-  @override
-  int get vfLengthField {
-    final vlf = getUint16(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
-    return vlf;
-  }
-*/
 
   /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
   /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
@@ -160,11 +145,8 @@ class EvrShortBE extends BytesLE
 mixin EvrLongMixin {
   int get vfLength;
   int getUint32(int kVFLengthOffset);
-  bool _checkVFLengthField(int vlf, int vfLength);
+  bool checkVFLengthField(int vlf, int vfLength);
   // **** End of Interface
-  int get kVFLengthOffset => 8;
-  int get kVFOffset => 12;
-  int get kHeaderLength => kVFOffset;
 
   int get vfOffset => kVFOffset;
 
@@ -172,52 +154,50 @@ mixin EvrLongMixin {
 
   int get vfLengthField {
     final vlf = getUint32(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
+    assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
+
+  /// The offset of the Value Field Length field.
+  static const int kVFLengthOffset = 8;
+
+  /// The offset of the Value Field field.
+  static const int kVFOffset = 12;
+
+  /// The length of the long EVR header field.
+  static const int kHeaderLength = kVFOffset;
 }
 
-class EvrLongBE extends BytesBE with DicomBytesMixin, EvrMixin, EvrLongMixin  {
-  EvrLongBE(int eLength) : super(eLength);
+/// A class implementing long EVR big endian DicomBytes.
+class EvrLongBE extends BytesBE with DicomBytesMixin, EvrMixin, EvrLongMixin {
+  /// Creates a long EVR big endian DicomBytes of [length] containing all zeros.
+  EvrLongBE(int length) : super(length);
 
+  /// Creates a long EVR big endian DicomBytes.
   EvrLongBE.from(Bytes bytes, [int start = 0, int end])
       : super.from(bytes, start, end);
 
+  /// Creates a long EVR big endian DicomBytes view of [bytes].
   EvrLongBE.view(Bytes bytes, [int start = 0, int end])
       : super.view(bytes, start, end);
 
-  // Urgent: rename .empty
-  factory EvrLongBE.makeEmpty(int code, int vfLength, int vrCode,
-      ) {
+  /// Creates a long EVR big endian DicomBytes with an empty Value Field.
+  factory EvrLongBE.empty(int code, int vfLength, int vrCode) {
     //assert(vfLength.isEven);
-    final e = EvrLongBE(kHeaderLength + vfLength)
+    final e = EvrLongBE(EvrLongMixin.kHeaderLength + vfLength)
       ..evrSetLongHeader(code, vfLength, vrCode);
     return e;
   }
 
-  // Urgent: rename .fromBytes
-  factory EvrLongBE.makeFromBytes(int code, Bytes vfBytes, int vrCode) {
+  /// Creates a long EVR big endian DicomBytes.
+  factory EvrLongBE.fromBytes(int code, Bytes vfBytes, int vrCode) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = EvrLongBE(kHeaderLength + vfLength)
+    final e = EvrLongBE(EvrLongMixin.kHeaderLength + vfLength)
       ..evrSetLongHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes.bd);
+      ..setByteData(EvrLongMixin.kVFOffset, vfBytes.bd);
     return e;
   }
-/*
-
-  @override
-  int get vfOffset => kVFOffset;
-  @override
-  int get vfLengthOffset => kVFLengthOffset;
-
-  @override
-  int get vfLengthField {
-    final vlf = getUint32(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
-    return vlf;
-  }
-*/
 
   /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
   /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.

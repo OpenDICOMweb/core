@@ -13,7 +13,7 @@ import 'package:core/src/vr.dart';
 mixin IvrMixin {
   int get vfLength;
   int getUint32(int offset);
-  bool _checkVFLengthField(int vlf, int vfLength);
+  bool checkVFLengthField(int vlf, int vfLength);
   // **** End of Interface
 
   // int get kHeaderLength => kVFOffset;
@@ -33,22 +33,30 @@ mixin IvrMixin {
 
   int get vfLengthField {
     final vlf = getUint32(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
+    assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
 
+  /// The offset of the Value Field Length field.
   static const int kVFLengthOffset = 4;
+
+  /// The offset of the Value Field field.
   static const int kVFOffset = 8;
+
+  /// The length of IVR header field.
   static const int kHeaderLength = 8;
 }
 
-
+/// A class implementing IVR little endian DicomBytes.
 class IvrBytesLE extends BytesLE with DicomBytesMixin, IvrMixin {
-  IvrBytesLE(int eLength) : super(eLength);
+  /// Creates a IVR little Endian DicomBytes containing all zeros.
+  IvrBytesLE(int length) : super(length);
 
+  /// Creates a IVR little Endian DicomBytes from [bytes].
   IvrBytesLE.from(Bytes bytes, int start, int end)
       : super.from(bytes, start, end);
 
+  /// Creates a IVR little Endian DicomBytes view of [bytes].
   IvrBytesLE.view(Bytes bytes, [int start = 0, int end])
       : super.view(bytes, start, end);
 
@@ -77,12 +85,16 @@ class IvrBytesLE extends BytesLE with DicomBytesMixin, IvrMixin {
       IvrBytesLE.from(this, start, (end ?? length) - start);
 }
 
+/// A class implementing IVR big endian DicomBytes.
 class IvrBytesBE extends BytesLE with DicomBytesMixin, IvrMixin {
-  IvrBytesBE(int eLength) : super(eLength);
+  /// Creates a IVR big Endian DicomBytes containing all zeros.
+  IvrBytesBE(int length) : super(length);
 
+  /// Creates a IVR big Endian DicomBytes from [bytes].
   IvrBytesBE.from(Bytes bytes, int start, int end)
       : super.from(bytes, start, end);
 
+  /// Creates a IVR big Endian DicomBytes view of [bytes].
   IvrBytesBE.view(Bytes bytes, [int start = 0, int end])
       : super.view(bytes, start, end);
 
