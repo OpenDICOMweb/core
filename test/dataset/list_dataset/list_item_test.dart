@@ -619,6 +619,62 @@ void main() {
           throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
+    test('updateAll(string)', () {
+      final item = TagItem.empty(rds, null);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      item[as0.code] = as0;
+
+      final update0 = item.updateAll<String>(as0.index, vList: as0.values);
+      expect(update0.isEmpty, false);
+    });
+
+    test('updateAllF(string)', () {
+      final item = TagItem.empty(rds, null);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      item[as0.code] = as0;
+
+      final update0 = item.updateAllF<String>(as0.index, (n) => n);
+      expect(update0.isEmpty, false);
+    });
+
+    test('updateAll (int)', () {
+      final item = TagItem.empty(rds, null);
+      final vList0 = [kInt16Min];
+      final ss0 = SStag(PTag.kSelectorSSValue, vList0);
+      item.add(ss0);
+
+      final update2 = item.updateAll<int>(ss0.index, vList: <int>[]);
+      expect(update2.isEmpty, false);
+    });
+
+    test('updateAllF (int)', () {
+      final item = TagItem.empty(rds, null);
+      final vList0 = [kInt16Min];
+      final ss0 = SStag(PTag.kSelectorSSValue, vList0);
+      item.add(ss0);
+
+      final update2 = item.updateAllF<int>(ss0.index, (n) => n);
+      expect(update2.isEmpty, false);
+    });
+
+    test('updateAll (float)', () {
+      final item = TagItem.empty(rds, null);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item.add(fd0);
+
+      final update1 = item.updateAll<double>(fd0.index, vList: <double>[]);
+      expect(update1.isEmpty, false);
+    });
+
+    test('updateAllF (float)', () {
+      final item = TagItem.empty(rds, null);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item.add(fd0);
+
+      final update1 = item.updateAllF<double>(fd0.index, (n) => n);
+      expect(update1.isEmpty, false);
+    });
+
     test('hasElementsInRange', () {
       final item = ListItem.empty(rds, null);
       final as0 = AStag(PTag.kSelectorASValue, ['024Y']);
