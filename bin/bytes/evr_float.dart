@@ -91,7 +91,7 @@ void printEvr(ByteElement e, int actualVRCode, Bytes vf) {
   print('   vfUint8List: ${vf.asUint8List()}\n ****\n');
 }
 
-void printIvr(EvrDicomBytes e, Uint8List uint8List) {
+void printIvr(DicomBytes e, Uint8List uint8List) {
   print('${e.bd.buffer.asUint8List()}');
   print('$e');
   print('\n     length: ${8 + uint8List.length} actual ${e.length}');
