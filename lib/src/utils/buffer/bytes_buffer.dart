@@ -6,25 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-library odw.sdk.core.buffer;
-
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/error.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/dicom.dart';
-import 'package:core/src/utils/dicom_bytes.dart';
-
-import 'package:core/src/vr.dart';
-
-part 'read_buffer.dart';
-part 'read_buffer_mixin.dart';
-part 'write_buffer.dart';
-part 'write_buffer_mixin.dart';
-
-part 'package:core/src/utils/dicom_buffer/dicom_read_buffer.dart';
-part 'package:core/src/utils/dicom_buffer/dicom_write_buffer.dart';
 
 /// The base class for Buffer
 abstract class BytesBuffer {

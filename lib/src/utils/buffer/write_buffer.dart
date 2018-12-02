@@ -6,24 +6,29 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.core.buffer;
+import 'dart:typed_data';
+
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/buffer/write_buffer_mixin.dart';
 
 /// A writable [ByteBuffer].
 class WriteBuffer extends Object with WriteBufferMixin {
   @override
   GrowableBytes bytes;
+  /// Returns the current read index.
   @override
-  final int _rIndex;
+  final int rIndex;
+  /// Returns the current write index.
   @override
-  int _wIndex;
+  int wIndex;
 
   /// Creates an empty WriteBuffer.
   WriteBuffer(
       [int length = kDefaultLength,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-      : _rIndex = 0,
-        _wIndex = 0,
+      : rIndex = 0,
+        wIndex = 0,
         bytes = GrowableBytes(length, endian, limit);
 
   /// Creates a [WriteBuffer] from another [WriteBuffer].
@@ -32,12 +37,12 @@ class WriteBuffer extends Object with WriteBufferMixin {
       int length,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-      : _rIndex = offset,
-        _wIndex = offset,
+      : rIndex = offset,
+        wIndex = offset,
         bytes = GrowableBytes.from(wb.bytes, offset, length, endian, limit);
 
   /// Creates a WriteBuffer from a [GrowableBytes].
-  WriteBuffer.fromBytes(this.bytes, this._rIndex, this._wIndex);
+  WriteBuffer.fromBytes(this.bytes, this.rIndex, this.wIndex);
 
   /// Creates a [WriteBuffer] that uses a [TypedData] view of [td].
   WriteBuffer.typedDataView(TypedData td,
@@ -45,17 +50,14 @@ class WriteBuffer extends Object with WriteBufferMixin {
       int lengthInBytes,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-      : _rIndex = offset ?? 0,
-        _wIndex = lengthInBytes ?? td.lengthInBytes,
+      : rIndex = offset ?? 0,
+        wIndex = lengthInBytes ?? td.lengthInBytes,
         bytes = GrowableBytes.typedDataView(td, offset ?? 0,
             lengthInBytes ?? td.lengthInBytes, endian ?? Endian.host, limit);
 
-  /// Returns the current read index.
-  int get rIndex => _rIndex;
-
-  /// Returns the current write index.
-  int get wIndex => _wIndex;
-
   /// Returns the Endianness of _this_.
   Endian get endian => bytes.endian;
+
+  @override
+  bool grow(int minLength) => bytes.grow(minLength);
 }

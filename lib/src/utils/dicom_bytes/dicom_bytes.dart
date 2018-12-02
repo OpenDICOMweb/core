@@ -23,17 +23,20 @@ import 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
 /// Representations (EVR) and Implicit Value Representations (IVR).
 abstract class DicomBytes extends Bytes with DicomBytesMixin {
   /// Creates a [DicomBytes] view of [bytes].
-  factory DicomBytes.view(Bytes bytes, int vrIndex,
-          {bool isEvr = true, int offset = 0, int end, Endian endian = Endian.little}) {
+  Bytes view(Bytes bytes, int vrIndex,
+      {bool isEvr = true,
+      int offset = 0,
+      int end,
+      Endian endian = Endian.little}) {
     if (isEvr) {
       if (isEvrLongVR(vrIndex)) {
         return endian == Endian.big
-            ? EvrLongBE(bytes, offset, end)
-            : EvrLongLE(bytes, offset, end);
+            ? EvrLongBE.view(bytes, offset, end)
+            : EvrLongLE.view(bytes, offset, end);
       } else {
         return endian == Endian.big
-            ? EvrShortBE(bytes, offset, end)
-            : EvrShortLE(bytes, offset, end);
+            ? EvrShortBE.view(bytes, offset, end)
+            : EvrShortLE.view(bytes, offset, end);
       }
     } else {
       return endian == Endian.bug
@@ -57,7 +60,7 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.  [endian] defaults to [Endian.host].
   factory DicomBytes.typedDataView(TypedData td,
-      [int offset = 0, int length, Endian endian = Endian.little]) =>
+          [int offset = 0, int length, Endian endian = Endian.little]) =>
       endian == Endian.big
           ? BytesBE.typedDataView(td, offset, length)
           : BytesLE.typedDataView(td, offset, length);

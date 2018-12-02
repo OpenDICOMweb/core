@@ -12,11 +12,12 @@ import 'package:core/src/utils/bytes/new_bytes.dart';
 import 'package:core/src/utils/bytes/growable_bytes.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+import 'package:core/src/utils/dicom_bytes/growable_dicom_bytes_mixin.dart';
 
 // ignore_for_file: public_member_api_docs
 
 /// A growable [DicomBytes].
-abstract class DicomGrowableBytes extends DicomBytes {
+abstract class DicomGrowableBytes extends DicomBytes with DicomWriterMixin {
   /// Creates a growable [DicomBytes].
   factory DicomGrowableBytes(
           [int length = Bytes.kDefaultLength,
@@ -47,7 +48,8 @@ abstract class DicomGrowableBytes extends DicomBytes {
           : DicomGrowableBytesLE._typedDataView(td, offset, length, limit);
 }
 
-class DicomGrowableBytesLE extends DicomBytesLE with GrowableMixin {
+class DicomGrowableBytesLE extends DicomBytesLE
+    with GrowableMixin, DicomWriterMixin {
   /// The upper bound on the length of this [Bytes]. If [limit]
   /// is _null_ then its length cannot be changed.
   @override

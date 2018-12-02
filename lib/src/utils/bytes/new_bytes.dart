@@ -263,11 +263,11 @@ abstract class Bytes extends ListBase<int>
   static final Bytes kEmptyBytes = Bytes(0);
 }
 
-
-
 /// [BytesLE] is a class that provides a read-only Little Endian byte array
 /// that supports both [Uint8List] and [ByteData] interfaces.
-class BytesLE extends Bytes with LittleEndianMixin implements Comparable<Bytes> {
+class BytesLE extends Bytes
+    with LittleEndianMixin
+    implements Comparable<Bytes> {
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [Bytes.kDefaultLength].
   BytesLE([int length = Bytes.kDefaultLength])
@@ -307,7 +307,7 @@ class BytesLE extends Bytes with LittleEndianMixin implements Comparable<Bytes> 
 
   /// Returns a [Bytes] buffer containing the contents of the
   /// [File] at [path].
-  factory BytesLE.fromPath(String path, { bool doAsync = false}) =>
+  factory BytesLE.fromPath(String path, {bool doAsync = false}) =>
       BytesLE.fromFile(File(path), doAsync: doAsync);
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
@@ -393,7 +393,6 @@ class BytesLE extends Bytes with LittleEndianMixin implements Comparable<Bytes> 
   static final BytesLE kEmptyBytes = BytesLE(0);
 }
 
-
 /// [BytesBE] is a class that provides a read-only Little Endian byte array
 /// that supports both [Uint8List] and [ByteData] interfaces.
 class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
@@ -421,14 +420,14 @@ class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
   BytesBE.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes])
       : super.internal(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
-      lengthInBytes ?? td.lengthInBytes));
+            lengthInBytes ?? td.lengthInBytes));
 
   /// Creates a new [Bytes] from a [List<int>]. Any values in [list]
   /// that are larger than 8-bits are truncated.
   BytesBE.fromList(List<int> list)
       : super.internal(list is Uint8List
-      ? list.buffer.asByteData()
-      : Uint8List.fromList(list).buffer.asByteData());
+            ? list.buffer.asByteData()
+            : Uint8List.fromList(list).buffer.asByteData());
 
   // TODO: Either remove fromFile and fromPath or add doAsync
 
@@ -440,7 +439,7 @@ class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
 
   /// Returns a [Bytes] buffer containing the contents of the
   /// [File] at [path].
-  factory BytesBE.fromPath(String path, { bool doAsync = false}) =>
+  factory BytesBE.fromPath(String path, {bool doAsync = false}) =>
       BytesBE.fromFile(File(path), doAsync: doAsync);
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
@@ -494,7 +493,7 @@ class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as ASCII. The result is returns as [Bytes].
   factory BytesBE.asciiFromList(List<String> vList,
-      [int maxLength, String separator = '\\']) =>
+          [int maxLength, String separator = '\\']) =>
       BytesBE.ascii(_listToString(vList, maxLength, separator));
 
   /// Returns a [Bytes] containing UTF-8 code units.
@@ -503,7 +502,7 @@ class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as UTF-8. The result is returns as [Bytes].
   factory BytesBE.utf8FromList(List<String> vList,
-      [int maxLength, String separator = '\\']) =>
+          [int maxLength, String separator = '\\']) =>
       BytesBE.utf8(_listToString(vList, maxLength, separator));
 
   /// Returns a [Bytes] containing Latin (1 - 9) code units.
@@ -512,13 +511,13 @@ class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as UTF-8. The result is returns as [Bytes].
   factory BytesBE.latinFromList(List<String> vList,
-      [int maxLength, String separator = '\\']) =>
+          [int maxLength, String separator = '\\']) =>
       BytesBE.latin(_listToString(vList, maxLength, separator));
 
   /// Returns a [Bytes] containing [charset] code units.
   /// [charset] defaults to UTF8.
   factory BytesBE.fromStringList(List<String> vList,
-      {Charset charset, int maxLength, String separator = '\\'}) =>
+          {Charset charset, int maxLength, String separator = '\\'}) =>
       BytesBE.fromString(
           _listToString(vList, maxLength, separator), charset ?? utf8);
 

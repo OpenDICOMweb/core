@@ -207,3 +207,43 @@ class EvrLongBE extends BytesBE with DicomBytesMixin, EvrMixin, EvrLongMixin {
   EvrLongBE sublist([int start = 0, int end]) =>
       EvrLongBE.from(this, start, (end ?? length) - start);
 }
+
+/// A class implementing long EVR big endian DicomBytes.
+class EvrLongLE extends BytesBE with DicomBytesMixin, EvrMixin, EvrLongMixin {
+  /// Creates a long EVR big endian DicomBytes of [length] containing all zeros.
+  EvrLongLE(int length) : super(length);
+
+  /// Creates a long EVR big endian DicomBytes.
+  EvrLongLE.from(Bytes bytes, [int start = 0, int end])
+      : super.from(bytes, start, end);
+
+  /// Creates a long EVR big endian DicomBytes view of [bytes].
+  EvrLongLE.view(Bytes bytes, [int start = 0, int end])
+      : super.view(bytes, start, end);
+
+  /// Creates a long EVR big endian DicomBytes with an empty Value Field.
+  factory EvrLongLE.empty(int code, int vfLength, int vrCode) {
+    //assert(vfLength.isEven);
+    final e = EvrLongLE(EvrLongMixin.kHeaderLength + vfLength)
+      ..evrSetLongHeader(code, vfLength, vrCode);
+    return e;
+  }
+
+  /// Creates a long EVR big endian DicomBytes.
+  factory EvrLongLE.fromBytes(int code, Bytes vfBytes, int vrCode) {
+    final vfLength = vfBytes.length;
+    assert(vfLength.isEven);
+    final e = EvrLongLE(EvrLongMixin.kHeaderLength + vfLength)
+      ..evrSetLongHeader(code, vfLength, vrCode)
+      ..setByteData(EvrLongMixin.kVFOffset, vfBytes.bd);
+    return e;
+  }
+
+  /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
+  /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
+  /// An error occurs if [start] is outside the range 0 .. [length],
+  /// or if [end] is outside the range [start] .. [length].
+  @override
+  EvrLongLE sublist([int start = 0, int end]) =>
+      EvrLongLE.from(this, start, (end ?? length) - start);
+}

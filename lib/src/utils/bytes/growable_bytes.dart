@@ -11,7 +11,8 @@ import 'dart:typed_data';
 import 'package:core/src/utils/bytes/new_bytes.dart';
 
 /// An abstract class that allows [Bytes] to grow in length.
-abstract class GrowableBytes extends Bytes {
+abstract class GrowableBytes extends Bytes with GrowableMixin {
+
   /// Returns a new [GrowableBytes] of [length].
   factory GrowableBytes(
           [int length = Bytes.kDefaultLength,
