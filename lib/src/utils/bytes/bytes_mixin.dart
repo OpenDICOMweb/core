@@ -12,23 +12,20 @@ import 'dart:typed_data';
 import 'package:core/src/utils/bytes/new_bytes.dart';
 import 'package:core/src/utils/bytes/constants.dart';
 import 'package:core/src/global.dart';
-import 'package:core/src/utils/character/charset.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/system.dart';
 
-/// [ByteDataMixin] is a class that provides a read-only byte array that
+/// [BytesMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
-mixin ByteDataMixin {
+mixin BytesMixin {
   ByteData get bd;
   int get length;
   String get endianness;
 
-  int getInt8(int offset);
   int getInt16(int offset);
   int getInt32(int offset);
   int getInt64(int offset);
 
-  int getUint8(int offset);
   int getUint16(int offset);
   int getUint32(int offset);
   int getUint64(int offset);
@@ -67,14 +64,7 @@ mixin ByteDataMixin {
     return Float64x2(x, y);
   }
 
-  // **** Internal methods for creating copies and views of sub-regions.
-
-  /// Returns the number of 32-bit elements from [offset] to
-  /// [bd].lengthInBytes, where [offset] is the absolute offset in [bd].
-  int _length64(int offset) {
-    final len = length - offset;
-    return (len % 8 != 0) ? -1 : len ~/ 8;
-  }
+  // **** Internal methods
 
   bool _isAligned(int offset, int size) => (offset % size) == 0;
 
@@ -83,29 +73,10 @@ mixin ByteDataMixin {
   bool _isAligned32(int offset) => _isAligned(offset, 4);
   bool _isAligned64(int offset) => _isAligned(offset, 8);
 
+  /// Returns the absolute index of [offset] in the underlying [ByteBuffer].
+  int _absIndex(int offset) => bd.offsetInBytes + offset;
+
   // **** TypedData views
-
-  /// Returns an [ByteData] view of the specified region of _this_.
-  ByteData _viewOfBDRegion([int offset = 0, int length]) {
-    length ??= length - offset;
-    return bd.buffer.asByteData(_absIndex(offset), length);
-  }
-
-  /// Returns a view of the specified region of _this_.
-  Bytes asBytes([int offset = 0, int length]) {
-    final bd = _viewOfBDRegion(offset, length);
-    return Bytes.fromByteData(bd, Endian.little);
-  }
-
-  /// Creates an [ByteData] view of the specified region of _this_.
-  ByteData asByteData([int offset = 0, int length]) =>
-      _viewOfBDRegion(offset, (length ??= length) - offset);
-
-  /// Creates an [Int8List] view of the specified region of _this_.
-  Int8List asInt8List([int offset = 0, int length]) {
-    length ??= length - offset;
-    return bd.buffer.asInt8List(_absIndex(offset), length);
-  }
 
   /// If [offset] is aligned on an 8-byte boundary, returns a [Int16List]
   /// view of the specified region; otherwise, creates a [Int16List] that
@@ -133,6 +104,7 @@ mixin ByteDataMixin {
     return list;
   }
 
+
   /// Returns the number of 32-bit elements from [offset] to
   /// [bd].lengthInBytes, where [offset] is the absolute offset in [bd].
   int _length32(int offset) {
@@ -159,6 +131,21 @@ mixin ByteDataMixin {
     return list;
   }
 
+  /// Returns the number of 32-bit elements from [offset] to
+  /// [bd].lengthInBytes, where [offset] is the absolute offset in [bd].
+  int _length64(int offset) {
+    final len = length - offset;
+    return (len % 8 != 0) ? -1 : len ~/ 8;
+  }
+
+  /// Creates an [Int64List] copy of the specified region of _this_.
+  Int64List getInt64List([int offset = 0, int length]) {
+    length ??= _length64(offset);
+    final list = Int64List(length);
+    for (var i = 0, j = offset; i < length; i++, j += 8) list[i] = getInt64(j);
+    return list;
+  }
+
   /// If [offset] is aligned on an 8-byte boundary, returns a [Int64List]
   /// view of the specified region; otherwise, creates a [Int64List] that
   /// is a copy of the specified region and returns it.
@@ -170,12 +157,6 @@ mixin ByteDataMixin {
         : getInt64List(offset, length);
   }
 
-  // Allows the removal of padding characters.
-  Uint8List asUint8List([int offset = 0, int length]) {
-    length ??= length;
-    final index = _absIndex(offset);
-    return bd.buffer.asUint8List(index, length);
-  }
 
   /// If [offset] is aligned on an 8-byte boundary, returns a [Uint16List]
   /// view of the specified region; otherwise, creates a [Uint16List] that
@@ -186,103 +167,6 @@ mixin ByteDataMixin {
     return (_isAligned16(index))
         ? bd.buffer.asUint16List(index, length)
         : getUint16List(offset, length);
-  }
-
-  /// If [offset] is aligned on an 8-byte boundary, returns a [Uint32List]
-  /// view of the specified region; otherwise, creates a [Uint32List] that
-  /// is a copy of the specified region and returns it.
-  Uint32List asUint32List([int offset = 0, int length]) {
-    length ??= _length32(offset);
-    if (length < 0) return null;
-    final index = _absIndex(offset);
-    return (_isAligned32(index))
-        ? bd.buffer.asUint32List(index, length)
-        : getUint32List(offset, length);
-  }
-
-  /// If [offset] is aligned on an 8-byte boundary, returns a [Uint64List]
-  /// view of the specified region; otherwise, creates a [Uint64List] that
-  /// is a copy of the specified region and returns it.
-  Uint64List asUint64List([int offset = 0, int length]) {
-    length ??= _length64(offset);
-    final index = _absIndex(offset);
-    return (_isAligned64(index))
-        ? bd.buffer.asUint64List(index, length)
-        : getUint64List(offset, length);
-  }
-
-  /// If [offset] is aligned on an 8-byte boundary, returns a [Float32List]
-  /// view of the specified region; otherwise, creates a [Float32List] that
-  /// is a copy of the specified region and returns it.
-  Float32List asFloat32List([int offset = 0, int length]) {
-    length ??= _length32(offset);
-    final index = _absIndex(offset);
-    return (_isAligned32(index))
-        ? bd.buffer.asFloat32List(index, length)
-        : getFloat32List(offset, length);
-  }
-
-  /// If [offset] is aligned on an 8-byte boundary, returns a [Float64List]
-  /// view of the specified region; otherwise, creates a [Float64List] that
-  /// is a copy of the specified region and returns it.
-  Float64List asFloat64List([int offset = 0, int length]) {
-    final index = _absIndex(offset);
-    length ??= _length64(offset);
-    return (_isAligned64(index))
-        ? bd.buffer.asFloat64List(index, length)
-        : getFloat64List(offset, length);
-  }
-
-  // **** TypedData copies
-
-  /// Returns a [ByteData] that iss a copy of the specified region of _this_.
-  ByteData _copyBDRegion(int offset, int length) {
-    final _length = length ?? length;
-    final bdNew = ByteData(_length);
-    for (var i = 0, j = offset; i < _length; i++, j++)
-      bdNew.setUint8(i, bd.getUint8(j));
-    return bdNew;
-  }
-
-  /// Creates a new [Bytes] from _this_ containing the specified region.
-  Bytes sublist([int start = 0, int end]) {
-    final bd = _copyBDRegion(start, (end ??= length) - start);
-    return Bytes.fromByteData(bd, Endian.little);
-  }
-
-  /// Creates an [Int8List] copy of the specified region of _this_.
-  Bytes getBytes([int offset = 0, int length]) {
-    final bd = _copyBDRegion(offset, length);
-    return Bytes.fromByteData(bd, Endian.little);
-  }
-
-  /// Creates an [Int8List] copy of the specified region of _this_.
-  ByteData getByteData([int offset = 0, int length]) =>
-      _copyBDRegion(offset, length);
-
-  /// Creates an [Int8List] copy of the specified region of _this_.
-  Int8List getInt8List([int offset = 0, int length]) {
-    length ??= length;
-    final list = Int8List(length);
-    for (var i = 0, j = offset; i < length; i++, j++) list[i] = bd.getInt8(j);
-    return list;
-  }
-
-  /// Creates an [Int64List] copy of the specified region of _this_.
-  Int64List getInt64List([int offset = 0, int length]) {
-    length ??= _length64(offset);
-    final list = Int64List(length);
-    for (var i = 0, j = offset; i < length; i++, j += 8) list[i] = getInt64(j);
-    return list;
-  }
-
-  // **** Unsigned Integer Lists
-
-  Uint8List getUint8List([int offset = 0, int length]) {
-    length ??= length;
-    final list = Uint8List(length);
-    for (var i = 0, j = offset; i < length; i++, j++) list[i] = bd.getInt8(j);
-    return list;
   }
 
   /// Creates an [Uint16List] copy of the specified region of _this_.
@@ -309,6 +193,19 @@ mixin ByteDataMixin {
     return list;
   }
 
+  /// If [offset] is aligned on an 8-byte boundary, returns a [Uint32List]
+  /// view of the specified region; otherwise, creates a [Uint32List] that
+  /// is a copy of the specified region and returns it.
+  Uint32List asUint32List([int offset = 0, int length]) {
+    length ??= _length32(offset);
+    if (length < 0) return null;
+    final index = _absIndex(offset);
+    return (_isAligned32(index))
+        ? bd.buffer.asUint32List(index, length)
+        : getUint32List(offset, length);
+  }
+
+
   // **** Float Lists
 
   /// Creates an [Float32List] copy of the specified region of _this_.
@@ -320,6 +217,28 @@ mixin ByteDataMixin {
     return list;
   }
 
+  /// If [offset] is aligned on an 8-byte boundary, returns a [Uint64List]
+  /// view of the specified region; otherwise, creates a [Uint64List] that
+  /// is a copy of the specified region and returns it.
+  Uint64List asUint64List([int offset = 0, int length]) {
+    length ??= _length64(offset);
+    final index = _absIndex(offset);
+    return (_isAligned64(index))
+        ? bd.buffer.asUint64List(index, length)
+        : getUint64List(offset, length);
+  }
+
+  /// If [offset] is aligned on an 8-byte boundary, returns a [Float32List]
+  /// view of the specified region; otherwise, creates a [Float32List] that
+  /// is a copy of the specified region and returns it.
+  Float32List asFloat32List([int offset = 0, int length]) {
+    length ??= _length32(offset);
+    final index = _absIndex(offset);
+    return (_isAligned32(index))
+        ? bd.buffer.asFloat32List(index, length)
+        : getFloat32List(offset, length);
+  }
+
   /// Creates an [Float64List] copy of the specified region of _this_.
   Float64List getFloat64List([int offset = 0, int length]) {
     length ??= _length64(offset);
@@ -329,120 +248,20 @@ mixin ByteDataMixin {
     return list;
   }
 
-  // **** Get Strings and List<String>
-
-  /// Returns a [String] containing a _Base64_ encoding of the specified
-  /// region of _this_.
-  String getBase64([int offset = 0, int length]) {
-    final bList = asUint8List(offset, length);
-    return bList.isEmpty ? '' : cvt.base64.encode(bList);
-  }
-
-  // Allows the removal of padding characters.
-  Uint8List _asUint8ListFromString([int offset = 0, int length]) {
-    length ??= length;
-    if (length <= offset) return kEmptyUint8List;
+  /// If [offset] is aligned on an 8-byte boundary, returns a [Float64List]
+  /// view of the specified region; otherwise, creates a [Float64List] that
+  /// is a copy of the specified region and returns it.
+  Float64List asFloat64List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    final lastIndex = length - 1;
-    final _length = _maybeRemoveNull(lastIndex, length);
-    if (length == 0) return kEmptyUint8List;
-    return bd.buffer.asUint8List(index, _length);
+    length ??= _length64(offset);
+    return (_isAligned64(index))
+        ? bd.buffer.asFloat64List(index, length)
+        : getFloat64List(offset, length);
   }
 
-  int _maybeRemoveNull(int lastIndex, int vfLength) =>
-      (getUint8(lastIndex) == kNull) ? lastIndex : vfLength;
 
-  /// Returns a [String] containing a _ASCII_ decoding of the specified
-  /// region of _this_. Also allows the removal of a padding character.
-  String stringFromAscii(
-      {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? length);
-    return v.isEmpty ? '' : cvt.ascii.decode(v, allowInvalid: allowInvalid);
-//    final last = s.length - 1;
-//    final c = s.codeUnitAt(last);
-    // TODO: kNull should never get here but it does. Fix
-//    return (c == kNull) ? s.substring(0, last) : s;
-  }
 
-  /// Returns a [List<String>]. This is done by first decoding
-  /// the specified region as _ASCII_, and then _split_ing the
-  /// resulting [String] using the [separator]. Also allows the
-  /// removal of a padding character.
-  List<String> stringListFromAscii(
-      {int offset = 0,
-      int length,
-      bool allowInvalid = true,
-      String separator = '\\'}) {
-    final s = stringFromAscii(
-        offset: offset, length: length, allowInvalid: allowInvalid);
-    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
-  }
 
-  /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
-  /// Also, allows the removal of padding characters.
-  String stringFromUtf8(
-      {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? length);
-    return v.isEmpty ? '' : cvt.utf8.decode(v, allowMalformed: allowInvalid);
-  }
-
-  /// Returns a [List<String>]. This is done by first decoding
-  /// the specified region as _UTF-8_, and then _split_ing the
-  /// resulting [String] using the [separator].
-  List<String> stringListFromUtf8(
-      {int offset = 0,
-      int length,
-      bool allowInvalid = true,
-      String separator = '\\'}) {
-    final s = stringFromUtf8(
-        offset: offset, length: length, allowInvalid: allowInvalid);
-    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
-  }
-
-  String stringFromLatin(
-      {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? length);
-    return v.isEmpty ? '' : cvt.latin1.decode(v, allowInvalid: allowInvalid);
-  }
-
-  /// Returns a [List<String>]. This is done by first decoding
-  /// the specified region as _UTF-8_, and then _split_ing the
-  /// resulting [String] using the [separator].
-  List<String> stringListFromLatin(
-      {int offset = 0,
-      int length,
-      bool allowInvalid = true,
-      String separator = '\\'}) {
-    final s = stringFromLatin(
-        offset: offset, length: length, allowInvalid: allowInvalid);
-    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
-  }
-
-  /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
-  String getString(Charset charset,
-      {int offset = 0,
-      int length,
-      bool allowInvalid = true,
-      String separator = '\\'}) {
-    final v = _asUint8ListFromString(offset, length ?? length);
-    return v.isEmpty ? '' : charset.decode(v, allowInvalid: true);
-  }
-
-  /// Returns a [List<String>]. This is done by first decoding
-  /// the specified region as _UTF-8_, and then _split_ing the
-  /// resulting [String] using the [separator].
-  List<String> getStringList(Charset charset,
-      {int offset = 0,
-      int length,
-      bool allowInvalid = true,
-      String separator = '\\'}) {
-    final s = getString(charset,
-        offset: offset,
-        length: length,
-        allowInvalid: allowInvalid,
-        separator: separator);
-    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
-  }
 
   // ********************** Setters ********************************
 
@@ -769,8 +588,7 @@ mixin ByteDataMixin {
   @override
   String toString() => '$endianness $runtimeType: ${toBDDescriptor(bd)}';
 
-  /// Returns the absolute index of [offset] in the underlying [ByteBuffer].
-  int _absIndex(int offset) => bd.offsetInBytes + offset;
+
 
   String toBDDescriptor(ByteData bd) {
     final start = bd.offsetInBytes;

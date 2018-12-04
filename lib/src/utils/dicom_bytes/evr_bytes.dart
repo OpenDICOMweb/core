@@ -6,16 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:typed_data';
+
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+import 'package:core/src/vr/vr_base.dart';
 
 mixin EvrMixin {
-  Map<int, VR> get vrByIndex;
   int getVRCode(int offset);
-  int vrIndexFromCode(int vrCode);
-  String vrIdFromIndex(int vrIndex);
-
   // **** End of Interface
 
   bool get isEvr => true;
@@ -25,8 +23,6 @@ mixin EvrMixin {
   int get vrIndex => vrIndexFromCode(vrCode);
 
   String get vrId => vrIdFromIndex(vrIndex);
-
-  VR get vr => vrByIndex[vrIndex];
 
   int get kVROffset => 4;
 }
@@ -57,75 +53,34 @@ mixin EvrShortMixin {
   static const int kHeaderLength = kVFOffset;
 }
 
-/// A class implementing short EVR little endian DicomBytes.
-class EvrShortLE extends BytesLE with DicomBytesMixin, EvrMixin, EvrShortMixin {
-  /// Creates an empty short EVR little endian DicomBytes with [length].
-  EvrShortLE(int length) : super(length);
-
-  /// Creates a short EVR little endian DicomBytes from [bytes].
-  EvrShortLE.from(Bytes bytes, [int start = 0, int end])
-      : super.from(bytes, start, end);
-
-  /// Creates a short EVR little endian DicomBytes view of [bytes].
-  EvrShortLE.view(Bytes bytes, [int start = 0, int end])
-      : super.view(bytes, start, end);
-
-  /// Creates a short EVR little endian DicomBytes with a Value Field
-  /// containing all zeros.
-  factory EvrShortLE.empty(int code, int vfLength, int vrCode) {
-    final e = EvrShortLE(
-      EvrShortMixin.kHeaderLength + vfLength,
-    )..evrSetShortHeader(code, vfLength, vrCode);
-    return e;
-  }
-
-  /// Returns a new short EVR DicomBytes.
-  factory EvrShortLE.fromBytes(int code, Bytes vfBytes, int vrCode) {
-    final vfLength = vfBytes.length;
-    assert(vfLength.isEven);
-    final e = EvrShortLE(
-      EvrShortMixin.kHeaderLength + vfLength,
-    )
-      ..evrSetShortHeader(code, vfLength, vrCode)
-      ..setByteData(EvrShortMixin.kVFOffset, vfBytes.bd);
-    return e;
-  }
-
-  /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
-  /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
-  /// An error occurs if [start] is outside the range 0 .. [length],
-  /// or if [end] is outside the range [start] .. [length].
-  @override
-  EvrShortLE sublist([int start = 0, int end]) =>
-      EvrShortLE.from(this, start, (end ?? length) - start);
-}
-
 /// A class implementing short EVR big endian DicomBytes.
-class EvrShortBE extends BytesLE with DicomBytesMixin, EvrMixin, EvrShortMixin {
+class EvrShortBytesBE extends DicomBytes
+    with BigEndianMixin, EvrMixin, EvrShortMixin {
   /// Creates an empty short EVR big endian DicomBytes with [length].
-  EvrShortBE(int length) : super(length);
+  EvrShortBytesBE(int vfLength)
+      : super(ByteData(EvrShortMixin.kHeaderLength + vfLength));
 
   /// Creates a short EVR big endian DicomBytes from [bytes].
-  EvrShortBE.from(Bytes bytes, [int start = 0, int end])
-      : super.from(bytes, start, end);
+  EvrShortBytesBE.from(Bytes bytes, [int start = 0, int end])
+      : super(Bytes.copyByteData(bytes, start, end));
 
   /// Creates a short EVR big endian DicomBytes view of [bytes].
-  EvrShortBE.view(Bytes bytes, [int start = 0, int end])
-      : super.view(bytes, start, end);
+  EvrShortBytesBE.view(Bytes bytes, [int start = 0, int end])
+      : super(Bytes.viewByteData(bytes, start, end));
 
   /// Creates a short EVR DicomBytes with an empty (all zeros) Value Field.
-  factory EvrShortBE.empty(int code, int vfLength, int vrCode) {
-    final e = EvrShortBE(
+  factory EvrShortBytesBE.empty(int code, int vfLength, int vrCode) {
+    final e = EvrShortBytesBE(
       EvrShortMixin.kHeaderLength + vfLength,
     )..evrSetShortHeader(code, vfLength, vrCode);
     return e;
   }
 
   /// Creates a short EVR DicomBytes.
-  factory EvrShortBE.fromBytes(int code, Bytes vfBytes, int vrCode) {
+  factory EvrShortBytesBE.fromBytes(int code, Bytes vfBytes, int vrCode) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = EvrShortBE(
+    final e = EvrShortBytesBE(
       EvrShortMixin.kHeaderLength + vfLength,
     )
       ..evrSetShortHeader(code, vfLength, vrCode)
@@ -138,8 +93,53 @@ class EvrShortBE extends BytesLE with DicomBytesMixin, EvrMixin, EvrShortMixin {
   /// An error occurs if [start] is outside the range 0 .. [length],
   /// or if [end] is outside the range [start] .. [length].
   @override
-  EvrShortBE sublist([int start = 0, int end]) =>
-      EvrShortBE.from(this, start, (end ?? length) - start);
+  EvrShortBytesBE sublist([int start = 0, int end]) =>
+      EvrShortBytesBE.from(this, start, (end ?? length) - start);
+}
+
+/// A class implementing short EVR little endian DicomBytes.
+class EvrShortBytesLE extends DicomBytes
+    with LittleEndianMixin, EvrMixin, EvrShortMixin {
+  /// Creates an empty short EVR little endian DicomBytes with [length].
+  EvrShortBytesLE(int vfLength)
+      : super(ByteData(EvrShortMixin.kHeaderLength + vfLength));
+
+  /// Creates a short EVR little endian DicomBytes from [bytes].
+  EvrShortBytesLE.from(Bytes bytes, [int start = 0, int end])
+      : super(Bytes.copyByteData(bytes, start, end));
+
+  /// Creates a short EVR little endian DicomBytes view of [bytes].
+  EvrShortBytesLE.view(Bytes bytes, [int start = 0, int end])
+      : super(Bytes.viewByteData(bytes, start, end));
+
+  /// Creates a short EVR little endian DicomBytes with a Value Field
+  /// containing all zeros.
+  factory EvrShortBytesLE.empty(int code, int vfLength, int vrCode) {
+    final e = EvrShortBytesLE(
+      EvrShortMixin.kHeaderLength + vfLength,
+    )..evrSetShortHeader(code, vfLength, vrCode);
+    return e;
+  }
+
+  /// Returns a new short EVR DicomBytes.
+  factory EvrShortBytesLE.fromBytes(int code, Bytes vfBytes, int vrCode) {
+    final vfLength = vfBytes.length;
+    assert(vfLength.isEven);
+    final e = EvrShortBytesLE(
+      EvrShortMixin.kHeaderLength + vfLength,
+    )
+      ..evrSetShortHeader(code, vfLength, vrCode)
+      ..setByteData(EvrShortMixin.kVFOffset, vfBytes.bd);
+    return e;
+  }
+
+  /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
+  /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
+  /// An error occurs if [start] is outside the range 0 .. [length],
+  /// or if [end] is outside the range [start] .. [length].
+  @override
+  EvrShortBytesLE sublist([int start = 0, int end]) =>
+      EvrShortBytesLE.from(this, start, (end ?? length) - start);
 }
 
 mixin EvrLongMixin {
@@ -169,31 +169,34 @@ mixin EvrLongMixin {
 }
 
 /// A class implementing long EVR big endian DicomBytes.
-class EvrLongBE extends BytesBE with DicomBytesMixin, EvrMixin, EvrLongMixin {
+class EvrLongBytesBE extends DicomBytes
+    with BigEndianMixin, EvrMixin, EvrLongMixin
+    implements Comparable<Bytes> {
   /// Creates a long EVR big endian DicomBytes of [length] containing all zeros.
-  EvrLongBE(int length) : super(length);
+  EvrLongBytesBE(int vfLength)
+      : super(ByteData(EvrLongMixin.kHeaderLength + vfLength));
 
   /// Creates a long EVR big endian DicomBytes.
-  EvrLongBE.from(Bytes bytes, [int start = 0, int end])
-      : super.from(bytes, start, end);
+  EvrLongBytesBE.from(Bytes bytes, [int start = 0, int end])
+      : super(Bytes.copyByteData(bytes, start, end));
 
   /// Creates a long EVR big endian DicomBytes view of [bytes].
-  EvrLongBE.view(Bytes bytes, [int start = 0, int end])
-      : super.view(bytes, start, end);
+  EvrLongBytesBE.view(Bytes bytes, [int start = 0, int end])
+      : super(Bytes.viewByteData(bytes, start, end));
 
   /// Creates a long EVR big endian DicomBytes with an empty Value Field.
-  factory EvrLongBE.empty(int code, int vfLength, int vrCode) {
+  factory EvrLongBytesBE.empty(int code, int vfLength, int vrCode) {
     //assert(vfLength.isEven);
-    final e = EvrLongBE(EvrLongMixin.kHeaderLength + vfLength)
+    final e = EvrLongBytesBE(EvrLongMixin.kHeaderLength + vfLength)
       ..evrSetLongHeader(code, vfLength, vrCode);
     return e;
   }
 
   /// Creates a long EVR big endian DicomBytes.
-  factory EvrLongBE.fromBytes(int code, Bytes vfBytes, int vrCode) {
+  factory EvrLongBytesBE.fromBytes(int code, Bytes vfBytes, int vrCode) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = EvrLongBE(EvrLongMixin.kHeaderLength + vfLength)
+    final e = EvrLongBytesBE(EvrLongMixin.kHeaderLength + vfLength)
       ..evrSetLongHeader(code, vfLength, vrCode)
       ..setByteData(EvrLongMixin.kVFOffset, vfBytes.bd);
     return e;
@@ -204,36 +207,38 @@ class EvrLongBE extends BytesBE with DicomBytesMixin, EvrMixin, EvrLongMixin {
   /// An error occurs if [start] is outside the range 0 .. [length],
   /// or if [end] is outside the range [start] .. [length].
   @override
-  EvrLongBE sublist([int start = 0, int end]) =>
-      EvrLongBE.from(this, start, (end ?? length) - start);
+  EvrLongBytesBE sublist([int start = 0, int end]) =>
+      EvrLongBytesBE.from(this, start, (end ?? length) - start);
 }
 
 /// A class implementing long EVR big endian DicomBytes.
-class EvrLongLE extends BytesBE with DicomBytesMixin, EvrMixin, EvrLongMixin {
+class EvrLongBytesLE extends DicomBytes
+    with LittleEndianMixin, EvrMixin, EvrLongMixin {
   /// Creates a long EVR big endian DicomBytes of [length] containing all zeros.
-  EvrLongLE(int length) : super(length);
+  EvrLongBytesLE(int vfLength)
+      : super(ByteData(EvrLongMixin.kHeaderLength + vfLength));
 
   /// Creates a long EVR big endian DicomBytes.
-  EvrLongLE.from(Bytes bytes, [int start = 0, int end])
-      : super.from(bytes, start, end);
+  EvrLongBytesLE.from(Bytes bytes, [int start = 0, int end])
+      : super(Bytes.copyByteData(bytes, start, end));
 
   /// Creates a long EVR big endian DicomBytes view of [bytes].
-  EvrLongLE.view(Bytes bytes, [int start = 0, int end])
-      : super.view(bytes, start, end);
+  EvrLongBytesLE.view(Bytes bytes, [int start = 0, int end])
+      : super(Bytes.viewByteData(bytes, start, end));
 
   /// Creates a long EVR big endian DicomBytes with an empty Value Field.
-  factory EvrLongLE.empty(int code, int vfLength, int vrCode) {
+  factory EvrLongBytesLE.empty(int code, int vfLength, int vrCode) {
     //assert(vfLength.isEven);
-    final e = EvrLongLE(EvrLongMixin.kHeaderLength + vfLength)
+    final e = EvrLongBytesLE(EvrLongMixin.kHeaderLength + vfLength)
       ..evrSetLongHeader(code, vfLength, vrCode);
     return e;
   }
 
   /// Creates a long EVR big endian DicomBytes.
-  factory EvrLongLE.fromBytes(int code, Bytes vfBytes, int vrCode) {
+  factory EvrLongBytesLE.fromBytes(int code, Bytes vfBytes, int vrCode) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = EvrLongLE(EvrLongMixin.kHeaderLength + vfLength)
+    final e = EvrLongBytesLE(EvrLongMixin.kHeaderLength + vfLength)
       ..evrSetLongHeader(code, vfLength, vrCode)
       ..setByteData(EvrLongMixin.kVFOffset, vfBytes.bd);
     return e;
@@ -244,6 +249,6 @@ class EvrLongLE extends BytesBE with DicomBytesMixin, EvrMixin, EvrLongMixin {
   /// An error occurs if [start] is outside the range 0 .. [length],
   /// or if [end] is outside the range [start] .. [length].
   @override
-  EvrLongLE sublist([int start = 0, int end]) =>
-      EvrLongLE.from(this, start, (end ?? length) - start);
+  EvrLongBytesLE sublist([int start = 0, int end]) =>
+      EvrLongBytesLE.from(this, start, (end ?? length) - start);
 }

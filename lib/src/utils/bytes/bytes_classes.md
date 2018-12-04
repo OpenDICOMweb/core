@@ -1,6 +1,7 @@
 
-Bytes (abstract)
-    A DicomBytes extends Bytes with DicomMixin
+BytesBase (abstract)
+    Bytes (abstract) implement
+
     BytesBE extends Bytes with BigEndianMixin
         GrowableBytesBE extends BytesBE with GrowableMixin
         DicomBytesBE extends BytesBE with DicomMixin
@@ -10,4 +11,4 @@ Bytes (abstract)
         DicomBytesLE extends BytesBE with DicomMixin
             DicomGrowableBytesLE extends DicomBytesBE with GrowableMixin
         
-    
+     A DicomBytes(abstract) extends Bytes with DicomMixin

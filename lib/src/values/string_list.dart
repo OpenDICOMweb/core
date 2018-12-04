@@ -7,6 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'dart:collection';
+import 'dart:typed_data';
 
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
@@ -214,7 +215,7 @@ class AsciiList extends StringList {
     var length = lengthInBytes;
     if (pad != null && length.isOdd) length++;
     final last = length - 1;
-    final bytes = Bytes(length);
+    final bytes = Bytes(ByteData(length));
     int j;
     for (var s in _values) {
       for (var i = 0; i < s.length; i++) {

@@ -21,7 +21,7 @@ void main() {
       final vList0 = rng.float32List(5, 10);
       log.debug('vList0: $vList0');
       final bytes0 = Bytes.typedDataView(vList0);
-      final vList1 = bytes0.asFloat32List();
+      final List<double> vList1 = bytes0.asFloat32List();
       log.debug('vList1: $vList1');
       expect(vList1, equals(vList0));
       final vList2 = bytes0.getFloat32List();
@@ -45,7 +45,7 @@ void main() {
       final box = ByteData(kFloat32Size);
 
       for (var i = 0; i < loopCount; i++) {
-        final a = Bytes(length * kFloat32Size);
+        final a = Bytes.make(length * kFloat32Size);
         log.debug('a: $a');
         assert(a.length == length * kFloat32Size, true);
 

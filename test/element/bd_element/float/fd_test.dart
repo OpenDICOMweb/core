@@ -16,6 +16,9 @@ final RNG rng = RNG(1);
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
 
+  const isEvr = true;
+  const endian = Endian.little;
+
   const doubleList = <double>[
     0.1,
     1.2,
@@ -99,7 +102,8 @@ void main() {
   group('FD Tests', () {
     test('FD hasValidValues: good values', () {
       global.throwOnError = false;
-      final e0 = FDbytes.fromValues(kInversionTimes, doubleList);
+      final e0 = FDbytes.fromValues(kInversionTimes, doubleList, endian, isEvr);
+      print('$e0');
       expect(e0.hasValidValues, true);
     });
 
@@ -108,7 +112,7 @@ void main() {
         final vList = rng.float64List(1, 1);
         log.debug('vList: $vList');
         expect(vList is Float64List, true);
-        final e0 = FDbytes.fromValues(kDiffusionBValue, vList);
+        final e0 = FDbytes.fromValues(kDiffusionBValue, vList, endian, isEvr);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
@@ -124,7 +128,8 @@ void main() {
     test('FD hasValidValues: good values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float64List(2, 2);
-        final e0 = FDbytes.fromValues(kReconstructionFieldOfView, vList);
+        final e0 = FDbytes.fromValues(
+            kReconstructionFieldOfView, vList, endian, isEvr);
         expect(e0.hasValidValues, true);
         expect(e0.values, equals(vList));
         log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
@@ -139,7 +144,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float64List(3, 4);
         log.debug('$i: vList: $vList');
-        final e0 = FDbytes.fromValues(kTagThickness, vList);
+        final e0 = FDbytes.fromValues(kTagThickness, vList, endian, isEvr);
         log.debug('e0.values: ${e0.values}');
         expect(e0.hasValidValues, false);
         expect(e0.values, equals(vList));
@@ -147,7 +152,7 @@ void main() {
     });
 
     test('FD [] as values', () {
-      final e0 = FDbytes.fromValues(kTagThickness, []);
+      final e0 = FDbytes.fromValues(kTagThickness, [], endian, isEvr);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<double>[]));
     });
@@ -159,8 +164,8 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
-        final e0 = FDbytes.fromValues(kTagThickness, vList0);
-        final e1 = FDbytes.fromValues(kTagThickness, vList0);
+        final e0 = FDbytes.fromValues(kTagThickness, vList0, endian, isEvr);
+        final e1 = FDbytes.fromValues(kTagThickness, vList0, endian, isEvr);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -168,31 +173,34 @@ void main() {
         expect(e0 == e1, true);
 
         final vList1 = rng.float64List(1, 1);
-        final e2 = FDbytes.fromValues(kExposureTimeInms, vList1);
+        final e2 = FDbytes.fromValues(kExposureTimeInms, vList1, endian, isEvr);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rng.float64List(2, 2);
-        final e3 = FDbytes.fromValues(kRecommendedRotationPoint, vList2);
+        final e3 = FDbytes.fromValues(
+            kRecommendedRotationPoint, vList2, endian, isEvr);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rng.float64List(3, 3);
-        final e4 = FDbytes.fromValues(kThreeDDegreeOfFreedomAxis, vList3);
+        final e4 = FDbytes.fromValues(
+            kThreeDDegreeOfFreedomAxis, vList3, endian, isEvr);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
 
         final vList4 = rng.float64List(6, 6);
-        final e5 = FDbytes.fromValues(kImageOrientationVolume, vList4);
+        final e5 =
+            FDbytes.fromValues(kImageOrientationVolume, vList4, endian, isEvr);
         log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
 
         final vList5 = rng.float64List(2, 3);
-        final e6 = FDbytes.fromValues(kTagThickness, vList5);
+        final e6 = FDbytes.fromValues(kTagThickness, vList5, endian, isEvr);
         log.debug('vList5:$vList5 , e6.hash_code:${e6.hashCode}');
         expect(e1.hashCode == e6.hashCode, false);
         expect(e1 == e6, false);
@@ -202,7 +210,8 @@ void main() {
     test('FD isValidValues', () {
       global.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
-        final e0 = FDbytes.fromValues(kTagThickness, <double>[doubleList[i]]);
+        final e0 = FDbytes.fromValues(
+            kTagThickness, <double>[doubleList[i]], endian, isEvr);
         expect(
             FD.isValidValues(PTag.kOverallTemplateSpatialTolerance, e0.values),
             true);
@@ -214,7 +223,7 @@ void main() {
         final vList0 = rng.float64List(1, 1);
         global.throwOnError = false;
         for (var code in fdVM1Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, endian, isEvr);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -240,7 +249,7 @@ void main() {
         final vList0 = rng.float64List(2, 2);
         global.throwOnError = false;
         for (var code in fdVM2Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, endian, isEvr);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -266,7 +275,7 @@ void main() {
         final vList0 = rng.float64List(3, 3);
         global.throwOnError = false;
         for (var code in fdVM3Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, endian, isEvr);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -292,7 +301,7 @@ void main() {
         final vList0 = rng.float64List(4, 4);
         global.throwOnError = false;
         for (var code in fdVM4Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, endian, isEvr);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -318,7 +327,7 @@ void main() {
         final vList0 = rng.float64List(6, 6);
         global.throwOnError = false;
         for (var code in fdVM6Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, endian, isEvr);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -344,7 +353,7 @@ void main() {
         final vList0 = rng.float64List(9, 9);
         global.throwOnError = false;
         for (var code in fdVM9Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, endian, isEvr);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -370,7 +379,7 @@ void main() {
         final vList0 = rng.float64List(1, i);
         global.throwOnError = false;
         for (var code in fdVM1nTags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, endian, isEvr);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -393,7 +402,7 @@ void main() {
 
     test('FDbytes', () {
       final vList = <double>[1.0, 1.1, 1.2];
-      final e0 = FDbytes.fromValues(kSelectorFDValue, vList);
+      final e0 = FDbytes.fromValues(kSelectorFDValue, vList, endian, isEvr);
       expect(e0.bytes is DicomBytes, true);
       expect(e0.vfBytes is Bytes, true);
       expect(e0.hasValidValues, true);

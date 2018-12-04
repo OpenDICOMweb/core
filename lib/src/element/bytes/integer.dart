@@ -23,8 +23,9 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
   /// Returns a new [SSbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeShort(code, vList, endian, isEvr, kSSCode, SS.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeUint16VF(vList);
     assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);
@@ -46,8 +47,10 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
 
   // ignore: prefer_constructors_over_static_methods
   /// Returns a new [SLbytes] [Element].
-  static SLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSLCode, isEvr, SL.kSizeInBytes);
+  static SLbytes fromValues(int code, List<int> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeShort(code, vList, endian, isEvr, kSLCode, SL.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeInt32VF(vList);
     assert(vList.length * SL.kSizeInBytes <= SL.kMaxVFLength);
@@ -73,9 +76,10 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
   /// returns a new [OBbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kOBCode, isEvr, OB.kSizeInBytes)
-      ..writeUint8VF(vList);
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeLong(code, vList, endian, isEvr, kOBCode, OB.kSizeInBytes)
+          ..writeUint8VF(vList);
     assert(vList.length * OB.kSizeInBytes <= OB.kMaxVFLength);
     return (code == kPixelData)
         ? OBbytesPixelData.fromBytes(bytes)
@@ -99,9 +103,10 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
   /// returns a new [UNbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kUNCode, isEvr, UN.kSizeInBytes)
-      ..writeUint8VF(vList);
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeLong(code, vList, endian, isEvr, kUNCode, UN.kSizeInBytes)
+          ..writeUint8VF(vList);
     assert(vList.length * UN.kSizeInBytes <= UN.kMaxVFLength);
     return (code == kPixelData)
         ? UNbytesPixelData.fromBytes(bytes)
@@ -123,8 +128,10 @@ class USbytes extends US with ByteElement<int>, Uint16Mixin {
 
   /// Returns a new [USbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static USbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kUSCode, isEvr, US.kSizeInBytes);
+  static USbytes fromValues(int code, List<int> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeShort(code, vList, endian, isEvr, kUSCode, US.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeUint16VF(vList);
     assert(vList.length * US.kSizeInBytes <= US.kMaxVFLength);
@@ -148,8 +155,9 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
   /// If [code] == [kPixelData] returns a [OWbytesPixelData]; otherwise,
   /// returns a new [OWbytes] [Element].
   static ByteElement fromValues(int code, List<int> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kOWCode, isEvr, OW.kSizeInBytes);
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeLong(code, vList, endian, isEvr, kOWCode, OW.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeUint16VF(vList);
     assert(vList.length * OW.kSizeInBytes <= OW.kMaxVFLength);
@@ -173,8 +181,10 @@ class ATbytes extends AT with ByteElement<int>, Uint32Mixin {
 
   /// Returns a new [ATbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static ATbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kATCode, isEvr, AT.kSizeInBytes);
+  static ATbytes fromValues(int code, List<int> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeShort(code, vList, endian, isEvr, kATCode, AT.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeUint32VF(vList);
     assert(vList.length * AT.kSizeInBytes <= AT.kMaxVFLength);
@@ -196,8 +206,10 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
 
   /// Returns a new [OLbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static OLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kOLCode, isEvr, OL.kSizeInBytes);
+  static OLbytes fromValues(int code, List<int> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeShort(code, vList, endian, isEvr, kOLCode, OL.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeUint32VF(vList);
     assert(vList.length * OL.kSizeInBytes <= OL.kMaxVFLength);
@@ -221,8 +233,10 @@ class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
 
   /// Returns a new [ULbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static ULbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kULCode, isEvr, UL.kSizeInBytes);
+  static ULbytes fromValues(int code, List<int> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeShort(code, vList, endian, isEvr, kULCode, UL.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeUint32VF(vList);
     assert(vList.length * UL.kSizeInBytes <= UL.kMaxVFLength);
@@ -241,8 +255,10 @@ class GLbytes extends ULbytes {
 
   /// Returns a new [GLbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static GLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
+  static GLbytes fromValues(int code, List<int> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes =
+        _makeShort(code, vList, endian, isEvr, kULCode, SS.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeUint8VF(vList);
     assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);

@@ -61,8 +61,9 @@ class AEbytes extends AE with ByteElement<String>, StringMixin, AsciiMixin {
   static AEbytes fromBytes(DicomBytes bytes, [Charset _]) => AEbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static AEbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kAECode, isEvr);
+  static AEbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kAECode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
     assert(vList.length <= AE.kMaxVFLength);
@@ -85,8 +86,9 @@ class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
   }
 
   // ignore: prefer_constructors_over_static_methods
-  static ASbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kASCode, isEvr);
+  static ASbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kASCode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
     assert(vList.length <= AS.kMaxVFLength);
@@ -104,8 +106,9 @@ class CSbytes extends CS with ByteElement<String>, StringMixin, AsciiMixin {
   static CSbytes fromBytes(DicomBytes bytes, [Charset _]) => CSbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static CSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kCSCode, isEvr);
+  static CSbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kCSCode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
     assert(vList.length <= CS.kMaxVFLength);
@@ -128,8 +131,9 @@ class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
   }
 
   // ignore: prefer_constructors_over_static_methods
-  static DAbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDACode, isEvr);
+  static DAbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kDACode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
     assert(vList.length <= DA.kMaxVFLength);
@@ -147,8 +151,9 @@ class DSbytes extends DS with ByteElement<String>, StringMixin, AsciiMixin {
   static DSbytes fromBytes(DicomBytes bytes, [Charset _]) => DSbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static DSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDSCode, isEvr);
+  static DSbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kDSCode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList, kSpace);
     assert(bytes.length - bytes.vfOffset <= DS.kMaxVFLength);
@@ -166,8 +171,9 @@ class DTbytes extends DT with ByteElement<String>, StringMixin, AsciiMixin {
   static DTbytes fromBytes(DicomBytes bytes, [Charset _]) => DTbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static DTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDTCode, isEvr);
+  static DTbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kDTCode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
     assert(vList.length <= DT.kMaxVFLength);
@@ -185,8 +191,9 @@ class ISbytes extends IS with ByteElement<String>, StringMixin, AsciiMixin {
   static ISbytes fromBytes(DicomBytes bytes, [Charset _]) => ISbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ISbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kISCode, isEvr);
+  static ISbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kISCode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
     assert(vList.length <= IS.kMaxVFLength);
@@ -208,8 +215,9 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
   static UIbytes fromBytes(DicomBytes bytes, [Charset _]) => UIbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static UIbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kUICode, isEvr);
+  static UIbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kUICode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
     assert(vList.length <= UI.kMaxVFLength);
@@ -227,8 +235,9 @@ class TMbytes extends TM with ByteElement<String>, StringMixin, AsciiMixin {
   static TMbytes fromBytes(DicomBytes bytes, [Charset _]) => TMbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static TMbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kTMCode, isEvr);
+  static TMbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kTMCode);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
     assert(vList.length <= TM.kMaxVFLength);
@@ -270,8 +279,9 @@ class LObytes extends LO with ByteElement<String>, StringMixin, Utf8Mixin {
   }
 
   // ignore: prefer_constructors_over_static_methods
-  static LObytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLOCode, isEvr);
+  static LObytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kLOCode);
     if (bytes == null) return null;
     bytes.writeUtf8VF(vList);
     assert(vList.length <= LO.kMaxVFLength);
@@ -292,8 +302,9 @@ class PCbytes extends PC with ByteElement<String>, StringMixin, Utf8Mixin {
   static PCbytes fromBytes(DicomBytes bytes, [Charset _]) => PCbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static PCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLOCode, isEvr);
+  static PCbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kLOCode);
     if (bytes == null) return null;
     bytes.writeUtf8VF(vList);
     assert(vList.length <= LO.kMaxVFLength);
@@ -311,8 +322,9 @@ class PNbytes extends PN with ByteElement<String>, StringMixin, Utf8Mixin {
   static PNbytes fromBytes(DicomBytes bytes, [Charset _]) => PNbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static PNbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kPNCode, isEvr);
+  static PNbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kPNCode);
     if (bytes == null) return null;
     bytes.writeUtf8VF(vList);
     assert(vList.length <= PN.kMaxVFLength);
@@ -330,8 +342,9 @@ class SHbytes extends SH with ByteElement<String>, StringMixin, Utf8Mixin {
   static SHbytes fromBytes(DicomBytes bytes, [Charset _]) => SHbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static SHbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kSHCode, isEvr);
+  static SHbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kSHCode);
     if (bytes == null) return null;
     bytes.writeUtf8VF(vList);
     assert(vList.length <= SH.kMaxVFLength);
@@ -349,8 +362,9 @@ class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
   static UCbytes fromBytes(DicomBytes bytes, [Charset _]) => UCbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static UCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kUCCode, isEvr);
+  static UCbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeLongString(code, vList, endian, isEvr, kUCCode);
     if (bytes == null) return null;
     bytes.writeUtf8VF(vList);
     assert(vList.length <= UC.kMaxVFLength);
@@ -391,8 +405,9 @@ class LTbytes extends LT with ByteElement<String>, TextMixin {
   static LTbytes fromBytes(DicomBytes bytes, [Charset _]) => LTbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static LTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLTCode, isEvr);
+  static LTbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kLTCode);
     if (bytes == null) return null;
     bytes.writeTextVF(vList);
     assert(vList.length <= LT.kMaxVFLength);
@@ -410,8 +425,9 @@ class STbytes extends ST with ByteElement<String>, TextMixin {
   static STbytes fromBytes(DicomBytes bytes, [Charset _]) => STbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static STbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kSTCode, isEvr);
+  static STbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeShortString(code, vList, endian, isEvr, kSTCode);
     if (bytes == null) return null;
     bytes.writeTextVF(vList);
     assert(vList.length <= ST.kMaxVFLength);
@@ -429,8 +445,9 @@ class URbytes extends UR with ByteElement<String>, TextMixin {
   static URbytes fromBytes(DicomBytes bytes, [Charset _]) => URbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static URbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kURCode, isEvr);
+  static URbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeLongString(code, vList, endian, isEvr, kURCode);
     if (bytes == null) return null;
     bytes.writeTextVF(vList);
     assert(vList.length <= UR.kMaxVFLength);
@@ -448,8 +465,9 @@ class UTbytes extends UT with ByteElement<String>, TextMixin {
   static UTbytes fromBytes(DicomBytes bytes, [Charset _]) => UTbytes(bytes);
 
   // ignore: prefer_constructors_over_static_method
-  static UTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kUTCode, isEvr);
+  static UTbytes fromValues(int code, List<String> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
+    final bytes = _makeLongString(code, vList, endian, isEvr, kUTCode);
     if (bytes == null) return null;
     bytes.writeTextVF(vList);
     assert(vList.length <= UT.kMaxVFLength);

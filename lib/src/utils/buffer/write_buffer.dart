@@ -29,7 +29,7 @@ class WriteBuffer extends Object with WriteBufferMixin {
       int limit = kDefaultLimit])
       : rIndex = 0,
         wIndex = 0,
-        bytes = GrowableBytes(length, endian, limit);
+        bytes = GrowableBytes.make(length, endian, limit);
 
   /// Creates a [WriteBuffer] from another [WriteBuffer].
   WriteBuffer.from(WriteBuffer wb,

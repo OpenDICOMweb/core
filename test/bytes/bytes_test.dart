@@ -21,7 +21,7 @@ void main() {
 
       // Check initialized with zeros
       for (var i = 0; i < count; i++) {
-        final bytes = Bytes(count);
+        final bytes = BytesLE(count);
         expect(bytes.endian == Endian.little, true);
 
         expect(bytes.elementSizeInBytes == 1, true);
@@ -95,8 +95,8 @@ void main() {
 
     test('Test List interface: initial zeroed, equality, hashCode', () {
       const count = 255;
-      final a = Bytes(count);
-      final b = Bytes(count);
+      final a = Bytes(ByteData(count));
+      final b = Bytes(ByteData(count));
 
       // Check initialized with zeros
       for (var i = 0; i < count; i++) {
@@ -135,7 +135,7 @@ void main() {
       const loopCount = 100;
 
       for (var i = 0; i < loopCount; i++) {
-        final a = Bytes(0xFFFF * kInt16Size);
+        final a = BytesLE(0xFFFF * kInt16Size);
         assert(a.length == 0xFFFF * kInt16Size, true);
 
         for (var i = 0, j = -10; i <= 10; i++, j += 2) {
@@ -209,7 +209,7 @@ void main() {
         expect(fl32List0[i] == fl32List1[i], true);
 
       // Unaligned
-      final fl32b = Bytes(20)
+      final fl32b = BytesLE(20)
         ..setFloat32(2, floats[0])
         ..setFloat32(6, floats[1])
         ..setFloat32(10, floats[2])

@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:typed_data';
 
 import 'package:core/core.dart';
 import 'package:test/test.dart';
@@ -14,7 +15,7 @@ void main(List<String> args) {
   const count = 12;
 
   for (var i = 0; i < count; i++) {
-    final a = Bytes(count);
+    final a = Bytes(ByteData(count));
 
     assert(a.length == count, isTrue);
     for (var i = 0; i < count; i++) {

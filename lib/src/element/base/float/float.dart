@@ -72,7 +72,7 @@ abstract class Float extends Element<double> {
   Float view([int start = 0, int length]);
 
   @override
-  String toString() => '$runtimeType ${dcm(code)} ($vr) $values';
+  String toString() => '$runtimeType ${dcm(code)} ($vrIndex) $values';
 
   /// Returns _true_ if [tag] and each values in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, Issues issues,

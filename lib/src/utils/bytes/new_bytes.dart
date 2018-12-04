@@ -17,9 +17,9 @@ import 'package:core/src/system.dart';
 import 'package:core/src/utils/character/charset.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string/string_lists.dart';
+import 'package:core/src/utils/bytes/bytes_mixin.dart';
 import 'package:core/src/utils/bytes/little_endian_mixin.dart';
 import 'package:core/src/utils/bytes/big_endian_mixin.dart';
-import 'package:core/src/utils/bytes/bytes_mixin.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -32,43 +32,93 @@ bool ignorePadding = true;
 
 /// [Bytes] is a class that provides a read-only byte array that supports both
 /// [Uint8List] and [ByteData] interfaces.
-abstract class Bytes extends ListBase<int>
-    with ByteDataMixin
-    implements Comparable<Bytes> {
+class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
   ByteData bd;
-  Endian get endian;
+
+  Bytes(this.bd);
+
+  Endian get endian => unimplementedError();
   @override
-  String get endianness;
+  String get endianness => unimplementedError();
+
+  @override
+  int getInt16(int offset) => unimplementedError();
+  @override
+  int getInt32(int offset) => unimplementedError();
+  @override
+  int getInt64(int offset) => unimplementedError();
+  @override
+  int getUint16(int offset) => unimplementedError();
+  @override
+  int getUint32(int offset) => unimplementedError();
+  @override
+  int getUint64(int offset) => unimplementedError();
+
+  @override
+  double getFloat32(int offset) => unimplementedError();
+  @override
+  double getFloat64(int offset) => unimplementedError();
+
+  @override
+  void setInt16(int offset, int value) => unimplementedError();
+  @override
+  void setInt32(int offset, int value) => unimplementedError();
+  @override
+  void setInt64(int offset, int value) => unimplementedError();
+
+  @override
+  void setUint16(int offset, int value) => unimplementedError();
+  @override
+  void setUint32(int offset, int value) => unimplementedError();
+  @override
+  void setUint64(int offset, int value) => unimplementedError();
+
+  @override
+  void setFloat32(int offset, double value) => unimplementedError();
+  @override
+  void setFloat64(int offset, double value) => unimplementedError();
+
+  /// Returns an [ByteData] view of the specified region of _this_.
+  ByteData _viewOfBDRegion([int offset = 0, int length]) {
+    length ??= this.length - offset;
+    return bd.buffer.asByteData(_absIndex(offset), length);
+  }
+
+  /// Returns a view of the specified region of _this_.
+  Bytes asBytes([int offset = 0, int length]) {
+    final bd = _viewOfBDRegion(offset, length);
+    return Bytes(bd);
+  }
+
+  /// Creates an [ByteData] view of the specified region of _this_.
+  ByteData asByteData([int offset = 0, int length]) =>
+      _viewOfBDRegion(offset, (length ??= length) - offset);
 
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [kDefaultLength] and [endian] defaults
   /// to [Endian.host].
-  factory Bytes([int length = kDefaultLength, Endian endian = Endian.little]) {
-    endian ??= Endian.host;
-    return endian == Endian.big ? BytesBE(length) : BytesLE(length);
-  }
-
-  Bytes.internal(this.bd);
-
-  factory Bytes.view(Bytes bytes, [int offset = 0, int length, Endian endian]) {
-    endian = endian ?? bytes.endian;
-    return endian == Endian.big
-        ? BytesBE.view(bytes, offset, length)
-        : BytesLE.view(bytes, offset, length);
-  }
+  static Bytes make(
+          [int length = kDefaultLength, Endian endian = Endian.little]) =>
+      endian == Endian.big ? BytesBE(length) : BytesLE(length);
 
   /// Creates a new [Bytes] from [bytes] containing the specified region
   /// and [endian]ness. [endian] defaults to [Endian.host].
-  factory Bytes.from(Bytes bytes, [int offset = 0, int length, Endian endian]) {
+  static Bytes from(Bytes bytes, [int offset = 0, int length, Endian endian]) {
     final bd = _copyByteData(bytes.bd, offset, length ?? bytes.length);
     return endian == Endian.big
         ? BytesBE.fromByteData(bd)
         : BytesLE.fromByteData(bd);
   }
 
+  static Bytes view(Bytes bytes,
+          [int offset = 0, int length, Endian endian = Endian.little]) =>
+      endian == Endian.big
+          ? BytesBE.view(bytes, offset, length)
+          : BytesLE.view(bytes, offset, length);
+
   /// Creates a new [Bytes] from [bd]. [endian] defaults to [Endian.host].
-  factory Bytes.fromByteData(ByteData bd, [Endian endian]) =>
+  static Bytes fromByteData(ByteData bd, [Endian endian]) =>
       endian == Endian.big
           ? BytesBE.fromByteData(bd)
           : BytesLE.fromByteData(bd);
@@ -95,6 +145,20 @@ abstract class Bytes extends ListBase<int>
         ? BytesBE.fromByteData(bd)
         : BytesLE.fromByteData(bd);
   }
+
+  // TODO Unit test
+  static ByteData copyByteData(Bytes bytes, [int start = 0, int end]) {
+    final bd = bytes.bd;
+    end ??= bd.lengthInBytes;
+    final offset = bd.offsetInBytes + start;
+    final length = end - start;
+    final newBD = ByteData(length);
+    for (var i = 0; i < length; i++) newBD.setUint8(i, bd.getUint8(offset + i));
+    return newBD;
+  }
+
+  static ByteData viewByteData(Bytes bytes, [int start = 0, int end]) =>
+      bytes.bd.buffer.asByteData(bytes.offset + start, end ?? bytes.length);
 
   // TODO: Either remove fromFile and fromPath or add doAsync
 
@@ -223,16 +287,194 @@ abstract class Bytes extends ListBase<int>
   @override
   set length(int length) =>
       throw UnsupportedError('$runtimeType: length is not modifiable');
-  @override
+
+
   int getUint8(int offset) => bd.getUint8(offset);
   @override
   void setUint8(int offset, int value) => bd.setUint8(offset, value);
 
   /// Returns an 8-bit integer values at [offset].
-  @override
   int getInt8(int offset) => bd.getInt8(offset);
   @override
   void setInt8(int offset, int value) => bd.setInt8(offset, value);
+
+  // **** Internal methods
+
+  /// Returns the absolute index of [offset] in the underlying [ByteBuffer].
+  int _absIndex(int offset) => bd.offsetInBytes + offset;
+
+  // **** TypedData copies
+
+  /// Returns a [ByteData] that iss a copy of the specified region of _this_.
+  ByteData _copyBDRegion(int offset, int length) {
+    final _length = length ?? length;
+    final bdNew = ByteData(_length);
+    for (var i = 0, j = offset; i < _length; i++, j++)
+      bdNew.setUint8(i, bd.getUint8(j));
+    return bdNew;
+  }
+
+  /// Creates a new [Bytes] from _this_ containing the specified region.
+  @override
+  Bytes sublist([int start = 0, int end]) {
+    final bd = _copyBDRegion(start, (end ??= length) - start);
+    return Bytes.fromByteData(bd, Endian.little);
+  }
+
+  /// Creates an [Int8List] copy of the specified region of _this_.
+  Bytes getBytes([int offset = 0, int length]) {
+    final bd = _copyBDRegion(offset, length);
+    return Bytes.fromByteData(bd, Endian.little);
+  }
+
+  /// Creates an [Int8List] copy of the specified region of _this_.
+  ByteData getByteData([int offset = 0, int length]) =>
+      _copyBDRegion(offset, length);
+
+  /// Creates an [Int8List] copy of the specified region of _this_.
+  Int8List getInt8List([int offset = 0, int length]) {
+    length ??= this.length;
+    final list = Int8List(length);
+    for (var i = 0, j = offset; i < length; i++, j++) list[i] = bd.getInt8(j);
+    return list;
+  }
+
+  /// Creates an [Int8List] view of the specified region of _this_.
+  Int8List asInt8List([int offset = 0, int length]) {
+    length ??= this.length - offset;
+    return bd.buffer.asInt8List(_absIndex(offset), length);
+  }
+
+  // **** Unsigned Integer Lists
+
+  Uint8List getUint8List([int offset = 0, int length]) {
+    length ??= this.length;
+    final list = Uint8List(length);
+    for (var i = 0, j = offset; i < length; i++, j++) list[i] = bd.getInt8(j);
+    return list;
+  }
+
+  // Allows the removal of padding characters.
+  Uint8List asUint8List([int offset = 0, int length]) {
+    length ??= length;
+    final index = _absIndex(offset);
+    return bd.buffer.asUint8List(index, length);
+  }
+
+  // **** Get Strings and List<String>
+
+  /// Returns a [String] containing a _Base64_ encoding of the specified
+  /// region of _this_.
+  String getBase64([int offset = 0, int length]) {
+    final bList = asUint8List(offset, length);
+    return bList.isEmpty ? '' : cvt.base64.encode(bList);
+  }
+
+  // Allows the removal of padding characters.
+  Uint8List _asUint8ListFromString([int offset = 0, int length]) {
+    length ??= length;
+    if (length <= offset) return kEmptyUint8List;
+    final index = _absIndex(offset);
+    final lastIndex = length - 1;
+    final _length = _maybeRemoveNull(lastIndex, length);
+    if (length == 0) return kEmptyUint8List;
+    return bd.buffer.asUint8List(index, _length);
+  }
+
+  int _maybeRemoveNull(int lastIndex, int vfLength) =>
+      (getUint8(lastIndex) == kNull) ? lastIndex : vfLength;
+
+  /// Returns a [String] containing a _ASCII_ decoding of the specified
+  /// region of _this_. Also allows the removal of a padding character.
+  String stringFromAscii(
+      {int offset = 0, int length, bool allowInvalid = true}) {
+    final v = _asUint8ListFromString(offset, length ?? length);
+    return v.isEmpty ? '' : cvt.ascii.decode(v, allowInvalid: allowInvalid);
+//    final last = s.length - 1;
+//    final c = s.codeUnitAt(last);
+    // TODO: kNull should never get here but it does. Fix
+//    return (c == kNull) ? s.substring(0, last) : s;
+  }
+
+  /// Returns a [List<String>]. This is done by first decoding
+  /// the specified region as _ASCII_, and then _split_ing the
+  /// resulting [String] using the [separator]. Also allows the
+  /// removal of a padding character.
+  List<String> stringListFromAscii(
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String separator = '\\'}) {
+    final s = stringFromAscii(
+        offset: offset, length: length, allowInvalid: allowInvalid);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
+
+  /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
+  /// Also, allows the removal of padding characters.
+  String stringFromUtf8(
+      {int offset = 0, int length, bool allowInvalid = true}) {
+    final v = _asUint8ListFromString(offset, length ?? length);
+    return v.isEmpty ? '' : cvt.utf8.decode(v, allowMalformed: allowInvalid);
+  }
+
+  /// Returns a [List<String>]. This is done by first decoding
+  /// the specified region as _UTF-8_, and then _split_ing the
+  /// resulting [String] using the [separator].
+  List<String> stringListFromUtf8(
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String separator = '\\'}) {
+    final s = stringFromUtf8(
+        offset: offset, length: length, allowInvalid: allowInvalid);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
+
+  String stringFromLatin(
+      {int offset = 0, int length, bool allowInvalid = true}) {
+    final v = _asUint8ListFromString(offset, length ?? length);
+    return v.isEmpty ? '' : cvt.latin1.decode(v, allowInvalid: allowInvalid);
+  }
+
+  /// Returns a [List<String>]. This is done by first decoding
+  /// the specified region as _UTF-8_, and then _split_ing the
+  /// resulting [String] using the [separator].
+  List<String> stringListFromLatin(
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String separator = '\\'}) {
+    final s = stringFromLatin(
+        offset: offset, length: length, allowInvalid: allowInvalid);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
+
+  /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
+  String getString(Charset charset,
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String separator = '\\'}) {
+    final v = _asUint8ListFromString(offset, length ?? length);
+    return v.isEmpty ? '' : charset.decode(v, allowInvalid: true);
+  }
+
+  /// Returns a [List<String>]. This is done by first decoding
+  /// the specified region as _UTF-8_, and then _split_ing the
+  /// resulting [String] using the [separator].
+  List<String> getStringList(Charset charset,
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      String separator = '\\'}) {
+    final s = getString(charset,
+        offset: offset,
+        length: length,
+        allowInvalid: allowInvalid,
+        separator: separator);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
 
   // *** Comparable interface
 
@@ -260,7 +502,7 @@ abstract class Bytes extends ListBase<int>
   static const int kDefaultLimit = k1GB;
 
   /// The canonical empty (zero length) [Bytes] object.
-  static final Bytes kEmptyBytes = Bytes(0);
+  static final Bytes kEmptyBytes = Bytes(ByteData(0));
 }
 
 /// [BytesLE] is a class that provides a read-only Little Endian byte array
@@ -270,30 +512,29 @@ class BytesLE extends Bytes
     implements Comparable<Bytes> {
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [Bytes.kDefaultLength].
-  BytesLE([int length = Bytes.kDefaultLength])
-      : super.internal(ByteData(length));
+  BytesLE([int length = Bytes.kDefaultLength]) : super(ByteData(length));
 
   BytesLE.view(Bytes bytes, [int offset = 0, int length])
-      : super.internal(_bdView(bytes.bd, offset, length ?? bytes.length));
+      : super(_bdView(bytes.bd, offset, length ?? bytes.length));
 
   /// Creates a new [Bytes] from [bytes] containing the specified region.
   BytesLE.from(Bytes bytes, [int offset = 0, int length])
-      : super.internal(_copyByteData(bytes.bd, offset, length ?? bytes.length));
+      : super(_copyByteData(bytes.bd, offset, length ?? bytes.length));
 
   /// Creates a new [Bytes] from [bd].
-  BytesLE.fromByteData(ByteData bd) : super.internal(bd);
+  BytesLE.fromByteData(ByteData bd) : super(bd);
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.
   BytesLE.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes])
-      : super.internal(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
+      : super(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
             lengthInBytes ?? td.lengthInBytes));
 
   /// Creates a new [Bytes] from a [List<int>]. Any values in [list]
   /// that are larger than 8-bits are truncated.
   BytesLE.fromList(List<int> list)
-      : super.internal(list is Uint8List
+      : super(list is Uint8List
             ? list.buffer.asByteData()
             : Uint8List.fromList(list).buffer.asByteData());
 
@@ -398,34 +639,33 @@ class BytesLE extends Bytes
 class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [Bytes.kDefaultLength].
-  BytesBE([int length = Bytes.kDefaultLength])
-      : super.internal(ByteData(length));
+  BytesBE([int length = Bytes.kDefaultLength]) : super(ByteData(length));
 
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [Bytes.kDefaultLength].
 //  BytesBE._(int length) : super.internal(ByteData(length));
 
   BytesBE.view(Bytes bytes, [int offset = 0, int length])
-      : super.internal(_bdView(bytes.bd, offset, length ?? bytes.length));
+      : super(_bdView(bytes.bd, offset, length ?? bytes.length));
 
   /// Creates a new [Bytes] from [bytes] containing the specified region.
   BytesBE.from(Bytes bytes, [int offset = 0, int length])
-      : super.internal(_copyByteData(bytes.bd, offset, length ?? bytes.length));
+      : super(_copyByteData(bytes.bd, offset, length ?? bytes.length));
 
   /// Creates a new [Bytes] from [bd].
-  BytesBE.fromByteData(ByteData bd) : super.internal(bd);
+  BytesBE.fromByteData(ByteData bd) : super(bd);
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.
   BytesBE.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes])
-      : super.internal(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
+      : super(td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
             lengthInBytes ?? td.lengthInBytes));
 
   /// Creates a new [Bytes] from a [List<int>]. Any values in [list]
   /// that are larger than 8-bits are truncated.
   BytesBE.fromList(List<int> list)
-      : super.internal(list is Uint8List
+      : super(list is Uint8List
             ? list.buffer.asByteData()
             : Uint8List.fromList(list).buffer.asByteData());
 
@@ -562,7 +802,9 @@ bool __bytesEqual(Bytes a, Bytes b, bool ignorePadding) {
   final len0 = a.length;
   final len1 = b.length;
   if (len0 != len1) return false;
-  if ((len0 % 4) == 0) {
+  if ((len0 % 8) == 0) {
+    return _uint64Equal(a, b, ignorePadding);
+  } else if ((len0 % 4) == 0) {
     return _uint32Equal(a, b, ignorePadding);
   } else if ((len0 % 2) == 0) {
     return _uint16Equal(a, b, ignorePadding);
@@ -584,8 +826,8 @@ bool _uint8Equal(Bytes a, Bytes b, bool ignorePadding) {
 // Note: optimized to use 2 byte boundary
 bool _uint16Equal(Bytes a, Bytes b, bool ignorePadding) {
   for (var i = 0; i < a.length; i += 2) {
-    final x = a.getUint16(i);
-    final y = b.getUint16(i);
+    final x = a.bd.getUint16(i, Endian.big);
+    final y = b.bd.getUint16(i, Endian.big);
     if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
   }
   return true;
@@ -594,8 +836,18 @@ bool _uint16Equal(Bytes a, Bytes b, bool ignorePadding) {
 // Note: optimized to use 4 byte boundary
 bool _uint32Equal(Bytes a, Bytes b, bool ignorePadding) {
   for (var i = 0; i < a.length; i += 4) {
-    final x = a.getUint32(i);
-    final y = b.getUint32(i);
+    final x = a.bd.getUint32(i, Endian.big);
+    final y = b.bd.getUint32(i, Endian.big);
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+// Note: optimized to use 8 byte boundary
+bool _uint64Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.length; i += 8) {
+    final x = a.bd.getUint64(i, Endian.big);
+    final y = b.bd.getUint64(i, Endian.big);
     if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
   }
   return true;

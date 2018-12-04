@@ -14,32 +14,19 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/dicom.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/vr/vr_base.dart';
 
 // ignore_for_file: public_member_api_docs
-
-/// Checks the Value Field length.
-bool checkVFLengthField(int vfLengthField, int vfLength) {
-  if (vfLengthField != vfLength && vfLengthField != kUndefinedLength) {
-    log.warn('** vfLengthField($vfLengthField) != vfLength($vfLength)');
-    if (vfLengthField == vfLength + 1) {
-      log.warn('** vfLengthField: Odd length field: $vfLength');
-      return true;
-    }
-    return false;
-  }
-  return true;
-}
 
 mixin DicomBytesMixin {
   ByteData get bd;
   bool get isEvr;
-  int get vrCode;
-  int get vrIndex;
-  String get vrId;
+//  int get vrCode;
+//  int get vrIndex;
+//  String get vrId;
   int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
-
 
   int getUint16(int offset);
   int getUint8(int offset);
@@ -76,11 +63,18 @@ mixin DicomBytesMixin {
 
   // **** End of Interface
 
+  int get code => bd.getUint16(0) << 16 + bd.getUint16(2);
+
+/*
   int get code {
     final group = getUint16(0);
     final elt = getUint16(2);
     return (group << 16) + elt;
   }
+*/
+
+
+  set code(int v) => bd..setUint16(0, v >> 16)..setUint16(2, v & 0xFFFF);
 
   /// The Element Group Field
   int get group => getUint16(_kGroupOffset);
@@ -89,6 +83,16 @@ mixin DicomBytesMixin {
   int get elt => getUint16(_kEltOffset);
 
   Tag get tag => Tag.lookup(code);
+
+  //  int get vrCode => bd.getUint8(4) << 8 + bd.getUint8(5) & 0xFF;
+
+  int get vrCode => (bd.getUint8(kVROffset) << 8) + bd.getUint8(kVROffset + 1);
+
+  set vrCode(int v) => bd..setUint8(0, v >> 8)..setUint8(1, v & 0xFF);
+
+  int get vrIndex => vrIndexFromCode(vrCode);
+
+  String get vrId => vrIdByIndex[vrIndex];
 
   /// Returns the length in bytes of _this_ Element.
   int get eLength => bd.lengthInBytes;
@@ -169,7 +173,6 @@ mixin DicomBytesMixin {
     setUint32(4, vlf);
   }
 
-
   void writeInt8VF(List<int> vList) => setInt8List(vfOffset, vList);
   void writeInt16VF(List<int> vList) => setInt16List(vfOffset, vList);
   void writeInt32VF(List<int> vList) => setInt32List(vfOffset, vList);
@@ -211,6 +214,19 @@ mixin DicomBytesMixin {
     return (length == 0)
         ? kEmptyUint8List
         : bd.buffer.asUint8List(bd.offsetInBytes + offset, length - offset);
+  }
+
+  /// Checks the Value Field length.
+  bool checkVFLengthField(int vfLengthField, int vfLength) {
+    if (vfLengthField != vfLength && vfLengthField != kUndefinedLength) {
+      log.warn('** vfLengthField($vfLengthField) != vfLength($vfLength)');
+      if (vfLengthField == vfLength + 1) {
+        log.warn('** vfLengthField: Odd length field: $vfLength');
+        return true;
+      }
+      return false;
+    }
+    return true;
   }
 
   static const int _kGroupOffset = 0;

@@ -10,6 +10,9 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: type_annotate_public_apis, public_member_api_docs
 
+const int kVROffset = 4;
+const int kVRLength = 2;
+
 const int kUNIndex = 0; // Maybe Undefined Max
 // Sequence is 1
 const int kSQIndex = 1;

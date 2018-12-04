@@ -171,34 +171,27 @@ mixin ByteElement<V> {
 }
 
 DicomBytes _makeShort<V>(
-    int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize) {
+    int code, List<V> vList, Endian endian, bool isEvr, int vrCode, int eSize) {
   final vfLength = vList.length * eSize;
-  return isEvr
-      ? EvrShortBytes.empty(code, vfLength, vrCode)
-      : IvrBytes.empty(code, vfLength, vrCode);
+  return DicomBytes.make(code, vfLength, endian, isEvr, vrCode);
 }
 
 DicomBytes _makeShortString(
-    int code, List<String> sList, int vrCode, bool isEvr) {
+    int code, List<String> sList, Endian endian, bool isEvr, int vrCode) {
   final tag = Tag.lookupByCode(code);
   if (tag.vrCode != vrCode) return null;
   final vlf = stringListLength(sList, pad: true);
-  return isEvr
-      ? EvrShortBytes.empty(code, vlf, vrCode)
-      : IvrBytes.empty(code, vlf, vrCode);
+  return DicomBytes.make(code, vlf, endian, isEvr, vrCode);
 }
 
-DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
+DicomBytes _makeLong<V>(
+    int code, List<V> vList, Endian endian, bool isEvr, int vrCode, int eSize) {
   final vfLength = vList.length * eSize;
-  return isEvr
-      ? EvrLongBytes.empty(code, vfLength, vrCode)
-      : IvrBytes.empty(code, vfLength, vrCode);
+  return DicomBytes.make(code, vfLength, endian, isEvr, vrCode);
 }
 
 DicomBytes _makeLongString(
-    int code, List<String> sList, int vrCode, bool isEvr) {
+    int code, List<String> sList, Endian endian, bool isEvr, int vrCode) {
   final vlf = stringListLength(sList, pad: true);
-  return isEvr
-      ? EvrLongBytes.empty(code, vlf, vrCode)
-      : IvrBytes.empty(code, vlf, vrCode);
+  return DicomBytes.make(code, vlf, endian, isEvr, vrCode);
 }

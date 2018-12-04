@@ -28,7 +28,7 @@ void main(List<String> args) {
     assert(fl32List0[i] == fl32List1[i]);
 
   // Unaligned
-  final fl32b =  Bytes(20)
+  final fl32b =  BytesLE(20)
   ..setFloat32(2, floats[0])
   ..setFloat32(6, floats[1])
   ..setFloat32(10, floats[2])
