@@ -95,6 +95,11 @@ class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
         _makeShort(code, vList, endian, isEvr, kFDCode, FD.kSizeInBytes)
           ..writeFloat64VF(vList);
     assert(vList.length * FD.kSizeInBytes <= FD.kMaxVFLength);
+    for (var i = 0; i < bytes.length; i++) print('${bytes[i]}');
+    print('code ${dcm(bytes.code)}');
+    print('vrCode: ${bytes.vrCode}');
+    print('vrIndex: ${bytes.vrIndex}');
+    print('bytes: $bytes');
     return FDbytes.fromBytes(bytes);
   }
 }

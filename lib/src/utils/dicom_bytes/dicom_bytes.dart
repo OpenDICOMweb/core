@@ -47,7 +47,8 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
     }
     bytes
       ..code = code
-      ..vrCode = vrCode;
+      ..vrCode = vrCode
+      ..vfLengthField = vfLength;
     return bytes;
   }
 

@@ -21,12 +21,10 @@ import 'package:core/src/vr/vr_base.dart';
 mixin DicomBytesMixin {
   ByteData get bd;
   bool get isEvr;
-//  int get vrCode;
-//  int get vrIndex;
-//  String get vrId;
-  int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
+  set vfLengthField(int length);
+  int get vfOffset;
 
   int getUint16(int offset);
   int getUint8(int offset);
@@ -73,7 +71,6 @@ mixin DicomBytesMixin {
   }
 */
 
-
   set code(int v) => bd..setUint16(0, v >> 16)..setUint16(2, v & 0xFFFF);
 
   /// The Element Group Field
@@ -88,7 +85,10 @@ mixin DicomBytesMixin {
 
   int get vrCode => (bd.getUint8(kVROffset) << 8) + bd.getUint8(kVROffset + 1);
 
-  set vrCode(int v) => bd..setUint8(0, v >> 8)..setUint8(1, v & 0xFF);
+  set vrCode(int v) {
+    bd.setUint8(0, v >> 8);
+    bd.setUint8(1, v & 0xFF);
+  }
 
   int get vrIndex => vrIndexFromCode(vrCode);
 

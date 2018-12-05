@@ -29,7 +29,8 @@ mixin EvrMixin {
 
 mixin EvrShortMixin {
   int get vfLength;
-  int getUint16(int vfLengthOffset);
+  int getUint16(int offset);
+  void setUint16(int offset, int length);
   bool checkVFLengthField(int vlf, int vfLength);
   // **** End of Interface
 
@@ -42,6 +43,8 @@ mixin EvrShortMixin {
     assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
+
+  set vfLengthField(int length) => setUint16(kVFLengthOffset, length);
 
   /// The offset of the Value Field Length field.
   static const int kVFLengthOffset = 6;
@@ -144,7 +147,8 @@ class EvrShortBytesLE extends DicomBytes
 
 mixin EvrLongMixin {
   int get vfLength;
-  int getUint32(int kVFLengthOffset);
+  int getUint32(int offset);
+  void setUint32(int offset, int length);
   bool checkVFLengthField(int vlf, int vfLength);
   // **** End of Interface
 
@@ -157,6 +161,8 @@ mixin EvrLongMixin {
     assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
+
+  set vfLengthField(int length) => setUint32(kVFLengthOffset, length);
 
   /// The offset of the Value Field Length field.
   static const int kVFLengthOffset = 8;
