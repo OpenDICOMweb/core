@@ -196,12 +196,26 @@ void main() {
       }
     });
 
-    test('LT isValidValues random', () {
+    test('LT checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
         final e0 = LTtag(PTag.kImageComments, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('LT checkValues bad values random', () {
+      final vList0 = rsg.getLTList(1, 1);
+      final e1 = LTtag(PTag.kImageComments, vList0);
+
+      for (var s in badLTList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

@@ -400,17 +400,25 @@ void main() {
       }
     });
 
-    test('DT isValidValues ', () {
+    test('DT checkValues good values random ', () {
       for (var s in goodDTList) {
         final e0 = DTtag(PTag.kDateTime, s);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
+    });
 
-      global.throwOnError = true;
+    test('DT checkValues bad values random', () {
+      final vList0 = rsg.getDTList(1, 1);
+      final e1 = DTtag(PTag.kDateTime, vList0);
+
       for (var s in badDTList) {
-        expect(() => DTtag(PTag.kDateTime, s),
-            throwsA(const TypeMatcher<StringError>()));
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

@@ -214,12 +214,26 @@ void main() {
       }
     });
 
-    test('LO isValidValues random', () {
+    test('LO checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('LO checkValues bad values random', () {
+      final vList0 = rsg.getLOList(1, 1);
+      final e1 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+
+      for (var s in badLOList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
