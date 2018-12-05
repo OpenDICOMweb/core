@@ -298,7 +298,7 @@ void main() {
       }
     });
 
-    test('DS isValidValues random', () {
+    test('DS checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
         final e0 = DStag(PTag.kPresentationPixelSpacing, vList0);
@@ -307,7 +307,22 @@ void main() {
       }
     });
 
+    test('DS checkValues bad values random', () {
+      final vList0 = rsg.getDSList(1, 1);
+      final e1 = DStag(PTag.kProcedureStepProgress, vList0);
+
+      for (var s in badDSList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
+      }
+    });
+
     test('DS replace random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
         final e0 = DStag(PTag.kSamplingFrequency, vList0);

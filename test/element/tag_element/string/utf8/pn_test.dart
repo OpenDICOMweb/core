@@ -205,12 +205,26 @@ void main() {
       }
     });
 
-    test('PN isValidValues random', () {
+    test('PN checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
         final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('PN checkValues bad values random', () {
+      final vList0 = rsg.getPNList(1, 1);
+      final e1 = PNtag(PTag.kOrderEnteredBy, vList0);
+
+      for (var s in badPNList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

@@ -188,12 +188,26 @@ void main() {
       }
     });
 
-    test('UR isValidValues random', () {
+    test('UR checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
         final e0 = URtag(PTag.kRetrieveURL, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('UR checkValues bad values random', () {
+      final vList0 = rsg.getURList(1, 1);
+      final e1 = URtag(PTag.kRetrieveURL, vList0);
+
+      for (var s in badURList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

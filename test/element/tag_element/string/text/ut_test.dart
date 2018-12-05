@@ -179,13 +179,27 @@ void main() {
       }
     });
 
-    test('UT isValidValues random', () {
+    test('UT checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         final e0 = UTtag(PTag.kUniversalEntityID, vList0);
 
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('UT checkValues bad values random', () {
+      final vList0 = rsg.getUTList(1, 1);
+      final e1 = UTtag(PTag.kUniversalEntityID, vList0);
+
+      for (var s in badUTList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+                () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

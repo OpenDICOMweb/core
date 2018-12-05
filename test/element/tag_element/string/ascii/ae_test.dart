@@ -195,7 +195,7 @@ void main() {
       }
     });
 
-    test('AE checkValues random', () {
+    test('AE checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
@@ -204,7 +204,22 @@ void main() {
       }
     });
 
+    test('AE checkValues bad values random', () {
+      final vList0 = rsg.getAEList(1, 1);
+      final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
+
+      for (var s in badAEList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
+      }
+    });
+
     test('AE replace random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);

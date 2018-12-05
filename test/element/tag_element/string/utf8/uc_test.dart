@@ -208,12 +208,26 @@ void main() {
       }
     });
 
-    test('UC isValidValues random', () {
+    test('UC checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
         final e0 = UCtag(PTag.kStrainDescription, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('UC checkValues bad values random', () {
+      final vList0 = rsg.getUCList(1, 1);
+      final e1 = UCtag(PTag.kStrainDescription, vList0);
+
+      for (var s in badUCList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

@@ -236,12 +236,26 @@ void main() {
       }
     });
 
-    test('UI isValidValues random', () {
+    test('UI checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
         final e0 = UItag(PTag.kSOPInstanceUID, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('UI checkValues bad values random', () {
+      final vList0 = rsg.getUIList(1, 1);
+      final e1 = UItag(PTag.kSOPInstanceUID, vList0);
+
+      for (var s in badUIList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

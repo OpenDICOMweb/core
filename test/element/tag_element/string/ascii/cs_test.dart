@@ -212,12 +212,26 @@ void main() {
       }
     });
 
-    test('CS isValidValues random', () {
+    test('CS checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
         final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('CS checkValues bad values random', () {
+      final vList0 = rsg.getCSList(1, 1);
+      final e1 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+
+      for (var s in badCSList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

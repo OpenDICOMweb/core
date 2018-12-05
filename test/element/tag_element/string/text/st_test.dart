@@ -195,13 +195,27 @@ void main() {
       }
     });
 
-    test('ST isValidValues random', () {
+    test('ST checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         final e0 = STtag(PTag.kSelectorSTValue, vList0);
 
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('ST checkValues bad values random', () {
+      final vList0 = rsg.getSTList(1, 1);
+      final e1 = STtag(PTag.kSelectorSTValue, vList0);
+
+      for (var s in badSTList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 

@@ -209,12 +209,26 @@ void main() {
       }
     });
 
-    test('SH isValidValues random', () {
+    test('SH checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
         final e0 = SHtag(PTag.kTextureLabel, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('SH checkValues bad values random', () {
+      final vList0 = rsg.getSHList(1, 1);
+      final e1 = SHtag(PTag.kTextureLabel, vList0);
+
+      for (var s in badSHList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
