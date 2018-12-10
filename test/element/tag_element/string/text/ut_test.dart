@@ -199,7 +199,7 @@ void main() {
 
         global.throwOnError = true;
         expect(
-                () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
