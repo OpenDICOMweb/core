@@ -474,7 +474,8 @@ void main() {
     test('LT fromAsciiList', () {
       //  system.level = Level.info;;
       final vList1 = rsg.getLTList(1, 1);
-      final bytes = Bytes.asciiFromList(vList1);
+      // Urgent Sharath: JFP changed this because text should not be processed as list
+      final bytes = Bytes.ascii(vList1[0]);
       log.debug('fromAsciiList): $bytes');
       expect(bytes.stringListFromAscii(), equals(vList1));
     });
@@ -560,7 +561,8 @@ void main() {
     test('LT fromBytes', () {
       global.throwOnError = false;
       final vList1 = rsg.getLTList(1, 1);
-      final bytes = Bytes.utf8FromList(vList1);
+      // Urgent Sharath: JFP changed this because text should not be processed as list
+      final bytes = Bytes.utf8(vList1[0]);
       log.debug('LT.fromBytes(bytes):  $bytes');
       expect(bytes.stringListFromUtf8(), equals(vList1));
     });

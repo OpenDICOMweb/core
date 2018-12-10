@@ -558,8 +558,11 @@ void main() {
 
     test('DS increment', () {
       global.throwOnError = false;
+      // Urgent Sharath: next line is returning a sting with length == 19
+      // it should never be greater than 16!
       final vList0 = rsg.getDSList(1, 1);
       final e0 = DStag(PTag.kPatientSize, vList0);
+      expect(e0.hasValidValues, true);
       final increment0 = e0.increment();
       log.debug('increment0: $increment0');
       expect(increment0.hasValidValues, true);

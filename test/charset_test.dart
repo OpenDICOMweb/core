@@ -52,9 +52,11 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
-          final visible0 =
-              charset0.isVisible(vList0.elementAt(j).codeUnitAt(j));
-          expect(visible0, true);
+          final char = vList0.elementAt(j).codeUnitAt(j);
+          final visible = charset0.isVisible(char);
+          // Urgent: remove when working
+          print('char: $char visible: $visible');
+          expect(visible, true);
         }
       }
     });

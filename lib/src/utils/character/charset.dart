@@ -45,7 +45,7 @@ class Charset {
   /// and UC. Backslash(\) not allowed, as it is used as a values separator for
   /// these [String] types.
   bool isVisible(int c) =>
-      (c > kSpace && c < kBackslash) || (c > kBackslash && c < kDelete);
+      (c >= kSpace && c < kBackslash) || (c > kBackslash && c < kDelete);
 
   /// Returns _true_ if [c] is a space character.
   bool isSpace(int c) => c == kSpace;
