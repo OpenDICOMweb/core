@@ -30,7 +30,7 @@ abstract class RootDataset extends Dataset {
   @override
   RDSBytes dsBytes;
   @override
-  Charset charset = utf8Charset;
+  Ascii charset = utf8Charset;
 
   /// Constructor
   RootDataset(this.path, Bytes bytes, int fmiEnd)

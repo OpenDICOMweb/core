@@ -18,7 +18,7 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
 
   /// Returns a new [SSbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static SSbytes fromBytes(DicomBytes bytes, [Charset _]) => SSbytes(bytes);
+  static SSbytes fromBytes(DicomBytes bytes, [Ascii _]) => SSbytes(bytes);
 
   /// Returns a new [SSbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
@@ -42,7 +42,7 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
 
   /// Returns a new [SLbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static SLbytes fromBytes(DicomBytes bytes, [Charset _]) => SLbytes(bytes);
+  static SLbytes fromBytes(DicomBytes bytes, [Ascii _]) => SLbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   /// Returns a new [SLbytes] [Element].
@@ -67,7 +67,7 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
 
   /// Returns a new [OBbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static OBbytes fromBytes(DicomBytes bytes, [Charset _]) => OBbytes(bytes);
+  static OBbytes fromBytes(DicomBytes bytes, [Ascii _]) => OBbytes(bytes);
 
   /// If [code] == [kPixelData] returns a [OBbytesPixelData]; otherwise,
   /// returns a new [OBbytes] [Element].
@@ -93,7 +93,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
 
   /// Returns a new [UNbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static UNbytes fromBytes(DicomBytes bytes, [Charset _]) => UNbytes(bytes);
+  static UNbytes fromBytes(DicomBytes bytes, [Ascii _]) => UNbytes(bytes);
 
   /// If [code] == [kPixelData] returns a [UNbytesPixelData]; otherwise,
   /// returns a new [UNbytes] [Element].
@@ -119,7 +119,7 @@ class USbytes extends US with ByteElement<int>, Uint16Mixin {
 
   /// Returns a new [USbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static USbytes fromBytes(DicomBytes bytes, [Charset _]) => USbytes(bytes);
+  static USbytes fromBytes(DicomBytes bytes, [Ascii _]) => USbytes(bytes);
 
   /// Returns a new [USbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
@@ -142,7 +142,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
 
   /// Returns a new [OWbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static OWbytes fromBytes(DicomBytes bytes, [Charset _]) => OWbytes(bytes);
+  static OWbytes fromBytes(DicomBytes bytes, [Ascii _]) => OWbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   /// If [code] == [kPixelData] returns a [OWbytesPixelData]; otherwise,
@@ -169,7 +169,7 @@ class ATbytes extends AT with ByteElement<int>, Uint32Mixin {
 
   /// Returns a new [ATbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static ATbytes fromBytes(DicomBytes bytes, [Charset _]) => ATbytes(bytes);
+  static ATbytes fromBytes(DicomBytes bytes, [Ascii _]) => ATbytes(bytes);
 
   /// Returns a new [ATbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
@@ -192,7 +192,7 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
 
   /// Returns a new [OLbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static OLbytes fromBytes(DicomBytes bytes, [Charset _]) => OLbytes(bytes);
+  static OLbytes fromBytes(DicomBytes bytes, [Ascii _]) => OLbytes(bytes);
 
   /// Returns a new [OLbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
@@ -215,7 +215,7 @@ class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
 
   /// Returns a new [ULbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static ULbytes fromBytes(DicomBytes bytes, [Charset _]) =>
+  static ULbytes fromBytes(DicomBytes bytes, [Ascii _]) =>
       // If the code is (gggg,0000) create a Group Length element
       (bytes.getUint16(2) == 0) ? GLbytes(bytes) : ULbytes(bytes);
 
@@ -237,7 +237,7 @@ class GLbytes extends ULbytes {
 
   /// Returns a new [GLbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static GLbytes fromBytes(DicomBytes bytes, [Charset _]) => GLbytes(bytes);
+  static GLbytes fromBytes(DicomBytes bytes, [Ascii _]) => GLbytes(bytes);
 
   /// Returns a new [GLbytes] [Element].
   // ignore: prefer_constructors_over_static_methods

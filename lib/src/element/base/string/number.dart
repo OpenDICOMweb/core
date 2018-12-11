@@ -19,7 +19,7 @@ part of odw.sdk.element.base.string;
 //       bool areAllSpacesAllowed = x;
 //       bool isEmptyStringAllowed = x;
 
-abstract class DS extends Ascii {
+abstract class DS extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -69,8 +69,11 @@ abstract class DS extends Ascii {
   Element increment([num n = 1.0]) {
     final result = List<num>(length);
     for (var i = 0; i < numbers.length; i++) result[i] = numbers[i] + n;
-    return update(result.map((v) => '$v'));
+    return update(result.map((v) => _toValidDSString('$v')));
   }
+
+  String _toValidDSString(String s) =>
+      (s.length > 16) ? s.substring(0, 16) : s;
 
   /// Returns a [Element] that is created by subtracting n from each
   /// element of [numbers].
@@ -227,7 +230,7 @@ abstract class DS extends Ascii {
       vfBytes.stringListFromAscii();
 }
 
-abstract class IS extends Ascii {
+abstract class IS extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override

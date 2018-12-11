@@ -22,14 +22,14 @@ void main() {
 
   group('Charset', () {
     test('Create Charset', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       log.debug('charset0: $charset0');
 
       expect(charset0.name == ascii.name, true);
       expect(charset0.language == ascii.language, true);
       expect(charset0.identifiers == ascii.identifiers, true);
 
-      const charset1 = Charset('ASCII-1', 'US English',
+      const charset1 = Ascii('ASCII-1', 'US English',
           ['ASCII', 'US-ASCII', 'ISO_IR 6', 'ISO/IEC 646']);
 
       expect(charset1.name == 'ASCII-1', true);
@@ -39,16 +39,16 @@ void main() {
     });
 
     test('isValid', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
-      for (var i = Charset.kMin; i <= Charset.kMax; i++) {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = Ascii.kMin; i <= Ascii.kMax; i++) {
         expect(charset0.isValid(i), true);
       }
-      expect(charset0.isValid(Charset.kMax + 1), false);
-      expect(charset0.isValid(Charset.kMin - 1), false);
+      expect(charset0.isValid(Ascii.kMax + 1), false);
+      expect(charset0.isValid(Ascii.kMin - 1), false);
     });
 
     test('isVisible', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
@@ -62,7 +62,7 @@ void main() {
     });
 
     test('decode and encode', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       //final vList0 = rng.uint8List(1, 1);
       const vList0 = [123, 23, 69, 98];
       final list0 = Uint8List.fromList(vList0);
@@ -108,8 +108,10 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
-          final visible0 = latin0.isVisible(vList0.elementAt(j).codeUnitAt(j));
-          expect(visible0, true);
+          final char = vList0.elementAt(j).codeUnitAt(j);
+          final v = latin0.isVisible(char);
+          if (!v) print('char: $char');
+          expect(v, true);
         }
       }
     });

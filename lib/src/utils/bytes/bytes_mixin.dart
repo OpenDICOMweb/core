@@ -469,7 +469,7 @@ mixin BytesMixin {
   }
 
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
-  String getString(Charset charset,
+  String getString(Ascii charset,
       {int offset = 0,
       int length,
       bool allowInvalid = true,
@@ -481,7 +481,7 @@ mixin BytesMixin {
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
-  List<String> getStringList(Charset charset,
+  List<String> getStringList(Ascii charset,
       {int offset = 0,
       int length,
       bool allowInvalid = true,

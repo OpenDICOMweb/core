@@ -15,37 +15,29 @@ typedef Decoder = String Function(Uint8List list, {bool allowInvalid});
 
 typedef Encoder = Uint8List Function(String s);
 
-
 /// The base Charset is the ASCII (or US-ASCII) Character Set.
 /// This is the base class for all character sets.
-class Charset {
+abstract class Charset {
   /// The name of the character set.
-  final String name;
+  String get name;
 
   /// Its primary language.
-  final String language;
+  String get language;
 
   /// Other names used to identify _this_.
-  final List<String> identifiers;
-
-  /// Internal constant constructor.
-  const Charset(this.name, this.language, this.identifiers);
+  List<String> get identifiers;
 
   /// The minimum value.
-  int get min => kMin;
+  int get min;
 
   /// The maximum value.
-  int get max => kMax;
+  int get max;
 
   /// Returns _true_ is [c] is a valid code point for _this_.
-  bool isValid(int c) => c >= kMin && c <= kMax;
+  bool isValid(int c);
 
-  /// Returns _true_ if [c] is in DICOM's Default Character Repertoire (DCR)
-  /// without backspace (/);  otherwise _false_. Used for VRs of LO, PN, SH,
-  /// and UC. Backslash(\) not allowed, as it is used as a values separator for
-  /// these [String] types.
-  bool isVisible(int c) =>
-      (c >= kSpace && c < kBackslash) || (c > kBackslash && c < kDelete);
+  /// Returns _true_ if [c] if [c] is a visible character.
+  bool isVisible(int c);
 
   /// Returns _true_ if [c] is a space character.
   bool isSpace(int c) => c == kSpace;
@@ -54,7 +46,7 @@ class Charset {
   bool isBackspace(int c) => c == kBackspace;
 
   /// Returns _true_ is [c] is a whitespace character.
-  bool isWhitespace(int c) => c == kSpace || (c >= kBackspace && c <= kReturn);
+  bool isWhitespace(int c);
 
   /// Returns _true_ is [c] is a control character.
   bool isDigit(int c) => c >= k0 && c < k9;
@@ -73,11 +65,10 @@ class Charset {
   }
 
   /// Decode [list] into a [String].
-  String decode(Uint8List list, {bool allowInvalid = true}) =>
-      cvt.ascii.decode(list, allowInvalid: allowInvalid);
+  String decode(Uint8List list, {bool allowInvalid = true});
 
   /// Encode [s] into a [Uint8List].
-  Uint8List encode(String s) => cvt.ascii.encode(s);
+  Uint8List encode(String s);
 
   /// Split [s] at Backslash.
   List<String> split(String s) => s.split('\\');
@@ -86,6 +77,92 @@ class Charset {
   String join(List<String> list) => list.join('\\');
 
   /// Returns [s] without a trailing [kNull] character.
+  String removeTrailingNull(String s) {
+    final last = s.length - 1;
+    return (s.codeUnitAt(last) == kNull) ? s.substring(0, last) : s;
+  }
+
+  @override
+  String toString() => '$runtimeType';
+
+  /// The minimum character value.
+  static const int kMin = 0;
+
+  /// The maximum character value.
+  static const int kMax = 127;
+}
+
+/// The base Charset is the ASCII (or US-ASCII) Character Set.
+/// This is the base class for all character sets.
+class Ascii implements Charset {
+  @override
+  final String name;
+
+  @override
+  final String language;
+
+  @override
+  final List<String> identifiers;
+
+  /// Internal constant constructor.
+  const Ascii(this.name, this.language, this.identifiers);
+
+  @override
+  int get min => kMin;
+
+  @override
+  int get max => kMax;
+
+  @override
+  bool isValid(int c) => c >= kMin && c <= kMax;
+
+  /// Returns _true_ if [c] is in DICOM's Default Character Repertoire (DCR)
+  /// without backspace (/);  otherwise _false_. Used for VRs of LO, PN, SH,
+  /// and UC. Backslash(\) not allowed, as it is used as a values separator for
+  /// these [String] types. The space character ([kSpace]) is visible.
+  @override
+  bool isVisible(int c) =>
+      (c >= kSpace && c < kBackslash) || (c > kBackslash && c < kDelete);
+
+  @override
+  bool isSpace(int c) => c == kSpace;
+
+  @override
+  bool isBackspace(int c) => c == kBackspace;
+
+  @override
+  bool isWhitespace(int c) => c == kSpace || (c >= kBackspace && c <= kReturn);
+
+  @override
+  bool isDigit(int c) => c >= k0 && c < k9;
+
+  @override
+  bool isControl(int c) => c >= kNull && c < kSpace;
+
+  @override
+  bool isEscape(int c) => c == kEscape;
+
+  @override
+  bool isValidString(String s, [int max]) {
+    for (var i = 0; i < s.length; i++)
+      if (!isVisible(s.codeUnitAt(i))) return false;
+    return true;
+  }
+
+  @override
+  String decode(Uint8List list, {bool allowInvalid = true}) =>
+      cvt.ascii.decode(list, allowInvalid: allowInvalid);
+
+  @override
+  Uint8List encode(String s) => cvt.ascii.encode(s);
+
+  @override
+  List<String> split(String s) => s.split('\\');
+
+  @override
+  String join(List<String> list) => list.join('\\');
+
+  @override
   String removeTrailingNull(String s) {
     final last = s.length - 1;
     return (s.codeUnitAt(last) == kNull) ? s.substring(0, last) : s;
@@ -102,7 +179,7 @@ class Charset {
 }
 
 /// The Latin (ISO-8859-1) Character Sets.
-class Latin extends Charset {
+class Latin extends Ascii {
   /// Constructor.
   const Latin(String name, String language, List<String> identifiers)
       : super(name, language, identifiers);
@@ -116,10 +193,7 @@ class Latin extends Charset {
   bool isValid(int c) => c >= kMin && c <= kMax;
 
   @override
-  bool isVisible(int c) =>
-      (c > kSpace && c < kBackslash) ||
-      (c > kBackslash && c < kDelete) ||
-      (c >= kNBSP && c <= kMax);
+  bool isVisible(int c) => super.isVisible(c) || (c >= kNBSP && c <= kMax);
 
   @override
   bool isSpace(int c) => c == kSpace || c == kNBSP;
@@ -158,7 +232,7 @@ class Latin extends Charset {
 }
 
 /// The Latin 1 (ISO-8859-1) Character Set.
-class Utf8 extends Charset {
+class Utf8 extends Ascii {
   /// Constructor.
   const Utf8(String name, List<String> identifiers)
       : super(name, 'all', identifiers);
@@ -174,10 +248,7 @@ class Utf8 extends Charset {
   bool isValid(int c) => c >= kMin && c <= kMax;
 
   @override
-  bool isVisible(int c) =>
-      (c >= kSpace && c < kBackslash) ||
-      (c > kBackslash && c < kDelete) ||
-      (c >= kNBSP && c <= kMax);
+  bool isVisible(int c) => super.isVisible(c) || (c >= kNBSP && c <= kMax);
 
   @override
   bool isSpace(int c) => c == kSpace || c == kNBSP;
@@ -245,7 +316,7 @@ class Utf8 extends Charset {
 }
 
 /// Constant definition of ASCII character set.
-const Charset ascii = Charset(
+const Ascii ascii = Ascii(
     'ASCII-1', 'US English', ['ASCII', 'US-ASCII', 'ISO_IR 6', 'ISO/IEC 646']);
 
 /// Constant definition of [latin1] character set.
@@ -273,8 +344,8 @@ const Latin latin6 = Latin(
     'Latin6', 'Arabic', ['ISO-8859-1', 'ISO-IR 127', 'Latin6', 'Latin-6']);
 
 /// Constant definition of [latin7] character set.
-const Latin latin7 = Latin(
-    'Latin7', 'Greek', ['ISO-8859-7', 'ISO-IR 126', 'Latin7', 'Latin-7']);
+const Latin latin7 =
+    Latin('Latin7', 'Greek', ['ISO-8859-7', 'ISO-IR 126', 'Latin7', 'Latin-7']);
 
 /// Constant definition of [latin8] character set.
 const Latin latin8 = Latin(
@@ -291,7 +362,7 @@ const Utf8 utf8 = Utf8('UTF8', ['UTF8', 'ISO-IR 192', 'UTF-8']);
 const Utf8 utf8Charset = utf8;
 
 /// A Map<String, Charset> of known character sets.
-const Map<String, Charset> charsets = {
+const Map<String, Ascii> charsets = {
   'UTF8': utf8,
   'ISO_IR 192': utf8,
   'ASCII': ascii,
