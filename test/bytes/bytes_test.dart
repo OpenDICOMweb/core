@@ -355,5 +355,92 @@ void main() {
       expect(readBuffer1.offset == bytes.offset, true);
       expect(readBuffer1.bytes == bytes, true);
     });
+
+    test('ReadBuffer.from', () {
+      final vList0 = rng.uint8List(1, 10);
+      final bytes = Uint8.toBytes(vList0);
+      final readBuffer0 = ReadBuffer(bytes);
+      log.debug('readBuffer0: $readBuffer0');
+
+      expect(readBuffer0.rIndex == bytes.offset, true);
+      expect(readBuffer0.wIndex == bytes.length, true);
+      expect(readBuffer0.buffer.asUint8List().elementAt(0) == vList0[0], true);
+      expect(readBuffer0.offset == bytes.offset, true);
+      expect(readBuffer0.bytes == bytes, true);
+
+      final from0 = ReadBuffer.from(readBuffer0);
+      log.debug('ReadBuffer.from: $from0');
+
+      expect(from0.rIndex == bytes.offset, true);
+      expect(from0.wIndex == bytes.length, true);
+      expect(from0.buffer.asUint8List().elementAt(0) == vList0[0], true);
+      expect(from0.offset == bytes.offset, true);
+      expect(from0.bytes == bytes, true);
+    });
+
+    test('ReadBuffer readAscii', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint8List(1, i);
+        final bytes = Uint8.toBytes(vList0);
+        final readBuffer0 = ReadBuffer(bytes);
+        log.debug('readBuffer0: $readBuffer0');
+
+        final readAscii0 = readBuffer0.readAscii(vList0.length);
+        log.debug('readAscii: $readAscii0');
+        expect(readAscii0 == ascii.decode(vList0), true);
+      }
+    });
+
+    test('ReadBuffer readUtf8', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint8List(1, i);
+        final bytes = Uint8.toBytes(vList0);
+        final readBuffer0 = ReadBuffer(bytes);
+        log.debug('readBuffer0: $readBuffer0');
+
+        final readUtf80 = readBuffer0.readUtf8(vList0.length);
+        log.debug('readUtf8: $readUtf80');
+        expect(readUtf80 == utf8.decode(vList0), true);
+      }
+    });
+
+    test('ReadBuffer readUint8List', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint8List(1, i);
+        final bytes = Uint8.toBytes(vList0);
+        final readBuffer0 = ReadBuffer(bytes);
+        log.debug('readBuffer0: $readBuffer0');
+
+        final read_Uint8 = readBuffer0.readUint8List(vList0.length);
+        log.debug('readUtf8: $read_Uint8');
+        expect(read_Uint8, equals(vList0));
+      }
+    });
+
+    test('ReadBuffer readUint16List', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint16List(1, i);
+        final bytes = Uint16.toBytes(vList0);
+        final readBuffer0 = ReadBuffer(bytes);
+        log.debug('readBuffer0: $readBuffer0');
+
+        final read_Uint16 = readBuffer0.readUint16List(vList0.length);
+        log.debug('readUtf16: $read_Uint16');
+        expect(read_Uint16, equals(vList0));
+      }
+    });
+
+    test('ReadBuffer readUint32List', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint16List(1, i);
+        final bytes = Uint32.toBytes(vList0);
+        final readBuffer0 = ReadBuffer(bytes);
+        log.debug('readBuffer0: $readBuffer0');
+
+        final read_Uint32 = readBuffer0.readUint32List(vList0.length);
+        log.debug('readUint32: $read_Uint32');
+        expect(read_Uint32, equals(vList0));
+      }
+    });
   });
 }

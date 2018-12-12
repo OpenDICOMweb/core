@@ -475,8 +475,6 @@ void main() {
       //  system.level = Level.info;;
       final vList1 = rsg.getLTList(1, 1);
       assert(vList1.length == 1);
-      // Urgent Sharath: JFP changed this because text should not be
-      // processed as list
       final bytes = Bytes.ascii(vList1[0]);
       log.debug('fromAscii: $bytes');
       final s = bytes.stringFromAscii();
@@ -564,8 +562,6 @@ void main() {
     test('LT fromBytes', () {
       global.throwOnError = false;
       final vList1 = rsg.getLTList(1, 1);
-      // Urgent Sharath: JFP changed this because text should not be
-      // processed as list
       final bytes = Bytes.utf8(vList1[0]);
       log.debug('LT.fromBytes(bytes):  $bytes');
       final s = bytes.stringFromUtf8();
