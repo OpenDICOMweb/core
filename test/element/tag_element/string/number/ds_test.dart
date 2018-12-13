@@ -561,15 +561,12 @@ void main() {
       const limit = 10000;
 
       for (var i = 0; i < limit; i++) {
-        // Urgent Sharath: next line is returning a sting with length == 19
-        // it should never be greater than 16!
         final vList0 = rsg.getDSList(1, 1);
         print('vList0: $vList0');
         final e0 = DStag(PTag.kPatientSize, vList0);
-        print('e0: $e0');
+        log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
         final e1 = e0.increment();
-        print('e1: $e1');
         log.debug('increment0: $e1');
         expect(e1.hasValidValues, true);
       }
