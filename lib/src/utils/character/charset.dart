@@ -49,20 +49,16 @@ abstract class Charset {
   bool isWhitespace(int c);
 
   /// Returns _true_ is [c] is a control character.
-  bool isDigit(int c) => c >= k0 && c < k9;
+  bool isDigit(int c);
 
   /// Returns _true_ is [c] is a control character.
-  bool isControl(int c) => c >= kNull && c < kSpace;
+  bool isControl(int c);
 
   /// Returns _true_ if [c] is an escape character.
-  bool isEscape(int c) => c == kEscape;
+  bool isEscape(int c);
 
   /// Returns _true_ is [s] is a valid [String] for _this_.
-  bool isValidString(String s, [int max]) {
-    for (var i = 0; i < s.length; i++)
-      if (!isVisible(s.codeUnitAt(i))) return false;
-    return true;
-  }
+  bool isValidString(String s, [int max]);
 
   /// Decode [list] into a [String].
   String decode(Uint8List list, {bool allowInvalid = true});
@@ -74,22 +70,10 @@ abstract class Charset {
   List<String> split(String s) => s.split('\\');
 
   /// Join all [String]s in [list] with backslash as separator.
-  String join(List<String> list) => list.join('\\');
+  String join(List<String> list);
 
   /// Returns [s] without a trailing [kNull] character.
-  String removeTrailingNull(String s) {
-    final last = s.length - 1;
-    return (s.codeUnitAt(last) == kNull) ? s.substring(0, last) : s;
-  }
-
-  @override
-  String toString() => '$runtimeType';
-
-  /// The minimum character value.
-  static const int kMin = 0;
-
-  /// The maximum character value.
-  static const int kMax = 127;
+  String removeTrailingNull(String s);
 }
 
 /// The base Charset is the ASCII (or US-ASCII) Character Set.
@@ -362,7 +346,7 @@ const Utf8 utf8 = Utf8('UTF8', ['UTF8', 'ISO-IR 192', 'UTF-8']);
 const Utf8 utf8Charset = utf8;
 
 /// A Map<String, Charset> of known character sets.
-const Map<String, Ascii> charsets = {
+const Map<String, Charset> charsets = {
   'UTF8': utf8,
   'ISO_IR 192': utf8,
   'ASCII': ascii,

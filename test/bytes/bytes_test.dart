@@ -411,9 +411,9 @@ void main() {
         final readBuffer0 = ReadBuffer(bytes);
         log.debug('readBuffer0: $readBuffer0');
 
-        final read_Uint8 = readBuffer0.readUint8List(vList0.length);
-        log.debug('readUtf8: $read_Uint8');
-        expect(read_Uint8, equals(vList0));
+        final v = readBuffer0.readUint8List(vList0.length);
+        log.debug('readUtf8: $v');
+        expect(v, equals(vList0));
       }
     });
 
@@ -424,9 +424,9 @@ void main() {
         final readBuffer0 = ReadBuffer(bytes);
         log.debug('readBuffer0: $readBuffer0');
 
-        final read_Uint16 = readBuffer0.readUint16List(vList0.length);
-        log.debug('readUtf16: $read_Uint16');
-        expect(read_Uint16, equals(vList0));
+        final v = readBuffer0.readUint16List(vList0.length);
+        log.debug('readUtf16: $v');
+        expect(v, equals(vList0));
       }
     });
 
@@ -437,9 +437,9 @@ void main() {
         final readBuffer0 = ReadBuffer(bytes);
         log.debug('readBuffer0: $readBuffer0');
 
-        final read_Uint32 = readBuffer0.readUint32List(vList0.length);
-        log.debug('readUint32: $read_Uint32');
-        expect(read_Uint32, equals(vList0));
+        final v = readBuffer0.readUint32List(vList0.length);
+        log.debug('readUint32: $v');
+        expect(v, equals(vList0));
       }
     });
   });
