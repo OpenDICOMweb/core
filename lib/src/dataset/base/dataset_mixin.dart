@@ -717,7 +717,7 @@ abstract class DatasetMixin {
   /// _Note_: A [RootDataset] is its own [root].
   DatasetMixin get root => isRoot ? this : parent.root;
 
-  Charset get charset => parent.charset;
+  Ascii get charset => parent.charset;
 
   // **************** Element values accessors
   //TODO: when fast_tag is working replace code with index.

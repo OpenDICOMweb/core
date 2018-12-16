@@ -36,7 +36,6 @@ const List<int> kStarts = <int>[0, 9, 14, 19, 24];
 const List<int> kEnds = <int>[8, 13, 18, 23, kUuidStringLength];
 
 
-// Urgent Sharath: unit test to make sure this works
 /// Returns _true_ if [uuidString] is a valid UUID [String]. If [type]
 /// is _null_ it just validates the format; otherwise, [type] must have
 /// a value between 1 and 5.

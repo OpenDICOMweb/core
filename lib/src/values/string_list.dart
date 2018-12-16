@@ -40,7 +40,7 @@ class StringList extends ListBase<String> {
 
   StringList._(this._values);
 
-  StringList.decode(Bytes bytes, [Charset charset]) : 
+  StringList.decode(Bytes bytes, [Ascii charset]) :
         _values = bytes.getStringList(charset);
 
   @override

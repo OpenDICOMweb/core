@@ -130,7 +130,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   }
 
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory Bytes.fromString(String s, Charset charset) {
+  factory Bytes.fromString(String s, Ascii charset) {
     charset ??= utf8;
     if (s == null) return nullValueError(s);
     if (s.isEmpty) return kEmptyBytes;
@@ -167,7 +167,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// Returns a [Bytes] containing [charset] code units.
   /// [charset] defaults to UTF8.
   factory Bytes.fromStringList(List<String> vList,
-          {Charset charset, int maxLength, String separator = '\\'}) =>
+          {Ascii charset, int maxLength, String separator = '\\'}) =>
       Bytes.fromString(
           _listToString(vList, maxLength, separator), charset ?? utf8);
 

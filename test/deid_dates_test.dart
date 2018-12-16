@@ -24,5 +24,8 @@ void main() {
     expect(deIdDateCodes.length == deIdDateTags.length, true);
     expect(deIdDateCodes.length == deIdDeleteDateCodes.length, true);
     expect(deIdDateTags.length == deIdDeleteDateCodes.length, true);
+    expect(deIdDateTags.length == deIdUpdateDateCodes.length, true);
+    expect(deIdDateCodes.length == deIdUpdateDateCodes.length, true);
+    expect(deIdDateTags[0].vrId == VR.kDA.id, true);
   });
 }

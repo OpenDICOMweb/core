@@ -22,14 +22,14 @@ void main() {
 
   group('Charset', () {
     test('Create Charset', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       log.debug('charset0: $charset0');
 
       expect(charset0.name == ascii.name, true);
       expect(charset0.language == ascii.language, true);
       expect(charset0.identifiers == ascii.identifiers, true);
 
-      const charset1 = Charset('ASCII-1', 'US English',
+      const charset1 = Ascii('ASCII-1', 'US English',
           ['ASCII', 'US-ASCII', 'ISO_IR 6', 'ISO/IEC 646']);
 
       expect(charset1.name == 'ASCII-1', true);
@@ -39,28 +39,39 @@ void main() {
     });
 
     test('isValid', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
-      for (var i = Charset.kMin; i <= Charset.kMax; i++) {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = Ascii.kMin; i <= Ascii.kMax; i++) {
         expect(charset0.isValid(i), true);
       }
-      expect(charset0.isValid(Charset.kMax + 1), false);
-      expect(charset0.isValid(Charset.kMin - 1), false);
+      expect(charset0.isValid(Ascii.kMax + 1), false);
+      expect(charset0.isValid(Ascii.kMin - 1), false);
     });
 
     test('isVisible', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
-          final visible0 =
-              charset0.isVisible(vList0.elementAt(j).codeUnitAt(j));
-          expect(visible0, true);
+          final char = vList0.elementAt(j).codeUnitAt(j);
+          final visible = charset0.isVisible(char);
+          log.debug('char: $char visible: $visible');
+          expect(visible, true);
+        }
+      }
+
+      final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
+      for (var i in vList1) {
+        final char = i.codeUnits;
+        for (var j = 0; j < char.length; j++) {
+          final visible1 = charset0.isVisible(char[j]);
+          log.debug('char: $char visible: $visible1');
+          expect(visible1, false);
         }
       }
     });
 
     test('decode and encode', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       //final vList0 = rng.uint8List(1, 1);
       const vList0 = [123, 23, 69, 98];
       final list0 = Uint8List.fromList(vList0);
@@ -71,6 +82,28 @@ void main() {
       final encode0 = charset0.encode(decode0);
       log.debug('encode0: $encode0');
       expect(encode0, equals(vList0));
+    });
+
+    test('isValidString', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = 1; i < 20; i++) {
+        final vList0 = rsg.getLOList(1, i);
+        for (var j = 0; j < vList0.length; j++) {
+          final isValid0 = charset0.isValidString(vList0[j]);
+          expect(isValid0, true);
+        }
+      }
+
+      const vList1 = '/TX\\&{Y2-w';
+      final isValid1 = charset0.isValidString(vList1);
+      expect(isValid1, false);
+
+      final vList2 = ['\b', '\t', '\n', '\f', '\v', '\r'];
+      for (var i in vList2) {
+        final isValid2 = charset0.isValidString(i);
+        log.debug(' isValid2: $isValid2');
+        expect(isValid2, false);
+      }
     });
   });
 
@@ -106,8 +139,20 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
-          final visible0 = latin0.isVisible(vList0.elementAt(j).codeUnitAt(j));
-          expect(visible0, true);
+          final char = vList0.elementAt(j).codeUnitAt(j);
+          final v = latin0.isVisible(char);
+          if (!v) print('char: $char');
+          expect(v, true);
+        }
+      }
+
+      final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
+      for (var i in vList1) {
+        final char = i.codeUnits;
+        for (var j = 0; j < char.length; j++) {
+          final v = latin0.isVisible(char[j]);
+          log.debug('char: $char visible: $v');
+          expect(v, false);
         }
       }
     });
@@ -158,6 +203,16 @@ void main() {
         for (var j = 0; j < vList0.length; j++) {
           final visible0 = utf8_0.isVisible(vList0.elementAt(j).codeUnitAt(j));
           expect(visible0, true);
+        }
+      }
+
+      final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
+      for (var i in vList1) {
+        final char = i.codeUnits;
+        for (var j = 0; j < char.length; j++) {
+          final visible1 = utf8_0.isVisible(char[j]);
+          log.debug('char: $char visible: $visible1');
+          expect(visible1, false);
         }
       }
     });
