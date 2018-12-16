@@ -88,7 +88,7 @@ mixin ByteElement<V> {
     final vrIndex = isEvr ? bytes.vrIndex : kUNIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
-    final charset = (ds == null) ? utf8 : ds.charset;
+    final charset = (ds == null) ? Charset.utf8 : ds.charset;
     return (index == kSQIndex)
         ? SQbytes.fromBytes(ds, <ByteItem>[], bytes)
         : _bytesMakers[index](bytes, charset);

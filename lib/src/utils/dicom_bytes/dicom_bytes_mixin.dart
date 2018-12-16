@@ -86,8 +86,8 @@ mixin DicomBytesMixin {
   int get vrCode => (bd.getUint8(kVROffset) << 8) + bd.getUint8(kVROffset + 1);
 
   set vrCode(int v) {
-    bd.setUint8(0, v >> 8);
-    bd.setUint8(1, v & 0xFF);
+    bd..setUint8(0, v >> 8)
+    ..setUint8(1, v & 0xFF);
   }
 
   int get vrIndex => vrIndexFromCode(vrCode);

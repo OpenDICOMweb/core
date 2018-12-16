@@ -223,7 +223,7 @@ class LOtag extends LO with TagElement<String> {
   // ignore: prefer_constructors_over_static_methods
   static LOtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
     // Urgent fix:
-     LOtag(tag, bytes.getStringList(charset ??= utf8));
+     LOtag(tag, bytes.getStringList(charset ??= Charset.utf8));
 }
 
 class PCtag extends PC with TagElement<String> {

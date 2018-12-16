@@ -759,7 +759,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         global.throwOnError = false;
-        final values = ascii.encode(vList0[0]);
+        final values = Charset.ascii.encode(vList0[0]);
         final tbd0 = Bytes.utf8FromList(vList0);
         final tbd1 = Bytes.utf8FromList(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -768,7 +768,7 @@ void main() {
       }
       for (var s in goodSTList) {
         for (var a in s) {
-          final values = ascii.encode(a);
+          final values = Charset.ascii.encode(a);
           final tbd2 = Bytes.utf8FromList(s);
           final tbd3 = Bytes.utf8FromList(s);
           expect(tbd2.buffer.asUint8List(), equals(values));

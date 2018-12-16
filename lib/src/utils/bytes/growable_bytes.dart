@@ -74,6 +74,7 @@ mixin GrowableMixin {
 
 /// An abstract class that allows [Bytes] to grow in length.
 abstract class GrowableBytes extends Bytes with GrowableMixin {
+  /// Returns a new [GrowableBytes] created from [bd].
   GrowableBytes(ByteData bd) : super(bd);
 
   /// Returns a new [GrowableBytes] of [length].

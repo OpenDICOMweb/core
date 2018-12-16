@@ -49,7 +49,7 @@ abstract class DicomGrowableBytes extends Bytes
 
 }
 
-abstract class DicomWriterMixin {
+mixin DicomWriterMixin {
   ByteData _bd;
 // **** End of Interface
 

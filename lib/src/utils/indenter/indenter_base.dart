@@ -9,7 +9,7 @@
 
 // ignore_for_file: public_member_api_docs
 
-abstract class IndenterMixin {
+mixin IndenterMixin {
   // **** Interface
 
   int get length;

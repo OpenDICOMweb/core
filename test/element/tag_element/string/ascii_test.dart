@@ -83,7 +83,7 @@ void main() {
         final vList0 = rsg.getSHList(1, 10);
         final bytes0 = Bytes.asciiFromList(vList0, kMaxShortVF);
         final bytes = Bytes.ascii(vList0.join('\\'));
-        final vList1 = bytes.getStringList(ascii);
+        final vList1 = bytes.getStringList(Charset.ascii);
         log
           ..debug('vList0: $vList0')
           ..debug('vList1: $vList1')

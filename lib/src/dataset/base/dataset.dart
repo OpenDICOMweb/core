@@ -34,7 +34,7 @@ import 'package:core/src/vr.dart';
 
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
-abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
+abstract class Dataset with ListMixin<Element>, DatasetMixin {
   /// [PCTag]s for [PC] [Element]s in _this_.
   final PrivateCreatorTags pcTags = PrivateCreatorTags();
 

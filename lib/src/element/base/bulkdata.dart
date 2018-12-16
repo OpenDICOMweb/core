@@ -10,7 +10,7 @@ import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/global.dart';
 
 /// The base class for Bulkdata.
-abstract class BulkdataRef<V> {
+mixin BulkdataRef<V> {
   /// The Tag code of the Element containing _this_.
   int get code;
   //TODO: add Element?

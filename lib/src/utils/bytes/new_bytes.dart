@@ -214,7 +214,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
 
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
   factory Bytes.fromString(String s, Charset charset) {
-    charset ??= utf8;
+    charset ??= Charset.utf8;
     if (s == null) return nullValueError(s);
     if (s.isEmpty) return kEmptyBytes;
     return Bytes.typedDataView(charset.encode(s));
@@ -252,7 +252,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   factory Bytes.fromStringList(List<String> vList,
           {Charset charset, int maxLength, String separator = '\\'}) =>
       Bytes.fromString(
-          _listToString(vList, maxLength, separator), charset ?? utf8);
+          _listToString(vList, maxLength, separator), charset ?? Charset.utf8);
 
   // **** TypedData interface.
   int get elementSizeInBytes => 1;
@@ -287,7 +287,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
   set length(int length) =>
       throw UnsupportedError('$runtimeType: length is not modifiable');
-
 
   int getUint8(int offset) => bd.getUint8(offset);
   @override
@@ -541,18 +540,18 @@ class BytesLE extends Bytes
   // TODO: Either remove fromFile and fromPath or add doAsync
 
   /// Returns a [Bytes] buffer containing the contents of [File].
-  factory BytesLE.fromFile(File file, {bool doAsync = false}) {
+  static BytesLE fromFile(File file, {bool doAsync = false}) {
     final Uint8List bList = doAsync ? file.readAsBytes : file.readAsBytesSync();
     return BytesLE.typedDataView(bList, 0, bList.length);
   }
 
   /// Returns a [Bytes] buffer containing the contents of the
   /// [File] at [path].
-  factory BytesLE.fromPath(String path, {bool doAsync = false}) =>
-      BytesLE.fromFile(File(path), doAsync: doAsync);
+  static BytesLE fromPath(String path, {bool doAsync = false}) =>
+      fromFile(File(path), doAsync: doAsync);
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
-  factory BytesLE.fromBase64(String s, {bool padToEvenLength = false}) {
+  static BytesLE fromBase64(String s, {bool padToEvenLength = false}) {
     if (s.isEmpty) return kEmptyBytes;
     var bList = cvt.base64.decode(s);
     final bLength = bList.length;
@@ -566,51 +565,44 @@ class BytesLE extends Bytes
     return BytesLE.typedDataView(bList);
   }
 
-  /// Returns a [Bytes] containing the ASCII encoding of [s].
-  factory BytesLE.ascii(String s) {
-    if (s == null) return nullValueError(s);
-    return s.isEmpty ? kEmptyBytes : BytesLE.typedDataView(cvt.ascii.encode(s));
-  }
-
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory BytesLE.utf8(String s) {
-    if (s == null) return nullValueError(s);
-    if (s.isEmpty) return kEmptyBytes;
-    final Uint8List u8List = cvt.utf8.encode(s);
-    return BytesLE.typedDataView(u8List);
-  }
-
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory BytesLE.latin(String s) {
-    if (s == null) return nullValueError(s);
-    if (s.isEmpty) return kEmptyBytes;
-    final u8List = cvt.latin1.encode(s);
-    return BytesLE.typedDataView(u8List);
-  }
-
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory BytesLE.fromString(String s, Charset charset) {
-    charset ??= utf8;
+  static BytesLE fromString(String s, [Charset charset = Charset.utf8]) {
     if (s == null) return nullValueError(s);
     if (s.isEmpty) return kEmptyBytes;
     return BytesLE.typedDataView(charset.encode(s));
   }
+
+  /// Returns a [Bytes] containing the ASCII encoding of [s].
+  static BytesLE ascii(String s) => fromString(s, Charset.ascii);
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  static BytesLE utf8(String s) => BytesLE.fromString(s, Charset.utf8);
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  static BytesLE latin(String s) => BytesLE.fromString(s, Charset.latin1);
+
+  /// Returns a [Bytes] containing [charset] code units.
+  /// [charset] defaults to UTF8.
+  static BytesLE fromStringList(List<String> vList,
+          [Charset charset, int maxLength, String separator = '\\']) =>
+      BytesLE.fromString(
+          _listToString(vList, maxLength, separator), charset ?? utf8);
 
   /// Returns a [Bytes] containing ASCII code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as ASCII. The result is returns as [Bytes].
-  factory BytesLE.asciiFromList(List<String> vList,
+  static BytesLE asciiFromList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
-      BytesLE.ascii(_listToString(vList, maxLength, separator));
+      fromStringList(vList, Charset.ascii, maxLength, separator);
 
   /// Returns a [Bytes] containing UTF-8 code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as UTF-8. The result is returns as [Bytes].
-  factory BytesLE.utf8FromList(List<String> vList,
+  static BytesLE utf8FromList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
       BytesLE.utf8(_listToString(vList, maxLength, separator));
 
@@ -619,19 +611,9 @@ class BytesLE extends Bytes
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as UTF-8. The result is returns as [Bytes].
-  factory BytesLE.latinFromList(List<String> vList,
+  static BytesLE latinFromList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
       BytesLE.latin(_listToString(vList, maxLength, separator));
-
-  /// Returns a [Bytes] containing [charset] code units.
-  /// [charset] defaults to UTF8.
-  factory BytesLE.fromStringList(List<String> vList,
-          {Charset charset, int maxLength, String separator = '\\'}) =>
-      BytesLE.fromString(
-          _listToString(vList, maxLength, separator), charset ?? utf8);
-
-  /// The canonical empty (zero length) [Bytes] object.
-  static final BytesLE kEmptyBytes = BytesLE(0);
 }
 
 /// [BytesBE] is a class that provides a read-only Little Endian byte array
@@ -672,18 +654,18 @@ class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
   // TODO: Either remove fromFile and fromPath or add doAsync
 
   /// Returns a [Bytes] buffer containing the contents of [File].
-  factory BytesBE.fromFile(File file, {bool doAsync = false}) {
+  static BytesBE fromFile(File file, {bool doAsync = false}) {
     final Uint8List bList = doAsync ? file.readAsBytes : file.readAsBytesSync();
     return BytesBE.typedDataView(bList, 0, bList.length);
   }
 
   /// Returns a [Bytes] buffer containing the contents of the
   /// [File] at [path].
-  factory BytesBE.fromPath(String path, {bool doAsync = false}) =>
-      BytesBE.fromFile(File(path), doAsync: doAsync);
+  static BytesBE fromPath(String path, {bool doAsync = false}) =>
+      fromFile(File(path), doAsync: doAsync);
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
-  factory BytesBE.fromBase64(String s, {bool padToEvenLength = false}) {
+  static BytesBE fromBase64(String s, {bool padToEvenLength = false}) {
     if (s.isEmpty) return kEmptyBytes;
     var bList = cvt.base64.decode(s);
     final bLength = bList.length;
@@ -697,72 +679,55 @@ class BytesBE extends Bytes with BigEndianMixin implements Comparable<Bytes> {
     return BytesBE.typedDataView(bList);
   }
 
-  /// Returns a [Bytes] containing the ASCII encoding of [s].
-  factory BytesBE.ascii(String s) {
-    if (s == null) return nullValueError(s);
-    return s.isEmpty ? kEmptyBytes : BytesBE.typedDataView(cvt.ascii.encode(s));
-  }
-
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory BytesBE.utf8(String s) {
-    if (s == null) return nullValueError(s);
-    if (s.isEmpty) return kEmptyBytes;
-    final Uint8List u8List = cvt.utf8.encode(s);
-    return BytesBE.typedDataView(u8List);
-  }
-
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory BytesBE.latin(String s) {
-    if (s == null) return nullValueError(s);
-    if (s.isEmpty) return kEmptyBytes;
-    final u8List = cvt.latin1.encode(s);
-    return BytesBE.typedDataView(u8List);
-  }
-
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory BytesBE.fromString(String s, Charset charset) {
-    charset ??= utf8;
+  static BytesBE fromString(String s, [Charset charset = Charset.utf8]) {
     if (s == null) return nullValueError(s);
     if (s.isEmpty) return kEmptyBytes;
     return BytesBE.typedDataView(charset.encode(s));
   }
+
+  /// Returns a [Bytes] containing the ASCII encoding of [s].
+  static BytesBE ascii(String s) => BytesBE.fromString(s, Charset.ascii);
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  static BytesBE utf8(String s) => BytesBE.fromString(s, Charset.utf8);
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  static BytesBE latin(String s) => BytesBE.fromString(s, Charset.latin1);
+
+  /// Returns a [Bytes] containing [charset] code units.
+  /// [charset] defaults to UTF8.
+  static BytesBE fromStringList(List<String> vList,
+          [Charset charset, int maxLength, String separator = '\\']) =>
+      BytesBE.fromString(
+          _listToString(vList, maxLength, separator), charset ?? utf8);
 
   /// Returns a [Bytes] containing ASCII code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as ASCII. The result is returns as [Bytes].
-  factory BytesBE.asciiFromList(List<String> vList,
+  static BytesBE asciiFromList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
-      BytesBE.ascii(_listToString(vList, maxLength, separator));
+      fromStringList(vList, Charset.ascii, maxLength, separator);
 
   /// Returns a [Bytes] containing UTF-8 code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as UTF-8. The result is returns as [Bytes].
-  factory BytesBE.utf8FromList(List<String> vList,
+  static BytesBE utf8FromList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
-      BytesBE.utf8(_listToString(vList, maxLength, separator));
+      fromStringList(vList, Charset.utf8, maxLength, separator);
 
   /// Returns a [Bytes] containing Latin (1 - 9) code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as UTF-8. The result is returns as [Bytes].
-  factory BytesBE.latinFromList(List<String> vList,
+  static BytesBE latinFromList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
-      BytesBE.latin(_listToString(vList, maxLength, separator));
-
-  /// Returns a [Bytes] containing [charset] code units.
-  /// [charset] defaults to UTF8.
-  factory BytesBE.fromStringList(List<String> vList,
-          {Charset charset, int maxLength, String separator = '\\'}) =>
-      BytesBE.fromString(
-          _listToString(vList, maxLength, separator), charset ?? utf8);
-
-  /// The canonical empty (zero length) [Bytes] object.
-  static final BytesBE kEmptyBytes = BytesBE(0);
+      fromStringList(vList, Charset.latin1, maxLength, separator);
 }
 
 String _listToString(List<String> vList, int maxLength, String separator) {

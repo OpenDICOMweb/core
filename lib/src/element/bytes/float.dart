@@ -32,8 +32,8 @@ class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
   static FLbytes fromBytes(DicomBytes bytes, [Ascii _]) => FLbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static FLbytes fromValues(
-      int code, List<double> vList, Endian endian, bool isEvr) {
+  static FLbytes fromValues(int code, List<double> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
     final bytes = _makeShort(
       code,
       vList,
@@ -57,8 +57,8 @@ class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
   static OFbytes fromBytes(DicomBytes bytes, [Ascii _]) => OFbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OFbytes fromValues(
-      int code, List<double> vList, Endian endian, bool isEvr) {
+  static OFbytes fromValues(int code, List<double> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
     final bytes =
         _makeLong(code, vList, endian, isEvr, kOFCode, OF.kSizeInBytes)
           ..writeFloat32VF(vList);
@@ -89,8 +89,8 @@ class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
   static FDbytes fromBytes(DicomBytes bytes, [Ascii _]) => FDbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static FDbytes fromValues(
-      int code, List<double> vList, Endian endian, bool isEvr) {
+  static FDbytes fromValues(int code, List<double> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
     final bytes =
         _makeShort(code, vList, endian, isEvr, kFDCode, FD.kSizeInBytes)
           ..writeFloat64VF(vList);
@@ -114,8 +114,8 @@ class ODbytes extends OD with ByteElement<double>, BytesFloat64Mixin {
   static ODbytes fromBytes(DicomBytes bytes, [Ascii _]) => ODbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ODbytes fromValues(
-      int code, List<double> vList, Endian endian, bool isEvr) {
+  static ODbytes fromValues(int code, List<double> vList,
+      {Endian endian = Endian.little, bool isEvr = true}) {
     final bytes =
         _makeLong(code, vList, endian, isEvr, kODCode, OD.kSizeInBytes)
           ..writeFloat64VF(vList);
