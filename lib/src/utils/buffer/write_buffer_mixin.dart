@@ -10,7 +10,7 @@ part of odw.sdk.core.buffer;
 
 // ignore_for_file: public_member_api_docs
 
-abstract class WriteBufferMixin {
+mixin WriteBufferMixin {
   // **** Interface
   /// The underlying [Bytes] for the buffer.
   GrowableBytes get bytes;
@@ -244,10 +244,10 @@ abstract class WriteBufferMixin {
   }
 
   void writeAsciiList(List<String> list, [int offset = 0, int length]) =>
-      _wIndex += bytes.setAsciiList(_wIndex, list, offset, length);
+      _wIndex += bytes.setAsciiList(_wIndex, list);
 
   void writeUtf8List(List<String> list, [int offset = 0, int length]) =>
-      _wIndex += bytes.setUtf8List(_wIndex, list, offset, length);
+      _wIndex += bytes.setUtf8List(_wIndex, list);
 
   void writeStringList(List<String> list) => writeUtf8List(list);
 

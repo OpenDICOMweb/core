@@ -389,31 +389,36 @@ mixin BytesMixin {
   }
 
   // Allows the removal of padding characters.
-  Uint8List _asUint8ListFromString([int offset = 0, int length]) {
+  Uint8List _asUint8ListForString(
+      [int offset = 0, int length, bool removeNull]) {
     length ??= bdLength;
-    if (length <= offset) return kEmptyUint8List;
     final index = _absIndex(offset);
-    final lastIndex = length - 1;
-    final _length = _maybeRemoveNull(lastIndex, length);
-    if (length == 0) return kEmptyUint8List;
-    return _bd.buffer.asUint8List(index, _length);
+    if (index < 0 || length > _bd.lengthInBytes)
+      throw ArgumentError('Invalid Offset: $offset');
+
+// Urgent Jim: remove when all test working
+    final len = removeNull ? _maybeRemoveNull(length) : length;
+    return _bd.buffer.asUint8List(index, len);
   }
 
-  int _maybeRemoveNull(int lastIndex, int vfLength) =>
-      (_getUint8(lastIndex) == kNull) ? lastIndex : vfLength;
+  int _maybeRemoveNull(int vfLength) {
+    final lastIndex = vfLength - 1;
+    return (_getUint8(lastIndex) == kNull) ? lastIndex : vfLength;
+  }
 
+  // TODO: rewrite in terms of getString
   /// Returns a [String] containing a _ASCII_ decoding of the specified
   /// region of _this_. Also allows the removal of a padding character.
   String stringFromAscii(
-      {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength);
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      bool removeNull = false}) {
+    final v = _asUint8ListForString(offset, length ?? bdLength, removeNull);
     return v.isEmpty ? '' : cvt.ascii.decode(v, allowInvalid: allowInvalid);
-//    final last = s.length - 1;
-//    final c = s.codeUnitAt(last);
-    // TODO: kNull should never get here but it does. Fix
-//    return (c == kNull) ? s.substring(0, last) : s;
   }
 
+  // TODO: rewrite in terms of getStringList
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _ASCII_, and then _split_ing the
   /// resulting [String] using the [separator]. Also allows the
@@ -428,17 +433,22 @@ mixin BytesMixin {
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
+  // TODO: rewrite in terms of getString
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
   /// Also, allows the removal of padding characters.
   String stringFromUtf8(
-      {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength);
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      bool removeNull = false}) {
+    final v = _asUint8ListForString(offset, length ?? bdLength, removeNull);
     return v.isEmpty ? '' : cvt.utf8.decode(v, allowMalformed: allowInvalid);
   }
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
+  // TODO: rewrite in terms of getStringList
   List<String> stringListFromUtf8(
       {int offset = 0,
       int length,
@@ -449,15 +459,20 @@ mixin BytesMixin {
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
+  // TODO: rewrite in terms of getString
   String stringFromLatin(
-      {int offset = 0, int length, bool allowInvalid = true}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength);
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      bool removeNull = false}) {
+    final v = _asUint8ListForString(offset, length ?? bdLength, removeNull);
     return v.isEmpty ? '' : cvt.latin1.decode(v, allowInvalid: allowInvalid);
   }
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
+  // TODO: rewrite in terms of getStringList
   List<String> stringListFromLatin(
       {int offset = 0,
       int length,
@@ -469,28 +484,25 @@ mixin BytesMixin {
   }
 
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
-  String getString(Ascii charset,
+  String getString(Charset charset,
       {int offset = 0,
       int length,
       bool allowInvalid = true,
-      String separator = '\\'}) {
-    final v = _asUint8ListFromString(offset, length ?? bdLength);
+      bool removeNull = false}) {
+    final v = _asUint8ListForString(offset, length ?? bdLength, removeNull);
     return v.isEmpty ? '' : charset.decode(v, allowInvalid: true);
   }
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
-  List<String> getStringList(Ascii charset,
+  List<String> getStringList(Charset charset,
       {int offset = 0,
       int length,
       bool allowInvalid = true,
       String separator = '\\'}) {
     final s = getString(charset,
-        offset: offset,
-        length: length,
-        allowInvalid: allowInvalid,
-        separator: separator);
+        offset: offset, length: length, allowInvalid: allowInvalid);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
@@ -605,7 +617,7 @@ mixin BytesMixin {
   }
 
   void setString(int start, String s, [int offset = 0, int length]) =>
-      setUtf8(start, s, offset, length);
+      setUtf8(start, s);
 
   // **** List Setters
 
@@ -666,11 +678,13 @@ mixin BytesMixin {
   int setUint8List(int start, List<int> list, [int offset = 0, int length]) =>
       _setUint8List(start, list, offset, length);
 
-  int _setUint8List(int start, Uint8List list,
-      [int offset = 0, int length, int padChar]) {
-    length ??= list.length;
+  int _setUint8List(int start, Uint8List bytes,
+      [int offset = 0, int length, int pad]) {
+    length ??= bytes.length;
     assert(_checkLength(offset, length, kUint8Size));
-    for (var i = offset, j = start; i < length; i++, j++) _setUint8(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j++)
+      _setUint8(j, bytes[i]);
+    if (length.isOdd && pad != null) _setUint8(length, pad);
     return length;
   }
 
@@ -765,34 +779,67 @@ mixin BytesMixin {
 
   // **** String List Setters
 
-  /// Writes the elements of the specified [sList] to _this_ starting at
-  /// [start]. If [pad] is _true_ and the final offset is odd, then a 0 is
-  /// written after the other elements have been written.
-  int setAsciiList(int start, List<String> sList,
-      [int offset = 0, int length, String separator = '', int pad = kSpace]) {
+  /// Writes the ASCII [String]s in [sList] to _this_ starting at
+  /// [start]. If [padChar] is not _null_ and the final offset is odd,
+  /// then [padChar] is written after the other elements have been written.
+  /// Returns the number of bytes written.
+  int setAsciiList(int start, List<String> sList, [int padChar = kSpace]) =>
+      _setLatinList(start, sList, 127, padChar);
+
+  /// Writes the LATIN [String]s in [sList] to _this_ starting at
+  /// [start]. If [padChar] is not _null_ and the final offset is odd,
+  /// then [padChar] is written after the other elements have been written.
+  /// Returns the number of bytes written.
+  /// _Note_: All latin character sets are encoded as single 8-bit bytes.
+  int setLatinList(int start, List<String> sList, [int padChar = kSpace]) =>
+      _setLatinList(start, sList, 255, padChar);
+
+  /// Copy [String]s from [sList] into _this_ separated by backslash.
+  /// If [padChar] is not equal to _null_ and last character position
+  /// is odd, then add [padChar] at end.
+  // Note: this only works for ascii or latin
+  int _setLatinList(int start, List<String> sList, int limit, int padChar) {
+    assert(padChar == kSpace || padChar == kNull);
     if (sList.isEmpty) return 0;
-    length ??= sList.length;
-    final last = length - 1;
+    final last = sList.length - 1;
     var k = start;
 
-    for (var i = 0; i < length; i++) {
+    for (var i = 0; i < sList.length; i++) {
       final s = sList[i];
-      for (var j = 0; j < s.length; j++) _setUint8(k++, s.codeUnitAt(j));
+      for (var j = 0; j < s.length; j++) {
+        final c = s.codeUnitAt(j);
+        if (c > limit)
+          throw ArgumentError('Character code $c is out of range $limit');
+        _setUint8(k++, s.codeUnitAt(j));
+      }
       if (i != last) _setUint8(k++, kBackslash);
     }
-    if (k.isOdd && pad != null) _setUint8(k++, pad);
+    if (k.isOdd && padChar != null) _setUint8(k++, padChar);
     return k - start;
   }
 
+  /// Converts the [String]s in [sList] into a [Uint8List].
+  /// Then copies the bytes into _this_ starting at
+  /// [start]. If [padChar] is not _null_ and the offset of the last
+  /// byte written is odd, then [padChar] is written to _this_.
+  /// Returns the number of bytes written.
+  int setUtf8List(int start, List<String> sList, [int padChar]) {
+    if (sList.isEmpty) return 0;
+    return setUtf8(start, sList.join('\\'));
+  }
+
   /// UTF-8 encodes the specified range of [s] and then writes the
-  /// code units to _this_ starting at [start]. If [padChar] is not
-  /// _null_ and [s].length is odd, then [padChar] is written after
-  /// the code units of [s] have been written.
-  int setUtf8(int start, String s,
-      [int offset = 0, int length, int padChar = kSpace]) {
-    length ??= s.length;
-    final v = _maybeGetSubstring(s, offset, length);
-    return _setUint8List(start, cvt.utf8.encode(v), offset, length, padChar);
+  /// code units to _this_ starting at [start].
+  /// _Note_: UTF8 {String]s are always padded with the S
+  /// pace (kSpace) character.
+  int setUtf8(int start, String s, [int padChar = kSpace]) {
+    final bytes = cvt.utf8.encode(s);
+
+    var k = start;
+    for (var i = 0; i < bytes.length; i++) _setUint8(k++, bytes[i]);
+
+    if (k.isOdd && padChar != null) _setUint8(k++, kSpace);
+    return k - start;
   }
 
   String _maybeGetSubstring(String s, int offset, int length) =>
@@ -800,11 +847,12 @@ mixin BytesMixin {
           ? s
           : s.substring(offset, offset + length);
 
+/*
   int setUtf8List(int start, List<String> sList,
-      [int offset = 0, int length, String separator = '']) {
+      [int offset = 0, int length, int padChar = kSpace]) {
     if (sList.isEmpty) return 0;
     final s = _stringListToString(sList, offset, length ??= sList.length);
-    setUtf8(start, s, offset, s.length);
+    setUtf8(start, s, offset, s.length, padChar);
     return s.length;
   }
 
@@ -814,6 +862,7 @@ mixin BytesMixin {
         : sList.sublist(offset, offset + length);
     return v.join('\\');
   }
+*/
 
   // **** Other
 

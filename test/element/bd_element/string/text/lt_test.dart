@@ -44,8 +44,10 @@ void main() {
 
     test('LTbytes from VM.k1', () {
       global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
+        print('vList0: $vList0');
         for (var code in ltVM1Tags) {
           final e0 = LTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');

@@ -176,7 +176,7 @@ abstract class Float extends FastElementBase<double> {
 }
 
 /// An abstract class for 32-bit floating point [Element]s.
-abstract class Float32Mixin {
+mixin Float32Mixin {
   List<double> get values;
   Float update(Iterable<double> vList);
 
@@ -383,7 +383,7 @@ abstract class OF extends Float with Float32Mixin {
 }
 
 /// An abstract class for 64-bit floating point [Element]s.
-abstract class Float64Mixin {
+mixin Float64Mixin {
   Iterable<double> get values;
   Float update([Iterable<double> vList]);
 

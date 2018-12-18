@@ -244,13 +244,15 @@ mixin Utf8Mixin {
   int get vfLength;
   Bytes get vfBytes;
 
-  int get length => _stringValuesLength(vfBytes);
+//  int get length => _stringValuesLength(vfBytes);
 
   bool get allowMalformed => global.allowMalformedUtf8;
 
   String get vfString {
-    final vf = hasPadding ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
-    return vf.stringFromUtf8(allowInvalid: allowMalformed);
+    //   final vf = hasPadding ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
+    //   return vf.stringFromUtf8(allowInvalid: allowMalformed);
+    final length = hasPadding ? vfLength - 1 : vfLength;
+    return vfBytes.stringFromUtf8(length: length, allowInvalid: allowMalformed);
   }
 }
 
@@ -362,13 +364,19 @@ class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
 
 /// Text ([String]) [Element]s that may only have 1 UTF-8 values.
 mixin TextMixin {
+  bool get hasPadding;
+  int get vfLength;
   Bytes get vfBytes;
 
   int get length => 1;
 
   bool allowMalformed = true;
 
-  String get vfString => vfBytes.stringFromUtf8(allowInvalid: allowMalformed);
+  String get vfString {
+    final length = hasPadding ? vfLength - 1 : vfLength;
+    return vfBytes.stringFromUtf8(length: length, allowInvalid: allowMalformed);
+  }
+
   String get value => vfString;
   StringList get values => StringList.from([vfString]);
 }
@@ -381,7 +389,7 @@ int _stringValuesLength(Bytes vfBytes) {
   return count;
 }
 
-class LTbytes extends LT with ByteElement<String>, TextMixin {
+class LTbytes extends LT with ByteElement<String>, StringMixin, TextMixin {
   @override
   final DicomBytes bytes;
 
@@ -400,7 +408,7 @@ class LTbytes extends LT with ByteElement<String>, TextMixin {
   }
 }
 
-class STbytes extends ST with ByteElement<String>, TextMixin {
+class STbytes extends ST with ByteElement<String>, StringMixin, TextMixin {
   @override
   final DicomBytes bytes;
 
@@ -419,7 +427,7 @@ class STbytes extends ST with ByteElement<String>, TextMixin {
   }
 }
 
-class URbytes extends UR with ByteElement<String>, TextMixin {
+class URbytes extends UR with ByteElement<String>, StringMixin, TextMixin {
   @override
   final DicomBytes bytes;
 
@@ -438,7 +446,7 @@ class URbytes extends UR with ByteElement<String>, TextMixin {
   }
 }
 
-class UTbytes extends UT with ByteElement<String>, TextMixin {
+class UTbytes extends UT with ByteElement<String>, StringMixin, TextMixin {
   @override
   final DicomBytes bytes;
 

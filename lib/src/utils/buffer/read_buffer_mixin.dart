@@ -10,7 +10,7 @@ part of odw.sdk.core.buffer;
 
 // ignore_for_file: public_member_api_docs
 
-abstract class ReadBufferMixin {
+mixin ReadBufferMixin {
   Bytes get bytes;
   int get _rIndex;
   set _rIndex(int n);

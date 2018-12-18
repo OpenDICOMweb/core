@@ -9,7 +9,7 @@
 part of odw.sdk.core.buffer;
 
 /// A writable [ByteBuffer].
-class WriteBuffer extends Object with WriteBufferMixin {
+class WriteBuffer with WriteBufferMixin {
   @override
   GrowableBytes bytes;
   @override

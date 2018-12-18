@@ -10,7 +10,7 @@ import 'package:core/src/utils/indenter/indenter_base.dart';
 
 // ignore_for_file: public_member_api_docs
 
-class Indenter extends Object with IndenterMixin implements StringBuffer {
+class Indenter with IndenterMixin implements StringBuffer {
   final StringBuffer sb;
 
   /// The maximum length of any line. If the current line is

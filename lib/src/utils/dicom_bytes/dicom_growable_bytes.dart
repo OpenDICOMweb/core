@@ -38,7 +38,7 @@ class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
       : super.typedDataView(td, offset, lengthInBytes, endian, limit);
 }
 
-abstract class DicomWriterMixin {
+mixin DicomWriterMixin {
   ByteData _bd;
 // **** End of Interface
 

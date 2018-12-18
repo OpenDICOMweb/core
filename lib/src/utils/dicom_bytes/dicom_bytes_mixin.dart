@@ -16,7 +16,7 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-abstract class DicomBytesMixin {
+mixin DicomBytesMixin {
   bool get isEvr;
   ByteData get bd;
   int get vrCode;
@@ -53,11 +53,13 @@ abstract class DicomBytesMixin {
   int setFloat64List(int start, List<double> list,
       [int offset = 0, int length]);
 
-  int setUtf8(int start, String s,
-      [int offset = 0, int length, int padChar = kSpace]);
+  int setAsciiList(int start, List<String> list, [int padChar = kSpace]);
 
-  int setAsciiList(int start, List<String> list,
-      [int offset = 0, int length, String separator = '', int pad = kSpace]);
+  int setLatinList(int start, List<String> list, [int padChar = kSpace]);
+
+  int setUtf8List(int start, List<String> list, [int padChar = kSpace]);
+
+  int setUtf8(int start, String s, [int padChar = kSpace]);
 
   String toBDDescriptor(ByteData bd);
 
@@ -158,7 +160,6 @@ abstract class DicomBytesMixin {
     setUint32(4, vlf);
   }
 
-
   void writeInt8VF(List<int> vList) => setInt8List(vfOffset, vList);
   void writeInt16VF(List<int> vList) => setInt16List(vfOffset, vList);
   void writeInt32VF(List<int> vList) => setInt32List(vfOffset, vList);
@@ -174,8 +175,10 @@ abstract class DicomBytesMixin {
 
   void writeAsciiVF(List<String> vList, [int pad = kSpace]) =>
       setAsciiList(vfOffset, vList, pad);
-  void writeUtf8VF(List<String> vList) => setUtf8(vfOffset, vList.join('\\'));
-  void writeTextVF(List<String> vList) => setUtf8(vfOffset, vList[0]);
+  void writeUtf8VF(List<String> vList, [int pad = kSpace]) =>
+      setUtf8List(vfOffset, vList, pad);
+  void writeTextVF(List<String> vList, [int pad = kSpace]) =>
+      setUtf8(vfOffset, vList[0], pad);
 
   int writeAsciiVFFast(int offset, List<String> vList, [int padChar]) {
     var index = offset;
