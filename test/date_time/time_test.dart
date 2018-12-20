@@ -117,10 +117,15 @@ void main() {
 
     test('Time.isValidString with Bad Times', () {
       for (var s in badDcmTimes) {
+        global.throwOnError = false;
         log.debug('  Time.isValidString: $s');
         final value = Time.isValidString(s);
         expect(value == false, true);
         log.debug('    Time.isValidString: "$s": isValid: $value');
+
+        global.throwOnError = true;
+        expect(() => Time.isValidString(s),
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -174,7 +179,11 @@ void main() {
       log.debug('throwOnError: $throwOnError');
 
       for (var i in badDcmTimesInt) {
+        global.throwOnError = false;
         expect(Time(i), isNull);
+
+        global.throwOnError = true;
+        expect(() => Time(i), throwsA(const TypeMatcher<DateTimeError>()));
       }
     });
 
@@ -204,7 +213,12 @@ void main() {
       final hs1 = Time.hashStringList(badDcmTimes);
       log.debug('hs1:$hs1');
       for (var s in hs1) {
+        global.throwOnError = false;
         expect(s, isNull);
+
+        global.throwOnError = true;
+        expect(() => Time.hashStringList(badDcmTimes),
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 

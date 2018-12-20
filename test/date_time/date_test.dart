@@ -174,16 +174,21 @@ void main() {
       }
 
       for (var s in badDcmDateList) {
+        global.throwOnError = false;
         final hs1 = Date.hashString(s);
         log.debug('hs1: $hs1');
         expect(hs1, isNull);
+
+        global.throwOnError = true;
+        expect(() => Date.hashString(s),
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
     test('hashStringList', () {
       global.throwOnError = false;
       final hs0 = Date.hashStringList(goodDcmDateList);
-      log.debug('hsl0: $hs0');
+      log.debug('hs0: $hs0');
       expect(hs0, isNotNull);
 
       final hs1 = Date.hashStringList(badDcmDateList);
@@ -191,6 +196,9 @@ void main() {
       for (var s in hs1) {
         expect(s, isNull);
       }
+      global.throwOnError = true;
+      expect(() => Date.hashStringList(badDcmDateList),
+          throwsA(const TypeMatcher<StringError>()));
     });
 
     test('normalizD', () {
@@ -362,6 +370,8 @@ void main() {
       ..debug('${date0.weekday}')
       ..debug('${date0.weekdayName}')
       ..debug('date0: $date0');
+
+    expect(date0.toString(), equals('1950-07-18'));
     final weekDayName0 = date0.weekdayName;
     log.debug('weekDayName0: $weekDayName0');
     //}

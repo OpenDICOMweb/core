@@ -60,10 +60,15 @@ void main() {
       global.throwOnError = false;
 
       for (var dt in badDcmDateTimeList) {
+        global.throwOnError = false;
         log.debug('dt: $dt');
         final dateTime = DcmDateTime.parse(dt);
         expect(dateTime, isNull);
         expect(DcmDateTime.isValidString(dt), false);
+
+        global.throwOnError = true;
+        expect(() => DcmDateTime.parse(dt),
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -85,8 +90,14 @@ void main() {
       }
 
       for (var dt in badDcmDateTimeList) {
+        global.throwOnError = false;
         final dateTime = DcmDateTime.parse(dt);
         expect(dateTime, isNull);
+
+        global.throwOnError = true;
+        global.throwOnError = true;
+        expect(() => DcmDateTime.parse(dt),
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
