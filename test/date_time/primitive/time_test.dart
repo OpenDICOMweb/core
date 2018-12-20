@@ -41,12 +41,18 @@ void main() {
           kMicrosecondsPerMillisecond +
           1;
       expect(timeToMicroseconds(1, 1, 1, 1, 1) == v, true);
+      global.throwOnError = false;
       expect(timeToMicroseconds(1, 60), isNull);
       expect(timeToMicroseconds(1, -1), isNull);
+
+      global.throwOnError = true;
+      expect(() => timeToMicroseconds(1, 60),
+          throwsA(const TypeMatcher<DateTimeError>()));
     });
     // **** Hours
 
     test('Hours Test', () {
+      global.throwOnError = false;
       const m = 0, s = 0, ms = 0, us = 0;
       var h = 0;
       log.debug('hours test');
@@ -66,10 +72,15 @@ void main() {
       expect(timeToMicroseconds(h) == null, true);
       h = -2;
       expect(timeToMicroseconds(h) == null, true);
+
+      global.throwOnError = true;
+      expect(() => timeToMicroseconds(h),
+          throwsA(const TypeMatcher<DateTimeError>()));
     });
     // **** Minutes
 
     test('Minutes Test', () {
+      global.throwOnError = false;
       const h = 0, s = 0, ms = 0, us = 0;
       var m = 0;
       log.debug('Minutes Test');
@@ -90,9 +101,14 @@ void main() {
       expect(timeToMicroseconds(h, m) == null, true);
       m = 61;
       expect(timeToMicroseconds(h, m) == null, true);
+
+      global.throwOnError = true;
+      expect(() => timeToMicroseconds(h, m),
+          throwsA(const TypeMatcher<DateTimeError>()));
     });
 
     test('Seconds Test', () {
+      global.throwOnError = false;
       const h = 0, ms = 0, us = 0;
       var m = 0, s = 0;
       log.debug('Seconds Test');
@@ -113,9 +129,14 @@ void main() {
       expect(timeToMicroseconds(h, m, s) == null, true);
       m = 61;
       expect(timeToMicroseconds(h, m, s) == null, true);
+
+      global.throwOnError = true;
+      expect(() => timeToMicroseconds(h, m, s),
+          throwsA(const TypeMatcher<DateTimeError>()));
     });
 
     test('Milliseconds Test', () {
+      global.throwOnError = false;
       const h = 0, m = 0, s = 0, us = 0;
       var ms = 0;
       log.debug('Milliseconds Test');
@@ -136,9 +157,14 @@ void main() {
       expect(timeToMicroseconds(h, m, s, ms) == null, true);
       ms = 1001;
       expect(timeToMicroseconds(h, m, s, ms) == null, true);
+
+      global.throwOnError = true;
+      expect(() => timeToMicroseconds(h, m, s, ms),
+          throwsA(const TypeMatcher<DateTimeError>()));
     });
 
     test('Microseconds Test', () {
+      global.throwOnError = false;
       const h = 0, m = 0, s = 0, ms = 0;
       var us = 0;
       log.debug('Microseconds Test');
@@ -159,6 +185,10 @@ void main() {
       expect(timeToMicroseconds(h, m, s, ms, us) == null, true);
       us = 1001;
       expect(timeToMicroseconds(h, m, s, ms, us) == null, true);
+
+      global.throwOnError = true;
+      expect(() => timeToMicroseconds(h, m, s, ms, us),
+          throwsA(const TypeMatcher<DateTimeError>()));
     });
 
     test('Time and Time Hash', () {
@@ -480,6 +510,10 @@ void main() {
       final t8 = Time(25, 13, 48, 670, 34);
       log.debug('t8;$t8');
       expect(t8, null);
+
+      global.throwOnError = true;
+      expect(() => Time(25, 13, 48, 670, 34),
+          throwsA(const TypeMatcher<DateTimeError>()));
     });
 
     test('timeMicrosecondsToString', () {

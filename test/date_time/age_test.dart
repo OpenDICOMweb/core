@@ -349,8 +349,7 @@ void main() {
         ..debug('age2.values:${age2.toString()}, age2.hash:${age2.hash}, '
             'age2.hashCode:${age2.hashCode}')
         ..debug('age3.values:${age3.toString()}, age3.hash:${age3.hash}, '
-            'age3.hashCode:${age3
-            .hashCode}');
+            'age3.hashCode:${age3.hashCode}');
       expect(age2.toString() == age3.toString(), false);
       expect(age2.hash, isNot(age3.hash));
       expect(age2.hashCode, isNot(age3.hashCode));
