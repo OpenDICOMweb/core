@@ -221,4 +221,87 @@ void main() {
       expect(fraction.toString(), equals(s.substring(1)));
     }
   });
+
+  test('parseBase2 good values', () {
+    final vList0 = ['10', '1', '101', '111', '1001', '1010', '1111'];
+    for (var s in vList0) {
+      final parse0 = parseBase2(s, 0, null, s.length, s, null);
+      final radix = parse0.toRadixString(10);
+      log..debug('parse0: $parse0')..debug('parse0.toRadixString(10): $radix');
+      expect(parse0.toString(), equals(radix));
+      expect(s, equals(parse0.toRadixString(2)));
+    }
+  });
+
+  test('parseBase2 bad values', () {
+    final vList = ['23', '12', '1234'];
+    for (var s in vList) {
+      global.throwOnError = false;
+      final parse0 = parseBase2(s, 0, null, s.length, s, null);
+      log.debug('parse0: $parse0');
+      expect(parse0, isNull);
+
+      global.throwOnError = true;
+      expect(() => parseBase2(s, 0, null, s.length, s, null),
+          throwsA(const TypeMatcher<FormatException>()));
+    }
+  });
+
+  test('parseBase8 good values', () {
+    final vList0 = ['10', '1', '101', '111', '1001', '1010', '44', '37'];
+    for (var s in vList0) {
+      final parse0 = parseBase8(s, 0, null, s.length, s, null);
+      final radix = parse0.toRadixString(10);
+      log..debug('parse0: $parse0')..debug('parse0.toRadixString(10): $radix');
+      expect(parse0.toString(), equals(radix));
+    }
+  });
+
+  test('parseBase8 bad values', () {
+    final vList0 = ['89', '79', '108', '1082'];
+    for (var s in vList0) {
+      global.throwOnError = false;
+      final parse0 = parseBase8(s, 0, null, s.length, s, null);
+      log.debug('parse0: $parse0');
+      expect(parse0, isNull);
+
+      global.throwOnError = true;
+      expect(() => parseBase8(s, 0, null, s.length, s, null),
+          throwsA(const TypeMatcher<FormatException>()));
+    }
+  });
+
+  test('parseBase10 good values', () {
+    final vList0 = ['10', '111', '1001', '1010', '44', '37', '3883'];
+    for (var s in vList0) {
+      final parse0 = parseBase10(s, 0, null, s.length, s, null);
+      final radix = parse0.toRadixString(10);
+      log..debug('parse0: $parse0')..debug('parse0.toRadixString(10): $radix');
+      expect(parse0.toString(), equals(radix));
+    }
+  });
+
+  test('parseBase10 bad values', () {
+    final vList0 = ['-89', '-79', '-55', '-1082'];
+    for (var s in vList0) {
+      global.throwOnError = false;
+      final parse0 = parseBase10(s, 0, null, s.length, s, null);
+      log.debug('parse0: $parse0');
+      expect(parse0, isNull);
+
+      global.throwOnError = true;
+      expect(() => parseBase10(s, 0, null, s.length, s, null),
+          throwsA(const TypeMatcher<FormatException>()));
+    }
+  });
+
+  test('parseBase16 good values', () {
+    final vList0 = ['10', '111', '100A', '1010', '44', '37C', '3883', 'A', 'B'];
+    for (var s in vList0) {
+      final parse0 = parseBase16(s, 0, null, s.length, s, null);
+      final radix = parse0.toRadixString(10);
+      log..debug('parse0: $parse0')..debug('parse0.toRadixString(10): $radix');
+      expect(parse0.toString(), equals(radix));
+    }
+  });
 }
