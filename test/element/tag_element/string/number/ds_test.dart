@@ -562,7 +562,7 @@ void main() {
 
       for (var i = 0; i < limit; i++) {
         final vList0 = rsg.getDSList(1, 1);
-        print('vList0: $vList0');
+        log.debug('vList0: $vList0');
         final e0 = DStag(PTag.kPatientSize, vList0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
