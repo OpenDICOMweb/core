@@ -480,5 +480,65 @@ void main() {
       log.debug('length0: $length0, Frames in FrameList: ${ow16c.length}');
       expect(() => ow16c[length0], throwsA(const TypeMatcher<RangeError>()));
     });
+
+    test('Frame16Bit', () {
+      const length0 = 1;
+      const photometricInterpretation0 = 'RGB';
+
+      // Descriptor
+      final owFDa = FrameDescriptor(
+          ts0,
+          samplesPerPixel0,
+          photometricInterpretation0,
+          rows4,
+          columns6,
+          bitsAllocated16,
+          bitsStored16,
+          highBit16,
+          pixelRepresentation0,
+          planarConfiguration0,
+          pixelAspectRatio: pixelAspectRatio0);
+
+      final pixels0 = Uint16List(owFDa.length * length0);
+      final ow16a = FrameList16Bit(pixels0, length0, owFDa);
+
+      final frame16 = Frame16Bit(ow16a, pixels0, 1);
+      log.debug('frame16: $frame16');
+
+      // pixels
+      expect(frame16.pixels is Uint16List, true);
+      expect(frame16.pixels.length == pixels0.length, true);
+      expect(frame16.pixels == pixels0, true);
+      expect(frame16.pixels.lengthInBytes == pixels0.lengthInBytes, true);
+      expect(frame16.pixelSizeInBits == owFDa.pixelSizeInBits, true);
+
+      // bulkdata
+      expect(frame16.bulkdata.length == pixels0.lengthInBytes, true);
+      expect(frame16.bulkdata.length == frame16.bulkdata.lengthInBytes, true);
+      expect(frame16.pixels.lengthInBytes == frame16.bulkdata.length, true);
+
+      // nFrames
+      expect(frame16.length == pixels0.length, true);
+
+      // frameLength
+      expect(frame16.lengthInBytes == pixels0.lengthInBytes, true);
+      expect(frame16.lengthInBytes == frame16.pixels.lengthInBytes, true);
+      expect(frame16.lengthInBytes == frame16.bulkdata.lengthInBytes, true);
+      expect(frame16.lengthInBytes == owFDa.lengthInBytes * length0, true);
+
+      // transferSyntax
+      expect(frame16.ts == ts0, true);
+
+      // FrameDescriptor fields
+      expect(frame16.samplesPerPixel == samplesPerPixel0, true);
+      expect(frame16.rows == rows4, true);
+      expect(frame16.columns == columns6, true);
+      expect(frame16.bitsAllocated == bitsAllocated16, true);
+      expect(frame16.bitsStored == bitsStored16, true);
+      expect(frame16.highBit == highBit16, true);
+      expect(frame16.pixelRepresentation == pixelRepresentation0, true);
+      expect(frame16.planarConfiguration, isNull);
+      expect(frame16.pixelAspectRatio == pixelAspectRatio0, true);
+    });
   });
 }
