@@ -365,7 +365,6 @@ void main() {
       // length
       expect(ob1c.length == length0, true); //length0=1
 
-
       // frameLength
       expect(ob1c.frameLength == ob1FDf.length, true);
       expect(ob1c.lengthInBytes == ob1c.pixels.lengthInBytes, true);
@@ -483,6 +482,96 @@ void main() {
       }
       log.debug('length0: $length0, Frames in FrameList: ${ob1FLb.length}');
       expect(() => ob1FLb[length0], throwsA(const TypeMatcher<RangeError>()));
+    });
+
+    test('Frame1Bit', () {
+      const length0 = 1;
+      const photometricInterpretation0 = 'MONOCHROME1';
+
+      final ob1FDa = FrameDescriptor(
+          ts0,
+          samplesPerPixel0,
+          photometricInterpretation0,
+          rows4,
+          columns6,
+          bitsAllocated1,
+          bitsStored1,
+          highBit1,
+          pixelRepresentation0,
+          planarConfiguration0,
+          pixelAspectRatio: pixelAspectRatio0);
+
+      final pixels0 = Uint8List(ob1FDa.lengthInBytes);
+
+      final ob1FLa = FrameList1Bit(pixels0, length0, ob1FDa);
+
+      final frame1 = Frame1Bit(ob1FLa, pixels0, 1);
+      log.debug('frame1: $frame1');
+
+      // pixels
+      expect(frame1.pixels is Uint8List, true);
+      expect(frame1.pixels.length == pixels0.length, true);
+      expect(frame1.pixels.lengthInBytes == pixels0.lengthInBytes, true);
+      log
+        ..debug('ob1BitFrames0.pixelSizeInBits: ${frame1.pixelSizeInBits}')
+        ..debug('pixels0.elementSizeInBytes: ${pixels0.elementSizeInBytes}');
+      expect(frame1.pixelSizeInBits == pixels0.elementSizeInBytes, true);
+      expect(frame1.pixelSizeInBytes == 0, true);
+
+      global.throwOnError = true;
+      // bulkdata
+      expect(frame1.bulkdata.length == pixels0.lengthInBytes, true);
+      expect(frame1.bulkdata.length == frame1.bulkdata.lengthInBytes, true);
+      expect(frame1.pixels.lengthInBytes == frame1.bulkdata.length, true);
+      expect(frame1.pixels == pixels0, true);
+
+      // length
+      expect(frame1.length == pixels0.length * 8, true);
+
+      // frameLength
+      expect(frame1.lengthInBytes == pixels0.lengthInBytes, true);
+      expect(frame1.lengthInBytes == frame1.pixels.lengthInBytes, true);
+      expect(frame1.lengthInBytes == frame1.bulkdata.lengthInBytes, true);
+
+      // FrameDescriptor values
+      // transferSyntax
+      expect(frame1.ts == ts0, true);
+
+      //other FrameDescriptor fields
+      expect(frame1.samplesPerPixel == samplesPerPixel0, true);
+      expect(frame1.rows == rows4, true);
+      expect(frame1.columns == columns6, true);
+      expect(frame1.bitsAllocated == bitsAllocated1, true);
+      expect(frame1.bitsStored == bitsStored1, true);
+      expect(frame1.highBit == highBit1, true);
+      expect(frame1.pixelRepresentation == pixelRepresentation0, true);
+      expect(frame1.planarConfiguration, isNull);
+      expect(frame1.pixelAspectRatio == pixelAspectRatio0, true);
+
+      expect(ob1FDa.ts == ts0, true);
+      expect(ob1FDa.samplesPerPixel == samplesPerPixel0, true);
+
+      //FrameDescriptor
+      expect(ob1FDa.ts == ts0, true);
+      expect(ob1FDa.samplesPerPixel == samplesPerPixel0, true);
+      expect(
+          ob1FDa.photometricInterpretation == photometricInterpretation0, true);
+      expect(ob1FDa.rows == rows4, true);
+      expect(ob1FDa.columns == columns6, true);
+      expect(ob1FDa.length == rows4 * columns6, true);
+      expect(ob1FDa.bitsAllocated == bitsAllocated1, true);
+      expect(ob1FDa.bitsStored == bitsStored1, true);
+      expect(ob1FDa.highBit == highBit1, true);
+      expect(ob1FDa.pixelRepresentation == pixelRepresentation0, true);
+      expect(ob1FDa.planarConfiguration == planarConfiguration0, true);
+      expect(ob1FDa.pixelAspectRatio == pixelAspectRatio0, true);
+      expect(ob1FDa.lengthInBits == (rows4 * columns6) * bitsAllocated1, true);
+      expect(ob1FDa.pixelSizeInBits == bitsAllocated1, true);
+      expect(ob1FDa.length == rows4 * columns6, true);
+      expect(ob1FDa.lengthInBytes == pixels0.lengthInBytes, true);
+
+      final bytes0 = Uint8List(frame1.lengthInBytes);
+      expect(bytes0, equals(pixels0));
     });
   });
 
@@ -942,6 +1031,67 @@ void main() {
 
       log.debug('length0: $length0, Frames in FrameList: ${ob8e.length}');
       expect(() => ob8e[length0], throwsA(const TypeMatcher<RangeError>()));
+    });
+
+    test('Frame8Bit', () {
+      const length0 = 1;
+      const photometricInterpretation0 = 'MONOCHROME1';
+
+      final ob8FDa = FrameDescriptor(
+          ts0,
+          samplesPerPixel0,
+          photometricInterpretation0,
+          rows4,
+          columns6,
+          bitsAllocated8,
+          bitsStored8,
+          highBit8,
+          pixelRepresentation0,
+          planarConfiguration0,
+          pixelAspectRatio: pixelAspectRatio0);
+
+      final pixels0 = Uint8List(ob8FDa.lengthInBytes);
+
+      final ob8a = FrameList8Bit(pixels0, length0, ob8FDa);
+
+      final frame8 = Frame8Bit(ob8a, pixels0, 1);
+      log.debug('frame1: $frame8');
+
+      // pixels
+      expect(frame8.pixels is Uint8List, true);
+      expect(frame8.pixels.length == pixels0.length, true);
+      expect(frame8.pixels == pixels0, true);
+      expect(frame8.pixels.lengthInBytes == pixels0.lengthInBytes, true);
+      expect(frame8.pixelSizeInBits == ob8FDa.pixelSizeInBits, true);
+
+      // bulkdata
+      expect(frame8.bulkdata.length == pixels0.lengthInBytes, true);
+      expect(frame8.bulkdata.length == frame8.bulkdata.lengthInBytes, true);
+      expect(frame8.pixels.lengthInBytes == frame8.bulkdata.length, true);
+
+      // length
+      expect(ob8a.length == length0, true);
+
+      // frameLength
+      expect(frame8.lengthInBytes == pixels0.lengthInBytes, true);
+      expect(frame8.lengthInBytes == ob8FDa.lengthInBytes * length0, true);
+      expect(frame8.lengthInBytes == frame8.pixels.lengthInBytes, true);
+      expect(frame8.lengthInBytes == frame8.bulkdata.lengthInBytes, true);
+
+      // FrameDescriptor values
+      // transferSyntax
+      expect(frame8.ts == ts0, true);
+
+      //other FrameDescriptor fields
+      expect(frame8.samplesPerPixel == samplesPerPixel0, true);
+      expect(frame8.rows == rows4, true);
+      expect(frame8.columns == columns6, true);
+      expect(frame8.bitsAllocated == bitsAllocated8, true);
+      expect(frame8.bitsStored == bitsStored8, true);
+      expect(frame8.highBit == highBit8, true);
+      expect(frame8.pixelRepresentation == pixelRepresentation0, true);
+      expect(frame8.planarConfiguration, isNull);
+      expect(frame8.pixelAspectRatio == pixelAspectRatio0, true);
     });
   });
 
