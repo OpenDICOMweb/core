@@ -27,6 +27,26 @@ void main() {
     const uInt8Max = [kUint8Max];
     expect(Uint8.fromList(uInt8Min), uInt8Min);
     expect(Uint8.fromList(uInt8Max), uInt8Max);
+
+    const uInt64Max = [kUint64Max];
+    final from0 = Uint8.fromList(uInt64Max, check: false);
+    expect(from0, equals(uInt8Max));
+    expect(from0 is Uint8List, true);
+
+    final from1 = Uint8.fromList(uInt64Max, check: true);
+    expect(from1, isNull);
+    expect(from1 is Uint8List, false);
+
+    final from2 = Uint8.fromList(null);
+    expect(from2 == kEmptyUint8List, true);
+
+    final from3 = Uint8.fromList([]);
+    expect(from3.isEmpty, true);
+    expect(from3 == kEmptyUint8List, true);
+
+    global.throwOnError = true;
+    expect(() => Uint8.fromList(uInt64Max),
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Uint8 ListToBytes', () {
@@ -50,6 +70,8 @@ void main() {
     const uInt16Max = [kUint16Max];
     final uInt16List2 = Uint16.fromList(uInt16Max);
     expect(Uint8.toUint8List(uInt16List2), isNull);
+
+    expect(Uint8.toUint8List(null), kEmptyUint8List);
 
     global.throwOnError = true;
     expect(() => Uint8.toBytes(uInt16Max),
