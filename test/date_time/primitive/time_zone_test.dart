@@ -178,7 +178,9 @@ void main() {
       expect(tzms4, isNull);
 
       global.throwOnError = true;
-      expect(() =>timeZoneMicrosecondsToString(kMicrosecondsPerDay, asDicom: false),
+      expect(
+          () =>
+              timeZoneMicrosecondsToString(kMicrosecondsPerDay, asDicom: false),
           throwsA(const TypeMatcher<InvalidTimeZoneMicrosecondError>()));
     });
 
