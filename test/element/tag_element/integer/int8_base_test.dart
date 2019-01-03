@@ -25,6 +25,22 @@ void main() {
     const int8Max = [kInt8Max];
     expect(Int8.fromList(int8Max), int8Max);
     expect(Int8.fromList(int8Min), int8Min);
+
+    const int64Max = [kInt64Max];
+    final from1 = Int8.fromList(int64Max, check: true);
+    expect(from1, isNull);
+    expect(from1 is Int8List, false);
+
+    final from2 = Int8.fromList(null);
+    expect(from2 == kEmptyInt8List, true);
+
+    final from3 = Int8.fromList([]);
+    expect(from3.isEmpty, true);
+    expect(from3 == kEmptyInt8List, true);
+
+    global.throwOnError = true;
+    expect(() => Int8.fromList(int64Max),
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int8Base toBytes', () {
@@ -132,6 +148,10 @@ void main() {
       log.debug('  SS.decode: $ssList');
       expect(ssList, equals(vList0));
     }
+
+    final fromBase0 = Int8.fromBase64('');
+    expect(fromBase0.isEmpty, true);
+    expect(fromBase0 == kEmptyInt8List, true);
   });
 
   test('Int8Base toBase64', () {
