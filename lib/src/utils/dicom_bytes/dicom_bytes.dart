@@ -50,6 +50,7 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
       ..code = code
       ..vrCode = vrCode
       ..vfLengthField = vfLength;
+    print('bytes: $bytes');
     return bytes;
   }
 

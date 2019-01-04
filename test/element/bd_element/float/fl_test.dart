@@ -97,8 +97,11 @@ void main() {
   // group('FL Tests', () {
   test('FL hasValidValues: good values', () {
     global.throwOnError = false;
+    global.level = Level.debug;
+
     log.debug('vList: $float32List');
     final e0 = FLbytes.fromValues(kVectorAccuracy, doubleList);
+    print('e0: $e0');
     expect(e0.hasValidValues, true);
   });
 
