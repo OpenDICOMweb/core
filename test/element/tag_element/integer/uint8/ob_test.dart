@@ -281,16 +281,32 @@ void main() {
     });
 
     test('OB checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
         final e0 = OBtag(PTag.kPrivateInformation, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.uint16List(1, 1);
+      final e0 = OBtag(PTag.kPrivateInformation);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('OB checkValues', () {
+      global.throwOnError = false;
       final e0 = OBtag(PTag.kPrivateInformation, uInt8Min);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('OB valuesCopy random', () {

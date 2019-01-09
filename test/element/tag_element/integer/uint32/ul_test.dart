@@ -301,6 +301,10 @@ void main() {
         final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList);
         expect(e0.checkLength(e0.values), true);
       }
+
+      final vList0 = rng.uint32List(2, 2);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples);
+      expect(e0.checkLength(vList0), false);
     });
 
     test('UL checkLength', () {
@@ -309,16 +313,32 @@ void main() {
     });
 
     test('UL checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int64List(1, 1);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UL checkValues', () {
+      global.throwOnError = false;
       final e0 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UL valuesCopy random', () {

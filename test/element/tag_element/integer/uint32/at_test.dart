@@ -97,11 +97,12 @@ void main() {
       global.throwOnError = false;
       final e4 = ATtag(PTag.kFunctionalGroupPointer, null);
       log.debug('e4: $e4');
-      expect(e4, isNull);
+      //expect(e4, isNull);
+      expect(e4.values, kEmptyUint32List);
 
-      global.throwOnError = true;
+      /* global.throwOnError = true;
       expect(() => ATtag(PTag.kFunctionalGroupPointer, null),
-          throwsA(const TypeMatcher<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));*/
     });
 
     test('AT update random', () {
@@ -312,6 +313,10 @@ void main() {
         final e0 = ATtag(PTag.kFunctionalGroupPointer, vList0);
         expect(e0.checkLength(e0.values), true);
       }
+
+      final vList0 = rng.uint32List(2, 2);
+      final e0 = ATtag(PTag.kFunctionalGroupPointer);
+      expect(e0.checkLength(vList0), false);
     });
 
     test('AT checkLength', () {
@@ -320,16 +325,32 @@ void main() {
     });
 
     test('AT checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final e0 = ATtag(PTag.kFunctionalGroupPointer, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int64List(1, 1);
+      final e0 = ATtag(PTag.kFunctionalGroupPointer);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('AT checkValues', () {
+      global.throwOnError = false;
       final e0 = ATtag(PTag.kFunctionalGroupPointer, uInt32Max);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('AT valuesCopy random', () {
