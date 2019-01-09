@@ -294,6 +294,10 @@ void main() {
         final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
         expect(e0.checkLength(e0.values), true);
       }
+
+      final vList0 = rng.uint16List(2, 2);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber);
+      expect(e0.checkLength(vList0), false);
     });
 
     test('US checkLength', () {
@@ -302,16 +306,32 @@ void main() {
     });
 
     test('US checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int64List(1, 1);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('US checkValues ', () {
+      global.throwOnError = false;
       final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('US valuesCopy random', () {

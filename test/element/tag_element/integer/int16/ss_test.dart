@@ -310,11 +310,15 @@ void main() {
     });
 
     test('SS checkLength random', () {
-      for (var i = 0; i < 10; i++) {
-        final int16List = rng.int16List(1, 10);
+      for (var i = 1; i < 10; i++) {
+        final int16List = rng.int16List(1, i);
         final e0 = SStag(PTag.kSelectorSSValue, int16List);
         expect(e0.checkLength(e0.values), true);
       }
+
+      final vList0 = rng.int16List(2, 2);
+      final e0 = SStag(PTag.kTagAngleSecondAxis);
+      expect(e0.checkLength(vList0), false);
     });
 
     test('SS checkLength ', () {
@@ -323,11 +327,20 @@ void main() {
     });
 
     test('SS checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final int16List = rng.int16List(1, 10);
         final e0 = SStag(PTag.kSelectorSSValue, int16List);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int32List(1, 1);
+      final e0 = SStag(PTag.kTagAngleSecondAxis);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('SS checkValues', () {
@@ -337,6 +350,12 @@ void main() {
 
       final e1 = SStag(PTag.kTagAngleSecondAxis, [rng.nextInt32]);
       expect(e1, isNull);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('SS valuesCopy random', () {

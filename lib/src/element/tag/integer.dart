@@ -98,9 +98,7 @@ class SLtag extends SL with TagElement<int>, TagIntegerMixin {
   /// Creates an [SLtag] Element.
   factory SLtag(Tag tag, [Iterable<int> vList]) {
     final v = Int32.fromList(vList);
-    return SL.isValidArgs(tag, vList)
-        ? SLtag._(tag, v)
-        : badValues(vList, null, tag);
+    return SL.isValidArgs(tag, v) ? SLtag._(tag, v) : badValues(v, null, tag);
   }
 
   factory SLtag.fromBulkdata(Tag tag, Uri url) =>
@@ -134,7 +132,7 @@ class OBtag extends OB with TagElement<int>, TagIntegerMixin {
   factory OBtag(Tag tag, [Iterable<int> vList]) {
     assert(tag.code != kPixelData);
     final v = Uint8.fromList(vList);
-    if (!OB.isValidArgs(tag, v)) return badValues(vList, null, tag);
+    if (!OB.isValidArgs(tag, v)) return badValues(v, null, tag);
     return OBtag._(tag, v);
   }
 
@@ -234,7 +232,7 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
   factory OWtag(Tag tag, [Iterable<int> vList]) {
     assert(tag.code != kPixelData);
     final v = Uint16.fromList(vList);
-    if (!OW.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    if (!OW.isValidArgs(tag, v)) return badValues(v, null, tag);
     return OWtag._(tag, v);
   }
 
@@ -363,9 +361,7 @@ class ATtag extends AT with TagElement<int>, TagIntegerMixin {
   /// Creates an [ATtag] Element.
   factory ATtag(Tag tag, [Iterable<int> vList]) {
     final v = Uint32.fromList(vList);
-    return AT.isValidArgs(tag, vList)
-        ? ATtag._(tag, v)
-        : badValues(vList, null, tag);
+    return AT.isValidArgs(tag, v) ? ATtag._(tag, v) : badValues(v, null, tag);
   }
 
   factory ATtag.fromBulkdata(Tag tag, Uri url) =>
