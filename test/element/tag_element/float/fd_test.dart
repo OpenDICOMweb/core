@@ -445,6 +445,10 @@ void main() {
       final e0 = FDtag(PTag.kTubeAngle, float64GoodList);
       expect(e0, isNull);
 
+      final vList0 = rng.float64List(2, 2);
+      final e1 = FDtag(PTag.kTubeAngle);
+      expect(e1.checkLength(vList0), false);
+
       global.throwOnError = true;
       expect(() => FDtag(PTag.kTubeAngle, float64GoodList),
           throwsA(const TypeMatcher<InvalidValuesError>()));
