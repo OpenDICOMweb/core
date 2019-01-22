@@ -105,6 +105,96 @@ void main() {
         expect(isValid2, false);
       }
     });
+
+    test('isSpace', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool space0;
+
+        if (i == kSpace) {
+          space0 = charset0.isSpace(i);
+          expect(space0, true);
+        } else {
+          space0 = charset0.isSpace(i);
+          expect(space0, false);
+        }
+      }
+    });
+
+    test('isBackSpace', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool backSpace0;
+
+        if (i == kBackspace) {
+          backSpace0 = charset0.isBackspace(i);
+          expect(backSpace0, true);
+        } else {
+          backSpace0 = charset0.isBackspace(i);
+          expect(backSpace0, false);
+        }
+      }
+    });
+
+    test('isWhiteSpace', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool whiteSpace0;
+
+        if (i == kSp || (i >= kBs && i <= kCr)) {
+          whiteSpace0 = charset0.isWhitespace(i);
+          expect(whiteSpace0, true);
+        } else {
+          whiteSpace0 = charset0.isWhitespace(i);
+          expect(whiteSpace0, false);
+        }
+      }
+    });
+
+    test('isDigit', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool digit0;
+
+        if (i >= k0 && i < k9) {
+          digit0 = charset0.isDigit(i);
+          expect(digit0, true);
+        } else {
+          digit0 = charset0.isDigit(i);
+          expect(digit0, false);
+        }
+      }
+    });
+
+    test('isControl', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool control0;
+
+        if (i >= kNul && i < kSp) {
+          control0 = charset0.isControl(i);
+          expect(control0, true);
+        } else {
+          control0 = charset0.isControl(i);
+          expect(control0, false);
+        }
+      }
+    });
+
+    test('isEscape', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool escape0;
+
+        if (i == kEsc) {
+          escape0 = charset0.isEscape(i);
+          expect(escape0, true);
+        } else {
+          escape0 = charset0.isEscape(i);
+          expect(escape0, false);
+        }
+      }
+    });
   });
 
   group('Latin', () {
@@ -170,6 +260,51 @@ void main() {
       log.debug('encode0: $encode0');
       expect(encode0, equals(vList0));
       expect(encode0, equals(cvt.ascii.encode(decode0)));
+    });
+
+    test('isSpace', () {
+      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool space0;
+
+        if (i == kSp || i == Latin.kNBSP) {
+          space0 = latin0.isSpace(i);
+          expect(space0, true);
+        } else {
+          space0 = latin0.isSpace(i);
+          expect(space0, false);
+        }
+      }
+    });
+
+    test('isWhiteSpace', () {
+      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool whiteSpace0;
+
+        if (i == kSp || i == Latin.kNBSP || (i >= kBs && i <= kCr)) {
+          whiteSpace0 = latin0.isWhitespace(i);
+          expect(whiteSpace0, true);
+        } else {
+          whiteSpace0 = latin0.isWhitespace(i);
+          expect(whiteSpace0, false);
+        }
+      }
+    });
+
+    test('isControl', () {
+      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool control0;
+
+        if (i >= kNull && i < kSpace || i >= 128 && i <= 159) {
+          control0 = latin0.isControl(i);
+          expect(control0, true);
+        } else {
+          control0 = latin0.isControl(i);
+          expect(control0, false);
+        }
+      }
     });
   });
 
