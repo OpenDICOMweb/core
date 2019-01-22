@@ -67,6 +67,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == e0.vfBytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -77,7 +81,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -93,6 +96,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == e0.vfBytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -103,7 +110,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -119,6 +125,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == e0.vfBytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -129,7 +139,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -144,6 +153,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == e0.vfBytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -154,7 +167,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -170,6 +182,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == e0.vfBytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -180,7 +196,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });

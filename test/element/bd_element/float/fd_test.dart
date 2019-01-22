@@ -212,6 +212,7 @@ void main() {
     test('FDbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
+        final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (var code in fdVM1Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
@@ -219,6 +220,11 @@ void main() {
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
+          expect(e0.vfBytes == bytes, true);
+
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == bytes, true);
 
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
@@ -230,7 +236,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -238,6 +243,7 @@ void main() {
     test('FDbytes from VM.k2', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(2, 2);
+        final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (var code in fdVM2Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
@@ -246,6 +252,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == bytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -256,7 +266,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -264,6 +273,7 @@ void main() {
     test('FDbytes from VM.k3', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(3, 3);
+        final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (var code in fdVM3Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
@@ -272,6 +282,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == bytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -282,7 +296,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -290,6 +303,7 @@ void main() {
     test('FDbytes from VM.k4', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(4, 4);
+        final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (var code in fdVM4Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
@@ -298,6 +312,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == bytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -308,7 +326,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -316,6 +333,7 @@ void main() {
     test('FDbytes from VM.k6', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(6, 6);
+        final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (var code in fdVM6Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
@@ -324,6 +342,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == bytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -334,7 +356,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -342,6 +363,7 @@ void main() {
     test('FDbytes from VM.k9', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(9, 9);
+        final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (var code in fdVM9Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
@@ -350,6 +372,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == bytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -360,7 +386,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -368,6 +393,7 @@ void main() {
     test('FDbytes from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.float64List(1, i);
+        final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (var code in fdVM1nTags) {
           final e0 = FDbytes.fromValues(code, vList0);
@@ -376,6 +402,10 @@ void main() {
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == bytes, true);
+
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -386,7 +416,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
