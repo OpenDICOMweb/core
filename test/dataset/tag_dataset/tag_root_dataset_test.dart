@@ -20,8 +20,7 @@ void main() {
     test('[] and []=', () {
       final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransFerSyntax =
-          UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      final uiTransFerSyntax = UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');
       rds[uiTransFerSyntax.index] = uiTransFerSyntax;
       log.debug('elements: $rds');
@@ -142,10 +141,8 @@ void main() {
       final rds1 = TagRootDataset.empty();
       final valuesList = <TagItem>[];
       rds[kRecognitionCode] = SHtag(PTag.kRecognitionCode, ['foo bar']);
-      rds[kInstitutionAddress] =
-          STtag(PTag.kInstitutionAddress, ['foo bar']);
-      rds[kExtendedCodeMeaning] =
-          LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
+      rds[kInstitutionAddress] = STtag(PTag.kInstitutionAddress, ['foo bar']);
+      rds[kExtendedCodeMeaning] = LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
       valuesList.add(TagItem.fromList(rds1, rds));
       final sq0 = SQtag(rds1, PTag.kPatientSizeCodeSequence);
@@ -226,7 +223,7 @@ void main() {
       expect(update1.isEmpty, false);
     });
 
-    test('duplicate', () {
+    test('duplicates', () {
       final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -242,6 +239,9 @@ void main() {
       final dup = rds.duplicates;
       log.debug('rds: $rds, dup: $dup');
       expect(dup, isNotNull);
+      expect(dup, equals(rds.history.duplicates));
+      expect(rds.hasDuplicates, true);
+      expect(rds.hasDuplicates == dup.isNotEmpty, true);
     });
 
     test('removeDuplicates', () {
@@ -263,6 +263,8 @@ void main() {
       log.debug('rds: $rds, removeDup: $removeDup');
       expect(dup, equals(<Element>[]));
       expect(removeDup, <Element>[]);
+      expect(rds.hasDuplicates, false);
+      expect(dup.isEmpty, true);
     });
 
     test('getElementsInRange', () {

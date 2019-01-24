@@ -254,7 +254,7 @@ void main() {
       expect(update1.isEmpty, false);
     });
 
-    test('duplicate', () {
+    test('duplicates', () {
       final rds = MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -270,6 +270,9 @@ void main() {
       final dup = rds.duplicates;
       log.debug('rds: $rds, dup: $dup');
       expect(dup, isNotNull);
+      expect(dup, equals(rds.duplicates));
+      expect(rds.hasDuplicates, true);
+      expect(rds.hasDuplicates == dup.isNotEmpty, true);
     });
 
     test('removeDuplicates', () {
@@ -291,6 +294,26 @@ void main() {
       log.debug('rds: $rds, removeDup: $removeDup');
       expect(dup, equals(<Element>[]));
       expect(removeDup, <Element>[]);
+      expect(rds.hasDuplicates, false);
+      expect(rds.duplicates.isEmpty, true);
+    });
+
+    test('remove', () {
+      final rds = MapRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final as1 = AStag(PTag.kPatientAge, ['024Y']);
+      final as2 = AStag(PTag.kSelectorASValue, ['012M']);
+      final ob0 = OBtag(PTag.kICCProfile, [123]);
+      final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
+
+      rds..add(fd0)..add(fd1)..add(as0)..add(as1)..add(as2)..add(ob0)..add(ae0);
+      assert(rds.length == 5);
+      final rem = rds.remove(fd0);
+      log.debug('rem: $rem');
+      assert(rds.length == 4);
+      expect(rds.hasDuplicates, true);
     });
 
     test('getElementsInRange', () {
