@@ -70,6 +70,8 @@ abstract class Entity with MapMixin<Uid, Entity> {
 
   // **** End Map Implementation
 
+  int get length => childMap == null ? 0 : childMap.length;
+
   Uid get uid => key;
 
   /// The [Type] of _this_.
@@ -83,7 +85,7 @@ abstract class Entity with MapMixin<Uid, Entity> {
 
   String get info => '''$this
   parent: $parent
-    $childType: ${childMap.length}
+    $childType: $length
   ''';
 
   /// Returns a [String] containing information about _this_.

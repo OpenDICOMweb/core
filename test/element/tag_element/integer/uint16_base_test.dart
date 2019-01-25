@@ -93,8 +93,8 @@ void main() {
       final vList0 = rng.uint16List(1, 1);
       final bd0 = vList0.buffer.asByteData();
       final lBd0 = Uint16.toByteData(vList0);
-      log.debug(
-          'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, '
+          'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 
@@ -225,8 +225,8 @@ void main() {
       final vList0 = rng.uint16List(1, 1);
       final bd0 = vList0.buffer.asByteData();
       final lBd0 = Uint16.toByteData(vList0);
-      log.debug(
-          'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, '
+          'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 

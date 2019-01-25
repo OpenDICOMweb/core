@@ -402,6 +402,7 @@ mixin BytesMixin {
   }
 
   int _maybeRemoveNull(int vfLength) {
+    if (vfLength == 0) return vfLength;
     final lastIndex = vfLength - 1;
     return (_getUint8(lastIndex) == kNull) ? lastIndex : vfLength;
   }
@@ -427,9 +428,13 @@ mixin BytesMixin {
       {int offset = 0,
       int length,
       bool allowInvalid = true,
-      String separator = '\\'}) {
+      String separator = '\\',
+      bool removeNull = false}) {
     final s = stringFromAscii(
-        offset: offset, length: length, allowInvalid: allowInvalid);
+        offset: offset,
+        length: length,
+        allowInvalid: allowInvalid,
+        removeNull: removeNull);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 

@@ -50,17 +50,17 @@ class Instance extends Entity {
   @override
   Type get childType => null;
 
-  /// The [Series] that is the [parent] of this [Instance].
-  Entity get series => parent;
-
-  /// The [study] that contains this [Instance].
-  Study get study => series.parent;
+  /// The [patient] of this [Instance].
+  Patient get patient => study.patient;
 
   /// The [subject] of this [Instance].
   Patient get subject => study.patient;
 
-  @override
-  int get length => rds.length;
+  /// The [study] that contains this [Instance].
+  Study get study => series.parent;
+
+  /// The [Series] that is the [parent] of this [Instance].
+  Entity get series => parent;
 
   /// The DICOM Transfer Syntax for _this_ [Instance], if any.
   ///
@@ -70,16 +70,4 @@ class Instance extends Entity {
 
   Uint8List get pixelData => _pixelData ??= rds[kPixelData].value;
 
-  @override
-  String get info {
-    final s = (uid == null) ? 'null' : '$uid';
-    return '''$runtimeType(${key.asString}), SOPClass: $s, $length elements
-    $series
-      $study
-        $subject
-    ''';
-  }
-
-  @override
-  String toString() => '$runtimeType(${key.asString}), $length elements';
 }

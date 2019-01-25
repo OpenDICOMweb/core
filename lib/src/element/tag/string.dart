@@ -122,7 +122,7 @@ class CStag extends CS with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static CStag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      CStag(tag, bytes.stringListFromAscii());
+      CStag(tag, bytes.stringListFromAscii(removeNull: true));
 }
 
 class DStag extends DS with TagElement<String> {

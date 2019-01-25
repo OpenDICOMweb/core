@@ -44,7 +44,7 @@ class ElementDiff {
   }
 }
 
-class DatasetComparitor<K> {
+class DatasetComparitor {
   final Dataset dataset0;
   final Dataset dataset1;
   //TODO: create a better reporting mechanism
