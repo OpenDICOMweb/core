@@ -118,27 +118,62 @@ void main() {
       expect(update1.isEmpty, false);
     });
 
-    test('duplicate', () {
+    test('duplicates', () {
       final item = ListItem.empty(rds, null);
       final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = AStag(PTag.kPatientAge, ['024Y']);
       final as1 = AStag(PTag.kPatientAge, ['024Y']);
-      final as2 = AStag(PTag.kPatientAge, ['012M']);
+      final as2 = AStag(PTag.kSelectorASValue, ['012M']);
       final ob0 = OBtag(PTag.kICCProfile, [123]);
       final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
 
-      item[fd0.code] = fd0;
+      /*item[fd0.code] = fd0;
       item[fd1.code] = fd1;
       item[as0.code] = as0;
       item[as1.code] = as1;
       item[as2.code] = as2;
       item[ob0.code] = ob0;
-      item[ae0.code] = ae0;
-
+      item[ae0.code] = ae0;*/
+      item
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
       final dup = item.history;
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
+      expect(dup.duplicates, equals(item.history.duplicates));
+      expect(item.hasDuplicates, true);
+      expect(item.hasDuplicates == dup.duplicates.isNotEmpty, true);
+    });
+
+    test('remove', () {
+      final item = ListItem.empty(rds, null);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final as1 = AStag(PTag.kPatientAge, ['024Y']);
+      final as2 = AStag(PTag.kSelectorASValue, ['012M']);
+      final ob0 = OBtag(PTag.kICCProfile, [123]);
+      final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
+
+      item
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
+      assert(item.length == 5);
+      final rem = item.remove(fd0);
+      log.debug('rem: $rem');
+      assert(item.length == 4);
+      expect(item.hasDuplicates, true);
     });
 
     test('Simple UItag, replace, and replaceUid test', () {
@@ -551,20 +586,31 @@ void main() {
       final ob0 = OBtag(PTag.kICCProfile, [123]);
       final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
 
-      item[fd0.code] = fd0;
+      /*item[fd0.code] = fd0;
       item[fd1.code] = fd1;
       item[as0.code] = as0;
       item[as1.code] = as1;
       item[as2.code] = as2;
       item[ob0.code] = ob0;
-      item[ae0.code] = ae0;
+      item[ae0.code] = ae0;*/
+      item
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
 
       final dup = item.history;
+      expect(item.hasDuplicates, true);
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
       final removeDup = item.deleteDuplicates();
       log.debug('item: $item, removeDup: $removeDup');
       expect(removeDup, <Element>[]);
+      expect(item.hasDuplicates, false);
+      expect(dup.duplicates.isEmpty, true);
     });
 
     test('getValue', () {

@@ -283,7 +283,7 @@ void main() {
       expect(update1.isEmpty, false);
     });
 
-    test('duplicate', () {
+    test('duplicates', () {
       final item = MapItem.empty(rds, null);
       final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -306,6 +306,9 @@ void main() {
       final dup = item.history;
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
+      expect(dup.duplicates, equals(item.history.duplicates));
+      expect(item.hasDuplicates, true);
+      expect(item.hasDuplicates == dup.duplicates.isNotEmpty, true);
     });
 
     test('removeDuplicates', () {
@@ -334,27 +337,54 @@ void main() {
       log.debug('item: $item, removeDup: $removeDup');
       //expect(dup, equals(<Element>[]));
       expect(removeDup, <Element>[]);
+      expect(item.hasDuplicates, false);
+      expect(dup.duplicates.isEmpty, true);
+    });
+
+    test('remove', () {
+      final item = MapItem.empty(rds, null);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final as1 = AStag(PTag.kPatientAge, ['024Y']);
+      final as2 = AStag(PTag.kSelectorASValue, ['012M']);
+      final ob0 = OBtag(PTag.kICCProfile, [123]);
+      final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
+
+      item
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
+      assert(item.length == 5);
+      final rem = item.remove(fd0);
+      log.debug('rem: $rem');
+      assert(item.length == 4);
+      expect(item.hasDuplicates, true);
     });
 
     test('getElementsInRange', () {
       final item = MapItem.empty(rds, null);
       final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final as0 = AStag(PTag.kPatientAge, ['024Y']);
-      final ob0 = OBtag(PTag.kICCProfile, [123]);
-      final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
+      //final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      //final ob0 = OBtag(PTag.kICCProfile, [123]);
+      //final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
 
-      item..add(fd0)..add(as0)..add(ob0)..add(ae0);
+      item..add(fd0); //..add(as0)..add(ob0)..add(ae0);
 
       final inRange0 = item.getElementsInRange(0, fd0.code);
       final inRange1 = item.getElementsInRange(0, fd0.code + 1);
-      final inRange2 = item.getElementsInRange(0, ae0.code);
-      final inRange3 = item.getElementsInRange(0, ae0.code + 1);
+      //final inRange2 = item.getElementsInRange(0, ae0.code);
+      //final inRange3 = item.getElementsInRange(0, ae0.code + 1);
       log
         ..debug('item: $item')
         ..debug('inRange0: $inRange0')
-        ..debug('inRange1: $inRange1')
-        ..debug('inRange2: $inRange2')
-        ..debug('inRange3: $inRange3');
+        ..debug('inRange1: $inRange1');
+      //..debug('inRange2: $inRange2')
+      //..debug('inRange3: $inRange3');
 
       expect(inRange0, isNotNull);
     });
@@ -491,6 +521,7 @@ void main() {
       global.throwOnError = true;
       final vList2 = ['024Y'];
       final as0 = AStag(PTag.kPatientAge, vList2);
+      expect(item.replace(as0.index, [vList2]), isNull);
       final vList3 = [123];
       //expect(map.replace(as0.index, vList3), equals(vList2));
       expect(() => item.replace(as0.index, vList3, required: true),
