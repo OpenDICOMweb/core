@@ -32,10 +32,16 @@ void main() {
       expect(pu0, equals(a));
     }
 
-    global.throwOnError = false;
-    final pu1 = parseUint('foo');
-    log.debug('pu1: $pu1');
-    expect(pu1, isNull);
+    final badList = ['foo', '47.11', 'ba#2%_90b'];
+    for (var a in badList) {
+      global.throwOnError = false;
+      final pu1 = parseUint(a);
+      log.debug('pu1: $pu1');
+      expect(pu1, isNull);
+
+      global.throwOnError = true;
+      expect(() => parseUint(a), throwsA(const TypeMatcher<FormatException>()));
+    }
   });
 
   test('parseInt', () {
@@ -51,6 +57,14 @@ void main() {
       final pI0 = parseInt(a.toString());
       log.debug('pI0: $pI0');
       expect(pI0, equals(a));
+    }
+
+    final badList = ['foo', '47.11', 'ba#2%_90b'];
+    for (var a in badList) {
+      global.throwOnError = false;
+      final pu1 = parseInt(a);
+      log.debug('pu1: $pu1');
+      expect(pu1, isNull);
     }
     expect(() => parseInt(''), throwsA(const TypeMatcher<FormatException>()));
   });
@@ -83,6 +97,10 @@ void main() {
     final validUS2 = isValidUintString('foo');
     log.debug('validUS2: $validUS2');
     expect(validUS2, false);
+
+    global.throwOnError = true;
+    expect(() => isValidUintString('foo'),
+        throwsA(const TypeMatcher<FormatException>()));
   });
 
   test('isValidIntString', () {
