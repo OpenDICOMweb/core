@@ -470,7 +470,27 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getISList(1, 1);
       final e0 = IStag(PTag.kEchoNumbers);
-      expect(e0.hashStringList(vList0), isNotNull);
+
+      final hashString0 = e0.hashStringList(vList0);
+      expect(hashString0, isNotNull);
+      expect(hashString0, equals([vList0[0].hashCode.toString()]));
+    });
+
+    test('IS hashIntList', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(1, i + 1);
+        final e0 = IStag(PTag.kEchoNumbers);
+
+        for (var j = 0; j < vList0.length; j++) {
+          //final vList1 = int.parse(vList0[j]);
+          final vList1 = int.parse('+6196627304');
+          print(vList1);
+          final hashInt0 = e0.hashIntList([vList1]);
+          print(hashInt0);
+          expect(hashInt0, equals([vList1]));
+        }
+      }
     });
 
     test('IS compareTo & compareValueTo', () {
@@ -544,20 +564,26 @@ void main() {
     test('IS increment', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
+        log.debug('vList0: $vList0');
         final e0 = IStag(PTag.kStageNumber, vList0);
         final increment0 = e0.increment();
         log.debug('increment0: $increment0');
         expect(increment0.hasValidValues, true);
+        expect(
+            increment0.values, equals([(parseInt(e0.value) + 1).toString()]));
       }
     });
 
     test('IS decrement', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
+        log.debug('vList0: $vList0');
         final e0 = IStag(PTag.kStageNumber, vList0);
         final decrement0 = e0.decrement();
         log.debug('decrement0: $decrement0');
         expect(decrement0.hasValidValues, true);
+        expect(
+            decrement0.values, equals([(parseInt(e0.value) - 1).toString()]));
       }
     });
 
@@ -565,19 +591,31 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 4);
+        log.debug('vList0: $vList0');
         final e0 = IStag(PTag.kSelectorISValue, vList0);
         const vList1 = '100';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
         expect(append0, isNotNull);
+        expect(append0.hasValidValues, true);
+
+        final append1 = e0.values.append(vList1, e0.maxValueLength);
+        log.debug('e0.append: $append1');
+        expect(append0, equals(append1));
       }
     });
 
     test('IS prepend', () {
-      final vList = ['111'];
-      final e0 = IStag(PTag.kSelectorISValue, vList);
-      final prepend0 = e0.append('123');
+      global.throwOnError = false;
+      final vList0 = ['111'];
+      final e0 = IStag(PTag.kSelectorISValue, vList0);
+      const vList1 = '100';
+      final prepend0 = e0.prepend(vList1);
       expect(prepend0, isNotNull);
+
+      final prepend1 = e0.values.prepend(vList1, e0.maxValueLength);
+      log.debug('e0.prepend: $prepend1');
+      expect(prepend0, equals(prepend1));
     });
 
     test('IS truncate', () {

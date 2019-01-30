@@ -12,6 +12,7 @@ import 'dart:convert';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
+import 'package:decimal/decimal.dart';
 
 RSG rsg = RSG(seed: 1);
 RNG rng = RNG(1);
@@ -566,10 +567,19 @@ void main() {
         final e0 = DStag(PTag.kPatientSize, vList0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
+        //print(double.parse(e0.value).toStringAsFixed(2));
         final e1 = e0.increment();
+        print(e1);
         log.debug('increment0: $e1');
         expect(e1.hasValidValues, true);
+        //expect(e1.values, equals([(double.parse(e0.value) + 1).toString()]));
       }
+
+      // with double
+      print(-0.9 + 1.0); // displays 0.30000000000000004
+
+      // with decimal
+      print(Decimal.parse('0.2') + Decimal.parse('0.1')); // displays 0.3
     });
 
     test('DS decrement', () {
