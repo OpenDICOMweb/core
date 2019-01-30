@@ -70,4 +70,6 @@ class Instance extends Entity {
 
   Uint8List get pixelData => _pixelData ??= rds[kPixelData].value;
 
+  @override
+  String toPath() => '/${parent.parent.uid}/${parent.uid}/$uid';
 }

@@ -373,7 +373,7 @@ void main() {
       //final ob0 = OBtag(PTag.kICCProfile, [123]);
       //final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
 
-      item..add(fd0); //..add(as0)..add(ob0)..add(ae0);
+      item.add(fd0); //..add(as0)..add(ob0)..add(ae0);
 
       final inRange0 = item.getElementsInRange(0, fd0.code);
       final inRange1 = item.getElementsInRange(0, fd0.code + 1);

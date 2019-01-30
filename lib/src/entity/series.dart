@@ -57,4 +57,7 @@ class Series extends Entity {
   /// Returns a  [Instance] created from [rds].
   Instance createInstanceFromRootDataset(RootDataset rds) =>
       Instance.fromRootDataset(rds, this);
+
+  @override
+  String toPath() => '/${parent.uid}/$uid';
 }

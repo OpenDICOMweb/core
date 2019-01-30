@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert';
 
 import 'package:core/server.dart' hide group;
@@ -557,6 +556,7 @@ void main() {
       expect(compare6 == 0, true);
     });
 
+    //Urgent Sharath: decide what to do about Decimal. Change print to log.debug
     test('DS increment', () {
       global.throwOnError = true;
       const limit = 10000;
@@ -569,17 +569,17 @@ void main() {
         expect(e0.hasValidValues, true);
         //print(double.parse(e0.value).toStringAsFixed(2));
         final e1 = e0.increment();
-        print(e1);
+        // print(e1);
         log.debug('increment0: $e1');
         expect(e1.hasValidValues, true);
         //expect(e1.values, equals([(double.parse(e0.value) + 1).toString()]));
       }
 
       // with double
-      print(-0.9 + 1.0); // displays 0.30000000000000004
+     // print(-0.9 + 1.0); // displays 0.30000000000000004
 
       // with decimal
-      print(Decimal.parse('0.2') + Decimal.parse('0.1')); // displays 0.3
+     // print(Decimal.parse('0.2') + Decimal.parse('0.1')); // displays 0.3
     });
 
     test('DS decrement', () {

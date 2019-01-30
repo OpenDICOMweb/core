@@ -70,8 +70,10 @@ class Study extends Entity {
     return sb.toString();
   }
 
-
   /// Returns a  [Series] created from _rds_.
   Series createSeriesFromRootDataset(RootDataset rds) =>
       Series.fromRootDataset(rds, this);
+
+  @override
+  String toPath() => '/$uid';
 }

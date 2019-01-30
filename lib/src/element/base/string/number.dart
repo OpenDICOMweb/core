@@ -19,6 +19,7 @@ part of odw.sdk.element.base.string;
 //       bool areAllSpacesAllowed = x;
 //       bool isEmptyStringAllowed = x;
 
+//TODO: change DS class to use Decimal package.
 abstract class DS extends AsciiString {
   @override
   int get vrIndex => kVRIndex;

@@ -231,7 +231,7 @@ void main() {
         for (var j = 0; j < vList0.length; j++) {
           final char = vList0.elementAt(j).codeUnitAt(j);
           final v = latin0.isVisible(char);
-          if (!v) print('char: $char');
+          if (!v) log.debug('char: $char');
           expect(v, true);
         }
       }
