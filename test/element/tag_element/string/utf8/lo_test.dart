@@ -416,6 +416,10 @@ void main() {
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
         expect(append0, isNotNull);
+
+        final append1 = e0.values.append(vList1, e0.maxValueLength);
+        log.debug('e0.append: $append1');
+        expect(append0, equals(append1));
       }
     });
 
@@ -428,6 +432,10 @@ void main() {
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
         expect(prepend0, isNotNull);
+
+        final prepend1 = e0.values.prepend(vList1, e0.maxValueLength);
+        log.debug('e0.prepend: $prepend1');
+        expect(prepend0, equals(prepend1));
       }
     });
 
