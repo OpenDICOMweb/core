@@ -31,14 +31,14 @@ class Summary {
   }
 
   void _summarizeDataset(Dataset ds) {
-    for (var e in ds.elements) {
+    for (final e in ds.elements) {
       if (e is SQ) _summarizeSequence(e);
       nElements++;
     }
   }
 
   void _summarizeSequence(Element sq) {
-    for (Dataset item in sq.values) {
+    for (final item in sq.values) {
       _summarizeDataset(item);
       nItems++;
     }

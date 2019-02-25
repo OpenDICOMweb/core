@@ -68,7 +68,7 @@ abstract class Hash {
   int intList(Iterable<int> vList) {
     if (vList == null) throw ArgumentError('Invalid null argument');
     var seed = kHashSeed;
-    for(var i in vList) seed = combine(seed, i);
+    for(final i in vList) seed = combine(seed, i);
     return finish(seed);
   }
 

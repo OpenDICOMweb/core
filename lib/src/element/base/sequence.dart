@@ -78,10 +78,10 @@ abstract class SQ extends Element<Item> {
 
   List sqMap(Object f(Element e)) {
     final iList = List<Object>(items.length);
-    for (var item in items) {
+    for (final item in items) {
       final eList = List<Object>(item.length);
       iList.add(eList);
-      for (var e in item)
+      for (final e in item)
         if (e is SQ) {
           eList.add(sqMap(f));
         } else {
@@ -112,8 +112,8 @@ Summary $tag
   @override
   int counter(ElementTest test) {
     var count = 1;
-    for (var item in items) {
-      for (var e in item) {
+    for (final item in items) {
+      for (final e in item) {
         count += (e is SQ) ? e.counter(test) : 1;
       }
     }
@@ -128,7 +128,7 @@ Summary $tag
       items.fold(initialValue, combine);
 
   Element lookup(int index, {bool required = false}) {
-    for (var item in items) {
+    for (final item in items) {
       final e = item.lookup(index, required: required);
       if (e != null) return e;
     }
@@ -137,7 +137,7 @@ Summary $tag
 
   Iterable<Element> lookupAll(int index, {bool required = false}) {
     final result = <Element>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item.lookup(index, required: required);
       if (e != null) result.add(e);
     }
@@ -157,7 +157,7 @@ Summary $tag
   /// [Iterable<Element].
   Iterable<Element> getAll(int index) {
     final eList = <Element>[];
-    for (var item in items) eList.addAll(item.map<Element>((e) => e));
+    for (final item in items) eList.addAll(item.map<Element>((e) => e));
     return eList;
   }
 
@@ -175,7 +175,7 @@ Summary $tag
 
   Iterable<Element> noValuesAll(int index) {
     final result = <Element>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item.lookup(index);
       item[index] = e.noValues;
       result.add(e);
@@ -189,7 +189,7 @@ Summary $tag
   Iterable<Element> updateAll<V>(int index, Iterable<V> vList,
       {bool required = false}) {
     final eList = <Element>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item[index];
       if (e == null) continue;
       eList.add(e.update(vList));
@@ -200,7 +200,7 @@ Summary $tag
   Iterable<Element> updateAllF<V>(int index, Iterable<V> f(List<V> vList),
       {bool required = false}) {
     final eList = <Element>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item[index];
       if (e == null) continue;
       eList.add(e.update(f(e.values) ?? const <Object>[]));
@@ -212,7 +212,7 @@ Summary $tag
       {bool required = false}) {
     final eList = <Element>[];
     final vList = uids.map((v) => asString).toList(growable: false);
-    for (var item in items) {
+    for (final item in items) {
       final e = item[index];
       if (e == null) continue;
       eList.add(e.update(vList));
@@ -234,7 +234,7 @@ Summary $tag
   Iterable<Iterable<V>> replaceAllF<V>(
       int index, Iterable<V> f(List<V> vList)) {
     final result = <Iterable<V>>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item.lookup(index);
       final old = item.replace<V>(index, f(e.values));
       result.add(old);

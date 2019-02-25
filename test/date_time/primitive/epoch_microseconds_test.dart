@@ -29,7 +29,7 @@ void main() {
 
   group('Test Day Part of String', () {
     test('Leap Year Basic Test', () {
-      for (var y in goodBasicLeapYears) {
+      for (final y in goodBasicLeapYears) {
         final a = isLeapYear(y);
         final b = isCommonYear(y);
         log
@@ -38,7 +38,7 @@ void main() {
         expect(a, true);
         expect(b, false);
       }
-      for (var y in goodSpecialLeapYears) {
+      for (final y in goodSpecialLeapYears) {
         final a = isLeapYear(y);
         final b = isCommonYear(y);
         log
@@ -50,7 +50,7 @@ void main() {
     });
 
     test('Common Year Test', () {
-      for (var y in goodBasicCommonYears) {
+      for (final y in goodBasicCommonYears) {
         final a = isCommonYear(y);
         final b = isLeapYear(y);
         log
@@ -60,7 +60,7 @@ void main() {
         expect(b, false);
       }
 
-      for (var y in goodSpecialCommonYears) {
+      for (final y in goodSpecialCommonYears) {
         final a = isCommonYear(y);
         final b = isLeapYear(y);
 
@@ -73,12 +73,12 @@ void main() {
     });
 
     test('isValidDate Test', () {
-      for (var date in validDateLists) {
+      for (final date in validDateLists) {
         final x = isValidDate(date[0], date[1], date[2]);
         log.debug('$date: $x');
         expect(x, true);
       }
-      for (var date in invalidDateLists) {
+      for (final date in invalidDateLists) {
         final x = isValidDate(date[0], date[1], date[2]);
         log.debug('$date: $x');
         expect(x, false);

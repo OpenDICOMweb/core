@@ -23,7 +23,7 @@ abstract class ReadBufferBase extends BytesBuffer {
   // **** ReadBuffer specific Getters and Methods
 
   @override
-  set bytes(Bytes bytes) => unsupportedError();
+  set bytes(Bytes bytes) => unsupportedSetter();
 }
 
 /// A read only buffer.

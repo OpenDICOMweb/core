@@ -61,7 +61,7 @@ mixin ListDataset {
   @override
   bool operator ==(Object other) {
     if (other is ListDataset && total == other.total) {
-      for (var e in elements) {
+      for (final e in elements) {
         if (e != other[e.code]) return false;
       }
       return true;
@@ -75,7 +75,7 @@ mixin ListDataset {
 
   int get length => elements.length;
 
-  set length(int _) => unsupportedError();
+  set length(int _) => unsupportedSetter();
 
   int indexOf(Object e, [int start = 0]) =>
       e is Element ? codes.indexOf(e.code, start) : null;

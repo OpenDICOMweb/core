@@ -56,7 +56,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        for (var code in loVM1Tags) {
+        for (final code in loVM1Tags) {
           final e0 = LObytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -85,7 +85,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(2, i + 1);
-        for (var code in loVM1Tags) {
+        for (final code in loVM1Tags) {
           final e0 = LObytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -99,7 +99,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
-        for (var code in loVM1nTags) {
+        for (final code in loVM1nTags) {
           final e0 = LObytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);

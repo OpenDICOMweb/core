@@ -62,7 +62,7 @@ void main() {
 
     final strInValid = rsg.generateDcmPersonName(4, 5, 8);
     test('test for isValidList', () {
-      for (var name in namesList1) {
+      for (final name in namesList1) {
         expect(Name.isValidList(name.split('^')), true);
       }
 

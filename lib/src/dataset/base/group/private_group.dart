@@ -169,7 +169,7 @@ class PrivateGroup implements GroupBase {
 
   int get _getPDataCount {
     var count = 0;
-    for (var sg in subgroups.values) count += sg.members.length;
+    for (final sg in subgroups.values) count += sg.members.length;
     return count;
   }
 

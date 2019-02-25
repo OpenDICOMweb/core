@@ -47,7 +47,7 @@ void main() {
     });
 
     test('LT hasValidValues good values', () {
-      for (var s in goodLTList) {
+      for (final s in goodLTList) {
         global.throwOnError = false;
         final e0 = LTtag(PTag.kAcquisitionProtocolDescription, s);
         expect(e0.hasValidValues, true);
@@ -59,7 +59,7 @@ void main() {
     });
 
     test('LT hasValidValues bad values', () {
-      for (var s in badLTList) {
+      for (final s in badLTList) {
         global.throwOnError = false;
         final e0 = LTtag(PTag.kAcquisitionProtocolDescription, s);
         expect(e0, isNull);
@@ -209,7 +209,7 @@ void main() {
       final vList0 = rsg.getLTList(1, 1);
       final e1 = LTtag(PTag.kImageComments, vList0);
 
-      for (var s in badLTList) {
+      for (final s in badLTList) {
         global.throwOnError = false;
         expect(e1.checkValues(s), false);
 
@@ -269,7 +269,7 @@ void main() {
     test('LT fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
           final e1 = LTtag.fromBytes(PTag.kSelectorLTValue, bytes0);
@@ -282,7 +282,7 @@ void main() {
     test('LT fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getLTList(1, 10);
-        for (var s in vList) {
+        for (final s in vList) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(s);
           final e1 = LTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
@@ -333,7 +333,7 @@ void main() {
     test('LT checkLength good values', () {
       final vList0 = rsg.getLTList(1, 1);
       final e0 = LTtag(PTag.kImageComments, vList0);
-      for (var s in goodLTList) {
+      for (final s in goodLTList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = LTtag(PTag.kImageComments, vList0);
@@ -343,7 +343,7 @@ void main() {
       log.debug('vList1: $vList1');
       final e2 = LTtag(PTag.kExtendedCodeMeaning, vList1);
 
-      for (var s in goodLTList) {
+      for (final s in goodLTList) {
         log.debug('s: "$s"');
         expect(e2.checkLength(s), true);
       }
@@ -359,8 +359,8 @@ void main() {
     test('LT checkValue good values', () {
       final vList0 = rsg.getLTList(1, 1);
       final e0 = LTtag(PTag.kImageComments, vList0);
-      for (var s in goodLTList) {
-        for (var a in s) {
+      for (final s in goodLTList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -369,8 +369,8 @@ void main() {
     test('LT checkValue bad values', () {
       final vList0 = rsg.getLTList(1, 1);
       final e0 = LTtag(PTag.kImageComments, vList0);
-      for (var s in badLTList) {
-        for (var a in s) {
+      for (final s in badLTList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
 
@@ -580,7 +580,7 @@ void main() {
       global.throwOnError = false;
       expect(LT.isValidTag(PTag.kSelectorLTValue), true);
 
-      for (var tag in ltVM1Tags) {
+      for (final tag in ltVM1Tags) {
         final validT0 = LT.isValidTag(tag);
         expect(validT0, true);
       }
@@ -593,7 +593,7 @@ void main() {
       expect(() => LT.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = LT.isValidTag(tag);
         expect(validT0, false);
@@ -608,7 +608,7 @@ void main() {
       global.throwOnError = false;
       expect(LT.isValidVRIndex(kLTIndex), true);
 
-      for (var tag in ltVM1Tags) {
+      for (final tag in ltVM1Tags) {
         global.throwOnError = false;
         expect(LT.isValidVRIndex(tag.vrIndex), true);
       }
@@ -622,7 +622,7 @@ void main() {
       expect(() => LT.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(LT.isValidVRIndex(tag.vrIndex), false);
 
@@ -636,7 +636,7 @@ void main() {
       global.throwOnError = false;
       expect(LT.isValidVRCode(kLTCode), true);
 
-      for (var tag in ltVM1Tags) {
+      for (final tag in ltVM1Tags) {
         expect(LT.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -648,7 +648,7 @@ void main() {
       global.throwOnError = true;
       expect(() => LT.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(LT.isValidVRCode(tag.vrCode), false);
 
@@ -672,8 +672,8 @@ void main() {
     });
 
     test('LT isValidValueLength good values', () {
-      for (var s in goodLTList) {
-        for (var a in s) {
+      for (final s in goodLTList) {
+        for (final a in s) {
           expect(LT.isValidValueLength(a), true);
         }
       }
@@ -686,8 +686,8 @@ void main() {
     });
 
     test('LT isNotValidValueLength good values', () {
-      for (var s in goodLTList) {
-        for (var a in s) {
+      for (final s in goodLTList) {
+        for (final a in s) {
           expect(LT.isValidValueLength(a), true);
         }
       }
@@ -704,7 +704,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getLTList(1, 1);
-        for (var tag in ltVM1Tags) {
+        for (final tag in ltVM1Tags) {
           expect(LT.isValidLength(tag, vList), true);
 
           expect(LT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -716,7 +716,7 @@ void main() {
     test('LT isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLTList(2, i + 1);
-        for (var tag in ltVM1Tags) {
+        for (final tag in ltVM1Tags) {
           global.throwOnError = false;
           expect(LT.isValidLength(tag, vList0), false);
 
@@ -742,14 +742,14 @@ void main() {
     });
 
     test('LT isValidValue good values', () {
-      for (var s in goodLTList) {
-        for (var a in s) {
+      for (final s in goodLTList) {
+        for (final a in s) {
           expect(LT.isValidValue(a), true);
         }
       }
 
-      for (var s in badLTList) {
-        for (var a in s) {
+      for (final s in badLTList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(LT.isValidValue(a), false);
 
@@ -762,10 +762,10 @@ void main() {
 
     test('LT isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodLTList) {
+      for (final s in goodLTList) {
         expect(LT.isValidValues(PTag.kExtendedCodeMeaning, s), true);
       }
-      for (var s in badLTList) {
+      for (final s in badLTList) {
         global.throwOnError = false;
         expect(LT.isValidValues(PTag.kExtendedCodeMeaning, s), false);
 
@@ -803,11 +803,11 @@ void main() {
       expect(() => LT.isValidValues(PTag.kExtendedCodeMeaning, vList1),
           throwsA(const TypeMatcher<StringError>()));
 
-      for (var s in goodLTList) {
+      for (final s in goodLTList) {
         global.throwOnError = false;
         expect(LT.isValidValues(PTag.kExtendedCodeMeaning, s), true);
       }
-      for (var s in badLTList) {
+      for (final s in badLTList) {
         global.throwOnError = false;
         expect(LT.isValidValues(PTag.kExtendedCodeMeaning, s), false);
 
@@ -828,8 +828,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodLTList) {
-        for (var a in s) {
+      for (final s in goodLTList) {
+        for (final a in s) {
           final values = ascii.encode(a);
           final tbd2 = Bytes.utf8FromList(s);
           final tbd3 = Bytes.utf8FromList(s);
@@ -849,7 +849,7 @@ void main() {
         log.debug('s1: $s1, s0: $s0');
         expect(s1, equals(s0));
       }
-      for (var vList1 in goodLTList) {
+      for (final vList1 in goodLTList) {
         final s0 = vList1[0];
         final bytes1 = Bytes.utf8(s0);
         final s1 = bytes1.stringFromUtf8();
@@ -867,7 +867,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodLTList) {
+      for (final s in goodLTList) {
         final toB1 = Bytes.utf8FromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -942,7 +942,7 @@ void main() {
         final vList0 = rsg.getLTList(1, 1);
         final vfBytes = Bytes.utf8FromList(vList0);
 
-        for (var tag in ltVM1Tags) {
+        for (final tag in ltVM1Tags) {
           final e0 = LT.isValidBytesArgs(tag, vfBytes);
           expect(e0, true);
         }

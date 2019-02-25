@@ -20,7 +20,7 @@ void main() {
   group('Date Tests', () {
     test('Good Dates', () {
       log.debug('Good Dates');
-      for (var s in goodDcmDateList) {
+      for (final s in goodDcmDateList) {
         log.debug('Good Dates: s("$s")');
         final d = Date.parse(s);
         log.debug('Good Dates: s("$s"), date($d)');
@@ -31,7 +31,7 @@ void main() {
 
     test('Bad Dates', () {
       log.debug1('Bad Dates');
-      for (var s in badDcmDateList) {
+      for (final s in badDcmDateList) {
         final d = Date.parse(s);
         expect(d == null, true);
         log.debug1('  Date: $s: $d');
@@ -41,10 +41,10 @@ void main() {
 
   group('isValidDateString', () {
     test('isValidDateString Good and Bad dates', () {
-      for (var s in goodDcmDateList) {
+      for (final s in goodDcmDateList) {
         expect(Date.isValidString(s), true);
       }
-      for (var s in badDcmDateList) {
+      for (final s in badDcmDateList) {
         expect(Date.isValidString(s), false);
       }
     });
@@ -52,33 +52,33 @@ void main() {
 
   group('isValid', () {
     test('isValid Good and Bad dates', () {
-      for (var s in goodDcmDateList) {
+      for (final s in goodDcmDateList) {
         final date = Date.parse(s);
         expect(date, isNotNull);
       }
 
       global.throwOnError = false;
-      for (var s in badDcmDateList) {
+      for (final s in badDcmDateList) {
         final date = Date.parse(s);
         expect(date, isNull);
       }
 
       global.throwOnError = true;
-      for (var s in badDcmDateList) {
+      for (final s in badDcmDateList) {
         log.debug('Bad date: $s');
         expect(() => Date.parse(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
     test('issues', () {
-      for (var s in goodDcmDateList) {
+      for (final s in goodDcmDateList) {
         expect(Date.isValidString(s), true);
         final issues = Issues('Date: "$s"');
         Date.parse(s, issues: issues);
         expect(issues.isEmpty, true);
       }
 
-      for (var s in badDcmDateList) {
+      for (final s in badDcmDateList) {
         global.throwOnError = false;
         expect(Date.isValidString(s), false);
         final issues = Issues('Date: "$s"');
@@ -166,14 +166,14 @@ void main() {
 
     test('hashString Date', () {
       global.throwOnError = false;
-      for (var s in goodDcmDateList) {
+      for (final s in goodDcmDateList) {
         log.debug('s: "$s"');
         final hs0 = Date.hashString(s);
         log.debug('hs0: $hs0');
         expect(hs0, isNotNull);
       }
 
-      for (var s in badDcmDateList) {
+      for (final s in badDcmDateList) {
         global.throwOnError = false;
         final hs1 = Date.hashString(s);
         log.debug('hs1: $hs1');
@@ -193,7 +193,7 @@ void main() {
 
       final hs1 = Date.hashStringList(badDcmDateList);
       log.debug('hs1: $hs1');
-      for (var s in hs1) {
+      for (final s in hs1) {
         expect(s, isNull);
       }
       global.throwOnError = true;
@@ -402,7 +402,7 @@ void main() {
     log.debug('sha0: $sha0');
     expect(sha0, isNotNull);
 
-    for (var s in goodDcmDateList) {
+    for (final s in goodDcmDateList) {
       final date0 = Date.parse(s);
       final date1 = Date.parse(s);
       log
@@ -425,7 +425,7 @@ void main() {
   });
 
   test('==', () {
-    for (var s in goodDcmDateList) {
+    for (final s in goodDcmDateList) {
       final date0 = Date.parse(s);
       final date1 = Date.parse(s);
       log
@@ -444,7 +444,7 @@ void main() {
 
   test('hash', () {
     global.throwOnError = true;
-    for (var s in goodDcmDateList) {
+    for (final s in goodDcmDateList) {
       final date0 = Date.parse(s);
       if (date0 != null) {
         log
@@ -485,7 +485,7 @@ void main() {
   });
 
   test('hashCode', () {
-    for (var s in goodDcmDateList) {
+    for (final s in goodDcmDateList) {
       final date0 = Date.parse(s);
       final date1 = Date.parse(s);
       log
@@ -574,13 +574,13 @@ void main() {
 
   test('parse DICOM Date', () {
 //    global.throwOnError = false;
-    for (var date in goodDcmParseDateList) {
+    for (final date in goodDcmParseDateList) {
       final pd0 = parseDate(date);
       log.debug('date: $date pd0: $pd0');
       expect(pd0, isNotNull);
     }
 
-    for (var date in badDcmDateList) {
+    for (final date in badDcmDateList) {
       global.throwOnError = false;
       final pd0 = parseDate(date);
       log.debug('pd0: $pd0');
@@ -590,13 +590,13 @@ void main() {
 
   test('Parse Internet Date', () {
 //    global.throwOnError = false;
-    for (var date in goodInetDateList) {
+    for (final date in goodInetDateList) {
       final pd0 = parseDate(date);
       log.debug('date: $date pd0: $pd0');
       expect(pd0, isNotNull);
     }
 
-    for (var date in badInetDateList) {
+    for (final date in badInetDateList) {
       global.throwOnError = false;
       final pd0 = parseDate(date);
       log.debug('pd0: $pd0');
@@ -612,7 +612,7 @@ void main() {
       expect(ns1, isNotNull);
     }
 
-    for (var badDate in badDcmDateList) {
+    for (final badDate in badDcmDateList) {
       final ns1 = hashDcmDateString(badDate);
       log.debug('ns1:$ns1, $badDate');
       expect(ns1, isNull);
@@ -672,7 +672,7 @@ void main() {
   });
 
   test('dayInYear', () {
-    for (var s in goodDcmDateList) {
+    for (final s in goodDcmDateList) {
       final date0 = Date.parse(s);
       final dayInYear0 = date0.dayInYear;
       log.debug('dayInYear0: $dayInYear0');
@@ -689,7 +689,7 @@ void main() {
     log.debug('hashDate0: $hashDate0');
     expect(hashDate0 == date0.hash.microseconds, true);
 
-    for (var s in goodDcmDateList) {
+    for (final s in goodDcmDateList) {
       final date1 = Date.parse(s);
       final hashDate1 = Date.hashDateInMicroseconds(date1.microseconds);
       log.debug('hashDate0: $hashDate1');

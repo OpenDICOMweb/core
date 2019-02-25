@@ -188,7 +188,7 @@ void main() {
       expect(noValues0.isEmpty, false);
 
       noValues0 = rds.noValuesAll(as0.code);
-      for (var e in noValues0) {
+      for (final e in noValues0) {
         expect(e.values.isEmpty, true);
         log.debug('noValues0: $noValues0');
       }

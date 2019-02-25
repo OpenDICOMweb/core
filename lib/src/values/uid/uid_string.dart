@@ -77,7 +77,7 @@ bool isValidUuidUid(String s) {
 /// Returns true if each [String] in the [List] is a valid DICOM UID.
 bool isValidUidStringList(List<String> sList) {
   if (sList == null) return false;
-  for (var s in sList) if (!isValidUidString(s)) return false;
+  for (final s in sList) if (!isValidUidString(s)) return false;
   return true;
 }
 

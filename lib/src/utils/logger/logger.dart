@@ -352,7 +352,7 @@ class Logger {
 
   List<LogRecord> search(Level severity) {
     final results = <LogRecord>[];
-    for (var record in records)
+    for (final record in records)
       if (record.level == severity) results.add(record);
     return results;
   }

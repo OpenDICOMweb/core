@@ -31,7 +31,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        for (var code in urVM1Tags) {
+        for (final code in urVM1Tags) {
           final e0 = URbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);

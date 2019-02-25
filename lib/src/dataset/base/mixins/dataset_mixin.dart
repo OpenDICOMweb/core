@@ -104,7 +104,7 @@ mixin DatasetMixin {
   /// Note: It ignores duplicates.
   int counter(ElementTest test) {
     var count = 0;
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         count += e.counter(test);
       } else {
@@ -116,7 +116,7 @@ mixin DatasetMixin {
   List map<T>(Object f(Element e)) => _map(f, <Object>[]);
 
   List _map(Object f(Element e), List list) {
-    for (var e in elements) {
+    for (final e in elements) {
       if (e is SQ) {
         list.add(e.sqMap(f));
       } else {
@@ -135,7 +135,7 @@ mixin DatasetMixin {
 
 
   bool hasElementsInRange(int min, int max) {
-    for (var e in elements)
+    for (final e in elements)
       if (e.code >= min && e.code <= max) return true;
     return false;
   }
@@ -143,14 +143,14 @@ mixin DatasetMixin {
   /// Returns a [List] of the Elements that satisfy [min] <= e.code <= [max].
   List<Element> getElementsInRange(int min, int max) {
     final elements = <Element>[];
-    for (var e in elements)
+    for (final e in elements)
       if (e.code >= min && e.code < max) elements.add(e);
     return elements;
   }
 
   Iterable<Element> copyWhere(bool test(Element e)) {
     final result = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) result.add(e);
     }
     return result;
@@ -158,7 +158,7 @@ mixin DatasetMixin {
 
   Iterable<Element> findWhere(bool test(Element e)) {
     final result = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) result.add(e);
     }
     return result;
@@ -166,16 +166,16 @@ mixin DatasetMixin {
 
   Iterable<Object> findAllWhere(bool test(Element e)) {
     final result = <Object>[];
-    for (var e in elements)
+    for (final e in elements)
       if (test(e)) result.add(e);
     return result;
   }
 
   Map<SQ, Element> findSQWhere(bool test(Element e)) {
     final map = <SQ, Element>{};
-    for (var e in elements) {
+    for (final e in elements) {
       if (e is SQ) {
-        for (var item in e.items) {
+        for (final item in e.items) {
           final eList = item.findAllWhere(test);
           if (eList.isNotEmpty) {
             map[e] = eList;
@@ -200,7 +200,7 @@ mixin DatasetMixin {
 
   List<int> findAllPrivateCodes({bool recursive = false}) {
     final privates = <int>[];
-    for (var e in elements)
+    for (final e in elements)
       if (e.isPrivate) privates.add(e.code);
     return privates;
   }

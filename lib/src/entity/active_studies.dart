@@ -73,19 +73,19 @@ ActiveStudies:
 
   String get patientsSummary {
     //  var out = '';
-    //  for (var s in _subjects.values) out = s.format(Formatter());
+    //  for (final s in _subjects.values) out = s.format(Formatter());
     //    return out;
     final sb = StringBuffer();
-    for (var s in _patients.values) sb.writeln('\t$s');
+    for (final s in _patients.values) sb.writeln('\t$s');
     return '$sb';
   }
 
   String get studiesSummary {
 //    var out = '';
-//    for (var s in _studies.values) out = s.format(Formatter());
+//    for (final s in _studies.values) out = s.format(Formatter());
 //    return out;
     final sb = StringBuffer();
-    for (var s in _studies.values) sb.writeln('\t$s');
+    for (final s in _studies.values) sb.writeln('\t$s');
     return '$sb';
   }
 
@@ -152,7 +152,7 @@ ActiveStudies:
   }
 
   Patient search(String pid, {PersonName name, Date dob}) {
-    for (var p in _patients.values) {
+    for (final p in _patients.values) {
       if ((pid == p.pid) &&
           (name == null || name == p.name) &&
           (dob == null || dob == p.dob)) return p;

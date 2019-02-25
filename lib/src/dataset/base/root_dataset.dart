@@ -173,8 +173,8 @@ abstract class RootDataset extends Dataset {
   @override
   Iterable<Object> findAllWhere(bool test(Element e)) {
     final result = <Object>[];
-    for (var e in fmi.elements) if (test(e)) result.add(e);
-    for (var e in elements) if (test(e)) result.add(e);
+    for (final e in fmi.elements) if (test(e)) result.add(e);
+    for (final e in elements) if (test(e)) result.add(e);
     return result;
   }
 

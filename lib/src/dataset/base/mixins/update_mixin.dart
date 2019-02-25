@@ -66,7 +66,7 @@ mixin UpdateMixin {
     vList ??= const [];
     final v = update(index, vList, required: required);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAll<V>(index, vList, required: required));
       } else {
@@ -83,7 +83,7 @@ mixin UpdateMixin {
                               {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAllF<V>(index, f, required: required));
       } else {
@@ -128,7 +128,7 @@ mixin UpdateMixin {
   List<Element> updateAllUids(int index, Iterable<Uid> uids) {
     final v = updateUid(index, uids);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAllUids(index, uids));
       } else {

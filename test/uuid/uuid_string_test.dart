@@ -101,13 +101,13 @@ void main() {
       //fixes issue #1 (character casing correct at col 19)
       expect(Uuid.isValidString('97a90793-4898-4abe-b255-e8dc6967ed40'), true);
 
-      for (var uuid in goodUuidList0) {
+      for (final uuid in goodUuidList0) {
         global.throwOnError = false;
         final uuid0 = Uuid.isValidString(uuid);
         expect(uuid0, true);
       }
 
-      for (var uuid in badUuidList0) {
+      for (final uuid in badUuidList0) {
         global.throwOnError = false;
         final uuid0 = Uuid.isValidString(uuid);
         expect(uuid0, false);
@@ -124,12 +124,12 @@ void main() {
       final uuid2 = Uuid.seededPseudo();
       expect(uuid2.isValid, true);
 
-      for (var uuid in goodUuidList0) {
+      for (final uuid in goodUuidList0) {
         final uuid3 = Uuid.parse(uuid);
         expect(uuid3.isValid, true);
       }
 
-      for (var uuid in badUuidList0) {
+      for (final uuid in badUuidList0) {
         global.throwOnError = false;
         final uuid4 = Uuid.parse(uuid);
         expect(uuid4, isNull);
@@ -139,7 +139,7 @@ void main() {
             () => Uuid.parse(uuid), throwsA(const TypeMatcher<StringError>()));
       }
 
-      for (var uuid in badUuidListLength0) {
+      for (final uuid in badUuidListLength0) {
         global.throwOnError = false;
         final uuid5 = Uuid.parse(uuid);
         expect(uuid5, isNull);
@@ -154,13 +154,13 @@ void main() {
       final uuid0 = Uuid.parse(uuidString0);
       expect(uuid0.asString, equals(uuidString0));
 
-      for (var uuid in goodUuidList0) {
+      for (final uuid in goodUuidList0) {
         global.throwOnError = false;
         final uuid1 = Uuid.parse(uuid);
         expect(uuid1.asString, equals(uuid));
       }
 
-      for (var uuid in badUuidList0) {
+      for (final uuid in badUuidList0) {
         global.throwOnError = false;
         final uuid2 = Uuid.parse(uuid);
         expect(uuid2, isNull);

@@ -20,7 +20,7 @@ void main() {
   group('DcmDateTime', () {
     test('Good DcmDateTime', () {
       log.debug('Good DcmDateTime');
-      for (var dt in goodDcmDateTimeList) {
+      for (final dt in goodDcmDateTimeList) {
         log.debug('date and time:$dt');
         final dateTime = DcmDateTime.parse(dt);
         log.debug('dateTime:$dateTime');
@@ -30,7 +30,7 @@ void main() {
 
     test('Bad DcmDateTime', () {
       log.debug('Bad DcmDateTime');
-      for (var dt in badDcmDateTimeList) {
+      for (final dt in badDcmDateTimeList) {
         log.debug('dt: $dt');
         final dateTime = DcmDateTime.parse(dt);
         log.debug1(' dt:$dt: $dateTime');
@@ -43,7 +43,7 @@ void main() {
     test('isValid Good DcmDateTime', () {
       global.level = Level.info;
 
-      for (var s in goodDcmDateTimeList) {
+      for (final s in goodDcmDateTimeList) {
         log.debug('s: $s');
         expect(DcmDateTime.isValidString(s), true);
         final dateTime = DcmDateTime.parse(s);
@@ -59,7 +59,7 @@ void main() {
       global.level = Level.info;
       global.throwOnError = false;
 
-      for (var dt in badDcmDateTimeList) {
+      for (final dt in badDcmDateTimeList) {
         global.throwOnError = false;
         log.debug('dt: $dt');
         final dateTime = DcmDateTime.parse(dt);
@@ -73,14 +73,14 @@ void main() {
     });
 
     test('issues', () {
-      for (var s in goodDcmDateTimeList) {
+      for (final s in goodDcmDateTimeList) {
         final issues = DcmDateTime.issues(s);
         expect(issues.isEmpty, true);
       }
     });
 
     test('parse', () {
-      for (var dt in goodDcmDateTimeList) {
+      for (final dt in goodDcmDateTimeList) {
         final dateTime = DcmDateTime.parse(dt);
         log.debug('dateTime: $dateTime');
         expect(dateTime, isNotNull);
@@ -89,7 +89,7 @@ void main() {
         expect(hash, isNotNull);
       }
 
-      for (var dt in badDcmDateTimeList) {
+      for (final dt in badDcmDateTimeList) {
         global.throwOnError = false;
         final dateTime = DcmDateTime.parse(dt);
         expect(dateTime, isNull);
@@ -102,7 +102,7 @@ void main() {
     });
 
     test('hash', () {
-      for (var s in goodDcmDateTimeList) {
+      for (final s in goodDcmDateTimeList) {
         log.debug('s: $s');
         final dt = DcmDateTime.parse(s);
         final h = dt.hash;
@@ -111,7 +111,7 @@ void main() {
       }
 
       global.throwOnError = true;
-      for (var s in goodDcmDateTimeList) {
+      for (final s in goodDcmDateTimeList) {
         final dt0 = DcmDateTime.parse(s);
         if (dt0 != null) {
           log
@@ -144,7 +144,7 @@ void main() {
       log.debug('sha0: $sha0');
       expect(sha0, isNotNull);
 
-      for (var s in goodDcmDateTimeList) {
+      for (final s in goodDcmDateTimeList) {
         final dt0 = DcmDateTime.parse(s);
         final dt1 = DcmDateTime.parse(s);
         log
@@ -166,13 +166,13 @@ void main() {
 
     test('hashString', () {
       global.throwOnError = false;
-      for (var dt in goodDcmDateTimeList) {
+      for (final dt in goodDcmDateTimeList) {
         final dateTime0 = DcmDateTime.hashString(dt);
         log.debug('dateTime0: $dateTime0');
         expect(dateTime0, isNotNull);
       }
 
-      for (var dt in badDcmDateTimeList) {
+      for (final dt in badDcmDateTimeList) {
         final dateTime1 = DcmDateTime.hashString(dt);
         expect(dateTime1, isNull);
       }
@@ -182,19 +182,19 @@ void main() {
       global.throwOnError = false;
       final dateTime0 = DcmDateTime.hashStringList(goodDcmDateTimeList);
       log.debug('dateTime0: $dateTime0');
-      for (var s in dateTime0) {
+      for (final s in dateTime0) {
         expect(s, isNotNull);
       }
 
       final dateTime1 = DcmDateTime.hashStringList(badDcmDateTimeList);
       log.debug('dateTime1: $dateTime1');
-      for (var s in dateTime1) {
+      for (final s in dateTime1) {
         expect(s, isNull);
       }
     });
 
     test('==', () {
-      for (var s in goodDcmDateTimeList) {
+      for (final s in goodDcmDateTimeList) {
         final dt0 = DcmDateTime.parse(s);
         final dt1 = DcmDateTime.parse(s);
         log
@@ -397,11 +397,11 @@ void main() {
     });
 
     test('DcmDateTime fromDateTime', () {
-      for (var s0 in goodDcmDateList) {
+      for (final s0 in goodDcmDateList) {
         final date = Date.parse(s0);
-        for (var s1 in goodDcmTimes) {
+        for (final s1 in goodDcmTimes) {
           final time = Time.parse(s1);
-          for (var s2 in kValidDcmTZStrings) {
+          for (final s2 in kValidDcmTZStrings) {
             final tz = TimeZone.parse(s2);
 
             final dt0 = DcmDateTime.fromDateTime(date, time, tz);

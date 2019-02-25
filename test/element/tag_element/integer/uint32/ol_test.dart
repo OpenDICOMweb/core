@@ -535,7 +535,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidTag(PTag.kSelectorOLValue), true);
 
-      for (var tag in olVM1Tags) {
+      for (final tag in olVM1Tags) {
         expect(OL.isValidTag(tag), true);
       }
     });
@@ -548,7 +548,7 @@ void main() {
       expect(() => OL.isValidTag(PTag.kSelectorUSValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OL.isValidTag(tag), false);
 
@@ -562,7 +562,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidVRIndex(kOLIndex), true);
 
-      for (var tag in olVM1Tags) {
+      for (final tag in olVM1Tags) {
         global.throwOnError = false;
         expect(OL.isValidVRIndex(tag.vrIndex), true);
       }
@@ -572,7 +572,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidVRIndex(kOLIndex), true);
 
-      for (var tag in olVM1nTags) {
+      for (final tag in olVM1nTags) {
         global.throwOnError = false;
         expect(OL.isValidVRIndex(tag.vrIndex), true);
       }
@@ -586,7 +586,7 @@ void main() {
       expect(() => OL.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OL.isValidVRIndex(tag.vrIndex), false);
 
@@ -600,7 +600,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidVRCode(kOLCode), true);
 
-      for (var tag in olVM1Tags) {
+      for (final tag in olVM1Tags) {
         expect(OL.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -613,7 +613,7 @@ void main() {
       expect(() => OL.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OL.isValidVRCode(tag.vrCode), false);
 
@@ -690,12 +690,12 @@ void main() {
         final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in olVM1Tags) {
+          for (final tag in olVM1Tags) {
             final e0 = OL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in olVM1nTags) {
+          for (final tag in olVM1nTags) {
             final e0 = OL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

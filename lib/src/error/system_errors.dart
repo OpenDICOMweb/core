@@ -29,7 +29,7 @@ void readError(String msg) {
   log.error(ReadError.message(msg));
   if (throwOnError)
     throw ReadError(msg);
-  return null;
+  return;
 }
 
 

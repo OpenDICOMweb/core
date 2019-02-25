@@ -60,7 +60,7 @@ void main() {
       }
 
       final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
-      for (var i in vList1) {
+      for (final i in vList1) {
         final char = i.codeUnits;
         for (var j = 0; j < char.length; j++) {
           final visible1 = charset0.isVisible(char[j]);
@@ -99,7 +99,7 @@ void main() {
       expect(isValid1, false);
 
       final vList2 = ['\b', '\t', '\n', '\f', '\v', '\r'];
-      for (var i in vList2) {
+      for (final i in vList2) {
         final isValid2 = charset0.isValidString(i);
         log.debug(' isValid2: $isValid2');
         expect(isValid2, false);
@@ -237,7 +237,7 @@ void main() {
       }
 
       final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
-      for (var i in vList1) {
+      for (final i in vList1) {
         final char = i.codeUnits;
         for (var j = 0; j < char.length; j++) {
           final v = latin0.isVisible(char[j]);
@@ -342,7 +342,7 @@ void main() {
       }
 
       final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
-      for (var i in vList1) {
+      for (final i in vList1) {
         final char = i.codeUnits;
         for (var j = 0; j < char.length; j++) {
           final visible1 = utf8_0.isVisible(char[j]);

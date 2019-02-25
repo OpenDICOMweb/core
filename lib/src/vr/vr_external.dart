@@ -413,7 +413,7 @@ class VRSpecial extends VRInt {
 
   @override
   bool isValid(int vrIndex) {
-    for (var vr in vrs) if (vr.index == vrIndex) return true;
+    for (final vr in vrs) if (vr.index == vrIndex) return true;
     return false;
   }
 

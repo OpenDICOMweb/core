@@ -212,7 +212,7 @@ abstract class StringBase extends Element<String> {
     var ok = true;
     if (!Element.isValidLength(tag, vList, issues, maxLength, type))
       return ok = false;
-    for (var v in vList) {
+    for (final v in vList) {
       if (!isValidValue(v, issues: issues)) ok = false;
     }
     return ok ? ok : invalidValues(vList, issues);
@@ -221,7 +221,7 @@ abstract class StringBase extends Element<String> {
   static List<V> reallyTryParseList<V>(Iterable<String> vList, Issues issues,
       Object tryParse(String s, [Issues issues])) {
     final result = <V>[];
-    for (var s in vList) {
+    for (final s in vList) {
       final V v = tryParse(s, issues);
       if (v == null) return null;
       result.add(v);

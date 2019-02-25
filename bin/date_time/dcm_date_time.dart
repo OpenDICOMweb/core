@@ -34,7 +34,7 @@ void parseFractionTest() {
   ];
 
   log.debug('Good Fractions');
-  for (var s in goodFractions) {
+  for (final s in goodFractions) {
     final f = parseFraction(s);
     log.debug('    $s: $f');
   }
@@ -44,7 +44,7 @@ void goodDcmDates() {
   const goodDcmDateList = ['19500718', '00000101', '19700101'];
 
   log.debug('Good Dates');
-  for (var s in goodDcmDateList) {
+  for (final s in goodDcmDateList) {
     final d = Date.parse(s);
     log.debug('  Date $s: $d');
   }
@@ -67,7 +67,7 @@ void badDcmDates() {
   ];
 
   log.debug('Bad Dates');
-  for (var s in badDcmDateList) {
+  for (final s in badDcmDateList) {
     final d = Date.parse(s);
     log.debug('  Date: $s: $d');
   }
@@ -111,7 +111,7 @@ void goodDcmTimes() {
   ];
 
   log.debug('Good DcmDateTimes');
-  for (var s in goodDcmDateTimeList) {
+  for (final s in goodDcmDateTimeList) {
     log.debug('DateTime: $s');
     final dt = DcmDateTime.parse(s);
     log
@@ -153,7 +153,7 @@ void badDcmTimes() {
   ];
 
   log.debug('Bad Times');
-  for (var s in badDcmTimeList) {
+  for (final s in badDcmTimeList) {
     final t = Time.parse(s);
     log.debug('  Time: $s: $t');
   }

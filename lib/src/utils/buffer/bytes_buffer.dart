@@ -30,7 +30,7 @@ part 'package:core/src/utils/dicom_buffer/dicom_write_buffer.dart';
 abstract class BytesBuffer {
   /// The underlying [Bytes] for the buffer.
   Bytes get bytes;
-  set bytes(Bytes bytes) => unsupportedError();
+  set bytes(Bytes bytes) => unsupportedSetter();
   int get _rIndex;
   set _rIndex(int n);
   int get _wIndex;

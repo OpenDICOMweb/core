@@ -60,7 +60,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
         global.throwOnError = false;
-        for (var code in csVM1Tags) {
+        for (final code in csVM1Tags) {
           final e0 = CSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -89,7 +89,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(2, 2);
         global.throwOnError = false;
-        for (var code in csVM2Tags) {
+        for (final code in csVM2Tags) {
           final e0 = CSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -118,7 +118,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(2, 2);
         global.throwOnError = false;
-        for (var code in csVM2nTags) {
+        for (final code in csVM2nTags) {
           final e0 = CSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -146,7 +146,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(4, 4);
-        for (var code in csVM4Tags) {
+        for (final code in csVM4Tags) {
           final e0 = CSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -175,7 +175,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
-        for (var code in csVM1nTags) {
+        for (final code in csVM1nTags) {
           final e0 = CSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);

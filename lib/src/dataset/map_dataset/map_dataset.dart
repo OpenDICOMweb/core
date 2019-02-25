@@ -38,7 +38,7 @@ mixin MapDataset {
 
   int get length => eMap.length;
 
-  set length(int _) => unsupportedError();
+  set length(int _) => unsupportedSetter();
 
   Iterable<int> get keys => eMap.keys;
   Iterable<int> get codes => keys;

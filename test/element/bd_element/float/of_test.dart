@@ -159,7 +159,7 @@ void main() {
         //final float32List0 = Float32List.fromList(vList0);
         //final bytes = float32List0.buffer.asByteData();
         global.throwOnError = false;
-        for (var code in ofVM1Tags) {
+        for (final code in ofVM1Tags) {
           final e0 = OFbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -212,7 +212,7 @@ void main() {
     });
 
     test('OFbytes', () {
-      final vList = <double>[1.0, 1.1, 1.2];
+      final vList = <double>[1, 1.1, 1.2];
       final e0 = OFbytes.fromValues(kSelectorOFValue, vList);
       expect(e0.bytes is DicomBytes, true);
       expect(e0.vfBytes is Bytes, true);

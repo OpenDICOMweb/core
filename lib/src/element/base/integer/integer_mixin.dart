@@ -1080,7 +1080,7 @@ bool _inRange(int v, int min, int max) => v >= min && v <= max;
 bool _notInRange(int v, int min, int max) => !_inRange(v, min, max);
 
 bool _isValidList(Iterable<int> vList, int minValue, int maxValue) {
-  for (var v in vList) if (_notInRange(v, minValue, maxValue)) return false;
+  for (final v in vList) if (_notInRange(v, minValue, maxValue)) return false;
   return true;
 }
 

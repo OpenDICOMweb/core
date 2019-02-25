@@ -45,7 +45,7 @@ void main() {
   ];
   group('UItag', () {
     test('UI hasValidValues good values', () {
-      for (var s in goodUIList) {
+      for (final s in goodUIList) {
         global.throwOnError = false;
         final e0 = UItag(PTag.kStudyInstanceUID, s);
         expect(e0.hasValidValues, true);
@@ -57,7 +57,7 @@ void main() {
     });
 
     test('UI hasValidValues bad values', () {
-      for (var s in badUIList) {
+      for (final s in badUIList) {
         global.throwOnError = false;
         final e0 = UItag(PTag.kStudyInstanceUID, s);
         expect(e0, isNull);
@@ -249,7 +249,7 @@ void main() {
       final vList0 = rsg.getUIList(1, 1);
       final e1 = UItag(PTag.kSOPInstanceUID, vList0);
 
-      for (var s in badUIList) {
+      for (final s in badUIList) {
         global.throwOnError = false;
         expect(e1.checkValues(s), false);
 
@@ -331,7 +331,7 @@ void main() {
     test('UI fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUIList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           final e1 = UItag.fromBytes(PTag.kSelectorUIValue, bytes0);
           log.debug('e1: ${e1.info}');
@@ -343,7 +343,7 @@ void main() {
     test('UI fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUIList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           final e1 = UItag.fromBytes(PTag.kSelectorAEValue, bytes0);
@@ -394,7 +394,7 @@ void main() {
     test('UI checkLength good values', () {
       final vList0 = rsg.getUIList(1, 1);
       final e0 = UItag(PTag.kSOPInstanceUID, vList0);
-      for (var s in goodUIList) {
+      for (final s in goodUIList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = UItag(PTag.kSOPInstanceUID, vList0);
@@ -411,8 +411,8 @@ void main() {
     test('UI checkValue good values', () {
       final vList0 = rsg.getUIList(1, 1);
       final e0 = UItag(PTag.kSOPInstanceUID, vList0);
-      for (var s in goodUIList) {
-        for (var a in s) {
+      for (final s in goodUIList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -421,8 +421,8 @@ void main() {
     test('UI checkValue bad values', () {
       final vList0 = rsg.getUIList(1, 1);
       final e0 = UItag(PTag.kSOPInstanceUID, vList0);
-      for (var s in badUIList) {
-        for (var a in s) {
+      for (final s in badUIList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
         }
@@ -437,12 +437,12 @@ void main() {
         expect(parse0.elementAt(0).value, equals(vList0[0]));
       }
 
-      for (var s in goodUIList) {
+      for (final s in goodUIList) {
         final parse1 = s;
         expect(parse1.elementAt(0), equals(s[0]));
       }
 
-      for (var s in badUIList) {
+      for (final s in badUIList) {
         global.throwOnError = false;
         final parse2 = Uid.parseList(s);
         expect(parse2, equals([null]));
@@ -474,12 +474,12 @@ void main() {
         expect(parse0.elementAt(i).value, equals(vList0[i]));
       }
 
-      for (var s in goodUIList) {
+      for (final s in goodUIList) {
         final parse1 = s;
         expect(parse1.elementAt(0), equals(s[0]));
       }
 
-      for (var s in badUIList) {
+      for (final s in badUIList) {
         global.throwOnError = false;
         final parse2 = Uid.tryParseList(s);
         expect(parse2, equals([null]));
@@ -716,7 +716,7 @@ void main() {
       global.throwOnError = false;
       expect(UI.isValidTag(PTag.kSelectorUIValue), true);
 
-      for (var tag in uiVM1Tags) {
+      for (final tag in uiVM1Tags) {
         final validT0 = UI.isValidTag(tag);
         expect(validT0, true);
       }
@@ -729,7 +729,7 @@ void main() {
       expect(() => UI.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = UI.isValidTag(tag);
         expect(validT0, false);
@@ -744,7 +744,7 @@ void main() {
       global.throwOnError = false;
       expect(UI.isValidVRIndex(kUIIndex), true);
 
-      for (var tag in uiVM1Tags) {
+      for (final tag in uiVM1Tags) {
         global.throwOnError = false;
         expect(UI.isValidVRIndex(tag.vrIndex), true);
       }
@@ -758,7 +758,7 @@ void main() {
       expect(() => UI.isValidVRIndex(kSSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(UI.isValidVRIndex(tag.vrIndex), false);
 
@@ -772,7 +772,7 @@ void main() {
       global.throwOnError = false;
       expect(UI.isValidVRCode(kUICode), true);
 
-      for (var tag in uiVM1Tags) {
+      for (final tag in uiVM1Tags) {
         expect(UI.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -784,7 +784,7 @@ void main() {
       global.throwOnError = true;
       expect(() => UI.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(UI.isValidVRCode(tag.vrCode), false);
 
@@ -808,8 +808,8 @@ void main() {
     });
 
     test('UI isValidValueLength', () {
-      for (var s in goodUIList) {
-        for (var a in s) {
+      for (final s in goodUIList) {
+        for (final a in s) {
           expect(UI.isValidValueLength(a), true);
         }
       }
@@ -819,7 +819,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getUIList(1, 1);
-        for (var tag in uiVM1Tags) {
+        for (final tag in uiVM1Tags) {
           expect(UI.isValidLength(tag, vList), true);
 
           expect(UI.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -831,7 +831,7 @@ void main() {
     test('UI isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getUIList(2, i + 1);
-        for (var tag in uiVM1Tags) {
+        for (final tag in uiVM1Tags) {
           global.throwOnError = false;
           expect(UI.isValidLength(tag, vList), false);
 
@@ -862,7 +862,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUIList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, UI.kMaxLength);
-        for (var tag in uiVM1nTags) {
+        for (final tag in uiVM1nTags) {
           log.debug('tag: $tag');
           expect(UI.isValidLength(tag, vList0), true);
           expect(UI.isValidLength(tag, validMaxLengthList), true);
@@ -871,16 +871,16 @@ void main() {
     });
 
     test('UI isValidValue good values', () {
-      for (var s in goodUIList) {
-        for (var a in s) {
+      for (final s in goodUIList) {
+        for (final a in s) {
           expect(UI.isValidValue(a), true);
         }
       }
     });
 
     test('UI isValidValue bad values', () {
-      for (var s in badUIList) {
-        for (var a in s) {
+      for (final s in badUIList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(UI.isValidValue(a), false);
         }
@@ -889,13 +889,13 @@ void main() {
 
     test('UI isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodUIList) {
+      for (final s in goodUIList) {
         expect(UI.isValidValues(PTag.kInstanceCreatorUID, s), true);
       }
     });
 
     test('UI isValidValues bad values', () {
-      for (var s in badUIList) {
+      for (final s in badUIList) {
         global.throwOnError = false;
         expect(UI.isValidValues(PTag.kInstanceCreatorUID, s), false);
 
@@ -936,7 +936,7 @@ void main() {
       final vList0 = ['1.2.840.10008.5.1.4.34.5'];
       expect(UI.isValidValues(PTag.kInstanceCreatorUID, vList0), true);
 
-      for (var s in goodUIList) {
+      for (final s in goodUIList) {
         global.throwOnError = false;
         expect(UI.isValidValues(PTag.kInstanceCreatorUID, s), true);
       }
@@ -952,7 +952,7 @@ void main() {
       global.throwOnError = false;
 
       for (var i = 0; i <= 10; i++) {
-        for (var s in badUIList) {
+        for (final s in badUIList) {
           global.throwOnError = false;
           expect(UI.isValidValues(PTag.kInstanceCreatorUID, s), false);
 
@@ -974,8 +974,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodUIList) {
-        for (var a in s) {
+      for (final s in goodUIList) {
+        for (final a in s) {
           final values = cvt.ascii.encode(a);
           final tbd2 = Bytes.asciiFromList(s);
           final tbd3 = Bytes.asciiFromList(s);
@@ -994,7 +994,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodUIList) {
+      for (final s in goodUIList) {
         final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
@@ -1011,7 +1011,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodUIList) {
+      for (final s in goodUIList) {
         final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -1040,12 +1040,12 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in uiVM1Tags) {
+          for (final tag in uiVM1Tags) {
             final e0 = UI.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in uiVM1nTags) {
+          for (final tag in uiVM1nTags) {
             final e0 = UI.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

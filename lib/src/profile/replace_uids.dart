@@ -19,7 +19,7 @@ final Map<Uid, Uid> idToDeId = <Uid, Uid>{};
 List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
 
-  for (var code in deIdUidCodes) {
+  for (final code in deIdUidCodes) {
     final UI e0 = rds.lookup(code);
     if (e0 != null) {
       final e1 = replaceUIFast(e0);

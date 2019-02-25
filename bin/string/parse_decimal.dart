@@ -40,7 +40,7 @@ void main() {
     ' +1.5e-1 '
   ];
 
-  for (var s in goodDecimalStrings) {
+  for (final s in goodDecimalStrings) {
     final n = double.parse(s);
     print('s: "$s" n: $n');
   }

@@ -103,7 +103,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         var vList = rsg.getDSList(1, 1);
         vList = [vList[0].trim()];
-        for (var code in dsVM1Tags) {
+        for (final code in dsVM1Tags) {
           final e0 = DSbytes.fromValues(code, vList);
           log.debug('ds0:$e0');
           expect(e0.hasValidValues, true);
@@ -136,7 +136,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
-        for (var code in dsVM2Tags) {
+        for (final code in dsVM2Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -165,7 +165,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 3);
-        for (var code in dsVM2Tags) {
+        for (final code in dsVM2Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -180,7 +180,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 3);
-        for (var code in dsVM3Tags) {
+        for (final code in dsVM3Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -210,7 +210,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(4, 4);
-        for (var code in dsVM3Tags) {
+        for (final code in dsVM3Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -225,7 +225,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(4, 4);
-        for (var code in dsVM4Tags) {
+        for (final code in dsVM4Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -255,7 +255,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(5, 5);
-        for (var code in dsVM4Tags) {
+        for (final code in dsVM4Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -269,7 +269,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(6, 6);
-        for (var code in dsVM6Tags) {
+        for (final code in dsVM6Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -298,7 +298,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(7, 7);
-        for (var code in dsVM6Tags) {
+        for (final code in dsVM6Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -312,7 +312,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(1, i);
-        for (var code in dsVM1nTags) {
+        for (final code in dsVM1nTags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -370,7 +370,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(10, 10);
-        for (var code in dsVM22nTags) {
+        for (final code in dsVM22nTags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -400,7 +400,7 @@ void main() {
 
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(9, 9);
-        for (var code in dsVM3_3nTags) {
+        for (final code in dsVM3_3nTags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);

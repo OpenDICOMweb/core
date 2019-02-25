@@ -39,6 +39,9 @@ import 'package:core/src/values/uid.dart';
 //   [Element.index] is currently [Element.code], but that is likely
 //   to change in the future.
 
+/// A Function that take an [Iterable<V>] and returns an [Iterable<V>].
+typedef IterableGen<V> = Iterable<V> Function(Iterable<V> list);
+
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
 mixin DatasetMixin {
@@ -117,7 +120,7 @@ mixin DatasetMixin {
   /// Note: It ignores duplicates.
   int counter(ElementTest test) {
     var count = 0;
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         count += e.counter(test);
       } else {
@@ -129,14 +132,15 @@ mixin DatasetMixin {
   // **** Section Start: Element related Getters and Methods
 
   bool hasElementsInRange(int min, int max) {
-    for (var e in elements) if (e.code >= min && e.code <= max) return true;
+    for (final e in elements) if (e.code >= min && e.code <= max) return true;
     return false;
   }
 
   /// Returns a [List] of the Elements that satisfy [min] <= e.code <= [max].
   List<Element> getElementsInRange(int min, int max) {
     final elements = <Element>[];
-    for (var e in elements) if (e.code >= min && e.code < max) elements.add(e);
+    for (final e in elements)
+      if (e.code >= min && e.code < max) elements.add(e);
     return elements;
   }
 
@@ -170,7 +174,7 @@ mixin DatasetMixin {
     vList ??= <V>[];
     final v = update(index, vList, required: required);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAll<V>(index, vList, required: required));
       } else {
@@ -187,7 +191,7 @@ mixin DatasetMixin {
       {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAllF<V>(index, f, required: required));
       } else {
@@ -271,7 +275,7 @@ mixin DatasetMixin {
   List<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.replaceAll(index, vList));
       } else {
@@ -283,7 +287,7 @@ mixin DatasetMixin {
   List<Iterable<V>> replaceAllF<V>(int index, Iterable<V> f(List<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.replaceAllF(index, f));
       } else {
@@ -310,7 +314,7 @@ mixin DatasetMixin {
   List<Element> replaceAllUids(int index, Iterable<Uid> uids) {
     final v = updateUid(index, uids);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAllUids(index, uids));
       } else {
@@ -336,7 +340,7 @@ mixin DatasetMixin {
   Iterable<Element> noValuesAll(int index) {
     assert(index != null);
     final result = <Element>[]..add(noValues(index));
-    for (var e in elements) {
+    for (final e in elements) {
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
       } else if (e.index == index) {
@@ -362,7 +366,7 @@ mixin DatasetMixin {
     assert(codes != null);
     final deleted = <Element>[];
     if (codes.isEmpty) return deleted;
-    for (var code in codes) {
+    for (final code in codes) {
       final e = deleteCode(code);
       if (e != null) deleted.add(e);
     }
@@ -376,9 +380,9 @@ mixin DatasetMixin {
     if (e != null) results.add(e);
     assert(lookup(index) == null);
     if (recursive)
-      for (var e in elements) {
+      for (final e in elements) {
         if (e is SQ) {
-          for (var item in e.items) {
+          for (final item in e.items) {
             final deleted = item.deleteAll(index, recursive: recursive);
             if (deleted != null) results.addAll(deleted);
           }
@@ -390,12 +394,12 @@ mixin DatasetMixin {
   // TODO Jim: maybe remove recursive call
   List<Element> deleteIfTrue(bool test(Element e), {bool recursive = false}) {
     final deleted = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) {
         delete(e.index);
         deleted.add(e);
       } else if (e is SQ) {
-        for (var item in e.items) {
+        for (final item in e.items) {
           final dList = item.deleteIfTrue(test, recursive: recursive);
           deleted.addAll(dList);
         }
@@ -406,7 +410,7 @@ mixin DatasetMixin {
 
   Iterable<Element> copyWhere(bool test(Element e)) {
     final result = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) result.add(e);
     }
     return result;
@@ -414,7 +418,7 @@ mixin DatasetMixin {
 
   Iterable<Element> findWhere(bool test(Element e)) {
     final result = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) result.add(e);
     }
     return result;
@@ -425,15 +429,15 @@ mixin DatasetMixin {
   //TODO improve doc
   Iterable<Object> findAllWhere(bool test(Element e)) {
     final result = <Object>[];
-    for (var e in elements) if (test(e)) result.add(e);
+    for (final e in elements) if (test(e)) result.add(e);
     return result;
   }
 
   Map<SQ, Element> findSQWhere(bool test(Element e)) {
     final map = <SQ, Element>{};
-    for (var e in elements) {
+    for (final e in elements) {
       if (e is SQ) {
-        for (var item in e.items) {
+        for (final item in e.items) {
           final eList = item.findAllWhere(test);
           if (eList.isNotEmpty) {
             map[e] = eList;
@@ -458,12 +462,12 @@ mixin DatasetMixin {
 
   List<int> findAllPrivateCodes({bool recursive = false}) {
     final privates = <int>[];
-    for (var e in elements) if (e.isPrivate) privates.add(e.code);
+    for (final e in elements) if (e.isPrivate) privates.add(e.code);
     if (recursive) {
-      for (var sq in sequences) {
+      for (final sq in sequences) {
         for (var i = 0; i < sq.items.length; i++) {
           final Iterable<int> codes =
-            sq.items.elementAt(i).findAllPrivateCodes(recursive: true);
+              sq.items.elementAt(i).findAllPrivateCodes(recursive: true);
           privates.addAll(codes);
         }
       }
@@ -480,9 +484,9 @@ mixin DatasetMixin {
     final deleted = deleteCodes(privates);
     if (recursive) {
       // Fix: you cant tell what sequence the element was in.
-      for (var sq in sequences) {
+      for (final sq in sequences) {
         final items = sq.items;
-        for (var item in items) {
+        for (final item in items) {
           final Iterable<int> codes = item.findAllPrivateCodes(recursive: true);
           final elements = deleteCodes(codes);
           deleted.addAll(elements);
@@ -496,8 +500,8 @@ mixin DatasetMixin {
   // TODO: doesn't implement recursion
   List<Element> deleteAllPrivateInPublicSQs({bool recursive = false}) {
     final deleted = <Element>[];
-    for (var sq in sequences) {
-      for (var item in sq.items) {
+    for (final sq in sequences) {
+      for (final item in sq.items) {
         final privates = item.deleteAllPrivate();
         if (privates.isNotEmpty) deleted.addAll(privates);
       }
@@ -748,11 +752,11 @@ mixin DatasetMixin {
 
   double get pixelAspectRatio {
     final vList = getStringList(kPixelAspectRatio);
-    if (vList == null || vList.isEmpty) return 1.0;
+    if (vList == null || vList.isEmpty) return 1;
     if (vList.length != 2) {
       badValuesLength(vList, 2, 2, null, PTag.kPixelAspectRatio);
       //Issue: is this reasonable?
-      return 1.0;
+      return 1;
     }
     final numerator = int.parse(vList[0]);
     final denominator = int.parse(vList[1]);

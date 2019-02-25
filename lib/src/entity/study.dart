@@ -51,7 +51,7 @@ class Study extends Entity {
   /// Returns a [List] of all the [Instance]s that belong to _this_.
   List<Instance> get instances {
     final list = <Instance>[];
-    for (var s in series) list.addAll(s.instances);
+    for (final s in series) list.addAll(s.instances);
     return list;
   }
 
@@ -60,9 +60,9 @@ class Study extends Entity {
   String get summary {
     final sb = StringBuffer('Study Summary: $uid\n  Patient: $subject '
         '${series.length} Series\n');
-    for (var s in series) {
+    for (final s in series) {
       sb.write('  Series: ${s.uid}\n    ${s.instances.length} Instances\n');
-      for (var i in s.instances) {
+      for (final i in s.instances) {
         sb.write('      $Instance: ${i.uid}\n'
             '        ${i.rds.length} Attributes\n');
       }

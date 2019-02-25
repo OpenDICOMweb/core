@@ -43,7 +43,7 @@ class IEType {
   };
 
   IEType lookupByName(String s) {
-    for (var ie in kByIndex) if (ie.level == s) return ie;
+    for (final ie in kByIndex) if (ie.level == s) return ie;
     return null;
   }
 

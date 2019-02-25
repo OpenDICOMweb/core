@@ -22,7 +22,7 @@ import 'package:core/src/values/date_time.dart';
 List<Element> normalizeDates(RootDataset rds, Date enrollment) {
   final old = <Element>[];
 
-  for (var e in rds) {
+  for (final e in rds) {
     if (e is DA) {
       final eNew = e.normalize(enrollment);
       if (global.level == Level.debug) {
@@ -42,7 +42,7 @@ List<Element> normalizeDates(RootDataset rds, Date enrollment) {
 /// _Note_: There are no Dates in FMI, so it is not changed.
 List<Element> normalizeDeIdDates(RootDataset rds, Date enrollment) {
   final old = <Element>[];
-  for (var code in deIdDateCodes) {
+  for (final code in deIdDateCodes) {
     final DA e = rds.lookup(code);
     if (e != null) {
       final eNew = e.normalize(enrollment);

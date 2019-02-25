@@ -179,7 +179,7 @@ abstract class DA extends AsciiString {
   @override
   DA get hash {
     final dList = <String>[];
-    for (var date in dates) {
+    for (final date in dates) {
       final h = date.hash;
       dList.add(h.dcm);
     }
@@ -220,7 +220,10 @@ abstract class DA extends AsciiString {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  void clearDates() => _dates = null;
+  void clearDates() {
+    _dates = null;
+    return;
+  }
 
   static const int kVRIndex = kDAIndex;
   static const int kVRCode = kDACode;
@@ -340,7 +343,10 @@ abstract class DT extends AsciiString {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  void clearDcmDateTimes() => _dateTimes = null;
+  void clearDcmDateTimes() {
+    _dateTimes = null;
+    return;
+  }
 
   static const int kVRIndex = kDTIndex;
   static const int kVRCode = kDTCode;
@@ -464,7 +470,10 @@ abstract class TM extends AsciiString {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
- void clearTimes() => _times = null;
+ void clearTimes() {
+   _times = null;
+   return;
+ }
 
   static const int kVRIndex = kTMIndex;
   static const int kVRCode = kTMCode;

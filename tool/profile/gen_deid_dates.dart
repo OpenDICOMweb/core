@@ -34,7 +34,7 @@ String makeDeIdDateClasses() {
     ..writeln('const Map<int, String> deIdDateCodeToKeywordMap = '
         'const <int, String>{');
 
-  for (var v in DeIdTags.map.values) {
+  for (final v in DeIdTags.map.values) {
     if (v.tag.vrIndex == kDAIndex) {
       sb0.writeln('  k${v.tag.keyword},');
       sb1.writeln('  PTag.k${v.tag.keyword},');

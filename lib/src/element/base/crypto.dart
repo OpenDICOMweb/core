@@ -69,7 +69,7 @@ class Sha256<E> {
     if (v is Iterable<double>) return float32(v);
     if (v is Iterable<int>) return int32(v);
     final nList = <double>[];
-    for (var n in v) nList.add(n.toDouble());
+    for (final n in v) nList.add(n.toDouble());
     return float32(nList);
   }
 

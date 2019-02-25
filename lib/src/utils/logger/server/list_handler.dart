@@ -40,7 +40,7 @@ class ListHandler extends HandlerBase {
   @override
   String toString() {
   	final sb = StringBuffer('ListHandler: $name\n');
-    for(var v in logEntries) sb.write('  $v\n');
+    for(final v in logEntries) sb.write('  $v\n');
     return sb.toString();
   }
 }

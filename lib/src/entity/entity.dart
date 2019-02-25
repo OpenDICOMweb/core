@@ -96,7 +96,7 @@ abstract class Entity with MapMixin<Uid, Entity> {
     final sb = StringBuffer('$runtimeType: $key\n  '
         '${parent.runtimeType}: $parent $length $childType\n');
     if (this is! Instance) {
-      for (var s in values) {
+      for (final s in values) {
         sb.write('  $childType: ${s.key}\n    ${s.length} values\n');
       }
     }

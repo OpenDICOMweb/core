@@ -92,11 +92,11 @@ mixin NoValuesMixin {
 
   double get pixelAspectRatio {
     final list = getStringList(kPixelAspectRatio);
-    if (list == null || list.isEmpty) return 1.0;
+    if (list == null || list.isEmpty) return 1;
     if (list.length != 2) {
       badValues(list, null, PTag.kPixelAspectRatio);
       //Issue: is this reasonable?
-      return 1.0;
+      return 1;
     }
     final numerator = int.parse(list[0]);
     final denominator = int.parse(list[1]);

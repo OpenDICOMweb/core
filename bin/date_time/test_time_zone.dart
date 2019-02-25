@@ -64,7 +64,7 @@ const List<String> badTimeZones = <String>[
 void timeZoneTest() {
   group('DCM Time Zone tests', () {
     test('Good parseTimeZone', () {
-      for (var s in goodTimeZones) {
+      for (final s in goodTimeZones) {
         final tz = TimeZone.parse(s);
         log.debug('Good parseTimeZone: "$s", tzm: $tz');
         expect(tz, isNotNull);

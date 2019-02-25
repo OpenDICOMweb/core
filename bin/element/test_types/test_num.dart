@@ -113,7 +113,7 @@ bool isListDoubleType(List v) => v is List<double>;
 
 bool isIterableDouble(Iterable<num> vList) {
   print('isIterableDouble: ${vList.runtimeType}');
-  for (var v in vList) if (v is! double) return false;
+  for (final v in vList) if (v is! double) return false;
   return true;
 }
 

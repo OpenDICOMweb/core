@@ -15,7 +15,7 @@ void main() {
   Server.initialize(name: 'test normalized dates', level: Level.info);
 
   test('Normalized Date Test', () {
-    for (var list in normalizedDateTestData) {
+    for (final list in normalizedDateTestData) {
       final enrollmentDate = Date.parse(list[2], isDicom: false);
       final studyDate = Date.parse(list[3], isDicom: false);
       final answer = Date.parse(list[4], isDicom: false);

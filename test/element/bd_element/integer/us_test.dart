@@ -97,7 +97,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         global.throwOnError = false;
-        for (var code in usVM1Tags) {
+        for (final code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -126,7 +126,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(2, i + 1);
         global.throwOnError = false;
-        for (var code in usVM1Tags) {
+        for (final code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -140,7 +140,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(2, 2);
         global.throwOnError = false;
-        for (var code in usVM2Tags) {
+        for (final code in usVM2Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -169,7 +169,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(3, i + 2);
         global.throwOnError = false;
-        for (var code in usVM1Tags) {
+        for (final code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -183,7 +183,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(3, 3);
         global.throwOnError = false;
-        for (var code in usVM3Tags) {
+        for (final code in usVM3Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -212,7 +212,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(4, i + 3);
         global.throwOnError = false;
-        for (var code in usVM1Tags) {
+        for (final code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -253,7 +253,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(5, i + 4);
         global.throwOnError = false;
-        for (var code in usVM1Tags) {
+        for (final code in usVM1Tags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -267,7 +267,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(1, i);
         global.throwOnError = false;
-        for (var code in usVM1nTags) {
+        for (final code in usVM1nTags) {
           final e0 = USbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);

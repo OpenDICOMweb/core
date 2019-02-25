@@ -49,7 +49,7 @@ void main() {
     test('TMbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
-        for (var code in tmVM1Tags) {
+        for (final code in tmVM1Tags) {
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -77,7 +77,7 @@ void main() {
     test('TMbytes from VM.k1 bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        for (var code in tmVM1Tags) {
+        for (final code in tmVM1Tags) {
           global.throwOnError = false;
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
@@ -95,7 +95,7 @@ void main() {
     test('TMbytes from VM.k1 bad length', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getTMList(2, i + 1);
-        for (var code in tmVM1Tags) {
+        for (final code in tmVM1Tags) {
           global.throwOnError = false;
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
@@ -110,7 +110,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList0 = rsg.getTMList(1, i);
-        for (var code in tmVM1nTags) {
+        for (final code in tmVM1nTags) {
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);

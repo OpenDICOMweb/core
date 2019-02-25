@@ -24,7 +24,7 @@ void main() {
 
   group('Good Uids Test', () {
     test('Good UID', () {
-      for (var s in goodUids) {
+      for (final s in goodUids) {
         final v = Uid.isValidString(s);
         log.debug('$v: $s');
         expect(Uid.isValidString(s), true);
@@ -53,7 +53,7 @@ void main() {
 
   group('Bad Uids Test', () {
     test('Bad UID', () {
-      for (var s in badUids) {
+      for (final s in badUids) {
         log.debug('"$s":');
         final v = Uid.isValidString(s);
         log.debug('"$s": $v');

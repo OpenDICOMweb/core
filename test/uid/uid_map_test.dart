@@ -18,18 +18,18 @@ void main() {
 
   group('WKUid Map Test', () {
     test('Well known Uid String validation', () {
-      for (var s in wellKnownUids.keys) {
+      for (final s in wellKnownUids.keys) {
         expect(isValidUidString(s), true);
       }
 
-      for (var s in wellKnownUids.keys) {
+      for (final s in wellKnownUids.keys) {
 	      final uid = Uid.parse(s);
         final v = uid is WKUid;
         if (!v) log.debug('Bad SopClass: $uid');
         expect(uid is WKUid, true);
       }
 
-      for (var c in wkUids) {
+      for (final c in wkUids) {
         expect(c is WKUid, true);
       }
     });

@@ -18,7 +18,7 @@ void main() {
   group('DICOM Time Tests', () {
     test('Good DICOM Time.parse', () {
       log.debug('Good Times');
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         log.debug('Time: $s');
         final time = Time.parse(s);
         log
@@ -34,7 +34,7 @@ void main() {
 
     test('Good Time isValidString', () {
       log.debug('Good Times.isValid');
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         log.debug('Times.isValid: $s');
         final v = Time.isValidString(s);
         log.debug('  Times.isValid $s: $v');
@@ -43,7 +43,7 @@ void main() {
     });
 
     test('Good Time as Time', () {
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         log.debug('  Time.parse: $s');
         final time = Time.parse(s);
         log.debug('    Time: $time');
@@ -61,7 +61,7 @@ void main() {
 
     test('Good Time to Time', () {
       log.debug('Good Times');
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         log.debug('  Time: $s');
         final time = Time.parse(s);
         log.debug('    Time: $time');
@@ -98,7 +98,7 @@ void main() {
     test('Time.parse with Bad Times', () {
       global.throwOnError = false;
 
-      for (var s in badDcmTimes) {
+      for (final s in badDcmTimes) {
         log.debug('  Time.parse: "$s"');
         final time = Time.parse(s);
         log.debug('    Time.parse: "$s": time: $time');
@@ -107,7 +107,7 @@ void main() {
     });
 
     test('isValidDcmTime with Bad Times', () {
-      for (var s in badDcmTimes) {
+      for (final s in badDcmTimes) {
         log.debug('  isValidDcmTime: $s');
         final value = Time.isValidString(s);
         expect(value == false, true);
@@ -116,7 +116,7 @@ void main() {
     });
 
     test('Time.isValidString with Bad Times', () {
-      for (var s in badDcmTimes) {
+      for (final s in badDcmTimes) {
         global.throwOnError = false;
         log.debug('  Time.isValidString: $s');
         final value = Time.isValidString(s);
@@ -133,7 +133,7 @@ void main() {
       global.throwOnError = false;
       log.debug('Bad Times as Time');
 
-      for (var s in badDcmTimes) {
+      for (final s in badDcmTimes) {
         log.debug('Time: $s');
         final time = Time.parse(s);
         expect(time == null, true);
@@ -142,19 +142,19 @@ void main() {
     });
 
     test('Good and Bad Time for isValidTimeString', () {
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         expect(Time.isValidString(s), true);
       }
-      for (var s in badDcmTimes) {
+      for (final s in badDcmTimes) {
         expect(Time.isValidString(s), false);
       }
     });
 
     test('Good and Bad Time for isValid', () {
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         expect(Time.isValidString(s), true);
       }
-      for (var s in badDcmTimes) {
+      for (final s in badDcmTimes) {
         expect(Time.isValidString(s), false);
       }
     });
@@ -162,13 +162,13 @@ void main() {
     test('Bad Times, throwOnError = true', () {
       global.throwOnError = true;
       log.debug('throwOnError: $throwOnError');
-      for (var i in badDcmTimesInt) {
+      for (final i in badDcmTimesInt) {
         expect(() => Time(i), throwsA(const TypeMatcher<DateTimeError>()));
       }
 
       global.throwOnError = false;
       log.debug('throwOnError: $throwOnError');
-      for (var i in badDcmTimesInt) {
+      for (final i in badDcmTimesInt) {
         final t = Time(i);
         expect(t, isNull);
       }
@@ -178,7 +178,7 @@ void main() {
       global.throwOnError = false;
       log.debug('throwOnError: $throwOnError');
 
-      for (var i in badDcmTimesInt) {
+      for (final i in badDcmTimesInt) {
         global.throwOnError = false;
         expect(Time(i), isNull);
 
@@ -190,13 +190,13 @@ void main() {
     test('hashString time', () {
       global.throwOnError = false;
 
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         final hs0 = Time.hashString(s);
         log.debug('hs0: $hs0');
         expect(hs0, isNotNull);
       }
 
-      for (var s in badDcmTimes) {
+      for (final s in badDcmTimes) {
         final hs1 = Time.hashString(s);
         log.debug('hs1:$hs1');
         expect(hs1, isNull);
@@ -212,7 +212,7 @@ void main() {
 
       final hs1 = Time.hashStringList(badDcmTimes);
       log.debug('hs1:$hs1');
-      for (var s in hs1) {
+      for (final s in hs1) {
         global.throwOnError = false;
         expect(s, isNull);
 
@@ -229,7 +229,7 @@ void main() {
     });
 
     test('==', () {
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
         log
@@ -247,7 +247,7 @@ void main() {
     });
 
     test('hash', () {
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
         log
@@ -266,7 +266,7 @@ void main() {
     });
 
     test('sha256', () {
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
         log
@@ -287,7 +287,7 @@ void main() {
     });
 
     test('hashCode', () {
-      for (var s in goodDcmTimes) {
+      for (final s in goodDcmTimes) {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
         log
@@ -378,7 +378,7 @@ void main() {
     });
 
     test('parseTime good values', () {
-      for (var s in goodInetTime) {
+      for (final s in goodInetTime) {
         final internetTime0 = parseTime(s);
         log.debug('internetTime0: $internetTime0');
         expect(internetTime0, isNotNull);
@@ -399,7 +399,7 @@ void main() {
     });
 
     test('parseTime bad values', () {
-      for (var s in badInetTime) {
+      for (final s in badInetTime) {
         global.throwOnError = false;
         final internetTime0 = parseTime(s);
         log.debug('internetTime0: $internetTime0');

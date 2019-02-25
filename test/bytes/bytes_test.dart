@@ -187,7 +187,7 @@ void main() {
       expect(byteFTD0.length == list0.length, true);
       expect(byteFTD0.hashCode is int, true);
 
-      final floats = <double>[0.0, 1.0, 2.0, 3.0];
+      final floats = <double>[0, 1, 2, 3];
       final fl32List0 = Float32List.fromList(floats);
       final fl32Bytes0 = Bytes.typedDataView(fl32List0);
       expect(fl32Bytes0.getFloat32(0) == fl32List0[0], true);

@@ -31,7 +31,7 @@ void main() {
   final dicomStringToTZMap = <String>[];
   final inetStringToTZMap = <String>[];
 
-  for (var v in baseTimeZones) {
+  for (final v in baseTimeZones) {
     final int index = v[0] - 1;
     int hour = v[1];
     final int minute = v[2];

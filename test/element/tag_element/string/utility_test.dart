@@ -188,7 +188,7 @@ void main() {
       '-67',
     ];
 
-    for (var s in goodIntegerStrings) {
+    for (final s in goodIntegerStrings) {
       final n = int.parse(s);
       log.debug('s: "$s" n: $n');
       expect(n, isNotNull);
@@ -224,7 +224,7 @@ void main() {
       ' +1.5e-1 '
     ];
 
-    for (var s in goodDecimalStrings) {
+    for (final s in goodDecimalStrings) {
       final n = double.parse(s);
       log.debug('s: "$s" n: $n');
       expect(s, isNotNull);

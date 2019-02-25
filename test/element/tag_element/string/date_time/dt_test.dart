@@ -77,7 +77,7 @@ void main() {
     test('DT getAsciiList', () {
       //fromBytes
 //      system.level = Level.info2;
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = Bytes.asciiFromList(s);
         log.debug('bytes:$bytes');
@@ -142,7 +142,7 @@ void main() {
     test('DT fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDTList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           final e1 = DTtag.fromBytes(PTag.kSelectorDTValue, bytes0);
           log.debug('e1: $e1');
@@ -154,7 +154,7 @@ void main() {
     test('DT fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDTList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           final e1 = DTtag.fromBytes(PTag.kSelectorAEValue, bytes0);
@@ -168,7 +168,7 @@ void main() {
     });
 
     test('DT hasValidValues good values', () {
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         global.throwOnError = false;
         final e0 = DTtag(PTag.kFrameAcquisitionDateTime, s);
         expect(e0.hasValidValues, true);
@@ -182,7 +182,7 @@ void main() {
     });
 
     test('DT hasValidValues bad values', () {
-      for (var s in badDTList) {
+      for (final s in badDTList) {
         global.throwOnError = false;
         final e1 = DTtag(PTag.kFrameAcquisitionDateTime, s);
         expect(e1, isNull);
@@ -240,7 +240,7 @@ void main() {
       expect(e2 == e4, false);
       expect(e3 == e4, true);
 
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final e5 = DTtag(PTag.kDateTime, s);
         final e6 = e5.update(['19901125235959']);
         final e7 = e5.update(['19901125235959']);
@@ -266,7 +266,7 @@ void main() {
       expect(dtNoValues1.values.isEmpty, true);
       log.debug('dtNoValues1:$dtNoValues1');
 
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final e1 = DTtag(PTag.kDateTime, s);
         final dtNoValues1 = e1.noValues;
         expect(dtNoValues1.values.isEmpty, true);
@@ -299,7 +299,7 @@ void main() {
       expect(e2 == e3, true);
       expect(e2.hashCode == e3.hashCode, true);
 
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final e4 = DTtag(PTag.kDateTime, s);
         final e5 = e4.copy;
         expect(e4 == e5, true);
@@ -373,7 +373,7 @@ void main() {
     });
 
     test('DT valuesCopy ranodm', () {
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final e0 = DTtag(PTag.kDateTime, s);
         expect(s, equals(e0.valuesCopy));
       }
@@ -386,7 +386,7 @@ void main() {
     });
 
     test('DT isValidLength', () {
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final e0 = DTtag(PTag.kDateTime, s);
         expect(e0.checkLength(e0.values), true);
       }
@@ -401,7 +401,7 @@ void main() {
     });
 
     test('DT checkValues good values random ', () {
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final e0 = DTtag(PTag.kDateTime, s);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
@@ -412,7 +412,7 @@ void main() {
       final vList0 = rsg.getDTList(1, 1);
       final e1 = DTtag(PTag.kDateTime, vList0);
 
-      for (var s in badDTList) {
+      for (final s in badDTList) {
         global.throwOnError = false;
         expect(e1.checkValues(s), false);
 
@@ -471,7 +471,7 @@ void main() {
 
     test('DT checkLength good values', () {
       final e0 = DTtag(PTag.kDateTime, ['19500718105630']);
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = DTtag(PTag.kDateTime, ['19500718105630']);
@@ -487,7 +487,7 @@ void main() {
     test('DT checkLength random', () {
       final vList0 = rsg.getDTList(1, 1);
       final e0 = DTtag(PTag.kDateTime, vList0);
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = DTtag(PTag.kDateTime, vList0);
@@ -496,8 +496,8 @@ void main() {
 
     test('DT checkValue good values', () {
       final e0 = DTtag(PTag.kDateTime, ['19500718105630']);
-      for (var s in goodDTList) {
-        for (var a in s) {
+      for (final s in goodDTList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -505,8 +505,8 @@ void main() {
 
     test('DT checkValue bad values', () {
       final e0 = DTtag(PTag.kDateTime, ['19500718105630']);
-      for (var s in badDTList) {
-        for (var a in s) {
+      for (final s in badDTList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
         }
@@ -688,7 +688,7 @@ void main() {
       global.throwOnError = false;
       expect(DT.isValidTag(PTag.kSelectorDTValue), true);
 
-      for (var tag in dtVM1Tags) {
+      for (final tag in dtVM1Tags) {
         final valie0 = DT.isValidTag(tag);
         expect(valie0, true);
       }
@@ -701,7 +701,7 @@ void main() {
       expect(() => DT.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final valie0 = DT.isValidTag(tag);
         expect(valie0, false);
@@ -716,7 +716,7 @@ void main() {
       global.throwOnError = false;
       expect(DT.isValidVRIndex(kDTIndex), true);
 
-      for (var tag in dtVM1Tags) {
+      for (final tag in dtVM1Tags) {
         global.throwOnError = false;
         expect(DT.isValidVRIndex(tag.vrIndex), true);
       }
@@ -729,7 +729,7 @@ void main() {
       global.throwOnError = true;
       expect(() => DT.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(DT.isValidVRIndex(tag.vrIndex), false);
 
@@ -743,7 +743,7 @@ void main() {
       global.throwOnError = false;
       expect(DT.isValidVRCode(kDTCode), true);
 
-      for (var tag in dtVM1Tags) {
+      for (final tag in dtVM1Tags) {
         expect(DT.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -756,7 +756,7 @@ void main() {
       expect(() => DT.isValidVRCode(kSSCode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(DT.isValidVRCode(tag.vrCode), false);
 
@@ -780,8 +780,8 @@ void main() {
     });
 
     test('DT isValidValueLength good values', () {
-      for (var s in goodDTList) {
-        for (var a in s) {
+      for (final s in goodDTList) {
+        for (final a in s) {
           expect(DT.isValidValueLength(a), true);
         }
       }
@@ -790,8 +790,8 @@ void main() {
     });
 
     test('DT isValidValueLength bad values', () {
-      for (var s in badDTLengthList) {
-        for (var a in s) {
+      for (final s in badDTLengthList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(DT.isValidValueLength(a), false);
         }
@@ -803,7 +803,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getDTList(1, 1);
-        for (var tag in dtVM1Tags) {
+        for (final tag in dtVM1Tags) {
           expect(DT.isValidLength(tag, vList), true);
         }
       }
@@ -812,7 +812,7 @@ void main() {
     test('DT isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getDTList(2, i + 1);
-        for (var tag in dtVM1Tags) {
+        for (final tag in dtVM1Tags) {
           global.throwOnError = false;
           expect(DT.isValidLength(tag, vList), false);
 
@@ -839,7 +839,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDTList(1, i);
-        for (var tag in dtVM1nTags) {
+        for (final tag in dtVM1nTags) {
           log.debug('tag: $tag');
           expect(DT.isValidLength(tag, vList0), true);
         }
@@ -847,16 +847,16 @@ void main() {
     });
     test('DT isValidValue good values', () {
       global.throwOnError = false;
-      for (var s in goodDTList) {
-        for (var a in s) {
+      for (final s in goodDTList) {
+        for (final a in s) {
           expect(DT.isValidValue(a), true);
         }
       }
     });
 
     test('DT isValidValue bad values', () {
-      for (var s in badDTList) {
-        for (var a in s) {
+      for (final s in badDTList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(DT.isValidValue(a), false);
 
@@ -869,14 +869,14 @@ void main() {
 
     test('DT isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         expect(DT.isValidValues(PTag.kDateTime, s), true);
       }
     });
 
     test('DT isValidValues bad values', () {
       global.throwOnError = false;
-      for (var s in badDTList) {
+      for (final s in badDTList) {
         global.throwOnError = false;
         expect(DT.isValidValues(PTag.kDateTime, s), false);
 
@@ -888,7 +888,7 @@ void main() {
 
     test('DT isValidValues bad values length', () {
       global.throwOnError = false;
-      for (var s in badDTLengthList) {
+      for (final s in badDTLengthList) {
         global.throwOnError = false;
         expect(DT.isValidValues(PTag.kDateTime, s), false);
 
@@ -901,7 +901,7 @@ void main() {
     test('DT isValidValues VM.k1 good values length', () {
       for (var i = 0; i < 10; i++) {
         final validList = rsg.getDTList(1, 1);
-        for (var tag in dtVM1Tags) {
+        for (final tag in dtVM1Tags) {
           global.throwOnError = false;
           expect(DT.isValidValues(tag, validList), true);
         }
@@ -911,7 +911,7 @@ void main() {
     test('DT isValidValues VM.k1 bad values length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getDTList(2, i + 1);
-        for (var tag in dtVM1Tags) {
+        for (final tag in dtVM1Tags) {
           global.throwOnError = false;
           expect(DT.isValidValues(tag, validList), false);
           expect(DT.isValidValues(tag, invalidList), false);
@@ -928,7 +928,7 @@ void main() {
     test('DT isValidValues VM.k1_n length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getDTList(1, i);
-        for (var tag in dtVM1nTags) {
+        for (final tag in dtVM1nTags) {
           global.throwOnError = false;
           expect(DT.isValidValues(tag, validList), true);
         }
@@ -947,7 +947,7 @@ void main() {
       expect(() => DT.isValidValues(PTag.kDateTime, vList1),
           throwsA(const TypeMatcher<StringError>()));
 
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         global.throwOnError = false;
         expect(DT.isValidValues(PTag.kDateTime, s), true);
       }
@@ -963,7 +963,7 @@ void main() {
 
     test('DT getAsciiList', () {
       //    	system.level = Level.info;
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final bytes = Bytes.asciiFromList(s);
         log.debug('DT.getAsciiList(bytes): $bytes');
         expect(bytes.stringListFromAscii(), equals(s));
@@ -971,7 +971,7 @@ void main() {
     });
 
     test('DT toUint8List', () {
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         log.debug('Bytes.fromAsciiList(s): ${Bytes.asciiFromList(s)}');
 
         if (s[0].length.isOdd) s[0] = '${s[0]} ';
@@ -1013,8 +1013,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodDTList) {
-        for (var a in s) {
+      for (final s in goodDTList) {
+        for (final a in s) {
           final values = cvt.ascii.encode(a);
           final tbd2 = Bytes.asciiFromList(s);
           final tbd3 = Bytes.asciiFromList(s);
@@ -1033,7 +1033,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
@@ -1050,7 +1050,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodDTList) {
+      for (final s in goodDTList) {
         final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -1079,12 +1079,12 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in dtVM1Tags) {
+          for (final tag in dtVM1Tags) {
             final e0 = DT.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in dtVM1nTags) {
+          for (final tag in dtVM1nTags) {
             final e0 = DT.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

@@ -214,7 +214,7 @@ void main() {
         final vList0 = rng.float64List(1, 1);
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
-        for (var code in fdVM1Tags) {
+        for (final code in fdVM1Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -245,7 +245,7 @@ void main() {
         final vList0 = rng.float64List(2, 2);
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
-        for (var code in fdVM2Tags) {
+        for (final code in fdVM2Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -275,7 +275,7 @@ void main() {
         final vList0 = rng.float64List(3, 3);
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
-        for (var code in fdVM3Tags) {
+        for (final code in fdVM3Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -305,7 +305,7 @@ void main() {
         final vList0 = rng.float64List(4, 4);
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
-        for (var code in fdVM4Tags) {
+        for (final code in fdVM4Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -335,7 +335,7 @@ void main() {
         final vList0 = rng.float64List(6, 6);
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
-        for (var code in fdVM6Tags) {
+        for (final code in fdVM6Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -365,7 +365,7 @@ void main() {
         final vList0 = rng.float64List(9, 9);
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
-        for (var code in fdVM9Tags) {
+        for (final code in fdVM9Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -395,7 +395,7 @@ void main() {
         final vList0 = rng.float64List(1, i);
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
-        for (var code in fdVM1nTags) {
+        for (final code in fdVM1nTags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -421,7 +421,7 @@ void main() {
     });
 
     test('FDbytes', () {
-      final vList = <double>[1.0, 1.1, 1.2];
+      final vList = <double>[1, 1.1, 1.2];
       final e0 = FDbytes.fromValues(kSelectorFDValue, vList);
       expect(e0.bytes is DicomBytes, true);
       expect(e0.vfBytes is Bytes, true);

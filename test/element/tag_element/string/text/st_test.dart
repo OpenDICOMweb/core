@@ -34,7 +34,7 @@ void main() {
 
   group('ST Tests', () {
     test('ST hasValidValues good values', () {
-      for (var s in goodSTList) {
+      for (final s in goodSTList) {
         global.throwOnError = false;
         final e0 = STtag(PTag.kMetaboliteMapDescription, s);
         expect(e0.hasValidValues, true);
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('ST hasValidValues bad values', () {
-      for (var s in badSTList) {
+      for (final s in badSTList) {
         global.throwOnError = false;
         final e0 = STtag(PTag.kMetaboliteMapDescription, s);
         expect(e0, isNull);
@@ -209,7 +209,7 @@ void main() {
       final vList0 = rsg.getSTList(1, 1);
       final e1 = STtag(PTag.kSelectorSTValue, vList0);
 
-      for (var s in badSTList) {
+      for (final s in badSTList) {
         global.throwOnError = false;
         expect(e1.checkValues(s), false);
 
@@ -268,7 +268,7 @@ void main() {
     test('ST fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
           final e1 = STtag.fromBytes(PTag.kSelectorSTValue, bytes0);
@@ -281,7 +281,7 @@ void main() {
     test('ST fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
@@ -333,7 +333,7 @@ void main() {
     test('ST checkLength good values', () {
       final vList0 = rsg.getSTList(1, 1);
       final sh0 = STtag(PTag.kSelectorSTValue, vList0);
-      for (var s in goodSTList) {
+      for (final s in goodSTList) {
         expect(sh0.checkLength(s), true);
       }
       final sh1 = STtag(PTag.kSelectorSTValue, vList0);
@@ -341,7 +341,7 @@ void main() {
 
       final vList1 = rsg.getSTList(1, 1);
       final sh2 = STtag(PTag.kCADFileFormat, vList1);
-      for (var s in goodSTList) {
+      for (final s in goodSTList) {
         expect(sh2.checkLength(s), true);
       }
     });
@@ -356,8 +356,8 @@ void main() {
     test('ST checkValue good values', () {
       final vList0 = rsg.getSTList(1, 1);
       final e0 = STtag(PTag.kSelectorSTValue, vList0);
-      for (var s in goodSTList) {
-        for (var a in s) {
+      for (final s in goodSTList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -366,8 +366,8 @@ void main() {
     test('ST checkValue bad values', () {
       final vList0 = rsg.getSTList(1, 1);
       final e0 = STtag(PTag.kSelectorSTValue, vList0);
-      for (var s in badSTList) {
-        for (var a in s) {
+      for (final s in badSTList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
 
@@ -577,7 +577,7 @@ void main() {
       global.throwOnError = false;
       expect(ST.isValidTag(PTag.kSelectorSTValue), true);
 
-      for (var tag in stVM1Tags) {
+      for (final tag in stVM1Tags) {
         final validT0 = ST.isValidTag(tag);
         expect(validT0, true);
       }
@@ -590,7 +590,7 @@ void main() {
       expect(() => ST.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = ST.isValidTag(tag);
         expect(validT0, false);
@@ -605,7 +605,7 @@ void main() {
       global.throwOnError = false;
       expect(ST.isValidVRIndex(kSTIndex), true);
 
-      for (var tag in stVM1Tags) {
+      for (final tag in stVM1Tags) {
         global.throwOnError = false;
         expect(ST.isValidVRIndex(tag.vrIndex), true);
       }
@@ -619,7 +619,7 @@ void main() {
       expect(() => ST.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(ST.isValidVRIndex(tag.vrIndex), false);
 
@@ -633,7 +633,7 @@ void main() {
       global.throwOnError = false;
       expect(ST.isValidVRCode(kSTCode), true);
 
-      for (var tag in stVM1Tags) {
+      for (final tag in stVM1Tags) {
         expect(ST.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -646,7 +646,7 @@ void main() {
       expect(() => ST.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(ST.isValidVRCode(tag.vrCode), false);
 
@@ -670,8 +670,8 @@ void main() {
     });
 
     test('ST isValidValueLength good values', () {
-      for (var s in goodSTList) {
-        for (var a in s) {
+      for (final s in goodSTList) {
+        for (final a in s) {
           expect(ST.isValidValueLength(a), true);
         }
       }
@@ -687,7 +687,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getSTList(1, 1);
-        for (var tag in stVM1Tags) {
+        for (final tag in stVM1Tags) {
           expect(ST.isValidLength(tag, vList), true);
 
           expect(ST.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -699,7 +699,7 @@ void main() {
     test('ST isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getSTList(2, i + 1);
-        for (var tag in stVM1Tags) {
+        for (final tag in stVM1Tags) {
           global.throwOnError = false;
           expect(ST.isValidLength(tag, vList), false);
 
@@ -725,16 +725,16 @@ void main() {
     });
 
     test('ST isValidValue good values', () {
-      for (var s in goodSTList) {
-        for (var a in s) {
+      for (final s in goodSTList) {
+        for (final a in s) {
           expect(ST.isValidValue(a), true);
         }
       }
     });
 
     test('ST isValidValue bad values', () {
-      for (var s in badSTList) {
-        for (var a in s) {
+      for (final s in badSTList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(ST.isValidValue(a), false);
 
@@ -747,13 +747,13 @@ void main() {
 
     test('ST isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodSTList) {
+      for (final s in goodSTList) {
         expect(ST.isValidValues(PTag.kInstitutionAddress, s), true);
       }
     });
 
     test('ST isValidValues bad values', () {
-      for (var s in badSTList) {
+      for (final s in badSTList) {
         global.throwOnError = false;
         expect(ST.isValidValues(PTag.kInstitutionAddress, s), false);
 
@@ -774,8 +774,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodSTList) {
-        for (var a in s) {
+      for (final s in goodSTList) {
+        for (final a in s) {
           final values = ascii.encode(a);
           final tbd2 = Bytes.utf8FromList(s);
           final tbd3 = Bytes.utf8FromList(s);
@@ -796,7 +796,7 @@ void main() {
         log.debug('s1: $s1, s0: $s0');
         expect(s1, equals(s0));
       }
-      for (var vList1 in goodSTList) {
+      for (final vList1 in goodSTList) {
         final s0 = vList1[0];
         final bytes = Bytes.utf8(s0);
         final s1 = bytes.stringFromUtf8();
@@ -832,7 +832,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodSTList) {
+      for (final s in goodSTList) {
         final toB1 = Bytes.utf8FromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -859,7 +859,7 @@ void main() {
         final vList0 = rsg.getSTList(1, 1);
         final vfBytes = Bytes.utf8FromList(vList0);
 
-        for (var tag in stVM1Tags) {
+        for (final tag in stVM1Tags) {
           final e0 = ST.isValidBytesArgs(tag, vfBytes);
           expect(e0, true);
         }

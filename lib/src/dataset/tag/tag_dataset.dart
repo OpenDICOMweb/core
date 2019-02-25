@@ -47,7 +47,7 @@ mixin TagDataset {
 
   static Dataset convert(Dataset dsOld, Dataset dsNew, [Bytes bytes]) {
     final badElements = <Element>[];
-    for (var old in dsOld.elements) _convertElement(dsNew, old, badElements);
+    for (final old in dsOld.elements) _convertElement(dsNew, old, badElements);
     log.debug('Bad Elements: $badElements');
     return dsNew;
   }

@@ -105,7 +105,7 @@ class PersonName {
     final cGroups = splitTrim(s, '=');
     if (cGroups.isEmpty || cGroups.length > 3) return null;
     final names = <Name>[];
-    for (var cg in cGroups) {
+    for (final cg in cGroups) {
       final name = Name.parse(cg);
       if (name == null) return null;
       names.add(name);
@@ -141,7 +141,7 @@ class Name {
 
   factory Name.fromString(String s) {
     final names = splitTrim(s, '^');
-    for (var name in names) {
+    for (final name in names) {
       if (!_isPNComponentGroup(name)) return null;
     }
     return Name(names.toList(growable: false));
@@ -190,7 +190,7 @@ class Name {
   /// Returns true if the [PersonName] component is valid.
   static bool isValidList(List<String> list) {
     if (list == null || list.isEmpty || list.length > 5) return false;
-    for (var s in list)
+    for (final s in list)
       if (!_filteredTest(s, _isPNComponentGroupChar)) return false;
     return true;
   }
@@ -203,7 +203,7 @@ class Name {
   static bool isValidComponentGroup(String s) {
     if (s == null || s == '' || s.length > maxGroupLength) return false;
     final groups = s.split('=');
-    for (var group in groups) {
+    for (final group in groups) {
       if (group.length > 64 || !_filteredTest(group, _isPNNameChar))
         return false;
     }

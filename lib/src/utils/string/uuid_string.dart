@@ -41,7 +41,7 @@ const List<int> kEnds = <int>[8, 13, 18, 23, kUuidStringLength];
 /// a value between 1 and 5.
 bool isValidUuidString(String uuidString, [int type]) {
   if (uuidString.length != kUuidStringLength) return false;
-  for (var pos in kDashes)
+  for (final pos in kDashes)
     if (uuidString.codeUnitAt(pos) != kDash) return false;
   final s = uuidString.toLowerCase();
   for (var i = 0; i < kStarts.length; i++) {

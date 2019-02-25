@@ -17,7 +17,7 @@ List<Issues> validateRootDataset(RootDataset ds) =>
     _validateDataset(ds, <Issues>[]);
 
 List<Issues> _validateDataset(Dataset ds, List<Issues> iList) {
-  for (var e in ds) {
+  for (final e in ds) {
     final v = e.issues;
     if (v != null && v.isNotEmpty) iList.add(v);
     if (e is SQ) _validateSequence(e, iList);
@@ -26,6 +26,6 @@ List<Issues> _validateDataset(Dataset ds, List<Issues> iList) {
 }
 
 List<Issues> _validateSequence(SQ sq, List<Issues> iList) {
-  for (var item in sq.items) _validateDataset(item, iList);
+  for (final item in sq.items) _validateDataset(item, iList);
   return iList;
 }

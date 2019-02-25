@@ -74,7 +74,7 @@ abstract class Integer extends Element<int> {
     if (!doTestElementValidity || vList.isEmpty) return true;
     var ok = true;
     if (!Element.isValidLength(tag, vList, issues, maxLength, type)) ok = false;
-    for (var v in vList) {
+    for (final v in vList) {
       if (ok && !isValidValue(v, issues, minValue, maxValue)) ok = false;
     }
     return ok ? ok : invalidValues(vList, issues);

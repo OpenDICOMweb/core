@@ -37,7 +37,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        for (var code in ucVM1Tags) {
+        for (final code in ucVM1Tags) {
           final e0 = UCbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -65,7 +65,7 @@ void main() {
     test('UCbytes from VM.k1 bad length', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUCList(2, 2);
-        for (var code in ucVM1Tags) {
+        for (final code in ucVM1Tags) {
           final e0 = UCbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -79,7 +79,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, i);
-        for (var code in ucVM1nTags) {
+        for (final code in ucVM1nTags) {
           final e0 = UCbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);

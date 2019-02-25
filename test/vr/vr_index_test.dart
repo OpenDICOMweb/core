@@ -240,7 +240,7 @@ void main() {
       FL.kVRIndex,
       OF.kVRIndex
     ];
-    for (var index in vrIndex) {
+    for (final index in vrIndex) {
       final target = index;
       final validIndex0 = VR.isValidIndex(index, null, target);
       expect(validIndex0, true);
@@ -257,7 +257,7 @@ void main() {
   test('VR isValidSpecialIndex', () {
     global.throwOnError = false;
     final vrIndex = <int>[kOBOWIndex, kUSOWIndex, kUSSSOWIndex, kUSSSIndex];
-    for (var index in vrIndex) {
+    for (final index in vrIndex) {
       final validSIndex0 = VR.isValidSpecialIndex(index, null, index);
       expect(validSIndex0, true);
     }
@@ -292,7 +292,7 @@ void main() {
       PN.kVRCode,
       FL.kVRCode
     ];
-    for (var code in vrCode) {
+    for (final code in vrCode) {
       final target = code;
       final validCode0 = VR.isValidCode(code, null, target);
       expect(validCode0, true);
@@ -311,7 +311,7 @@ void main() {
     global.throwOnError = false;
 
     final vrIndices = <int>[kOBOWIndex, kUSOWIndex, kUSSSOWIndex, kUSSSIndex];
-    for (var code in vrIndices) {
+    for (final code in vrIndices) {
       final validSIndex0 = VR.isValidSpecialIndex(code, null, code);
       expect(validSIndex0, true);
     }

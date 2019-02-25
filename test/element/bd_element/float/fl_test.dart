@@ -215,7 +215,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.float64List(1, 1);
       global.throwOnError = false;
-      for (var code in flVM1Tags) {
+      for (final code in flVM1Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -244,7 +244,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.float64List(2, 2);
       global.throwOnError = false;
-      for (var code in flVM2Tags) {
+      for (final code in flVM2Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -273,7 +273,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.float64List(3, 3);
       global.throwOnError = false;
-      for (var code in flVM3Tags) {
+      for (final code in flVM3Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -302,7 +302,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.float64List(6, 6);
       global.throwOnError = false;
-      for (var code in flVM6Tags) {
+      for (final code in flVM6Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -331,7 +331,7 @@ void main() {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.float64List(1, i);
       global.throwOnError = false;
-      for (var code in flVM1nTags) {
+      for (final code in flVM1nTags) {
         final e0 = FLbytes.fromValues(code, vList0);
         final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -359,7 +359,7 @@ void main() {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.float64List(6, 6);
       global.throwOnError = false;
-      for (var code in flVM16Tags) {
+      for (final code in flVM16Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -387,7 +387,7 @@ void main() {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.float64List(1, i);
       global.throwOnError = false;
-      for (var code in flVM1nTags) {
+      for (final code in flVM1nTags) {
         final e0 = FLbytes.fromValues(code, vList0);
         final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -412,7 +412,7 @@ void main() {
   });
 
   test('FLbytes', () {
-    final vList = <double>[1.0, 1.1, 1.2];
+    final vList = <double>[1, 1.1, 1.2];
     final e0 = FLbytes.fromValues(kSelectorFLValue, vList);
     expect(e0.bytes is DicomBytes, true);
     expect(e0.vfBytes is Bytes, true);

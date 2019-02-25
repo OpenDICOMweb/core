@@ -72,7 +72,7 @@ mixin ReplaceMixin<V> {
   Iterable<Iterable<V>> replaceAll(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.replaceAll(index, vList));
       } else {
@@ -84,7 +84,7 @@ mixin ReplaceMixin<V> {
   Iterable<Iterable<V>> replaceAllF(int index, Iterable<V> f(List<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.replaceAllF(index, f));
       } else {
@@ -111,7 +111,7 @@ mixin ReplaceMixin<V> {
   List<Element> replaceAllUids(int index, Iterable<Uid> uids) {
     final v = updateUid(index, uids);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAllUids(index, uids));
       } else {

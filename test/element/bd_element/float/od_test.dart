@@ -122,7 +122,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
         global.throwOnError = false;
-        for (var code in odVM1Tags) {
+        for (final code in odVM1Tags) {
           final e0 = ODbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
@@ -148,7 +148,7 @@ void main() {
     });
 
     test('ODbytes', () {
-      final vList = <double>[1.0, 1.1, 1.2];
+      final vList = <double>[1, 1.1, 1.2];
       final e0 = ODbytes.fromValues(kSelectorODValue, vList);
       expect(e0.bytes is DicomBytes, true);
       expect(e0.vfBytes is Bytes, true);
