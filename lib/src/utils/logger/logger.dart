@@ -244,14 +244,6 @@ class Logger {
           [int indent = 0, Object error, StackTrace stack, Zone zone]) =>
       _log(Level.debug0, message, indent, error, stack, zone);
 
-  /// _Deprecated_: see [debug]
-  @deprecated
-  LogRecord debugDown(Object obj) => _log(Level.debug0, obj, _down);
-
-  /// _Deprecated_: see [debug]
-  @deprecated
-  LogRecord debugUp(Object obj) => _log(Level.debug0, obj, _up);
-
   /// Log message at [Level.info1].
   LogRecord info1(dynamic message,
           [int indent = 0, Object error, StackTrace stack, Zone zone]) =>
@@ -267,26 +259,10 @@ class Logger {
           [int indent = 0, Object error, StackTrace stack, Zone zone]) =>
       _log(Level.info0, message, indent, error, stack, zone);
 
-  /// _Deprecated_: see [info]
-  @deprecated
-  LogRecord infoDown(Object obj) => _log(Level.info1, obj, _down);
-
-  /// _Deprecated_: see [info]
-  @deprecated
-  LogRecord infoUp(Object obj) => _log(Level.info1, obj, _up);
-
   /// Log message at [Level.config].
   LogRecord config(dynamic message,
           [int indent = 0, Object error, StackTrace stack, Zone zone]) =>
       _log(Level.config, message, indent, error, stack, zone);
-
-  /// _Deprecated_: see [config]
-  @deprecated
-  LogRecord configDown(Object obj) => _log(Level.config, obj, _down);
-
-  /// _Deprecated_: see [config]
-  @deprecated
-  LogRecord configUp(Object obj) => _log(Level.config, obj, _up);
 
   /// Log message at [Level.warn0].
   LogRecord warn1(dynamic message,
@@ -303,32 +279,10 @@ class Logger {
           [int indent = 0, Object error, StackTrace stack, Zone zone]) =>
       _log(Level.warn0, message, indent, error, stack, zone);
 
-  /// _Deprecated_: see [warn]
-  @deprecated
-  LogRecord warnDown(Object obj) => _log(Level.warn0, obj, _down);
-
-  /// _Deprecated_: see [warn]
-  @deprecated
-
-  /// Log message at [Level.warn0] and decrease indent level.
-  LogRecord warnUp(Object obj) => _log(Level.warn0, obj, _up);
-
   /// Log message at [Level.error].
   LogRecord error(dynamic message,
           [int indent = 0, Object error, StackTrace stack, Zone zone]) =>
       _log(Level.error, message, indent, error, stack, zone);
-
-  /// _Deprecated_: see [error]
-  @deprecated
-
-  /// Log message at [Level.error] and increase indent level.
-  LogRecord errorDown(Object obj) => _log(Level.error, obj, _down);
-
-  /// _Deprecated_: see  [error]
-  @deprecated
-
-  /// Log message at [Level.error] and decrease indent level.
-  LogRecord errorUp(Object obj) => _log(Level.error, obj, _up);
 
   /// Log message at [Level.error] and decrease indent level.
   LogRecord severe(Object obj) => _log(Level.error, obj);
@@ -391,11 +345,6 @@ class Logger {
   /// [Level] for the root-logger. This will be the [Level] of all
   /// loggers if isHierarchical is false.
   static Level rootSeverity = Level.config;
-
-  // indent down
-  static const int _down = 1;
-  // indent up
-  static const int _up = -1;
 
   static String show() => 'Loggers<${_loggers.length}> $_loggers';
 }

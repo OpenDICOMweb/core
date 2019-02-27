@@ -40,9 +40,6 @@ abstract class Float extends Element<double> {
   int get sizeInBytes;
   // **** End of Interface ****
 
-  @deprecated
-  bool get isBinary => true;
-
   @override
   int get vfLength => length * sizeInBytes;
 

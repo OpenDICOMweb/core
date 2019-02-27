@@ -15,7 +15,7 @@ typedef DeIdAdd = Element Function<V>(Dataset ds, int index, Element<V> e);
 typedef DeIdAddAll = List<Element> Function<V>(
     Dataset ds, int index, List<Element<V>> e);
 
-typedef DeIdUpdate<V> = Element<V> Function<V>(
+typedef DeIdUpdate<V> = Element<V> Function(
     Dataset ds, int index, List<V> vList);
 
 // ignore: prefer_generic_function_type_aliases

@@ -109,63 +109,6 @@ abstract class StringBase extends Element<String> {
   bool checkValues(Iterable<String> vList, [Issues issues]) =>
       super.checkValues(vList, issues);
 
-  /// Returns a new [Element] where its values are the result of appending
-  /// each of the original values with [s]. If the resulting [String] has
-  /// length greater than [maxLength] for the [Element], the resulting
-  /// values is truncated to [maxLength].
-  @deprecated
-  Element appendAux(String s, int maxLength) {
-    final result = List<String>(values.length);
-    for (var i = 0; i < values.length; i++) {
-      final v = values[i];
-      final s0 = v + s;
-      result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
-    }
-    return update(result);
-  }
-
-  /// Returns a new [Element] where its values are the result of prepending
-  /// each of the original values with [s]. If the resulting [String] has
-  /// length greater than [maxLength] for the [Element], the resulting
-  /// values is truncated to [maxLength].
-  @deprecated
-  Element prependAux(String s, int maxLength) {
-    final result = List<String>(values.length);
-    for (var i = 0; i < values.length; i++) {
-      final v = values[i];
-      final s0 = s + v;
-      result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
-    }
-    return update(result);
-  }
-
-  /// Returns a new [Element] where its values are the result of truncating
-  /// each of the original values with a length greater than [newLength] to
-  /// [newLength]. If [newLength] is greater than [maxLength] _null_ is
-  /// returned.
-  @deprecated
-  Element truncateAux(int newLength, int maxLength) {
-    if (newLength > maxLength) return null;
-    final result = List<String>(values.length);
-    for (var i = 0; i < values.length; i++) {
-      final v = values[i];
-      result[i] = (v.length > maxLength) ? v.substring(0, maxLength) : v;
-    }
-    return update(result);
-  }
-
-  /// Returns _true_ if each element in [values] matches
-  /// the regular expression.
-  @deprecated
-  bool matchAux(String regexp) {
-    final regex = RegExp(regexp);
-    for (var i = 0; i < values.length; i++) {
-      final v = values[i];
-      if (!regex.hasMatch(v)) return false;
-    }
-    return true;
-  }
-
   static const int kVLFSize = 2;
   static const int kSizeInBytes = 1;
   static const int kSizeInBits = kSizeInBytes * 8;

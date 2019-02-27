@@ -69,12 +69,6 @@ ByteData stringListToByteData(List<String> sList,
   return (bList == null) ? null : bList.buffer.asByteData();
 }
 
-/// _Deprecated_: Use Bytes.fromStringList instead.
-@deprecated
-List<String> stringListFromBytes(Bytes bytes, int maxVFLength,
-        {bool isAscii = true}) =>
-    stringListFromTypedData(bytes.asByteData(), maxVFLength, isAscii: isAscii);
-
 List<String> stringListFromTypedData(TypedData td, int maxLength,
     {bool isAscii = true}) {
   if (td.lengthInBytes == 0) return kEmptyStringList;

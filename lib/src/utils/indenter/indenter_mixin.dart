@@ -20,7 +20,7 @@ mixin IndenterMixin {
 
   /// Converts obj to a String by invoking Object.toString and adds the
   /// result to this, followed by a newline.
-  void writeln([Object o]);
+  void writeln([Object o = '']);
 
   // The number of spaces to indent at each [depth].
   int get tabSize;
