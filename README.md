@@ -1,6 +1,6 @@
-# system
+# Core
 
-The foundation of the ODW SDK.
+The foundation library of the ODW SDK.
 
 It supports:
 1. errors
