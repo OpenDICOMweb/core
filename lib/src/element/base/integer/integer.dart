@@ -85,8 +85,10 @@ abstract class Integer extends Element<int> {
 abstract class SS extends Integer with Int16 {
   static const int kVRIndex = kSSIndex;
   static const int kVRCode = kSSCode;
+  //Urgent Move to Int16Mixin
   static const int kSizeInBytes = 2;
   static const int kSizeInBits = kSizeInBytes * 8;
+  // Urgent end of move
   static const int kVLFSize = 2;
   static const int kMaxVFLength = k16BitMaxShortVF;
   static const int kMaxLength = k16BitMaxShortLength;
