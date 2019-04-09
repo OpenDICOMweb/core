@@ -178,9 +178,15 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   }
 
   @override
-  List<SQ> get sequences {
-    final results = <SQ>[];
-    for (final e in elements) if (e is SQ) results.add(e);
+  List<SQ> get sequences => _getSequences(elements, <SQ>[]);
+
+  List<SQ> _getSequences(List<Element> elements, List<SQ> results) {
+    for (final e in elements) {
+      if (e is SQ) {
+        results.add(e);
+        for (final item in e.items) _getSequences(item.elements, results);
+      }
+    }
     return results;
   }
 
@@ -195,7 +201,7 @@ $runtimeType(#$hashCode):
     ''';
 
   @override
-  String toString() => '$runtimeType: $total Elements';
+  String toString() => '$runtimeType: $length top level elements';
 
   /// The canonical empty [Dataset], i.e. containing no [Element]s.
   static const List<Dataset> empty = <Dataset>[];

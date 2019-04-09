@@ -118,14 +118,27 @@ mixin DatasetMixin {
   /// Walk the [Dataset] recursively and return the count of [Element]s
   /// for which [test] is true.
   /// Note: It ignores duplicates.
-  int counter(ElementTest test) {
+  // Urgent: remove debug statements, total and level when profiling debugged.
+  int counter(ElementTest test, [int total = 0, int level = 0]) {
+    var _total = total;
     var count = 0;
-    for (final e in elements)
+    log.debug('* DS start $level: count $count total $_total');
+    for (final e in elements) {
       if (e is SQ) {
-        count += e.counter(test);
-      } else {
-        if (test(e)) count++;
+        log.debug('*   DS SQ start: count $count total $_total: $e');
+        final n = e.counter(test, _total, level + 1);
+        count += n;
+        _total += n;
+        log.debug('*   DS SQ end: count $count total $_total');
+
       }
+      if (test(e)) {
+        _total++;
+        count++;
+        log.debug('$_total: $e');
+      }
+    }
+    log.debug('* DS end $level: count $count total $_total');
     return count;
   }
 
@@ -460,7 +473,7 @@ mixin DatasetMixin {
   bool _isPrivate(Element e) => e.isPrivate;
   Iterable<Element> findAllPrivate0() => findAllWhere(_isPrivate);
 
-  List<int> findAllPrivateCodes({bool recursive = false}) {
+  List<int> findAllPrivateCodes({bool recursive = true}) {
     final privates = <int>[];
     for (final e in elements) if (e.isPrivate) privates.add(e.code);
     if (recursive) {
@@ -477,10 +490,9 @@ mixin DatasetMixin {
 
   // Urgent: change the structure of privates and deleted to be:
   // code or [sqCode [codes]]
-  List<Element> deleteAllPrivate({bool recursive = false}) {
-    final privates = findAllPrivateCodes(recursive: recursive);
+  List<Element> deleteAllPrivate({bool recursive = true}) {
+    final privates = findAllPrivateCodes(recursive: false);
     if (privates.isEmpty && recursive == false) return <Element>[];
-    print('privates(${privates.length}): $privates');
     final deleted = deleteCodes(privates);
     if (recursive) {
       // Fix: you cant tell what sequence the element was in.
@@ -488,7 +500,7 @@ mixin DatasetMixin {
         final items = sq.items;
         for (final item in items) {
           final Iterable<int> codes = item.findAllPrivateCodes(recursive: true);
-          final elements = deleteCodes(codes);
+          final elements = item.deleteCodes(codes);
           deleted.addAll(elements);
         }
       }

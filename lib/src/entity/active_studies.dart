@@ -30,9 +30,7 @@ import 'package:core/src/values/uid.dart';
 /// A singleton [class] that contains all [Study]s and [Patient]s
 /// in the running system.
 class ActiveStudies extends Object with MapMixin<Uid, Study> {
-  ActiveStudies._() {
-    print('************* created ActiveStudies');
-  }
+  ActiveStudies._();
 
   /// Returns the [Study] that has [uid].
   @override

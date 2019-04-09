@@ -390,21 +390,22 @@ mixin BytesMixin {
 
   // Allows the removal of padding characters.
   Uint8List _asUint8ListForString(
-      [int offset = 0, int length, bool removeNull]) {
+      [int offset = 0, int length, bool removePadding]) {
     length ??= bdLength;
     final index = _absIndex(offset);
     if (index < 0 || length > _bd.lengthInBytes)
       throw ArgumentError('Invalid Offset: $offset');
 
 // Urgent Jim: remove when all test working
-    final len = removeNull ? _maybeRemoveNull(length) : length;
+    final len = removePadding ? _maybeRemovePadding(length) : length;
     return _bd.buffer.asUint8List(index, len);
   }
 
-  int _maybeRemoveNull(int vfLength) {
+  int _maybeRemovePadding(int vfLength) {
     if (vfLength == 0) return vfLength;
     final lastIndex = vfLength - 1;
-    return (_getUint8(lastIndex) == kNull) ? lastIndex : vfLength;
+    final c = _getUint8(lastIndex);
+    return (c == kSpace || c == kNull) ? lastIndex : vfLength;
   }
 
   // TODO: rewrite in terms of getString

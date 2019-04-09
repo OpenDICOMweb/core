@@ -6,10 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/global.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/uid.dart';
 
@@ -29,7 +28,7 @@ class Fmi {
   String _sendingApplicationEntityTitle;
   String _receivingApplicationEntityTitle;
   Uid _privateInformationCreatorUID;
-  Uint8List _privateInformation;
+  Bytes _privateInformation;
 
   /// Create an [Fmi] eagerly.
   Fmi(this.ds)
@@ -81,7 +80,7 @@ class Fmi {
   Uid get privateInformationCreatorUID =>
       _privateInformationCreatorUID ??= getPrivateInfoCreatorUid(ds);
 
-  Uint8List get privateInformation =>
+  Bytes get privateInformation =>
       _privateInformation ??= getPrivateInfo(ds);
 
   WKUid get transferSyntaxUid => WKUid.lookup(_mediaStorageSopClass);
@@ -138,6 +137,6 @@ class Fmi {
   static Uid getPrivateInfoCreatorUid(Dataset ds) =>
       ds.getUid(kPrivateInformationCreatorUID);
 
-  static Uint8List getPrivateInfo(Dataset ds) =>
+  static Bytes getPrivateInfo(Dataset ds) =>
       ds.getIntList(kPrivateInformation);
 }

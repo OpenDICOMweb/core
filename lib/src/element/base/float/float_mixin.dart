@@ -24,33 +24,54 @@ import 'package:core/src/utils/primitives.dart';
 // ignore_for_file: public_member_api_docs
 
 /// A mixin class for 32-bit floating point [Element]s.
+mixin FloatMixin {
+  List<double> get values;
+  int get sizeInBytes;
+  TypedData get typedData;
+
+  Element<double> update([Iterable<double> vList]);
+
+  // **** End of Interface ****
+
+  /// The number of bytes in a [Float32Mixin] element.
+
+  int get lengthInBytes => length * sizeInBytes;
+
+  int get length => values.length;
+
+  List<double> get emptyList => kEmptyList;
+
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
+
+  static List<double> kEmptyList = <double>[];
+}
+
+/// A mixin class for 32-bit floating point [Element]s.
 mixin Float32Mixin {
   List<double> get values;
   Element<double> update([Iterable<double> vList]);
   // **** End of Interface ****
 
   /// The number of bytes in a [Float32Mixin] element.
-  int get sizeInBytes => kSizeInBytes;
+
   int get lengthInBytes => length * sizeInBytes;
   int get length => values.length;
 
-  List<double> get emptyList => kEmptyFloat32List;
+  List<double> get emptyList => FloatMixin.kEmptyList;
+
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
+
+  /// The number of bytes in a [Float32Mixin] element.
+  int get sizeInBytes => 4;
 
   Float32List get typedData =>
       (values is Float32List) ? values : fromList(values);
 
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
-
   Float get sha256 => update(Sha256.float32(values));
-
-
 
   /// Returns a [Float32List.view] of [values].
   Float view([int start = 0, int length]) => update(
       typedData.buffer.asFloat32List(start, _toLength(length, values.length)));
-
-  /// The number of bytes in a [Float32Mixin] element.
-  static const int kSizeInBytes = 4;
 
   bool equal(DicomBytes a, DicomBytes b) {
     for (var i = 0; i < a.length; i += 4) {
@@ -60,6 +81,9 @@ mixin Float32Mixin {
     }
     return true;
   }
+
+  /// The number of bytes in a [Float64Mixin] element.
+  static int kSizeInBytes = 4;
 
   /// Returns the [values] length that corresponds to [vfLength].
   static int getLength(int vfLength) =>
@@ -162,32 +186,27 @@ mixin Float32Mixin {
 /// A mixin class for 64-bit floating point [Element]s.
 mixin Float64Mixin {
   List<double> get values;
-
   Element<double> update([Iterable<double> vList]);
   // **** End of Interface ****
 
-  /// The number of bytes in a [Float64Mixin] element.
-  int get sizeInBytes => kSizeInBytes;
-
+  int get lengthInBytes => length * sizeInBytes;
   int get length => values.length;
 
-  int get lengthInBytes => length * sizeInBytes;
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
+
+  List<double> get emptyList => FloatMixin.kEmptyList;
+
+  /// The number of bytes in a [Float64Mixin] element.
+  int get sizeInBytes => 8;
 
   Float get sha256 => update(Sha256.float64(values));
 
   Float64List get typedData =>
       (values is Float64List) ? values : Float64List.fromList(values);
 
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
-
-  List<double> get emptyList => kEmptyFloat64List;
-
   /// Returns a [Float64List.view] of [values].
   Float view([int start = 0, int length]) => update(
       typedData.buffer.asFloat64List(start, _toLength(length, values.length)));
-
-  /// The number of bytes in a [Float64Mixin] element.
-  static const int kSizeInBytes = 8;
 
   bool equal(Bytes a, Bytes b) {
     for (var i = 0; i < a.length; i += 8) {
@@ -197,6 +216,9 @@ mixin Float64Mixin {
     }
     return true;
   }
+
+  /// The number of bytes in a [Float64Mixin] element.
+  static const int kSizeInBytes = 8;
 
   /// Returns the [values] length that corresponds to [vfLength].
   static int getLength(int vfLength) =>
@@ -312,7 +334,6 @@ class FloatBulkdataRef extends DelegatingList<double> with BulkdataRef<double> {
   @override
   List<double> get values => _values ??= getBulkdata(code, uri);
 }
-
 
 int _toLength(int length, int vLength) =>
     (length == null || length > vLength) ? vLength : length;

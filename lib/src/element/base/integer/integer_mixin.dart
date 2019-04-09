@@ -21,6 +21,14 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
+mixin Int {
+  TypedData get typedData;
+  List<int> get emptyList => kEmptyList;
+
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
+
+  static List<int> kEmptyList = <int>[];
+}
 /// A mixin class for 8-bit signed integer [Element]s.
 mixin Int8 {
   List<int> get values;
@@ -35,7 +43,7 @@ mixin Int8 {
 
   List<int> get emptyList => kEmptyInt8List;
   Int8List get typedData => fromList(values);
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
+//  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.int8(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -163,7 +171,6 @@ mixin Int16 {
 
   List<int> get emptyList => kEmptyInt16List;
   Int16List get typedData => fromList(values);
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.int16(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -289,7 +296,7 @@ mixin Int32 {
 
   List<int> get emptyList => kEmptyInt16List;
   Int32List get typedData => fromList(values);
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
+//  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.int32(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -413,7 +420,7 @@ mixin Int64 {
 
   List<int> get emptyList => kEmptyInt16List;
   Int64List get typedData => fromList(values);
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
+//  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.int64(values));
 
   /// Returns a [Int64List.view] of [values].
@@ -536,7 +543,7 @@ mixin Uint8 {
 
   List<int> get emptyList => kEmptyInt16List;
   Uint8List get typedData => fromList(values);
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
+//  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.uint8(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -668,7 +675,7 @@ mixin Uint16 {
 
   List<int> get emptyList => kEmptyInt16List;
   Uint16List get typedData => fromList(values);
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
+//  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.uint16(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -812,7 +819,7 @@ mixin Uint32 {
 
   List<int> get emptyList => kEmptyInt16List;
   Uint32List get typedData => fromList(values);
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
+//  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.uint32(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
@@ -950,7 +957,7 @@ mixin Uint64 {
 
   List<int> get emptyList => kEmptyInt16List;
   Uint64List get typedData => fromList(values);
-  Uint8List get bulkdata => typedData.buffer.asUint8List();
+//  Uint8List get bulkdata => typedData.buffer.asUint8List();
   Integer get sha256 => update(Sha256.uint64(values));
 
   /// Returns a [Uint64List.view] of [values].

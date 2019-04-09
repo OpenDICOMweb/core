@@ -6,6 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:typed_data';
+
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/utils.dart';
@@ -49,6 +51,9 @@ abstract class Integer extends Element<int> {
 
   @override
   Bytes get vfBytes => Bytes.typedDataView(typedData);
+
+  @override
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
 
   /// Returns a [view] of this [Element] with [values] replaced by
   /// appropriate TypedData.

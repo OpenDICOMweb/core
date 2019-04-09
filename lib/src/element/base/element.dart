@@ -511,9 +511,6 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns a copy of _this_.
   Element<V> get copy => update(valuesCopy);
 
-  /// Returns the number of members of [values] that satisfies [test].
-  int counter(ElementTest test) => test(this) ? 1 : 0;
-
   /// Returns a formatted [String] representation of _this_.
   // String format(Formatter z) => '${z(info)}\n';
   // String format(Formatter z) => z.fmt(this, elements);

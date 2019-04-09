@@ -20,7 +20,7 @@ int vfLengthToLength(int vfLengthField, int sizeInBytes) {
   final length = vfLengthField ~/ sizeInBytes;
   assert(vfLengthField >= 0 && vfLengthField.isEven,
       'vfLengthField: $vfLengthField');
-  assert(vfLengthField % sizeInBytes == 0,
+  assert((vfLengthField % sizeInBytes) == 0,
       'vflf: $vfLengthField sizeInBytes $sizeInBytes');
   return length;
 }

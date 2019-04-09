@@ -222,8 +222,8 @@ class LOtag extends LO with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static LOtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-    // Urgent fix:
-     LOtag(tag, bytes.getStringList(charset ??= utf8));
+      // Urgent fix:
+      LOtag(tag, bytes.getStringList(charset ??= utf8));
 }
 
 class PCtag extends PC with TagElement<String> {
@@ -635,7 +635,7 @@ class DAtag extends DA with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static DAtag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      DAtag(tag, bytes.stringListFromAscii());
+      DAtag(tag, StringList.decode(bytes).trim(Trim.trailing));
 }
 
 /// A DICOM DateTime [DT] [Element].
@@ -672,7 +672,7 @@ class DTtag extends DT with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static DTtag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      DTtag(tag, bytes.stringListFromAscii());
+      DTtag(tag, StringList.decode(bytes).trim(Trim.trailing));
 }
 
 /// The DICOM [TM] (Time) [Element].
@@ -709,8 +709,6 @@ class TMtag extends TM with TagElement<String> {
       TMtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static TMtag fromBytes(Tag tag, Bytes bytes, [Ascii _]) {
-    final s = bytes.stringListFromAscii();
-    return TMtag(tag, s);
-  }
+  static TMtag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
+      TMtag(tag, StringList.decode(bytes).trim(Trim.trailing));
 }

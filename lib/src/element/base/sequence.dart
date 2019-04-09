@@ -109,14 +109,19 @@ Summary $tag
   /// Walk the [Dataset] recursively and return the count of [Element]s
   /// for which [test] is true.
   /// Note: It ignores duplicates.
-  @override
-  int counter(ElementTest test) {
-    var count = 1;
+  // Urgent: remove comments, total and level when profiling debugged
+  int counter(ElementTest test, [int total = 0, int level = 0]) {
+    var _total = total;
+    var count = 0;
+//    log.debug('** SQ start$level: total $_total items ${items.length}');
     for (final item in items) {
-      for (final e in item) {
-        count += (e is SQ) ? e.counter(test) : 1;
-      }
+//      log.debug('** SQ count $count total $_total item: $item');
+      final n = item.counter(test, _total, level);
+      count += n;
+      _total += n;
     }
+//    log.debug('** SQ end $level: count $count total $_total: $this');
+//    log.debug('SQ end: level $level count $count total $_total');
     return count;
   }
 

@@ -39,8 +39,8 @@ class StringList extends ListBase<String> {
 
   StringList._(this._values);
 
-  StringList.decode(Bytes bytes, [Ascii charset]) :
-        _values = bytes.getStringList(charset);
+  StringList.decode(Bytes bytes, [Charset charset])
+      : _values = bytes.getStringList(charset ?? utf8);
 
   @override
   String operator [](int i) => _values[i];
@@ -84,7 +84,7 @@ class StringList extends ListBase<String> {
 
   List<String> get rightTrimmed => _values.map((v) => v.trim());
 
-  List<String> trim(Trim trim) {
+  Iterable<String> trim(Trim trim) {
     switch (trim) {
       case Trim.trailing:
         return _values.map((v) => v.trimRight());

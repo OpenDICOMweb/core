@@ -7,19 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'dart:collection';
-import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
-
-//TODO: maybe move base64Encode/decode & toDcmString
-/// Returns a Base64 [String] encoded from the [Uint8List] of [bytes].
-String base64Encode(Uint8List bytes) => cvt.base64.encode(bytes);
-
-/// Returns a [Uint8List] decoded from the [String] [s].
-Uint8List base64Decode(String s) => cvt.base64.decode(s);
 
 /// _Deprecated_: use [dcmString].
 String toDcmString(List<String> list) => '"${list.join("\\")}"';
@@ -64,6 +56,7 @@ bool isAligned(int offsetInBytes, int sizeInBytes) =>
     offsetInBytes % sizeInBytes == 0;
 
 final Uint32List emptyOffsets = Uint32List(0);
+
 List<int> getUint32List(Uint8List vf, [int offsetInBytes, int length]) {
   offsetInBytes ??= vf.offsetInBytes;
   length ??= vf.lengthInBytes ~/ 4;
