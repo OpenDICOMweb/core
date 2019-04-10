@@ -9,7 +9,7 @@
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/new_bytes.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/bytes/constants.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -19,16 +19,30 @@ import 'package:core/src/system.dart';
 /// supports both [Uint8List] and [ByteData] interfaces.
 mixin BytesMixin {
   Uint8List get _buf;
-  ByteData get _bd;
+  ByteData get bd;
   Endian get endian;
 
   // **** End of Interface
+
+  int get length => _buf.length - _buf.offsetInBytes;
+  int get bdLength => _buf.length;
+
+  int getInt16(int offset) => bd.getInt16(offset, endian);
+  int getInt32(int offset) => bd.getInt32(offset, endian);
+  int getInt64(int offset) => bd.getInt64(offset, endian);
+
+  int getUint16(int offset) => bd.getUint16(offset, endian);
+  int getUint32(int offset) => bd.getUint32(offset, endian);
+  int getUint64(int offset) => bd.getUint64(offset, endian);
+
+  double getFloat32(int offset) => bd.getFloat32(offset, endian);
+  double getFloat64(int offset) => bd.getFloat64(offset, endian);
 
   // **** TypedData interface.
   int get elementSizeInBytes => 1;
 
   Int32x4 getInt32x4(int offset) {
-    assert(length >= offset + 16);
+    assert(_buf.length >= offset + 16);
     var i = offset;
     final w = getInt32(i);
     final x = getInt32(i += 4);
@@ -38,7 +52,7 @@ mixin BytesMixin {
   }
 
   Float32x4 getFloat32x4(int offset) {
-    assert(length >= offset + 16);
+    assert(_buf.length >= offset + 16);
     var i = offset;
     final w = getFloat32(i);
     final x = getFloat32(i += 4);
@@ -48,7 +62,7 @@ mixin BytesMixin {
   }
 
   Float64x2 getFloat64x2(int offset) {
-    assert(length >= offset + 16);
+    assert(_buf.length >= offset + 16);
     var i = offset;
     final x = getFloat64(i);
     final y = getFloat64(i += 8);
@@ -264,13 +278,13 @@ mixin BytesMixin {
 
   // **** Internal ByteData Setters
   // Internal setters take an absolute index [i] into the underlying
-  // [ByteBuffer] ([_bd].buffer).  The external interface of this package
-  // uses [offset]s relative to the current [ByteData] ([_bd]).
+  // [ByteBuffer] ([bd].buffer).  The external interface of this package
+  // uses [offset]s relative to the current [ByteData] ([bd]).
 
   void _setInt8(int i, int v) => _buf[i] = v;
-  void _setInt16(int i, int v) => _bd.setInt16(i, v, endian);
-  void _setInt32(int i, int v) => _bd.setInt32(i, v, endian);
-  void _setInt64(int i, int v) => _bd.setInt64(i, v, endian);
+  void _setInt16(int i, int v) => bd.setInt16(i, v, endian);
+  void _setInt32(int i, int v) => bd.setInt32(i, v, endian);
+  void _setInt64(int i, int v) => bd.setInt64(i, v, endian);
 
   void _setInt32x4(int offset, Int32x4 v) {
     var i = offset;
@@ -281,13 +295,13 @@ mixin BytesMixin {
   }
 
   void _setUint8(int i, int v) => _buf[i] = v;
-  void _setUint16(int i, int v) => _bd.setUint16(i, v, endian);
-  void _setUint32(int i, int v) => _bd.setUint32(i, v, endian);
-  void _setUint64(int i, int v) => _bd.setUint64(i, v, endian);
+  void _setUint16(int i, int v) => bd.setUint16(i, v, endian);
+  void _setUint32(int i, int v) => bd.setUint32(i, v, endian);
+  void _setUint64(int i, int v) => bd.setUint64(i, v, endian);
 
-  void _setFloat32(int i, double v) => _bd.setFloat32(i, v, endian);
+  void _setFloat32(int i, double v) => bd.setFloat32(i, v, endian);
 
-  void _setFloat64(int i, double v) => _bd.setFloat64(i, v, endian);
+  void _setFloat64(int i, double v) => bd.setFloat64(i, v, endian);
 
   void _setFloat32x4(int offset, Float32x4 v) {
     var i = offset;
@@ -371,7 +385,7 @@ mixin BytesMixin {
   }
 
   void setString(int start, String s, [int offset = 0, int length]) =>
-      setUtf8(start, s, offset, length);
+      setUtf8(start, s, offset);
 
   // **** List Setters
 
@@ -602,10 +616,7 @@ mixin BytesMixin {
   // **** Other
 
   @override
-  String toString() => '$endianness $runtimeType: ${toBDDescriptor(_buf)}';
-
-  /// Returns the absolute index of [offset] in the underlying [ByteBuffer].
-  int _absIndex(int offset) => _buf.offsetInBytes + offset;
+  String toString() => '$endian $runtimeType: ${toBDDescriptor(_buf)}';
 
   String toBDDescriptor(Uint8List bd) {
     final start = bd.offsetInBytes;
@@ -627,7 +638,7 @@ mixin BytesMixin {
 
   // **** Internals
 
-  /// Checks that _bd[bdOffset, length] >= vLengthInBytes
+  /// Checks that bd[bdOffset, length] >= vLengthInBytes
   bool _checkLength(int bdOffset, int vLength, int size) {
     final vLengthInBytes = vLength * size;
     final bdLength = _buf.lengthInBytes - (_buf.offsetInBytes + bdOffset);

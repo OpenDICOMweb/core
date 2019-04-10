@@ -9,7 +9,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/new_bytes.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 
 void main(List<String> args) {
 

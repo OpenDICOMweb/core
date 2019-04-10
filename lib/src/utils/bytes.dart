@@ -8,7 +8,7 @@
 //
 export 'package:core/src/utils/bytes/constants.dart';
 export 'package:core/src/utils/bytes/big_endian_mixin.dart';
-export 'package:core/src/utils/bytes/new_bytes.dart';
+export 'package:core/src/utils/bytes/bytes.dart';
 export 'package:core/src/utils/bytes/bytes_mixin.dart';
 export 'package:core/src/utils/bytes/little_endian_mixin.dart';
 export 'package:core/src/utils/bytes/growable_bytes.dart';

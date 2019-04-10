@@ -8,7 +8,7 @@
 //
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/new_bytes.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 
 export 'package:core/src/utils/character/ascii.dart';
 export 'package:core/src/utils/dicom.dart';

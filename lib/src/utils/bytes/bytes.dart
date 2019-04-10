@@ -34,7 +34,8 @@ bool ignorePadding = true;
 /// [Uint8List] and [ByteData] interfaces.
 class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
-  ByteData bd;
+  Uint8List _buf;
+  ByteData _bd;
 
   Bytes(this.bd);
 

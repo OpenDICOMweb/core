@@ -8,7 +8,7 @@
 //
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/new_bytes.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/bytes/little_endian_mixin.dart';
 import 'package:core/src/utils/bytes/big_endian_mixin.dart';
 
@@ -44,7 +44,7 @@ class GrowableBytes extends Bytes with GrowableMixin {
   final int limit;
 
   /// Returns a new [Bytes] of [length].
-  GrowableBytes([int length, Endian endian, this.limit = kDefaultLimit])
+  GrowableBytes([int length, Endian endian, this.limit = Bytes.kDefaultLimit])
       : super(length, endian);
 
   /// Returns a new [Bytes] of [length].
