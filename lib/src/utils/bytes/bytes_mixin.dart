@@ -494,7 +494,7 @@ mixin BytesMixin {
   int _setFloat32List(int start, List<double> list,
       [int offset = 0, int length]) {
     length ??= list.length;
-    assert(_checkLength(offset, length, kFloat32Size));
+    assert(_checkLength(start, length, kFloat32Size));
     for (var i = offset, j = start; i < length; i++, j += 4)
       _setFloat32(j, list[i]);
     return length * 4;

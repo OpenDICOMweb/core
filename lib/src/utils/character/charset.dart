@@ -74,6 +74,50 @@ abstract class Charset {
 
   /// Returns [s] without a trailing [kNull] character.
   String removeTrailingNull(String s);
+
+  /// Constant definition of ASCII character set.
+  static const Ascii ascii = Ascii(
+      'ASCII-1', 'US English', ['ASCII', 'US-ASCII', 'ISO_IR 6', 'ISO/IEC 646']);
+
+  /// Constant definition of [latin1] character set.
+  static const Latin latin1 = Latin('Latin1', 'Western Europe',
+      ['ISO-8859-1', 'ISO-IR 100', 'Latin1', 'Latin-1']);
+
+  /// Constant definition of [latin2] character set.
+  static const Latin latin2 = Latin('Latin2', 'Eastern Europe',
+      ['ISO-8859-1', 'ISO-IR 101', 'Latin2', 'Latin-2']);
+
+  /// Constant definition of [latin3] character set.
+  static const Latin latin3 = Latin(
+      'Latin3', 'Europe', ['ISO-8859-1', 'ISO-IR 109', 'Latin3', 'Latin-3']);
+
+  /// Constant definition of [latin4] character set.
+  static const Latin latin4 = Latin(
+      'Latin4', 'Europe', ['ISO-8859-1', 'ISO-IR 110', 'Latin4', 'Latin-4']);
+
+  /// Constant definition of [latin5] character set.
+  static const Latin latin5 = Latin(
+      'Latin5', 'Cyrillic', ['ISO-8859-1', 'ISO-IR 144', 'Latin5', 'Latin-5']);
+
+  /// Constant definition of [latin6] character set.
+  static const Latin latin6 = Latin(
+      'Latin6', 'Arabic', ['ISO-8859-1', 'ISO-IR 127', 'Latin6', 'Latin-6']);
+
+  /// Constant definition of [latin7] character set.
+  static const Latin latin7 =
+  Latin('Latin7', 'Greek', ['ISO-8859-7', 'ISO-IR 126', 'Latin7', 'Latin-7']);
+
+  /// Constant definition of [latin8] character set.
+  static const Latin latin8 = Latin(
+      'Latin8', 'Hebrew', ['ISO-8859-8', 'ISO-IR 138', 'Latin8', 'Latin-8']);
+
+  /// Constant definition of [latin9] character set.
+  static const Latin latin9 = Latin('Latin9', 'Latin Alphabet 5',
+      ['ISO-8859-9', 'ISO-IR 148', 'Latin9', 'Latin-9']);
+
+  /// Constant definition of UTF8 character set.
+  static const Utf8 utf8 = Utf8('UTF8', ['UTF8', 'ISO-IR 192', 'UTF-8']);
+
 }
 
 /// The base Charset is the ASCII (or US-ASCII) Character Set.
@@ -299,6 +343,7 @@ class Utf8 extends Ascii {
   bool _isUtf8Space(int c) => kUtf8WhiteSpace.contains(c);
 }
 
+/*
 /// Constant definition of ASCII character set.
 const Ascii ascii = Ascii(
     'ASCII-1', 'US English', ['ASCII', 'US-ASCII', 'ISO_IR 6', 'ISO/IEC 646']);
@@ -344,29 +389,30 @@ const Utf8 utf8 = Utf8('UTF8', ['UTF8', 'ISO-IR 192', 'UTF-8']);
 
 /// Pseudonym for [utf8]
 const Utf8 utf8Charset = utf8;
+*/
 
 /// A Map<String, Charset> of known character sets.
 const Map<String, Charset> charsets = {
-  'UTF8': utf8,
-  'ISO_IR 192': utf8,
-  'ASCII': ascii,
-  'US-ASCII': ascii,
-  'ISO-8859-1': latin1,
-  'ISO_IR 100': latin1,
-  'ISO-8859-2': latin2,
-  'ISO_IR 101': latin2,
-  'ISO-8859-3': latin3,
-  'ISO_IR 109': latin3,
-  'ISO-8859-4': latin4,
-  'ISO_IR 110': latin4,
-  'ISO-8859-5': latin5,
-  'ISO_IR 144': latin5,
-  'ISO-8859-6': latin6,
-  'ISO_IR 127': latin6,
-  'ISO-8859-7': latin7,
-  'ISO_IR 126': latin7,
-  'ISO-8859-8': latin8,
-  'ISO_IR 138': latin8,
-  'ISO-8859-9': latin9,
-  'ISO_IR 148': latin9,
+  'UTF8': Charset.utf8,
+  'ISO_IR 192': Charset.utf8,
+  'ASCII': Charset.ascii,
+  'US-ASCII': Charset.ascii,
+  'ISO-8859-1': Charset.latin1,
+  'ISO_IR 100': Charset.latin1,
+  'ISO-8859-2':Charset. latin2,
+  'ISO_IR 101': Charset.latin2,
+  'ISO-8859-3': Charset.latin3,
+  'ISO_IR 109': Charset.latin3,
+  'ISO-8859-4': Charset.latin4,
+  'ISO_IR 110': Charset.latin4,
+  'ISO-8859-5': Charset.latin5,
+  'ISO_IR 144': Charset.latin5,
+  'ISO-8859-6': Charset.latin6,
+  'ISO_IR 127': Charset.latin6,
+  'ISO-8859-7': Charset.latin7,
+  'ISO_IR 126': Charset.latin7,
+  'ISO-8859-8': Charset.latin8,
+  'ISO_IR 138': Charset.latin8,
+  'ISO-8859-9': Charset.latin9,
+  'ISO_IR 148': Charset.latin9,
 };

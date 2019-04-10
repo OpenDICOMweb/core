@@ -387,7 +387,7 @@ void main() {
 
         final readAscii0 = readBuffer0.readAscii(vList0.length);
         log.debug('readAscii: $readAscii0');
-        expect(readAscii0 == ascii.decode(vList0), true);
+        expect(readAscii0 == Charset.ascii.decode(vList0), true);
       }
     });
 
@@ -400,7 +400,7 @@ void main() {
 
         final readUtf80 = readBuffer0.readUtf8(vList0.length);
         log.debug('readUtf8: $readUtf80');
-        expect(readUtf80 == utf8.decode(vList0), true);
+        expect(readUtf80 == Charset.utf8.decode(vList0), true);
       }
     });
 

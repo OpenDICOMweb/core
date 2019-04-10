@@ -87,7 +87,7 @@ mixin TagElement<V> {
     final vrIndex = bytes.vrIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
-    final charset = ds == null ? utf8 : ds.charset;
+    final charset = ds == null ? Charset.utf8 : ds.charset;
     return (index == kSQIndex)
         ? SQtag.fromBytes(ds, <ByteItem>[], bytes)
         : _bytesMakers[index](tag, bytes.vfBytes, charset);
@@ -136,7 +136,7 @@ mixin TagElement<V> {
 
   /// Returns a  [Element] based on the arguments.
   static Element fromValues(int code, int vrIndex, List values, Dataset ds,
-      [Ascii charset = utf8Charset]) {
+      [Ascii charset = Charset.utf8]) {
     if (_isPrivateCreator(code)) return _getPCTag(code, vrIndex, values);
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);

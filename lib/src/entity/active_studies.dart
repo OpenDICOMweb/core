@@ -29,8 +29,10 @@ import 'package:core/src/values/uid.dart';
 
 /// A singleton [class] that contains all [Study]s and [Patient]s
 /// in the running system.
-class ActiveStudies extends Object with MapMixin<Uid, Study> {
-  ActiveStudies._();
+class ActiveStudies with MapMixin<Uid, Study> {
+  ActiveStudies._() {
+    print('************* created ActiveStudies');
+  }
 
   /// Returns the [Study] that has [uid].
   @override
@@ -71,19 +73,19 @@ ActiveStudies:
 
   String get patientsSummary {
     //  var out = '';
-    //  for (final s in _subjects.values) out = s.format(Formatter());
+    //  for (var s in _subjects.values) out = s.format(Formatter());
     //    return out;
     final sb = StringBuffer();
-    for (final s in _patients.values) sb.writeln('\t$s');
+    for (var s in _patients.values) sb.writeln('\t$s');
     return '$sb';
   }
 
   String get studiesSummary {
 //    var out = '';
-//    for (final s in _studies.values) out = s.format(Formatter());
+//    for (var s in _studies.values) out = s.format(Formatter());
 //    return out;
     final sb = StringBuffer();
-    for (final s in _studies.values) sb.writeln('\t$s');
+    for (var s in _studies.values) sb.writeln('\t$s');
     return '$sb';
   }
 
@@ -150,7 +152,7 @@ ActiveStudies:
   }
 
   Patient search(String pid, {PersonName name, Date dob}) {
-    for (final p in _patients.values) {
+    for (var p in _patients.values) {
       if ((pid == p.pid) &&
           (name == null || name == p.name) &&
           (dob == null || dob == p.dob)) return p;

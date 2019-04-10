@@ -15,6 +15,7 @@ import 'package:core/src/vr/vr_base.dart';
 mixin IvrMixin {
   int get vfLength;
   int getUint32(int offset);
+  void setUint32(int offset, int length);
   bool checkVFLengthField(int vlf, int vfLength);
   // **** End of Interface
 
@@ -37,6 +38,8 @@ mixin IvrMixin {
     return vlf;
   }
 
+  set vfLengthField(int length) => setUint32(kVFLengthOffset, length);
+
   /// The offset of the Value Field Length field.
   static const int kVFLengthOffset = 4;
 
@@ -49,7 +52,8 @@ mixin IvrMixin {
 
 /// A class implementing IVR big endian DicomBytes.
 class IvrBytesBE extends DicomBytes
-    with BigEndianMixin, IvrMixin implements Comparable<Bytes> {
+    with BigEndianMixin, IvrMixin
+    implements Comparable<Bytes> {
   /// Creates a IVR big Endian DicomBytes containing all zeros.
   IvrBytesBE(int vfLength) : super(ByteData(IvrMixin.kHeaderLength + vfLength));
 
@@ -87,8 +91,9 @@ class IvrBytesBE extends DicomBytes
 }
 
 /// A class implementing IVR little endian DicomBytes.
-class IvrBytesLE extends  DicomBytes
-    with LittleEndianMixin, IvrMixin implements Comparable<Bytes> {
+class IvrBytesLE extends DicomBytes
+    with LittleEndianMixin, IvrMixin
+    implements Comparable<Bytes> {
   /// Creates a IVR little Endian DicomBytes containing all zeros.
   IvrBytesLE(int vfLength) : super(ByteData(IvrMixin.kHeaderLength + vfLength));
 

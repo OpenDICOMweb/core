@@ -14,7 +14,6 @@ import 'package:core/src/utils/bytes.dart';
 // ignore_for_file: public_member_api_docs
 
 mixin WriteBufferMixin {
-  // **** Interface
   /// The underlying [Bytes] for the buffer.
   GrowableBytes get bytes;
 

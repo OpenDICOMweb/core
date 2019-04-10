@@ -22,12 +22,10 @@ mixin DicomBytesMixin {
   bool get isEvr;
   ByteData get bd;
   bool get isEvr;
-//  int get vrCode;
-//  int get vrIndex;
-//  String get vrId;
-  int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
+  set vfLengthField(int length);
+  int get vfOffset;
 
   int getUint16(int offset);
   int getUint8(int offset);
@@ -66,18 +64,16 @@ mixin DicomBytesMixin {
 
   // **** End of Interface
 
-  int get code => bd.getUint16(0) << 16 + bd.getUint16(2);
-
-/*
   int get code {
     final group = getUint16(0);
     final elt = getUint16(2);
     return (group << 16) + elt;
   }
-*/
 
-
-  set code(int v) => bd..setUint16(0, v >> 16)..setUint16(2, v & 0xFFFF);
+  set code(int v) {
+    setUint16(0, v >> 16);
+    setUint16(2, v & 0xFFFF);
+  }
 
   /// The Element Group Field
   int get group => getUint16(_kGroupOffset);
@@ -89,9 +85,13 @@ mixin DicomBytesMixin {
 
   //  int get vrCode => bd.getUint8(4) << 8 + bd.getUint8(5) & 0xFF;
 
-  int get vrCode => (bd.getUint8(kVROffset) << 8) + bd.getUint8(kVROffset + 1);
+  int get vrCode => (getUint8(kVROffset) << 8) + getUint8(kVROffset + 1);
 
-  set vrCode(int v) => bd..setUint8(0, v >> 8)..setUint8(1, v & 0xFF);
+  set vrCode(int v) {
+    print('vr: ${hex8(v >> 8)},${hex8(v & 0xFF)}');
+    setUint8(kVROffset, v >> 8);
+    setUint8(kVROffset + 1, v & 0xFF);
+  }
 
   int get vrIndex => vrIndexFromCode(vrCode);
 

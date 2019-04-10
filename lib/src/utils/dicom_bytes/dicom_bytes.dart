@@ -24,6 +24,7 @@ import 'package:core/src/utils/dicom_bytes/utils.dart';
 /// A abstract subclass of [Bytes] that supports Explicit Value
 /// Representations (EVR) and Implicit Value Representations (IVR).
 abstract class DicomBytes extends Bytes with DicomBytesMixin {
+  /// Creates a [DicomBytes] from [bd].
   DicomBytes(ByteData bd) : super(bd);
 
   /// Creates a [DicomBytes] of [vfLength].
@@ -47,7 +48,9 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
     }
     bytes
       ..code = code
-      ..vrCode = vrCode;
+      ..vrCode = vrCode
+      ..vfLengthField = vfLength;
+    print('bytes: $bytes');
     return bytes;
   }
 

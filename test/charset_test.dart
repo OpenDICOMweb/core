@@ -22,12 +22,13 @@ void main() {
 
   group('Charset', () {
     test('Create Charset', () {
-      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(Charset.ascii.name, Charset.ascii.language,
+          Charset.ascii.identifiers);
       log.debug('charset0: $charset0');
 
-      expect(charset0.name == ascii.name, true);
-      expect(charset0.language == ascii.language, true);
-      expect(charset0.identifiers == ascii.identifiers, true);
+      expect(charset0.name == Charset.ascii.name, true);
+      expect(charset0.language == Charset.ascii.language, true);
+      expect(charset0.identifiers == Charset.ascii.identifiers, true);
 
       const charset1 = Ascii('ASCII-1', 'US English',
           ['ASCII', 'US-ASCII', 'ISO_IR 6', 'ISO/IEC 646']);
@@ -39,7 +40,8 @@ void main() {
     });
 
     test('isValid', () {
-      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(Charset.ascii.name, Charset.ascii.language,
+          Charset.ascii.identifiers);
       for (var i = Ascii.kMin; i <= Ascii.kMax; i++) {
         expect(charset0.isValid(i), true);
       }
@@ -48,7 +50,8 @@ void main() {
     });
 
     test('isVisible', () {
-      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(Charset.ascii.name, Charset.ascii.language,
+          Charset.ascii.identifiers);
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
@@ -71,7 +74,8 @@ void main() {
     });
 
     test('decode and encode', () {
-      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(Charset.ascii.name, Charset.ascii.language,
+          Charset.ascii.identifiers);
       //final vList0 = rng.uint8List(1, 1);
       const vList0 = [123, 23, 69, 98];
       final list0 = Uint8List.fromList(vList0);
@@ -85,7 +89,8 @@ void main() {
     });
 
     test('isValidString', () {
-      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(Charset.ascii.name, Charset.ascii.language,
+          Charset.ascii.identifiers);
       for (var i = 1; i < 20; i++) {
         final vList0 = rsg.getLOList(1, i);
         for (var j = 0; j < vList0.length; j++) {
@@ -199,12 +204,13 @@ void main() {
 
   group('Latin', () {
     test('Create Latin', () {
-      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      final latin0 = Latin(Charset.latin1.name, Charset.latin1.language,
+          Charset.latin1.identifiers);
       log.debug('latin0: $latin0');
 
-      expect(latin0.name == latin1.name, true);
-      expect(latin0.language == latin1.language, true);
-      expect(latin0.identifiers == latin1.identifiers, true);
+      expect(latin0.name == Charset.latin1.name, true);
+      expect(latin0.language == Charset.latin1.language, true);
+      expect(latin0.identifiers == Charset.latin1.identifiers, true);
 
       const latin01 = Latin('Latin1', 'Western Europe',
           ['ISO-8859-1', 'ISO-IR 100', 'Latin1', 'Latin-1']);
@@ -216,7 +222,8 @@ void main() {
     });
 
     test('isValid', () {
-      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      final latin0 = Latin(Charset.latin1.name, Charset.latin1.language,
+          Charset.latin1.identifiers);
       for (var i = Latin.kMin; i <= Latin.kMax; i++) {
         expect(latin0.isValid(i), true);
       }
@@ -225,7 +232,8 @@ void main() {
     });
 
     test('isVisible', () {
-      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      final latin0 = Latin(Charset.latin1.name, Charset.latin1.language,
+          Charset.latin1.identifiers);
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
@@ -248,7 +256,8 @@ void main() {
     });
 
     test('decode and encode', () {
-      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      final latin0 = Latin(Charset.latin1.name, Charset.latin1.language,
+          Charset.latin1.identifiers);
       //final vList0 = rng.uint8List(1, 1);
       const vList0 = [123, 23, 69, 98];
       final list0 = Uint8List.fromList(vList0);
@@ -310,11 +319,11 @@ void main() {
 
   group('Utf8', () {
     test('Create Utf8', () {
-      final utf8_0 = Utf8(utf8.name, utf8.identifiers);
+      final utf8_0 = Utf8(Charset.utf8.name, Charset.utf8.identifiers);
       log.debug('utf80: $utf8_0');
 
-      expect(utf8_0.name == utf8.name, true);
-      expect(utf8_0.identifiers, equals(utf8.identifiers));
+      expect(utf8_0.name == Charset.utf8.name, true);
+      expect(utf8_0.identifiers, equals(Charset.utf8.identifiers));
 
       const utf8_1 = Utf8('UTF8', ['UTF8', 'ISO-IR 192', 'UTF-8']);
 
@@ -323,7 +332,7 @@ void main() {
     });
 
     test('isValid', () {
-      final utf8_0 = Utf8(utf8.name, utf8.identifiers);
+      final utf8_0 = Utf8(Charset.utf8.name, Charset.utf8.identifiers);
       for (var i = Utf8.kMin; i <= Utf8.kMax; i++) {
         expect(utf8_0.isValid(i), true);
       }
@@ -332,7 +341,7 @@ void main() {
     });
 
     test('isVisible', () {
-      final utf8_0 = Utf8(utf8.name, utf8.identifiers);
+      final utf8_0 = Utf8(Charset.utf8.name, Charset.utf8.identifiers);
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
@@ -353,7 +362,7 @@ void main() {
     });
 
     test('decode and encode', () {
-      final utf8_0 = Utf8(utf8.name, utf8.identifiers);
+      final utf8_0 = Utf8(Charset.utf8.name, Charset.utf8.identifiers);
       //final vList0 = rng.uint8List(1, 1);
       const vList0 = [123, 23, 69, 98];
       final list0 = Uint8List.fromList(vList0);
