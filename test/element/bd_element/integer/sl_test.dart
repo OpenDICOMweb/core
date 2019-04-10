@@ -14,7 +14,7 @@ RSG rsg = RSG(seed: 1);
 RNG rng = RNG(1);
 
 void main() {
-  Server.initialize(name: 'bd_element/sl_test', level: Level.debug);
+  Server.initialize(name: 'bd_element/sl_test', level: Level.info);
 
   final rds = ByteRootDataset.empty();
 

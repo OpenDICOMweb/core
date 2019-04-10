@@ -25,13 +25,15 @@ mixin Int16Mixin {
 /// 32-bit signed integer Elements (SL)
 mixin Int32Mixin {
   Bytes get vfBytes;
+  Int32List _values;
 
   int get length {
     assert(vfBytes.length % 4 == 0);
     return vfBytes.length ~/ 4;
   }
 
-  Int32List get values => vfBytes.asInt32List();
+
+  Int32List get values => _values ??= vfBytes.asInt32List();
 }
 
 /// Unsigned 8-bit Integer Elements (OB, UN)

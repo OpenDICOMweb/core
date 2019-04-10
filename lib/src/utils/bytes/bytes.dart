@@ -38,7 +38,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   Endian endian;
 
   @override
-  ByteData get _bd => __bd ??= _buf.buffer.asByteData();
+  ByteData get _bd => __bd ??= _buf.buffer.asByteData(_buf.offsetInBytes);
 
   ByteData get bd => _bd;
 
@@ -63,7 +63,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// Creates a new [Bytes] from [bd]. [endian] defaults to [Endian.host].
   Bytes.fromByteData(ByteData bd, [Endian endian])
       : endian = endian ?? Endian.host,
-        _buf = bd.buffer.asUint8List();
+        _buf = bd.buffer.asUint8List(bd.offsetInBytes);
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.  [endian] defaults to [Endian.host].

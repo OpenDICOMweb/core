@@ -30,7 +30,7 @@ mixin BytesMixin {
   int get bdOffset => _buf.offsetInBytes;
 
   int get length => bdLength;
-  int get bdLength => _buf.lengthInBytes;
+  int get bdLength => _buf.length;
   set length(int length) =>
       throw UnsupportedError('$runtimeType: length is not modifiable');
 
