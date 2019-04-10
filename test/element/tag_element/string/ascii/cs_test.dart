@@ -46,7 +46,7 @@ void main() {
   ];
   group('CStag', () {
     test('CS hasValidValues good values', () {
-      for (var s in goodCSList) {
+      for (final s in goodCSList) {
         global.throwOnError = false;
         final e0 = CStag(PTag.kLaterality, s);
         expect(e0.hasValidValues, true);
@@ -58,7 +58,7 @@ void main() {
     });
 
     test('CS hasValidValues bad values', () {
-      for (var s in badCSList) {
+      for (final s in badCSList) {
         global.throwOnError = false;
         final e0 = CStag(PTag.kLaterality, s);
         expect(e0, isNull);
@@ -212,12 +212,26 @@ void main() {
       }
     });
 
-    test('CS isValidValues random', () {
+    test('CS checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
         final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('CS checkValues bad values random', () {
+      final vList0 = rsg.getCSList(1, 1);
+      final e1 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+
+      for (final s in badCSList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -254,7 +268,7 @@ void main() {
     test('CS fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getCSList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           final e1 = CStag.fromBytes(PTag.kSelectorCSValue, bytes0);
           log.debug('e1: ${e1.info}');
@@ -266,7 +280,7 @@ void main() {
     test('CS fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getCSList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           final e1 = CStag.fromBytes(PTag.kSelectorAEValue, bytes0);
@@ -321,7 +335,7 @@ void main() {
     test('CS checkLength good values', () {
       final vList0 = rsg.getCSList(1, 1);
       final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
-      for (var s in goodCSList) {
+      for (final s in goodCSList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
@@ -338,8 +352,8 @@ void main() {
     test('CS checkValue good values', () {
       final vList0 = rsg.getCSList(1, 1);
       final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
-      for (var s in goodCSList) {
-        for (var a in s) {
+      for (final s in goodCSList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -348,8 +362,8 @@ void main() {
     test('CS checkValue bad values', () {
       final vList0 = rsg.getCSList(1, 1);
       final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
-      for (var s in badCSList) {
-        for (var a in s) {
+      for (final s in badCSList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
 
@@ -369,6 +383,10 @@ void main() {
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
         expect(append0, isNotNull);
+
+        final append1 = e0.values.append(vList1, e0.maxValueLength);
+        log.debug('e0.append: $append1');
+        expect(append0, equals(append1));
       }
     });
 
@@ -381,6 +399,10 @@ void main() {
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
         expect(prepend0, isNotNull);
+
+        final prepend1 = e0.values.prepend(vList1, e0.maxValueLength);
+        log.debug('e0.prepend: $prepend1');
+        expect(prepend0, equals(prepend1));
       }
     });
 
@@ -519,7 +541,7 @@ void main() {
       global.throwOnError = false;
       expect(CS.isValidTag(PTag.kSelectorCSValue), true);
 
-      for (var tag in csVM1Tags) {
+      for (final tag in csVM1Tags) {
         final validT0 = CS.isValidTag(tag);
         expect(validT0, true);
       }
@@ -532,7 +554,7 @@ void main() {
       expect(() => CS.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = CS.isValidTag(tag);
         expect(validT0, false);
@@ -547,7 +569,7 @@ void main() {
       global.throwOnError = false;
       expect(CS.isValidVRIndex(kCSIndex), true);
 
-      for (var tag in csVM1Tags) {
+      for (final tag in csVM1Tags) {
         global.throwOnError = false;
         expect(CS.isValidVRIndex(tag.vrIndex), true);
       }
@@ -561,7 +583,7 @@ void main() {
       expect(() => CS.isValidVRIndex(kSSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(CS.isValidVRIndex(tag.vrIndex), false);
 
@@ -575,7 +597,7 @@ void main() {
       global.throwOnError = false;
       expect(CS.isValidVRCode(kCSCode), true);
 
-      for (var tag in csVM1Tags) {
+      for (final tag in csVM1Tags) {
         expect(CS.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -588,7 +610,7 @@ void main() {
       expect(() => CS.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(CS.isValidVRCode(tag.vrCode), false);
 
@@ -613,13 +635,13 @@ void main() {
 
     test('CS.isValidValueLength', () {
       global.throwOnError = false;
-      for (var s in goodCSList) {
-        for (var a in s) {
+      for (final s in goodCSList) {
+        for (final a in s) {
           expect(CS.isValidValueLength(a), true);
         }
       }
 
-      /* for (var s in badAELengthList) {
+      /* for (final s in badAELengthList) {
           expect(CS.isValidValueLength(s), false);
         }*/
 
@@ -635,7 +657,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getCSList(1, 1);
-        for (var tag in csVM1Tags) {
+        for (final tag in csVM1Tags) {
           expect(CS.isValidLength(tag, vList), true);
 
           expect(CS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -647,7 +669,7 @@ void main() {
     test('CS isValidVListLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getCSList(2, i + 1);
-        for (var tag in csVM1Tags) {
+        for (final tag in csVM1Tags) {
           global.throwOnError = false;
           expect(CS.isValidLength(tag, vList), false);
 
@@ -676,7 +698,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getCSList(2, 2);
-        for (var tag in csVM2Tags) {
+        for (final tag in csVM2Tags) {
           expect(CS.isValidLength(tag, vList), true);
 
           expect(CS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -688,7 +710,7 @@ void main() {
     test('CS isValidVListLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final vList = rsg.getCSList(3, i + 1);
-        for (var tag in csVM2Tags) {
+        for (final tag in csVM2Tags) {
           global.throwOnError = false;
           expect(CS.isValidLength(tag, vList), false);
 
@@ -711,7 +733,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getCSList(10, 10);
         final validMaxLengthList = invalidVList.sublist(0, CS.kMaxLength);
-        for (var tag in csVM2nTags) {
+        for (final tag in csVM2nTags) {
           expect(CS.isValidLength(tag, vList), true);
           expect(CS.isValidLength(tag, validMaxLengthList), true);
         }
@@ -721,7 +743,7 @@ void main() {
     test('CS isValidVListLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getCSList(1, 1);
-        for (var tag in csVM2nTags) {
+        for (final tag in csVM2nTags) {
           global.throwOnError = false;
           expect(CS.isValidLength(tag, vList), false);
 
@@ -738,7 +760,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getCSList(4, 4);
-        for (var tag in csVM4Tags) {
+        for (final tag in csVM4Tags) {
           expect(CS.isValidLength(tag, vList), true);
 
           expect(CS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -750,7 +772,7 @@ void main() {
     test('CS isValidVListLength VM.k4 bad values', () {
       for (var i = 4; i < 10; i++) {
         final vList = rsg.getCSList(5, i + 1);
-        for (var tag in csVM4Tags) {
+        for (final tag in csVM4Tags) {
           global.throwOnError = false;
           expect(CS.isValidLength(tag, vList), false);
 
@@ -784,7 +806,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, CS.kMaxLength);
-        for (var tag in csVM1nTags) {
+        for (final tag in csVM1nTags) {
           log.debug('tag: $tag');
           expect(CS.isValidLength(tag, vList0), true);
           expect(CS.isValidLength(tag, validMaxLengthList), true);
@@ -793,16 +815,16 @@ void main() {
     });
 
     test('CS isValidValue good values', () {
-      for (var s in goodCSList) {
-        for (var a in s) {
+      for (final s in goodCSList) {
+        for (final a in s) {
           expect(CS.isValidValue(a), true);
         }
       }
     });
 
     test('CS isValidValue bad values', () {
-      for (var s in badCSList) {
-        for (var a in s) {
+      for (final s in badCSList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(CS.isValidValue(a), false);
 
@@ -815,13 +837,13 @@ void main() {
 
     test('CS isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodCSList) {
+      for (final s in goodCSList) {
         expect(CS.isValidValues(PTag.kSCPStatus, s), true);
       }
     });
 
     test('CS isValidValues bad values', () {
-      for (var s in badCSList) {
+      for (final s in badCSList) {
         global.throwOnError = false;
         expect(CS.isValidValues(PTag.kSCPStatus, s), false);
 
@@ -857,41 +879,41 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
         log.debug('vList0: $vList0');
-        final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
+        final fvf0 = AsciiString.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
 
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList1 = rsg.getCSList(1, i);
-        final fvf1 = Ascii.fromValueField(vList1, k8BitMaxLongVF);
+        final fvf1 = AsciiString.fromValueField(vList1, k8BitMaxLongVF);
         expect(fvf1, equals(vList1));
       }
       global.throwOnError = false;
-      final fvf1 = Ascii.fromValueField(null, k8BitMaxLongLength);
+      final fvf1 = AsciiString.fromValueField(null, k8BitMaxLongLength);
       expect(fvf1, <String>[]);
       expect(fvf1 == kEmptyStringList, true);
 
-      final fvf2 = Ascii.fromValueField(<String>[], k8BitMaxLongLength);
+      final fvf2 = AsciiString.fromValueField(<String>[], k8BitMaxLongLength);
       expect(fvf2, <String>[]);
       expect(fvf2 == kEmptyStringList, false);
       expect(fvf2.isEmpty, true);
 
-      final fvf3 = Ascii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      final fvf3 = AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength);
       expect(fvf3, isNull);
 
       global.throwOnError = true;
-      expect(() => Ascii.fromValueField(<int>[1234], k8BitMaxLongLength),
+      expect(() => AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final vList2 = rsg.getCSList(1, 1);
       final bytes = Bytes.utf8FromList(vList2);
-      final fvf4 = Ascii.fromValueField(bytes, k8BitMaxLongLength);
+      final fvf4 = AsciiString.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
 
       final vList3 = rng.uint8List(1, 1);
-      final fvf5 = Ascii.fromValueField(vList3, k8BitMaxLongLength);
+      final fvf5 = AsciiString.fromValueField(vList3, k8BitMaxLongLength);
       expect(fvf5, equals([cvt.ascii.decode(vList3)]));
     });
 
@@ -905,7 +927,7 @@ void main() {
       final vList0 = ['KEZ5HZZZR2'];
       expect(CS.isValidValues(PTag.kSCPStatus, vList0), true);
 
-      for (var s in goodCSList) {
+      for (final s in goodCSList) {
         global.throwOnError = false;
         expect(CS.isValidValues(PTag.kSCPStatus, s), true);
       }
@@ -919,7 +941,7 @@ void main() {
       global.throwOnError = true;
       expect(() => CS.isValidValues(PTag.kSCPStatus, vList1),
           throwsA(const TypeMatcher<StringError>()));
-      for (var s in badCSList) {
+      for (final s in badCSList) {
         global.throwOnError = false;
         expect(CS.isValidValues(PTag.kSCPStatus, s), false);
 
@@ -940,8 +962,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodCSList) {
-        for (var a in s) {
+      for (final s in goodCSList) {
+        for (final a in s) {
           final values = cvt.ascii.encode(a);
           final tbd2 = Bytes.asciiFromList(s);
           final tbd3 = Bytes.asciiFromList(s);
@@ -960,7 +982,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodCSList) {
+      for (final s in goodCSList) {
         final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
@@ -977,7 +999,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodCSList) {
+      for (final s in goodCSList) {
         final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -1006,22 +1028,22 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in csVM1Tags) {
+          for (final tag in csVM1Tags) {
             final e0 = CS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 2) {
-          for (var tag in csVM2Tags) {
+          for (final tag in csVM2Tags) {
             final e0 = CS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 4) {
-          for (var tag in csVM4Tags) {
+          for (final tag in csVM4Tags) {
             final e0 = CS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in csVM1nTags) {
+          for (final tag in csVM1nTags) {
             final e0 = CS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

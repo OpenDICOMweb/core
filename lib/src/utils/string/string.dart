@@ -14,7 +14,6 @@ import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/character/dicom.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/error/string_errors.dart';
-import 'package:core/src/utils/string/hexadecimal.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -133,38 +132,3 @@ bool isNotFilteredString(String s, int min, int max, bool filter(int c),
         bool allowBlank = true}) =>
     !isFilteredString(s, min, max, filter,
         allowLeadingSpaces: allowLeading, allowTrailingSpaces: allowTrailing);
-
-//TODO: before V0.9.0 decide if these are needed or useful
-
-// Auxiliary used for debugging
-@deprecated
-String toAscii(ByteData bd, [int start = 0, int end, int position]) {
-  end ??= bd.lengthInBytes;
-  String vChar(int c) =>
-      (c > kSpace) && (c < kDelete) ? '_${String.fromCharCode(c)}' : '__';
-  final bytes = bd.buffer.asUint8List(start, end);
-  if (start >= end) return '';
-  var pos = position ?? start;
-  if (pos >= end) pos = end;
-  final sb = StringBuffer();
-  for (var i = start; i < pos; i++) sb.write(' ${vChar(bytes[i])}');
-  sb.write('|${vChar(bytes[pos])}|');
-  for (var i = pos + 1; i < end; i++) sb.write(' ${vChar(bytes[i])}');
-  return sb.toString();
-}
-
-/// Returns a hexadecimal [String] corresponding to [bd].
-// Auxiliary used for debugging
-@deprecated
-String bdToHex(ByteData bd, [int start = 0, int end, int position]) {
-  end ??= bd.lengthInBytes;
-  final bytes = bd.buffer.asUint8List(start, end);
-  var pos = position ?? start;
-  if (start >= end) return '';
-  if (pos >= end) pos = end;
-  final sb = StringBuffer();
-  for (var i = start; i < pos; i++) sb.write(' ${hex8(bytes[i])}');
-  sb.write('|${hex8(bytes[pos])}|');
-  for (var i = pos + 1; i < end; i++) sb.write(' ${hex8(bytes[i])}');
-  return sb.toString();
-}

@@ -50,7 +50,7 @@ mixin DeleteMixin {
   List<Element> deleteCodes(List<int> codes) {
     assert(codes != null && codes.isNotEmpty);
     final deleted = <Element>[];
-    for (var code in codes) {
+    for (final code in codes) {
       final e = deleteCode(code);
       if (e != null) deleted.add(e);
     }
@@ -64,9 +64,9 @@ mixin DeleteMixin {
     if (e != null) results.add(e);
     assert(lookup(index) == null);
     if (recursive)
-      for (var e in elements) {
+      for (final e in elements) {
         if (e is SQ) {
-          for (var item in e.items) {
+          for (final item in e.items) {
             final deleted = item.delete(index);
             if (deleted != null) results.add(deleted);
           }
@@ -78,12 +78,12 @@ mixin DeleteMixin {
   // TODO Jim: maybe remove recursive call
   List<Element> deleteIfTrue(bool test(Element e), {bool recursive = false}) {
     final deleted = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) {
         delete(e.index);
         deleted.add(e);
       } else if (e is SQ) {
-        for (var item in e.items) {
+        for (final item in e.items) {
           final dList = item.deleteIfTrue(test, recursive: recursive);
           deleted.addAll(dList);
         }
@@ -97,7 +97,7 @@ mixin DeleteMixin {
     final deleted = deleteCodes(privates);
     if (recursive) {
       // Fix: you cant tell what sequence the element was in.
-      for (var sq in sequences) {
+      for (final sq in sequences) {
         for (var i = 0; i < sq.items.length; i++) {
           final Iterable<int> codes =
               sq.items.elementAt(i).findAllPrivateCodes();
@@ -113,8 +113,8 @@ mixin DeleteMixin {
   // TODO: doesn't implement recursion
   List<Element> deleteAllPrivateInPublicSQs({bool recursive = false}) {
     final deleted = <Element>[];
-    for (var sq in sequences) {
-      for (var item in sq.items) {
+    for (final sq in sequences) {
+      for (final item in sq.items) {
         final privates = item.deleteAllPrivate();
         if (privates.isNotEmpty) deleted.addAll(privates);
       }

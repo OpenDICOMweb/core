@@ -25,6 +25,22 @@ void main() {
     const int16Max = [kInt16Max];
     expect(Int16.fromList(int16Max), int16Max);
     expect(Int16.fromList(int16Min), int16Min);
+
+    const int64Max = [kInt64Max];
+    final from1 = Int16.fromList(int64Max, check: true);
+    expect(from1, isNull);
+    expect(from1 is Int16List, false);
+
+    final from2 = Int16.fromList(null);
+    expect(from2 == kEmptyInt16List, true);
+
+    final from3 = Int16.fromList([]);
+    expect(from3.isEmpty, true);
+    expect(from3 == kEmptyInt16List, true);
+
+    global.throwOnError = true;
+    expect(() => Int16.fromList(int64Max),
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int16Base toBytes', () {

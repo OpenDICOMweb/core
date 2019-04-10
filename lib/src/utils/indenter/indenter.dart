@@ -6,11 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/utils/indenter/indenter_base.dart';
+import 'package:core/src/utils/indenter/indenter_mixin.dart';
 
 // ignore_for_file: public_member_api_docs
 
-class Indenter extends Object with IndenterMixin implements StringBuffer {
+class Indenter with IndenterMixin implements StringBuffer {
   final StringBuffer sb;
 
   /// The maximum length of any line. If the current line is
@@ -39,7 +39,7 @@ class Indenter extends Object with IndenterMixin implements StringBuffer {
   void write(Object o) => sb.write(o);
 
   @override
-  void writeln([Object o]) =>
+  void writeln([Object o = '']) =>
       (tabSize == 0) ? sb.write(o) : sb.writeln('$prefix$o');
 
   @override

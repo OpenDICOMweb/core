@@ -6,6 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:typed_data';
+
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/utils.dart';
@@ -50,6 +52,9 @@ abstract class Integer extends Element<int> {
   @override
   Bytes get vfBytes => Bytes.typedDataView(typedData);
 
+  @override
+  Uint8List get bulkdata => typedData.buffer.asUint8List();
+
   /// Returns a [view] of this [Element] with [values] replaced by
   /// appropriate TypedData.
   Integer view([int start = 0, int length]);
@@ -74,7 +79,7 @@ abstract class Integer extends Element<int> {
     if (!doTestElementValidity || vList.isEmpty) return true;
     var ok = true;
     if (!Element.isValidLength(tag, vList, issues, maxLength, type)) ok = false;
-    for (var v in vList) {
+    for (final v in vList) {
       if (ok && !isValidValue(v, issues, minValue, maxValue)) ok = false;
     }
     return ok ? ok : invalidValues(vList, issues);
@@ -85,8 +90,10 @@ abstract class Integer extends Element<int> {
 abstract class SS extends Integer with Int16 {
   static const int kVRIndex = kSSIndex;
   static const int kVRCode = kSSCode;
+  //Urgent Move to Int16Mixin
   static const int kSizeInBytes = 2;
   static const int kSizeInBits = kSizeInBytes * 8;
+  // Urgent end of move
   static const int kVLFSize = 2;
   static const int kMaxVFLength = k16BitMaxShortVF;
   static const int kMaxLength = k16BitMaxShortLength;

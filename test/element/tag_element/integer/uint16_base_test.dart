@@ -25,6 +25,26 @@ void main() {
     const uInt16Max = [kUint16Max];
     expect(Uint16.fromList(uInt16Min), uInt16Min);
     expect(Uint16.fromList(uInt16Max), uInt16Max);
+
+    const uInt64Max = [kUint64Max];
+    final from0 = Uint16.fromList(uInt64Max, check: false);
+    expect(from0, equals(uInt16Max));
+    expect(from0 is Uint16List, true);
+
+    final from1 = Uint16.fromList(uInt64Max, check: true);
+    expect(from1, isNull);
+    expect(from1 is Uint16List, false);
+
+    final from2 = Uint16.fromList(null);
+    expect(from2 == kEmptyUint16List, true);
+
+    final from3 = Uint16.fromList([]);
+    expect(from3.isEmpty, true);
+    expect(from3 == kEmptyUint16List, true);
+
+    global.throwOnError = true;
+    expect(() => Uint16.fromList(uInt64Max),
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Uint16Base fromBytes', () {
@@ -73,8 +93,8 @@ void main() {
       final vList0 = rng.uint16List(1, 1);
       final bd0 = vList0.buffer.asByteData();
       final lBd0 = Uint16.toByteData(vList0);
-      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
-          .asUint8List()}');
+      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, '
+          'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 
@@ -205,8 +225,8 @@ void main() {
       final vList0 = rng.uint16List(1, 1);
       final bd0 = vList0.buffer.asByteData();
       final lBd0 = Uint16.toByteData(vList0);
-      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
-          .asUint8List()}');
+      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, '
+          'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 

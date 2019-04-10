@@ -33,7 +33,7 @@ class BulkdataFile {
     final length = bytes.getUint32(8);
     final index = BulkdataIndex(bytes.getUint32List(12, length));
     final vfStart = 12 + (length * 32);
-    return  BulkdataFile._(path, bytes, index, vfStart);
+    return BulkdataFile._(path, bytes, index, vfStart);
   }
 
   BulkdataFile._(this.path, this.bytes, this.index, this.vfStart);
@@ -67,7 +67,7 @@ class BulkdataFile {
 
   static Future<BulkdataFile> readPath(String fPath,
           {bool doAsync = true}) async =>
-      await readFile(File(fPath), doAsync: doAsync);
+      readFile(File(fPath), doAsync: doAsync);
 }
 
 ///

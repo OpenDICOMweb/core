@@ -42,8 +42,8 @@ class PublicGroup implements GroupBase {
     members[e0.code] = e0;
     if (e0 is SQ) {
       sequences.add(e0);
-      for (var item in e0.items)
-        for (var e1 in item.elements) if (e1.group.isOdd) privateSQs.add(e0);
+      for (final item in e0.items)
+        for (final e1 in item.elements) if (e1.group.isOdd) privateSQs.add(e0);
     }
   }
 

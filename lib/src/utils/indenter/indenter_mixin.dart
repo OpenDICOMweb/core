@@ -9,7 +9,7 @@
 
 // ignore_for_file: public_member_api_docs
 
-abstract class IndenterMixin {
+mixin IndenterMixin {
   // **** Interface
 
   int get length;
@@ -20,7 +20,7 @@ abstract class IndenterMixin {
 
   /// Converts obj to a String by invoking Object.toString and adds the
   /// result to this, followed by a newline.
-  void writeln([Object o]);
+  void writeln([Object o = '']);
 
   // The number of spaces to indent at each [depth].
   int get tabSize;

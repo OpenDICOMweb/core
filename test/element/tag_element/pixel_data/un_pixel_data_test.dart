@@ -48,7 +48,7 @@ void main() {
       expect(e0.hasValidValues, true);
       log.debug('bytes: ${e0.vfBytes}');
 
-      for (var s in frame) {
+      for (final s in frame) {
         expect(e0.checkValue(s), true);
       }
       expect(e0.checkValue(UN.kMaxValue), true);
@@ -95,7 +95,7 @@ void main() {
       final s = Sha256.uint8(frame);
       expect(e0.sha256, equals(e0.update(s)));
 
-      for (var s in frame) {
+      for (final s in frame) {
         expect(e0.checkValue(s), true);
       }
 
@@ -156,7 +156,7 @@ void main() {
       final s = Sha256.uint8(frame);
       expect(e0.sha256, equals(e0.update(s)));
 
-      for (var s in frame) {
+      for (final s in frame) {
         expect(e0.checkValue(s), true);
       }
 
@@ -193,7 +193,7 @@ void main() {
       expect(e0.valuesCopy, equals(e0.values));
       expect(e0.typedData is Uint8List, true);
 
-      for (var s in frame) {
+      for (final s in frame) {
         expect(e0.checkValue(s), true);
       }
 
@@ -293,7 +293,7 @@ void main() {
       final s = Sha256.uint8(pixels);
       expect(e0.sha256, equals(e0.update(s)));
 
-      for (var s in frame) {
+      for (final s in frame) {
         expect(e0.checkValue(s), true);
       }
       expect(e0.checkValue(UN.kMaxValue), true);
@@ -337,7 +337,7 @@ void main() {
       final s = Sha256.uint8(frame);
       expect(e0.sha256, equals(e0.update(s)));
 
-      for (var s in frame) {
+      for (final s in frame) {
         expect(e0.checkValue(s), true);
       }
       expect(e0.checkValue(kUint8Max), true);
@@ -385,7 +385,7 @@ void main() {
       final s = Sha256.uint8(pixels);
       expect(e1.sha256, equals(e1.update(s)));
 
-      for (var s in frame) {
+      for (final s in frame) {
         expect(e1.checkValue(s), true);
       }
       expect(e1.checkValue(UN.kMaxValue), true);
@@ -435,7 +435,7 @@ void main() {
       final e3 = e0.update(s);
       expect(e2, equals(e3));
 
-      for (var s in frame) {
+      for (final s in frame) {
         expect(e0.checkValue(s), true);
       }
 
@@ -479,7 +479,7 @@ void main() {
       final un0 = Tag.isValidVR(PTag.kPixelData, UN.kVRIndex);
       expect(un0, true);
 
-      for (var tag in unTags) {
+      for (final tag in unTags) {
         expect(UN.isValidTag(tag), true);
       }
       //VR.UN
@@ -489,7 +489,7 @@ void main() {
       final un2 = UN.isValidTag(PTag.kNoName0);
       expect(un2, true);
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(UN.isValidTag(tag), true);
       }
@@ -500,11 +500,11 @@ void main() {
       expect(UN.isValidVRIndex(kUNIndex), true);
       expect(UN.isValidVRIndex(kCSIndex), true);
 
-      for (var tag in unTags) {
+      for (final tag in unTags) {
         expect(UN.isValidVRIndex(tag.vrIndex), true);
       }
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(UN.isValidVRIndex(tag.vrIndex), true);
       }
@@ -515,11 +515,11 @@ void main() {
       expect(UN.isValidVRCode(kUNCode), true);
       expect(UN.isValidVRCode(kAECode), true);
 
-      for (var tag in unTags) {
+      for (final tag in unTags) {
         expect(UN.isValidVRCode(tag.vrCode), true);
       }
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(UN.isValidVRCode(tag.vrCode), true);
       }

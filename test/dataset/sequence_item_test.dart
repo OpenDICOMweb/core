@@ -270,7 +270,7 @@ void main() {
       final isValidTag0 = SQ.isValidTag(PTag.kMRImageFrameTypeSequence);
       expect(isValidTag0, true);
 
-      for (var tag in sqTags0) {
+      for (final tag in sqTags0) {
         final isValidTag0 = SQ.isValidTag(tag);
         expect(isValidTag0, true);
       }
@@ -285,7 +285,7 @@ void main() {
       expect(() => SQ.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final isValidTag0 = SQ.isValidTag(tag);
         expect(isValidTag0, false);
@@ -299,7 +299,7 @@ void main() {
     test('SQ isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(SQ.isValidVRIndex(kSQIndex), true);
-      for (var tag in sqTags0) {
+      for (final tag in sqTags0) {
         global.throwOnError = false;
         expect(SQ.isValidVRIndex(tag.vrIndex), true);
       }
@@ -312,7 +312,7 @@ void main() {
       expect(() => SQ.isValidVRIndex(kAEIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(SQ.isValidVRIndex(tag.vrIndex), false);
 
@@ -326,7 +326,7 @@ void main() {
       global.throwOnError = false;
       expect(SQ.isValidVRCode(kSQCode), true);
 
-      for (var tag in sqTags0) {
+      for (final tag in sqTags0) {
         expect(SQ.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -338,7 +338,7 @@ void main() {
       global.throwOnError = true;
       expect(() => SQ.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(SQ.isValidVRCode(tag.vrCode), false);
 
@@ -352,7 +352,7 @@ void main() {
       global.throwOnError = false;
       expect(SQ.checkVRIndex(kSQIndex), kSQIndex);
 
-      for (var tag in sqTags0) {
+      for (final tag in sqTags0) {
         global.throwOnError = false;
         expect(SQ.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
@@ -369,7 +369,7 @@ void main() {
       expect(() => SQ.checkVRIndex(kAEIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(SQ.checkVRIndex(tag.vrIndex), isNull);
 
@@ -383,7 +383,7 @@ void main() {
       global.throwOnError = false;
       expect(SQ.checkVRCode(kSQCode), kSQCode);
 
-      for (var tag in sqTags0) {
+      for (final tag in sqTags0) {
         global.throwOnError = false;
         expect(SQ.checkVRCode(tag.vrCode), tag.vrCode);
       }
@@ -400,7 +400,7 @@ void main() {
       expect(() => SQ.checkVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(SQ.checkVRCode(tag.vrCode), isNull);
 

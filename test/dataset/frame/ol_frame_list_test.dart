@@ -452,8 +452,7 @@ void main() {
           final frame0 = ol32FLc[j];
           expect(frame0.index == j, true);
 
-          expect(
-              frame0.lengthInBytes * length0 == ol32FLc.pixels.lengthInBytes,
+          expect(frame0.lengthInBytes * length0 == ol32FLc.pixels.lengthInBytes,
               true);
 
           expect(frame0.length == ol32FLc.desc.length, true);
@@ -478,8 +477,67 @@ void main() {
         }
       }
       log.debug('length0: $length0, Frames in FrameList: ${ol32FLc.length}');
-      expect(
-          () => ol32FLc[length0], throwsA(const TypeMatcher<RangeError>()));
+      expect(() => ol32FLc[length0], throwsA(const TypeMatcher<RangeError>()));
+    });
+
+    test('Frame32Bit', () {
+      const nFrames0 = 1;
+      const photometricInterpretation0 = 'RGB';
+
+      // Descriptor
+      final ol32FDa = FrameDescriptor(
+          ts0,
+          samplesPerPixel0,
+          photometricInterpretation0,
+          rows4,
+          columns6,
+          bitsAllocated32,
+          bitsStored32,
+          highBit32,
+          pixelRepresentation0,
+          planarConfiguration0,
+          pixelAspectRatio: pixelAspectRatio0);
+
+      final pixels0 = Uint32List(ol32FDa.length * nFrames0);
+
+      final ol32FLa = FrameList32Bit(pixels0, nFrames0, ol32FDa);
+
+      final frame32 = Frame32Bit(ol32FLa, pixels0, 1);
+      log.debug('frame32: $frame32');
+
+      // pixels
+      expect(frame32.pixels is Uint32List, true);
+      expect(frame32.pixels.length == pixels0.length, true);
+      expect(frame32.pixels == pixels0, true);
+      expect(frame32.pixels.lengthInBytes == pixels0.lengthInBytes, true);
+      expect(frame32.pixelSizeInBits == ol32FDa.pixelSizeInBits, true);
+
+      // bulkdata
+      expect(frame32.bulkdata.length == pixels0.lengthInBytes, true);
+      expect(frame32.bulkdata.length == frame32.bulkdata.lengthInBytes, true);
+      expect(frame32.pixels.lengthInBytes == frame32.bulkdata.length, true);
+
+      // nFrames
+      expect(frame32.length == pixels0.length, true); //nFrames0=1
+
+      // frameLength
+      expect(frame32.lengthInBytes == pixels0.lengthInBytes, true);
+      expect(frame32.lengthInBytes == frame32.pixels.lengthInBytes, true);
+      expect(frame32.lengthInBytes == frame32.bulkdata.lengthInBytes, true);
+      expect(frame32.lengthInBytes == ol32FDa.lengthInBytes * nFrames0, true);
+
+      // transferSyntax
+      expect(frame32.ts == ts0, true);
+      // FrameDescriptor fields
+      expect(frame32.samplesPerPixel == samplesPerPixel0, true);
+      expect(frame32.rows == rows4, true);
+      expect(frame32.columns == columns6, true);
+      expect(frame32.bitsAllocated == bitsAllocated32, true);
+      expect(frame32.bitsStored == bitsStored32, true);
+      expect(frame32.highBit == highBit32, true);
+      expect(frame32.pixelRepresentation == pixelRepresentation0, true);
+      expect(frame32.planarConfiguration, isNull);
+      expect(frame32.pixelAspectRatio == pixelAspectRatio0, true);
     });
   });
 }

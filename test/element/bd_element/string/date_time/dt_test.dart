@@ -39,12 +39,16 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        for (var code in dtVM1Tags) {
+        for (final code in dtVM1Tags) {
           final e0 = DTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
+
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
@@ -56,7 +60,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -64,7 +67,7 @@ void main() {
     test('DTbytes from VM.k1 bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
-        for (var code in dtVM1Tags) {
+        for (final code in dtVM1Tags) {
           global.throwOnError = false;
           final e0 = DTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
@@ -82,7 +85,7 @@ void main() {
     test('DTbytes from VM.k1 bad length', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDTList(2, i + 1);
-        for (var code in dtVM1Tags) {
+        for (final code in dtVM1Tags) {
           global.throwOnError = false;
           final e0 = DTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
@@ -103,6 +106,10 @@ void main() {
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
+        expect(e1.hasValidValues, true);
+        expect(e1 == e0, true);
+        expect(e1.vfBytes == e0.vfBytes, true);
+
         expect(e0.code == e0.bytes.code, true);
         expect(e0.eLength == e0.bytes.eLength, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
@@ -113,7 +120,6 @@ void main() {
         expect(e0.vfOffset == e0.bytes.vfOffset, true);
         expect(e0.vfBytes == e0.bytes.vfBytes, true);
         expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//        expect(e0.hashCode == e0.bytes.hashCode, true);
       }
     });
 
@@ -128,8 +134,8 @@ void main() {
         expect(e0.hasValidValues, false);
 
         global.throwOnError = true;
-        expect(() => e0.hasValidValues,
-            throwsA(const TypeMatcher<StringError>()));
+        expect(
+            () => e0.hasValidValues, throwsA(const TypeMatcher<StringError>()));
       }
     });
   });

@@ -127,7 +127,7 @@ void main() {
     log.debug('listupper: $listupper');
     var lowercaseList = '';
     final listlower = <String>[];
-    for (var data in listupper) {
+    for (final data in listupper) {
       final dkd = toLowercaseChar(data.codeUnitAt(0));
       lowercaseList = String.fromCharCode(dkd);
       listlower.add(lowercaseList);

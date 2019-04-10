@@ -22,8 +22,6 @@ import 'package:core/src/values.dart';
 import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
-// ignore_for_file: public_member_api_docs
-
 /// The base class for DICOM Data Elements
 ///
 /// An implementation of this class must provide the following:
@@ -38,9 +36,6 @@ typedef ElementTest = bool Function(Element e);
 
 /// The Type signature of a condition handler.
 typedef Condition = bool Function(Dataset ds, Element e);
-
-Iterable<V> _toList<V>(Iterable v) =>
-    (v is Iterable) ? v.toList(growable: false) : v;
 
 /// Returns a formatter for _this_.
 final ElementFormatter eFormat = SimpleElementFormatter();
@@ -61,10 +56,10 @@ abstract class Element<V> extends ListBase<V> {
 
   List<V> _values;
 
-  /// Sets [values] to [vList]. If [vList] is [Iterable] it is first
-  /// converted into a [List] and then assigned to [values].
-  set values(Iterable<V> vList) =>
-      _values = (vList is List<int>) ? vList : vList.toList();
+  /// Sets [values] to [v]. If [v] is [Iterable] it is first
+  /// converted into a fixed length [List] and then assigned to [values].
+  set values(Iterable<V> v) =>
+      _values = (v is List) ? v : v.toList(growable: false);
 
   /// Returns the Tag Code ([code]) associated with this Element
   int get code;
@@ -94,17 +89,23 @@ abstract class Element<V> extends ListBase<V> {
   /// Pixel Data Frames if Multi-Frame.
   Iterable<Frame> get frames => unimplementedError();
 
+  /// Returns a [Uint8List] containing the encoded [values] of _this_.
+  // Urgent: convert this to Bytes.
   Uint8List get bulkdata;
 
   // **** End of Interface
 
+  /// Returns the ith value of _this_.
   @override
   V operator [](int i) => values[i];
 
+  /// Unsupported
   @override
   void operator []=(int i, V v) =>
       throw UnsupportedError('Elements are immutable');
 
+  /// Returns true if _this_ and _other_ have a [tag] and [values] that
+  /// are equal ([==]).
   @override
   bool operator ==(Object other) => equal(this, other);
 
@@ -214,16 +215,16 @@ abstract class Element<V> extends ListBase<V> {
     return c >= 0x00020000 && c <= 0x00020102;
   }
 
-  // The Tag Code Group of _this_.
+  /// The Tag Code Group of _this_.
   int get group => code >> 16;
 
-  // The Tag Code Group as a hexadecimal [String].
+  /// The Tag Code Group as a hexadecimal [String].
   String get groupHex => hex16(group);
 
-  // The Tag Code Element ([elt]) of _this_.
+  /// The Tag Code Element ([elt]) of _this_.
   int get elt => code & 0xFFFF;
 
-  // The Tag Code Element ([elt]) as a hexadecimal [String].
+  /// The Tag Code Element ([elt]) as a hexadecimal [String].
   String get eltHex => hex16(elt);
 
   /// Returns _true_ if this is a _Group Length_ [Element].
@@ -235,6 +236,7 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns true if _this_ is Data [Element] defined by an implementation.
   bool get isPrivate => group.isOdd && group > 0x0007 && group < 0xFFFF;
 
+  /// Returns true if _this_ is a Private Creator.
   bool get isPrivateCreator => isPrivate && (elt >= 0x10 && elt < 0xFF);
 
   /// Returns the creator token for _this_.
@@ -250,6 +252,7 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns the Value Representation [VR] of _this_.
   VR get vr => vrByIndex[vrIndex];
 
+  /// Returns the identifier associated with the [tag]'s [VR].
   String get vrId => vr.id;
 
   /// The name of the Value Representation (VR) for _this_.
@@ -308,6 +311,9 @@ abstract class Element<V> extends ListBase<V> {
   /// multiple of [columns]
   int get columns => vmColumns;
 
+  /// The number of rows in the [values] array. If [columns] is
+  /// greater than 1, the number of [values] must be an integer
+  /// multiple of [columns]
   int get rows => length ~/ columns;
 
   // ****** Element Type Interface, Getters, and Methods ******
@@ -316,6 +322,7 @@ abstract class Element<V> extends ListBase<V> {
   /// The Element Type of this Element.
   EType get eType => tag.eType;
 
+  /// The Element Type Index of this Element.
   int get eTypeIndex => tag.type.index;
 
   /// The Element Type predicate of this Element.
@@ -361,12 +368,16 @@ abstract class Element<V> extends ListBase<V> {
   Bytes get vfBytes =>
       (checkValues(values)) ? Bytes.typedDataView(typedData) : null;
 
+  /// Converts [vfBytes] to an ASCII [String] and returns it.
   String get vfBytesAsAscii => vfBytes.stringFromAscii();
 
+  /// Converts [vfBytes] to a [List<String>] of ASCII [String]s and returns it.
   Iterable<String> get vfBytesAsAsciiList => vfBytes.stringListFromAscii();
 
+  /// Converts [vfBytes] to a UTF8 [String] and returns it.
   String get vfBytesAsUtf8 => utf8.decode(vfBytes, allowMalformed: true);
 
+  /// Converts [vfBytes] to a [List<String>] of UTF8 [String]s and returns it.
   Iterable<String> get vfBytesAsUtf8List =>
       utf8.decode(vfBytes, allowMalformed: true).split('\\');
 
@@ -408,6 +419,8 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns _true_ if [values] is valid for _this_.
   bool checkValue(V v, {Issues issues, bool allowInvalid = false});
 
+  /// Returns _true_ if the [values] of _this_ are equal to the [values] of
+  /// [other].
   bool valuesEqual(Element<V> other) => vListEqual(values, other.values);
 
   // ************ Element related Getters and Methods *************
@@ -450,6 +463,7 @@ abstract class Element<V> extends ListBase<V> {
   /// _Note_: Sequence (SQ) overrides this Getter.
   int get total => 1;
 
+  /// Returns an [Issues] associated with the [values] of _this_.
   Issues get issues {
     Issues result;
     if (tag is PTagInvalidVR)
@@ -461,14 +475,15 @@ abstract class Element<V> extends ListBase<V> {
 
   Issues _getIssues() => Issues('$this\n  $values');
 
+  /// Returns a [String] representation of _this_.
   String get asString => toString();
 
+  /// Returns a [String] containing information about _this_.
   String get info {
-    final v = values;
+    var v = values;
     if (v == null) return nullElement();
-    List<V> vList = _toList<V>(values);
-    vList = (vList.length > 10) ? vList.sublist(0, 10) : values;
-    final s = '(${vList.length})${vList.map((v) => '$v')}';
+    v = (v.length > 10) ? v.sublist(0, 10) : values;
+    final s = '(${v.length})${v.map((v) => '$v')}';
     return '$runtimeType$dcm: $s';
   }
 
@@ -478,7 +493,7 @@ abstract class Element<V> extends ListBase<V> {
   bool get isValid => hasValidVR && hasValidLength && hasValidValues;
 
   /// Returns a copy of _this_ with [values] [f]([values]).
-  Element updateF(List<V> f(List<V> vList)) => update(f(values));
+  Element updateF(Iterable<V> f(List<V> vList)) => update(f(values));
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -496,8 +511,6 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns a copy of _this_.
   Element<V> get copy => update(valuesCopy);
 
-  int counter(ElementTest test) => test(this) ? 1 : 0;
-
   /// Returns a formatted [String] representation of _this_.
   // String format(Formatter z) => '${z(info)}\n';
   // String format(Formatter z) => z.fmt(this, elements);
@@ -507,9 +520,12 @@ abstract class Element<V> extends ListBase<V> {
 
   // ***************** Static Getters and Methods *****************
   // **************************************************************
+
+  /// Returns _true_ if [a] is equal to [b].
   static bool equal(Element a, Element b) =>
       identical(a, b) || (a.tag == b.tag && vListEqual(a.values, b.values));
 
+  /// Returns _true_ if the [values] of [a] are equal to the [values] of [b].
   static bool vListEqual(Iterable a, Iterable b) =>
       identical(a, b) || (a.length == b.length && _vListEqual(a, b));
 
@@ -523,37 +539,35 @@ abstract class Element<V> extends ListBase<V> {
     return true;
   }
 
-  /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
-  /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
-  /// is used.
+  /// Returns _true_ if [tag].vrIndex is equal to [targetVR],
+  /// which MUST be a valid _VR Index_. Typically, one of the
+  /// constants (k_XX_Index) is used.
   static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
       (doTestElementValidity &&
           tag.vrIndex != targetVR &&
           invalidTag(tag, issues, type)) ||
       true;
 
+  /// Returns _true_ is [vList] has a valid length for [tag].
   static bool isValidLength<V>(Tag tag, Iterable<V> vList, Issues issues,
       int maxLengthForVR, Type type) {
     if (tag == null) return invalidTag(tag, issues, type);
     if (vList == null) return nullValueError();
     // TODO: change this when Element type is known
-    if (vList.isEmpty || allowInvalidVMs) return true;
+    if (vList.isEmpty || allowInvalidVMs || tag.isLengthAlwaysValid)
+      return true;
     final min = tag.vmMin;
     final max = tag.vm.max(maxLengthForVR);
-    if (vList != null &&
-        (tag.isLengthAlwaysValid ||
-            vList.isEmpty ||
-            allowInvalidValueLengths ||
-            _isValidLength(vList.length, min, max, tag.columns))) return true;
-    return invalidValuesLength(vList, min, max, issues, tag);
+    final length = vList.length;
+    if (length >= min && length <= max && (length % tag.columns) == 0) {
+      return true;
+    } else {
+      return invalidValuesLength(vList, min, max, issues, tag);
+    }
   }
 
+  /// Returns _true_ is [vList] does not have a valid length for [tag].
   static bool isNotValidLength<V>(Tag tag, Iterable<V> vList, Issues issues,
           int maxLength, Type type) =>
       !isValidLength(tag, vList, issues, maxLength, type);
-}
-
-bool _isValidLength(int length, int min, int max, int columns) {
-  if (length == 0) return true;
-  return length >= min && length <= max && (length % columns) == 0;
 }

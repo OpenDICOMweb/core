@@ -47,7 +47,7 @@ class DeIdMethod extends ContextGroup {
   bool isValid(int code) => map.keys.contains(code);
 
   bool isValidList(List<int> codes) {
-    for (var code in codes) if (!isValid(code)) return false;
+    for (final code in codes) if (!isValid(code)) return false;
     return true;
   }
 

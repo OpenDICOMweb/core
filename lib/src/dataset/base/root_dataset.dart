@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'dart:collection';
-import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
@@ -30,7 +29,7 @@ abstract class RootDataset extends Dataset {
   @override
   RDSBytes dsBytes;
   @override
-  Charset charset = utf8Charset;
+  Ascii charset = utf8Charset;
 
   /// Constructor
   RootDataset(this.path, Bytes bytes, int fmiEnd)
@@ -56,7 +55,7 @@ abstract class RootDataset extends Dataset {
 
   /// Returns the encoded [Bytes] for the File Meta Information (FMI) for
   /// _this_. [fmiBytes] has _one-time_ setter that is initialized lazily.
-  Uint8List get fmiBytes => dsBytes.fmiBytes;
+  Bytes get fmiBytes => dsBytes.fmiBytes;
 
   /// Returns _true_ is _this_ has File Meta Information.
   bool get hasFmi => fmi.isNotEmpty;
@@ -161,9 +160,8 @@ abstract class RootDataset extends Dataset {
       Total Duplicates: Fix: \$dupTotal
              Sequences: ${sqs.length}
          Private Total: $nPrivate
+     Private Sequences: $nPrivateSequences
                History: $history''');
-    if (nPrivateSequences != 0)
-      sb.writeln('     Private Sequences: $nPrivateSequences');
 // Fix    if (dupTotal != 0) sb.writeln('      Total Duplicates: $dupTotal');
     if (duplicates.isNotEmpty)
       sb.writeln('  Top Level Duplicates: ${duplicates.length}');
@@ -173,8 +171,8 @@ abstract class RootDataset extends Dataset {
   @override
   Iterable<Object> findAllWhere(bool test(Element e)) {
     final result = <Object>[];
-    for (var e in fmi.elements) if (test(e)) result.add(e);
-    for (var e in elements) if (test(e)) result.add(e);
+    for (final e in fmi.elements) if (test(e)) result.add(e);
+    for (final e in elements) if (test(e)) result.add(e);
     return result;
   }
 

@@ -26,7 +26,7 @@ void typeTest() {
   print('  bar is double: $b');
   print('  bar: $bar');
   try {
-    for (var v in foo) {
+    for (final v in foo) {
       if (v is! double) {
         print('    Not double: $v');
         throw TypeError();
@@ -45,7 +45,7 @@ void typeTest() {
 bool isListIntType(List v) => v is List<int>;
 
 bool isListInt(List vList) {
-  for (var v in vList) if (v is! int) return false;
+  for (final v in vList) if (v is! int) return false;
   return true;
 }
 

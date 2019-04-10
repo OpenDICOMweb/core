@@ -18,23 +18,14 @@ import 'package:core/src/system.dart';
 /// [BytesMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
 mixin BytesMixin {
-  ByteData get bd;
-  int get length;
-  String get endianness;
-
-  int getInt16(int offset);
-  int getInt32(int offset);
-  int getInt64(int offset);
-
-  int getUint16(int offset);
-  int getUint32(int offset);
-  int getUint64(int offset);
-
-  double getFloat32(int offset);
-  double getFloat64(int offset);
+  Uint8List get _buf;
+  ByteData get _bd;
+  Endian get endian;
 
   // **** End of Interface
-  // **** Extensions ****
+
+  // **** TypedData interface.
+  int get elementSizeInBytes => 1;
 
   Int32x4 getInt32x4(int offset) {
     assert(length >= offset + 16);
@@ -85,7 +76,7 @@ mixin BytesMixin {
     final index = _absIndex(offset);
     length ??= _length16(offset);
     return (_isAligned16(index))
-        ? bd.buffer.asInt16List(index, length)
+        ? _buf.buffer.asInt16List(index, length)
         : getInt16List(offset, length);
   }
 
@@ -119,7 +110,7 @@ mixin BytesMixin {
     final index = _absIndex(offset);
     length ??= _length32(offset);
     return (_isAligned32(index))
-        ? bd.buffer.asInt32List(index, length)
+        ? _buf.buffer.asInt32List(index, length)
         : getInt32List(offset, length);
   }
 
@@ -153,10 +144,16 @@ mixin BytesMixin {
     final index = _absIndex(offset);
     length ??= _length64(offset);
     return (_isAligned64(index))
-        ? bd.buffer.asInt64List(index, length)
+        ? _buf.buffer.asInt64List(index, length)
         : getInt64List(offset, length);
   }
 
+  // Allows the removal of padding characters.
+  Uint8List asUint8List([int offset = 0, int length]) {
+    length ??= bdLength;
+    final index = _absIndex(offset);
+    return _buf.buffer.asUint8List(index, length);
+  }
 
   /// If [offset] is aligned on an 8-byte boundary, returns a [Uint16List]
   /// view of the specified region; otherwise, creates a [Uint16List] that
@@ -165,7 +162,7 @@ mixin BytesMixin {
     length ??= _length16(offset);
     final index = _absIndex(offset);
     return (_isAligned16(index))
-        ? bd.buffer.asUint16List(index, length)
+        ? _buf.buffer.asUint16List(index, length)
         : getUint16List(offset, length);
   }
 
@@ -201,7 +198,7 @@ mixin BytesMixin {
     if (length < 0) return null;
     final index = _absIndex(offset);
     return (_isAligned32(index))
-        ? bd.buffer.asUint32List(index, length)
+        ? _buf.buffer.asUint32List(index, length)
         : getUint32List(offset, length);
   }
 
@@ -224,7 +221,7 @@ mixin BytesMixin {
     length ??= _length64(offset);
     final index = _absIndex(offset);
     return (_isAligned64(index))
-        ? bd.buffer.asUint64List(index, length)
+        ? _buf.buffer.asUint64List(index, length)
         : getUint64List(offset, length);
   }
 
@@ -235,7 +232,7 @@ mixin BytesMixin {
     length ??= _length32(offset);
     final index = _absIndex(offset);
     return (_isAligned32(index))
-        ? bd.buffer.asFloat32List(index, length)
+        ? _buf.buffer.asFloat32List(index, length)
         : getFloat32List(offset, length);
   }
 
@@ -255,7 +252,7 @@ mixin BytesMixin {
     final index = _absIndex(offset);
     length ??= _length64(offset);
     return (_isAligned64(index))
-        ? bd.buffer.asFloat64List(index, length)
+        ? _buf.buffer.asFloat64List(index, length)
         : getFloat64List(offset, length);
   }
 
@@ -270,10 +267,10 @@ mixin BytesMixin {
   // [ByteBuffer] ([_bd].buffer).  The external interface of this package
   // uses [offset]s relative to the current [ByteData] ([_bd]).
 
-  void _setInt8(int i, int v) => bd.setInt8(i, v);
-  void _setInt16(int i, int v) => bd.setInt16(i, v, Endian.little);
-  void _setInt32(int i, int v) => bd.setInt32(i, v, Endian.little);
-  void _setInt64(int i, int v) => bd.setInt64(i, v, Endian.little);
+  void _setInt8(int i, int v) => _buf[i] = v;
+  void _setInt16(int i, int v) => _bd.setInt16(i, v, endian);
+  void _setInt32(int i, int v) => _bd.setInt32(i, v, endian);
+  void _setInt64(int i, int v) => _bd.setInt64(i, v, endian);
 
   void _setInt32x4(int offset, Int32x4 v) {
     var i = offset;
@@ -283,14 +280,14 @@ mixin BytesMixin {
     _setInt32(i += 4, v.z);
   }
 
-  void _setUint8(int i, int v) => bd.setUint8(i, v);
-  void _setUint16(int i, int v) => bd.setUint16(i, v, Endian.little);
-  void _setUint32(int i, int v) => bd.setUint32(i, v, Endian.little);
-  void _setUint64(int i, int v) => bd.setUint64(i, v, Endian.little);
+  void _setUint8(int i, int v) => _buf[i] = v;
+  void _setUint16(int i, int v) => _bd.setUint16(i, v, endian);
+  void _setUint32(int i, int v) => _bd.setUint32(i, v, endian);
+  void _setUint64(int i, int v) => _bd.setUint64(i, v, endian);
 
-  void _setFloat32(int i, double v) => bd.setFloat32(i, v, Endian.little);
+  void _setFloat32(int i, double v) => _bd.setFloat32(i, v, endian);
 
-  void _setFloat64(int i, double v) => bd.setFloat64(i, v, Endian.little);
+  void _setFloat64(int i, double v) => _bd.setFloat64(i, v, endian);
 
   void _setFloat32x4(int offset, Float32x4 v) {
     var i = offset;
@@ -379,15 +376,16 @@ mixin BytesMixin {
   // **** List Setters
 
   void setBytes(int start, Bytes bytes, [int offset = 0, int length]) =>
-      _setByteData(start, bytes.bd, offset, length);
+      _setByteData(start, bytes._buf, offset, length);
 
   void setByteData(int start, ByteData bd, [int offset = 0, int length]) =>
-      _setByteData(start, bd, offset, length);
+      _setByteData(start, bd.buffer.asUint8List(), offset, length);
 
-  void _setByteData(int start, ByteData other, int offset, int length) {
+  void _setByteData(int start, Uint8List other, int offset, int length) {
+    length ?? bdLength;
     assert(_checkLength(offset, length, kUint8Size));
     for (var i = offset, j = start; i < length; i++, j++)
-      _setUint8(j, other.getUint8(i));
+      _setUint8(j, other[i]);
   }
 
   /// Returns the number of bytes set.
@@ -533,34 +531,67 @@ mixin BytesMixin {
 
   // **** String List Setters
 
-  /// Writes the elements of the specified [sList] to _this_ starting at
-  /// [start]. If [pad] is _true_ and the final offset is odd, then a 0 is
-  /// written after the other elements have been written.
-  int setAsciiList(int start, List<String> sList,
-      [int offset = 0, int length, String separator = '', int pad = kSpace]) {
+  /// Writes the ASCII [String]s in [sList] to _this_ starting at
+  /// [start]. If [padChar] is not _null_ and the final offset is odd,
+  /// then [padChar] is written after the other elements have been written.
+  /// Returns the number of bytes written.
+  int setAsciiList(int start, List<String> sList, [int padChar = kSpace]) =>
+      _setLatinList(start, sList, 127, padChar);
+
+  /// Writes the LATIN [String]s in [sList] to _this_ starting at
+  /// [start]. If [padChar] is not _null_ and the final offset is odd,
+  /// then [padChar] is written after the other elements have been written.
+  /// Returns the number of bytes written.
+  /// _Note_: All latin character sets are encoded as single 8-bit bytes.
+  int setLatinList(int start, List<String> sList, [int padChar = kSpace]) =>
+      _setLatinList(start, sList, 255, padChar);
+
+  /// Copy [String]s from [sList] into _this_ separated by backslash.
+  /// If [padChar] is not equal to _null_ and last character position
+  /// is odd, then add [padChar] at end.
+  // Note: this only works for ascii or latin
+  int _setLatinList(int start, List<String> sList, int limit, int padChar) {
+    assert(padChar == kSpace || padChar == kNull);
     if (sList.isEmpty) return 0;
-    length ??= sList.length;
-    final last = length - 1;
+    final last = sList.length - 1;
     var k = start;
 
-    for (var i = 0; i < length; i++) {
+    for (var i = 0; i < sList.length; i++) {
       final s = sList[i];
-      for (var j = 0; j < s.length; j++) _setUint8(k++, s.codeUnitAt(j));
+      for (var j = 0; j < s.length; j++) {
+        final c = s.codeUnitAt(j);
+        if (c > limit)
+          throw ArgumentError('Character code $c is out of range $limit');
+        _setUint8(k++, s.codeUnitAt(j));
+      }
       if (i != last) _setUint8(k++, kBackslash);
     }
-    if (k.isOdd && pad != null) _setUint8(k++, pad);
+    if (k.isOdd && padChar != null) _setUint8(k++, padChar);
     return k - start;
   }
 
+  /// Converts the [String]s in [sList] into a [Uint8List].
+  /// Then copies the bytes into _this_ starting at
+  /// [start]. If [padChar] is not _null_ and the offset of the last
+  /// byte written is odd, then [padChar] is written to _this_.
+  /// Returns the number of bytes written.
+  int setUtf8List(int start, List<String> sList, [int padChar]) {
+    if (sList.isEmpty) return 0;
+    return setUtf8(start, sList.join('\\'));
+  }
+
   /// UTF-8 encodes the specified range of [s] and then writes the
-  /// code units to _this_ starting at [start]. If [padChar] is not
-  /// _null_ and [s].length is odd, then [padChar] is written after
-  /// the code units of [s] have been written.
-  int setUtf8(int start, String s,
-      [int offset = 0, int length, int padChar = kSpace]) {
-    length ??= s.length;
-    final v = _maybeGetSubstring(s, offset, length);
-    return _setUint8List(start, cvt.utf8.encode(v), offset, length, padChar);
+  /// code units to _this_ starting at [start].
+  /// _Note_: UTF8 {String]s are always padded with the S
+  /// pace (kSpace) character.
+  int setUtf8(int start, String s, [int padChar = kSpace]) {
+    final bytes = cvt.utf8.encode(s);
+
+    var k = start;
+    for (var i = 0; i < bytes.length; i++) _setUint8(k++, bytes[i]);
+
+    if (k.isOdd && padChar != null) _setUint8(k++, kSpace);
+    return k - start;
   }
 
   String _maybeGetSubstring(String s, int offset, int length) =>
@@ -568,29 +599,15 @@ mixin BytesMixin {
           ? s
           : s.substring(offset, offset + length);
 
-  int setUtf8List(int start, List<String> sList,
-      [int offset = 0, int length, String separator = '']) {
-    if (sList.isEmpty) return 0;
-    final s = _stringListToString(sList, offset, length ??= sList.length);
-    setUtf8(start, s, offset, s.length);
-    return s.length;
-  }
-
-  String _stringListToString(List<String> sList, int offset, int length) {
-    final v = (offset == 0 && length == sList.length)
-        ? sList
-        : sList.sublist(offset, offset + length);
-    return v.join('\\');
-  }
-
   // **** Other
 
   @override
-  String toString() => '$endianness $runtimeType: ${toBDDescriptor(bd)}';
+  String toString() => '$endianness $runtimeType: ${toBDDescriptor(_buf)}';
 
+  /// Returns the absolute index of [offset] in the underlying [ByteBuffer].
+  int _absIndex(int offset) => _buf.offsetInBytes + offset;
 
-
-  String toBDDescriptor(ByteData bd) {
+  String toBDDescriptor(Uint8List bd) {
     final start = bd.offsetInBytes;
     final length = bd.lengthInBytes;
     final _length =
@@ -613,7 +630,7 @@ mixin BytesMixin {
   /// Checks that _bd[bdOffset, length] >= vLengthInBytes
   bool _checkLength(int bdOffset, int vLength, int size) {
     final vLengthInBytes = vLength * size;
-    final bdLength = bd.lengthInBytes - (bd.offsetInBytes + bdOffset);
+    final bdLength = _buf.lengthInBytes - (_buf.offsetInBytes + bdOffset);
     if (vLengthInBytes > bdLength) {
       throw RangeError('List ($vLengthInBytes bytes) is to large for '
           'Bytes($bdLength bytes');

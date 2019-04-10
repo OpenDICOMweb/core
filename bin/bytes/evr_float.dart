@@ -11,7 +11,7 @@ import 'package:core/server.dart';
 void main() {
   Server.initialize(throwOnError: true, level: Level.debug);
 
-  final vList = <double>[1.0, 1.1, 1.2];
+  final vList = <double>[1, 1.1, 1.2];
 
   final fl = FLbytes.fromValues(kSelectorFLValue, vList);
   assert(fl.bytes is DicomBytes);

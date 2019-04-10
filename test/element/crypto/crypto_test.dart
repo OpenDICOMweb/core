@@ -40,7 +40,7 @@ void main() {
 
   test('digestLengthMsg', () {
     final msgList = [message0, message1, message2];
-    for (var msg in msgList) {
+    for (final msg in msgList) {
       final bytes = ascii.encode(msg);
       final digest0 = Digest(bytes);
       final dlM0 = digestLengthMsg(digest0);
@@ -54,7 +54,7 @@ void main() {
     }
 
     final nistResult = [nistResult0, nistResult1, nistResult2];
-    for (var msg in nistResult) {
+    for (final msg in nistResult) {
       final bytes = ascii.encode(msg);
       final digest0 = Digest(bytes);
       final dlM0 = digestLengthMsg(digest0);
@@ -70,7 +70,7 @@ void main() {
 
   test('hexLengthMsg', () {
     final msgList = [message0, message1, message2];
-    for (var msg in msgList) {
+    for (final msg in msgList) {
       final hlM0 = hexLengthMsg(msg);
       log.debug('hlM0: $hlM0');
       expect(hlM0, equals('${msg.length} Chars ${msg.length ~/
@@ -78,7 +78,7 @@ void main() {
     }
 
     final nistResult = [nistResult0, nistResult1, nistResult2];
-    for (var msg in nistResult) {
+    for (final msg in nistResult) {
       final hlM0 = hexLengthMsg(msg);
       log.debug('hlM0: $hlM0');
       expect(hlM0, equals('${msg.length} Chars ${msg.length ~/
@@ -88,7 +88,7 @@ void main() {
 
   test('bytesAsString', () {
     final msgList = [message0, message1, message2];
-    for (var msg in msgList) {
+    for (final msg in msgList) {
       final bytes = ascii.encode(msg);
       final uint8List0 = Uint8List.fromList(bytes);
       if (uint8List0.length > 12) {
@@ -107,7 +107,7 @@ void main() {
 
   test('bytesLength', () {
     final msgList = [message0, message1, message2];
-    for (var msg in msgList) {
+    for (final msg in msgList) {
       final bytes = ascii.encode(msg);
       final uint8List0 = Uint8List.fromList(bytes);
       final bL0 = bytesLength(uint8List0);
@@ -118,7 +118,7 @@ void main() {
     }
 
     final nistResult = [nistResult0, nistResult1, nistResult2];
-    for (var msg in nistResult) {
+    for (final msg in nistResult) {
       final bytes = ascii.encode(msg);
       final uint8List0 = Uint8List.fromList(bytes);
       final bL0 = bytesLength(uint8List0);

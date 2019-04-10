@@ -44,7 +44,7 @@ void main() {
 
   group('AEtag', () {
     test('AE hasValidValues good values', () {
-      for (var s in goodAEList) {
+      for (final s in goodAEList) {
         global.throwOnError = false;
         final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, s);
         expect(e1.hasValidValues, true);
@@ -57,7 +57,7 @@ void main() {
     });
 
     test('AE hasValidValues bad values', () {
-      for (var s in badAEList) {
+      for (final s in badAEList) {
         global.throwOnError = false;
         final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, s);
         expect(e1, isNull);
@@ -195,7 +195,7 @@ void main() {
       }
     });
 
-    test('AE checkValues random', () {
+    test('AE checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
@@ -204,7 +204,22 @@ void main() {
       }
     });
 
+    test('AE checkValues bad values random', () {
+      final vList0 = rsg.getAEList(1, 1);
+      final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
+
+      for (final s in badAEList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
+      }
+    });
+
     test('AE replace random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
@@ -238,7 +253,7 @@ void main() {
     test('AE fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getAEList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
           final e2 = AEtag.fromBytes(PTag.kSelectorAEValue, bytes0);
@@ -251,7 +266,7 @@ void main() {
     test('AE fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getAEList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
@@ -307,7 +322,7 @@ void main() {
     test('AE checkLength good values', () {
       final vList0 = rsg.getAEList(1, 1);
       final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
-      for (var s in goodAEList) {
+      for (final s in goodAEList) {
         expect(e1.checkLength(s), true);
       }
       final e2 = AEtag(PTag.kPerformedStationAETitle, vList0);
@@ -324,8 +339,8 @@ void main() {
     test('AE checkValue good values', () {
       final vList0 = rsg.getAEList(1, 1);
       final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
-      for (var s in goodAEList) {
-        for (var a in s) {
+      for (final s in goodAEList) {
+        for (final a in s) {
           expect(e1.checkValue(a), true);
         }
       }
@@ -334,8 +349,8 @@ void main() {
     test('AE checkValue bad values', () {
       final vList0 = rsg.getAEList(1, 1);
       final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
-      for (var s in badAEList) {
-        for (var a in s) {
+      for (final s in badAEList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e1.checkValue(a), false);
 
@@ -350,11 +365,16 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 4);
+        log.debug('vList0: $vList0');
         final e0 = AEtag(PTag.kSelectorAEValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
         expect(append0, isNotNull);
+
+        final append1 = e0.values.append(vList1, e0.maxValueLength);
+        log.debug('e0.append: $append1');
+        expect(append0, equals(append1));
       }
     });
 
@@ -367,6 +387,10 @@ void main() {
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
         expect(prepend0, isNotNull);
+
+        final prepend1 = e0.values.prepend(vList1, e0.maxValueLength);
+        log.debug('e0.prepend: $prepend1');
+        expect(prepend1, equals(prepend1));
       }
     });
 
@@ -484,7 +508,7 @@ void main() {
       global.throwOnError = false;
       expect(AE.isValidTag(PTag.kSelectorAEValue), true);
 
-      for (var tag in aeVM1Tags) {
+      for (final tag in aeVM1Tags) {
         final validT0 = AE.isValidTag(tag);
         expect(validT0, true);
       }
@@ -497,7 +521,7 @@ void main() {
       expect(() => AE.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = AE.isValidTag(tag);
         expect(validT0, false);
@@ -512,7 +536,7 @@ void main() {
       global.throwOnError = false;
       expect(AE.isValidVRIndex(kAEIndex), true);
 
-      for (var tag in aeVM1Tags) {
+      for (final tag in aeVM1Tags) {
         global.throwOnError = false;
         expect(AE.isValidVRIndex(tag.vrIndex), true);
       }
@@ -526,7 +550,7 @@ void main() {
       expect(() => AE.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(AE.isValidVRIndex(tag.vrIndex), false);
 
@@ -540,7 +564,7 @@ void main() {
       global.throwOnError = false;
       expect(AE.isValidVRCode(kAECode), true);
 
-      for (var tag in aeVM1Tags) {
+      for (final tag in aeVM1Tags) {
         expect(AE.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -553,7 +577,7 @@ void main() {
       expect(() => AE.isValidVRCode(kSSCode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(AE.isValidVRCode(tag.vrCode), false);
 
@@ -577,8 +601,8 @@ void main() {
     });
 
     test('AE isValidValueLength good values', () {
-      for (var s in goodAEList) {
-        for (var a in s) {
+      for (final s in goodAEList) {
+        for (final a in s) {
           expect(AE.isValidValueLength(a), true);
         }
       }
@@ -588,7 +612,7 @@ void main() {
 
     test('AE isValidValueLength bad values', () {
       global.throwOnError = false;
-      for (var s in badAELengthList) {
+      for (final s in badAELengthList) {
         expect(AE.isValidValueLength(s), false);
       }
 
@@ -602,7 +626,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getAEList(1, 1);
-        for (var tag in aeVM1Tags) {
+        for (final tag in aeVM1Tags) {
           expect(AE.isValidLength(tag, vList), true);
 
           expect(AE.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -614,7 +638,7 @@ void main() {
     test('AE isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getAEList(2, i + 1);
-        for (var tag in aeVM1Tags) {
+        for (final tag in aeVM1Tags) {
           global.throwOnError = false;
           expect(AE.isValidLength(tag, vList), false);
 
@@ -644,7 +668,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getAEList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, AE.kMaxLength);
-        for (var tag in aeVM1nTags) {
+        for (final tag in aeVM1nTags) {
           log.debug('tag: $tag');
           expect(AE.isValidLength(tag, vList0), true);
           expect(AE.isValidLength(tag, validMaxLengthList), true);
@@ -653,16 +677,16 @@ void main() {
     });
 
     test('AE isValidValue good values', () {
-      for (var s in goodAEList) {
-        for (var a in s) {
+      for (final s in goodAEList) {
+        for (final a in s) {
           expect(AE.isValidValue(a), true);
         }
       }
     });
 
     test('AE isValidValue bad values', () {
-      for (var s in badAEList) {
-        for (var a in s) {
+      for (final s in badAEList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(AE.isValidValue(a), false);
 
@@ -675,13 +699,13 @@ void main() {
 
     test('AE isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodAEList) {
+      for (final s in goodAEList) {
         expect(AE.isValidValues(PTag.kReceivingAE, s), true);
       }
     });
 
     test('AE isValidValues bad values', () {
-      for (var s in badAEList) {
+      for (final s in badAEList) {
         global.throwOnError = false;
         expect(AE.isValidValues(PTag.kReceivingAE, s), false);
 
@@ -721,7 +745,7 @@ void main() {
       final vList0 = ['KEZ5HZZZR2'];
       expect(AE.isValidValues(PTag.kReceivingAE, vList0), true);
 
-      for (var s in goodAEList) {
+      for (final s in goodAEList) {
         global.throwOnError = false;
         expect(AE.isValidValues(PTag.kReceivingAE, s), true);
       }
@@ -736,7 +760,7 @@ void main() {
       expect(() => AE.isValidValues(PTag.kReceivingAE, vList1),
           throwsA(const TypeMatcher<StringError>()));
 
-      for (var s in badAEList) {
+      for (final s in badAEList) {
         global.throwOnError = false;
         expect(AE.isValidValues(PTag.kReceivingAE, s), false);
 
@@ -758,8 +782,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodAEList) {
-        for (var a in s) {
+      for (final s in goodAEList) {
+        for (final a in s) {
           final values = cvt.ascii.encode(a);
           final tbd2 = Bytes.asciiFromList(s);
           final tbd3 = Bytes.asciiFromList(s);
@@ -778,7 +802,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodAEList) {
+      for (final s in goodAEList) {
         final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
@@ -795,7 +819,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodAEList) {
+      for (final s in goodAEList) {
         final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -821,41 +845,41 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
+        final fvf0 = AsciiString.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
 
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList1 = rsg.getAEList(1, i);
-        final fvf1 = Ascii.fromValueField(vList1, k8BitMaxLongVF);
+        final fvf1 = AsciiString.fromValueField(vList1, k8BitMaxLongVF);
         expect(fvf1, equals(vList1));
       }
       global.throwOnError = false;
-      final fvf1 = Ascii.fromValueField(null, k8BitMaxLongLength);
+      final fvf1 = AsciiString.fromValueField(null, k8BitMaxLongLength);
       expect(fvf1, <String>[]);
       expect(fvf1 == kEmptyStringList, true);
 
-      final fvf2 = Ascii.fromValueField(<String>[], k8BitMaxLongLength);
+      final fvf2 = AsciiString.fromValueField(<String>[], k8BitMaxLongLength);
       expect(fvf2, <String>[]);
       expect(fvf2 == kEmptyStringList, false);
       expect(fvf2.isEmpty, true);
 
-      final fvf3 = Ascii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      final fvf3 = AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength);
       expect(fvf3, isNull);
 
       global.throwOnError = true;
-      expect(() => Ascii.fromValueField(<int>[1234], k8BitMaxLongLength),
+      expect(() => AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final vList2 = rsg.getAEList(1, 1);
       final bytes = Bytes.utf8FromList(vList2);
-      final fvf4 = Ascii.fromValueField(bytes, k8BitMaxLongLength);
+      final fvf4 = AsciiString.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
 
       final vList3 = rng.uint8List(1, 1);
-      final fvf5 = Ascii.fromValueField(vList3, k8BitMaxLongLength);
+      final fvf5 = AsciiString.fromValueField(vList3, k8BitMaxLongLength);
       expect(fvf5, equals([cvt.ascii.decode(vList3)]));
     });
 
@@ -866,12 +890,12 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in aeVM1Tags) {
+          for (final tag in aeVM1Tags) {
             final e0 = AE.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in aeVM1nTags) {
+          for (final tag in aeVM1nTags) {
             final e0 = AE.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

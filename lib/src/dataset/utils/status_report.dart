@@ -95,7 +95,7 @@ class StatusReport {
 
   List<Entry> search(Level level) {
     final results = <Entry>[];
-    for (var e in entries) if (e.level == level) results.add(e);
+    for (final e in entries) if (e.level == level) results.add(e);
     return results;
   }
 

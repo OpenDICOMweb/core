@@ -81,12 +81,12 @@ void main() {
       expect(b, equals(int32List.reduce((c, d) => c + d)));
 
       var c = 0;
-      for (var i in intList) c += i;
+      for (final i in intList) c += i;
       log.debug('intList for-in: c: $c');
       expect(c, equals(intList.reduce((c, d) => c + d)));
 
       var d = 0;
-      for (var i in intIterable) d += i;
+      for (final i in intIterable) d += i;
       log.debug('intIterable for-in: d: $d');
       expect(d, equals(intIterable.reduce((a, b) => a + b)));
 
@@ -112,7 +112,7 @@ Float32List toFloat32(Iterable<double> vList, {bool asView = true}) {
   log.debug('Not List<double>');
   final list = Float32List(vList.length);
   var i = 0;
-  for (var v in vList) {
+  for (final v in vList) {
     list[i++] = v;
   }
   log.debug('Iterable');

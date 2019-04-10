@@ -13,16 +13,21 @@ import 'package:core/src/profile/profile.dart';
 
 class TagGroup {
   final String name;
-  final int group;
+  final int number;
 
-  const TagGroup(this.name, this.group);
+  const TagGroup(this.name, this.number);
 
-  int get min => group << 16;
-  int get max => (group << 16) + 0xFFFF;
+  TagGroup operator [](int code) =>
+      validGroups.firstWhere((group) => group.number == (code >> 16));
 
-  void keep(Profile profile) => profile.groupsToRetain.add(group);
+  int get min => number << 16;
+  int get max => (number << 16) + 0xFFFF;
 
-  void remove(Dataset ds) => ds.deletePrivateGroup(group);
+  bool contains(int tag) => (min <= tag) && (tag <= max);
+
+  void keep(Profile profile) => profile.groupsToRetain.add(number);
+
+  void remove(Dataset ds) => ds.deletePrivateGroup(number);
 
   static const TagGroup kGroup18 = TagGroup('Group 18', 0x0018);
   static const TagGroup kGroup20 = TagGroup('Group 20', 0x0020);

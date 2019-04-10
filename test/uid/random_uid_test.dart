@@ -124,10 +124,10 @@ void main() {
 
     test('check', () {
       //good
-      for (var s in wellKnownUids.keys) expect(Uid.isValidString(s), true);
+      for (final s in wellKnownUids.keys) expect(Uid.isValidString(s), true);
 
       //bad
-      for (var s in badUids) expect(Uid.isValidString(s), false);
+      for (final s in badUids) expect(Uid.isValidString(s), false);
 
       expect(Uid.isValidString(''), false);
 
@@ -155,12 +155,12 @@ void main() {
         '2.25.028401000812461',
       ];
 
-      for (var s in goodUuidUidList0) {
+      for (final s in goodUuidUidList0) {
         final isValid = isValidUuidUid(s);
         expect(isValid, true);
       }
 
-      for (var s in badUuidUidList0) {
+      for (final s in badUuidUidList0) {
         final isValid = isValidUuidUid(s);
         expect(isValid, false);
       }
@@ -184,12 +184,12 @@ void main() {
         expect(isValidUidString(uidS), true);
       }
 
-      for (var s in goodUids) {
+      for (final s in goodUids) {
         final validUid0 = isValidUidString(s);
         expect(validUid0, true);
       }
 
-      for (var s in badUids) {
+      for (final s in badUids) {
         final validUid1 = isValidUidString(s);
         expect(validUid1, false);
       }
@@ -197,7 +197,7 @@ void main() {
       final validUid2 = isValidUidString(null);
       expect(validUid2, false);
 
-      for (var i in badUids) {
+      for (final i in badUids) {
         final validUid3 = isValidUidString(i);
         expect(validUid3, false);
       }
@@ -250,7 +250,7 @@ void main() {
         '1.2.840.10008.1.2.4.93'
       ];
 
-      for (var s in goodUids) {
+      for (final s in goodUids) {
         final dicom = Uid.isDicom(Uid.parse(s));
         expect(dicom, true);
       }

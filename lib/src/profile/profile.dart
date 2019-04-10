@@ -56,7 +56,7 @@ class Profile {
         comments = {},
         rules = [],
         errors = {} {
-    for (var code in keysToRemove)
+    for (final code in keysToRemove)
       if (keysToRetain.contains(code))
         throw ArgumentError('removeTags cannot contain and tags in'
             ' the keepTags list.');
@@ -123,7 +123,7 @@ class Profile {
 
   String get rulesToJson {
     final rList = <String>[];
-    for (var rule in rules) rList.add(rule.json);
+    for (final rule in rules) rList.add(rule.json);
     return '[\n${rList.join(',\n')}\n]';
   }
 

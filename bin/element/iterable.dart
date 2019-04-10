@@ -40,7 +40,7 @@ void main() {
 
 //  test = toFloat32(int32List);
 
-  for (var i in int32List) print('i: $i');
+  for (final i in int32List) print('i: $i');
 
 // throws
 //  final int16List = Int16List.fromList(intIterable);
@@ -55,11 +55,11 @@ void main() {
   print('intIterable sum: b: $b');
 
   var c = 0;
-  for (var i in intList) c += i;
+  for (final i in intList) c += i;
   print('intList for-in: c: $c');
 
   var d = 0;
-  for (var i in intIterable) d += i;
+  for (final i in intIterable) d += i;
   print('intIterable for-in: d: $d');
 
   var e = 0;
@@ -100,7 +100,7 @@ Float32List toFloat32(Iterable<double> vList, {bool asView = true}) {
   print('Not List<double>');
   final list = Float32List(vList.length);
   var i = 0;
-  for (var v in vList) {
+  for (final v in vList) {
     list[i++] = v;
   }
   print('Iterable');

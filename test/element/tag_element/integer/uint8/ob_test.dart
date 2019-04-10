@@ -281,16 +281,32 @@ void main() {
     });
 
     test('OB checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
         final e0 = OBtag(PTag.kPrivateInformation, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.uint16List(1, 1);
+      final e0 = OBtag(PTag.kPrivateInformation);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('OB checkValues', () {
+      global.throwOnError = false;
       final e0 = OBtag(PTag.kPrivateInformation, uInt8Min);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('OB valuesCopy random', () {
@@ -516,17 +532,17 @@ void main() {
     test('OB isValidLength', () {
       global.throwOnError = false;
       final vList = rng.uint8List(1, 1);
-      for (var tag in obVM1Tags) {
+      for (final tag in obVM1Tags) {
         expect(OB.isValidLength(tag, vList), true);
       }
 
-      for (var tag in obowTags) {
+      for (final tag in obowTags) {
         expect(OB.isValidLength(tag, vList), false);
       }
 
       expect(OB.isValidLength(PTag.kSelectorOBValue, vList), true);
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OB.isValidLength(tag, vList), false);
 
@@ -541,15 +557,15 @@ void main() {
       expect(OB.isValidTag(PTag.kSelectorOBValue), true);
       expect(OB.isValidTag(PTag.kAudioSampleData), true);
 
-      for (var tag in obVM1Tags) {
+      for (final tag in obVM1Tags) {
         expect(OB.isValidTag(tag), true);
       }
 
-      for (var tag in obVM1nTags) {
+      for (final tag in obVM1nTags) {
         expect(OB.isValidTag(tag), true);
       }
 
-      for (var tag in obowTags) {
+      for (final tag in obowTags) {
         final e3 = OB.isValidTag(tag);
         expect(e3, true);
       }
@@ -563,7 +579,7 @@ void main() {
       expect(() => OB.isValidTag(PTag.kSelectorUSValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OB.isValidTag(tag), false);
 
@@ -581,7 +597,7 @@ void main() {
       expect(() => OB.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OB.isValidVRIndex(tag.vrIndex), false);
 
@@ -594,7 +610,7 @@ void main() {
     test('OB isValidVRCode good values', () {
       global.throwOnError = false;
       expect(OB.isValidVRCode(kOBCode), true);
-      for (var tag in obVM1Tags) {
+      for (final tag in obVM1Tags) {
         expect(OB.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -607,7 +623,7 @@ void main() {
       expect(() => OB.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OB.isValidVRCode(tag.vrCode), false);
 
@@ -680,12 +696,12 @@ void main() {
         final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in obVM1Tags) {
+          for (final tag in obVM1Tags) {
             final e0 = OB.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in obVM1nTags) {
+          for (final tag in obVM1nTags) {
             final e0 = OB.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

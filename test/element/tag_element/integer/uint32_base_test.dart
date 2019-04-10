@@ -17,6 +17,7 @@ void main() {
   global.throwOnError = false;
 
   test('Uint32 fromList', () {
+    global.throwOnError = false;
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint32List(1, 1);
       expect(Uint32.fromList(vList0), vList0);
@@ -25,6 +26,26 @@ void main() {
     const uInt32Max = [kUint32Max];
     expect(Uint32.fromList(uInt32Min), uInt32Min);
     expect(Uint32.fromList(uInt32Max), uInt32Max);
+
+    const uInt64Max = [kUint64Max];
+    final from0 = Uint32.fromList(uInt64Max, check: false);
+    expect(from0, equals(uInt32Max));
+    expect(from0 is Uint32List, true);
+
+    final from1 = Uint32.fromList(uInt64Max, check: true);
+    expect(from1, isNull);
+    expect(from1 is Uint32List, false);
+
+    final from2 = Uint32.fromList(null);
+    expect(from2 == kEmptyUint32List, true);
+
+    final from3 = Uint32.fromList([]);
+    expect(from3.isEmpty, true);
+    expect(from3 == kEmptyUint32List, true);
+
+    global.throwOnError = true;
+    expect(() => Uint32.fromList(uInt64Max),
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Uint32 fromBytes', () {
@@ -138,6 +159,10 @@ void main() {
       expect(ulList, equals(vList0));
 //        expect(ulList, equals(vList1));
     }
+
+    final ulList0 = Uint32.fromBase64('');
+    expect(ulList0.isEmpty, true);
+    expect(ulList0 == kEmptyUint32List, true);
   });
 
 /*
@@ -188,6 +213,14 @@ void main() {
             '${Uint32.fromByteData(bd)}');
       expect(Uint32.fromByteData(bd), equals(vList0));
     }
+
+    final vList1 = <int>[];
+    final data = Uint32List.fromList(vList1);
+    final bd = data.buffer.asByteData();
+    final ulList0 = Uint32.fromByteData(bd);
+    expect(ulList0.isEmpty, true);
+    expect(ulList0 == kEmptyUint32List, true);
+    expect(ulList0.lengthInBytes == 0, true);
   });
 
   test('Uint32 fromValueField', () {
@@ -272,7 +305,9 @@ void main() {
     final vList1 = rng.uint32List(0, 0);
     final uint8List1 = vList1.buffer.asUint8List();
     final fromUnit8L1 = Uint32.fromUint8List(uint8List1);
-    expect(fromUnit8L1, kEmptyInt16List);
+    expect(fromUnit8L1, kEmptyInt32List);
+    expect(fromUnit8L1.isEmpty, true);
+    expect(fromUnit8L1.lengthInBytes == 0, true);
   });
 
   test('Uint32 getLength', () {

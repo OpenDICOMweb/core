@@ -17,6 +17,7 @@ void main() {
 
   group('Time Zone Tests', () {
     test('checkTimeZone', () {
+      global.throwOnError = false;
       var m = 1 * (13 * 60) + 45;
       var us = 1 * (13 * 60) + 45 * kMicrosecondsPerMinute;
       log.debug('test 1, 13, 45: values: $m');
@@ -38,9 +39,14 @@ void main() {
       expect(timeZoneToMicroseconds(1, 13, 61), isNull);
       expect(timeZoneToMicroseconds(1, 13, 15), isNull);
       expect(timeZoneToMicroseconds(1, 13, 45), isNull);
+
+      global.throwOnError = true;
+      expect(() => timeZoneToMicroseconds(1, 15, 00),
+          throwsA(const TypeMatcher<InvalidTimeZoneError>()));
     });
 
     test('timeZoneHash', () {
+      global.throwOnError = false;
       for (var j = 0; j < 1000; j++) {
         for (var hour = kMinTimeZoneHour; hour < kMaxTimeZoneHour; hour++) {
           if (isNotValidTimeZoneHour(hour))
@@ -170,6 +176,12 @@ void main() {
           timeZoneMicrosecondsToString(-kMicrosecondsPerDay, asDicom: false);
       log.debug('tzms4: $tzms4');
       expect(tzms4, isNull);
+
+      global.throwOnError = true;
+      expect(
+          () =>
+              timeZoneMicrosecondsToString(kMicrosecondsPerDay, asDicom: false),
+          throwsA(const TypeMatcher<InvalidTimeZoneMicrosecondError>()));
     });
 
     test('timeZoneToString', () {

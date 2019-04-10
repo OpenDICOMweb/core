@@ -19,6 +19,7 @@ import 'package:core/src/vr/vr_base.dart';
 // ignore_for_file: public_member_api_docs
 
 mixin DicomBytesMixin {
+  bool get isEvr;
   ByteData get bd;
   bool get isEvr;
 //  int get vrCode;
@@ -51,15 +52,17 @@ mixin DicomBytesMixin {
   int setFloat64List(int start, List<double> list,
       [int offset = 0, int length]);
 
-  int setUtf8(int start, String s,
-      [int offset = 0, int length, int padChar = kSpace]);
+  int setAsciiList(int start, List<String> list, [int padChar = kSpace]);
 
-  int setAsciiList(int start, List<String> list,
-      [int offset = 0, int length, String separator = '', int pad = kSpace]);
+  int setLatinList(int start, List<String> list, [int padChar = kSpace]);
 
-  String toBDDescriptor(ByteData bd);
+  int setUtf8List(int start, List<String> list, [int padChar = kSpace]);
 
-  Bytes asBytes([int offset = 0, int length]);
+  int setUtf8(int start, String s, [int padChar = kSpace]);
+
+  String toBDDescriptor(Uint8List bd);
+
+  Bytes asBytes([int offset = 0, int length, Endian endian]);
 
   // **** End of Interface
 

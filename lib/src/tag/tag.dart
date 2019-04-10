@@ -120,13 +120,7 @@ abstract class Tag {
 //  int get vrIndex => vr.index;
   int get vrCode => vrCodeByIndex[vrIndex];
 
-  @deprecated
-  int get sizeInBytes => elementSize;
-
   int get elementSize => vrElementSizeByIndex[vrIndex];
-
-  @deprecated
-  bool get isShort => hasShortVF;
 
   bool get hasShortVF => isEvrShortVRIndex(vrIndex);
 

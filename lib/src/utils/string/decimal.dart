@@ -105,18 +105,3 @@ String numToString(num v) {
   assert(v is double || v is int);
   return (v is double) ? floatToString(v) : dec32(v);
 }
-
-/// _Deprecated_: Use [floatToString] instead.
-@deprecated
-String floatToDcmString(double v) {
-  const precision = 10;
-  var s = v.toString();
-  if (s.length > 16) {
-    for (var i = precision; i > 0; i--) {
-      s = v.toStringAsPrecision(i);
-      if (s.length <= 16) break;
-    }
-  }
-  assert(s.length <= 16, '"$s" exceeds max DS length of 16');
-  return s;
-}

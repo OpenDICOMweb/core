@@ -256,7 +256,7 @@ void main() {
     });
 
     test('replaceFirst', () {
-      for (var s in replaceFirst) {
+      for (final s in replaceFirst) {
         final s0 = StringList.from([s[0]]);
         final regexFrom = RegExp(s[1]);
         final rf0 = s0.replaceFirst(regexFrom, s[2], 10);
@@ -265,7 +265,7 @@ void main() {
     });
 
     test('replaceAll', () {
-      for (var s in replaceAll) {
+      for (final s in replaceAll) {
         final s0 = StringList.from([s[0]]);
         final regexFrom = RegExp(s[1]);
         final rf0 = s0.replaceAll(regexFrom, s[2], 15);

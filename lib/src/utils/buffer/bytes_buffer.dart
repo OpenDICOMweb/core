@@ -15,7 +15,7 @@ import 'package:core/src/utils/bytes.dart';
 abstract class BytesBuffer {
   /// The underlying [Bytes] for the buffer.
   Bytes get bytes;
-  set bytes(Bytes bytes) => unsupportedError();
+  set bytes(Bytes bytes) => unsupportedSetter();
   int get _rIndex;
   set _rIndex(int n);
   int get _wIndex;

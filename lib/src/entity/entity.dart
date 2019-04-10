@@ -51,10 +51,12 @@ abstract class Entity with MapMixin<Uid, Entity> {
   Entity.from(Entity entity, this.rds, Entity parent, this.childMap, this.key)
       : parent = (parent == null) ? entity.parent : parent;
 
+  /// Returns the path [String] for this.
+  String toPath();
   // **** Map Implementation
 
   @override
-  bool operator ==(Object other)  => other is Entity && key == other.key;
+  bool operator ==(Object other) => other is Entity && key == other.key;
   @override
   Entity operator [](Object key) => (key is Uid) ? childMap[key] : null;
   @override
@@ -70,6 +72,9 @@ abstract class Entity with MapMixin<Uid, Entity> {
 
   // **** End Map Implementation
 
+  @override
+  int get length => childMap == null ? 0 : childMap.length;
+
   Uid get uid => key;
 
   /// The [Type] of _this_.
@@ -83,7 +88,7 @@ abstract class Entity with MapMixin<Uid, Entity> {
 
   String get info => '''$this
   parent: $parent
-    $childType: ${childMap.length}
+    $childType: $length
   ''';
 
   /// Returns a [String] containing information about _this_.
@@ -91,7 +96,7 @@ abstract class Entity with MapMixin<Uid, Entity> {
     final sb = StringBuffer('$runtimeType: $key\n  '
         '${parent.runtimeType}: $parent $length $childType\n');
     if (this is! Instance) {
-      for (var s in values) {
+      for (final s in values) {
         sb.write('  $childType: ${s.key}\n    ${s.length} values\n');
       }
     }
@@ -104,9 +109,7 @@ abstract class Entity with MapMixin<Uid, Entity> {
 
   /// Adds an  [Entity] to _this_.  Throws a [DuplicateEntityError]
   /// if _this_ has an existing [Entity] with the same [Uid].
-  Entity addIfAbsent(Entity entity) =>
-    putIfAbsent(entity.key, () => entity);
-
+  Entity addIfAbsent(Entity entity) => putIfAbsent(entity.key, () => entity);
 
   /// Returns a [String] containing formatted output.
   String format(Formatter z) => z.fmt(this, values);

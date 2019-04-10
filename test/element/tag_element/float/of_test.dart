@@ -418,7 +418,7 @@ void main() {
       global.throwOnError = false;
       expect(OF.isValidTag(PTag.kSelectorOFValue), true);
 
-      for (var tag in ofVM1Tags) {
+      for (final tag in ofVM1Tags) {
         final validT0 = OF.isValidTag(tag);
         expect(validT0, true);
       }
@@ -431,7 +431,7 @@ void main() {
       expect(() => OF.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = OF.isValidTag(tag);
         expect(validT0, false);
@@ -446,7 +446,7 @@ void main() {
       global.throwOnError = false;
       expect(OF.isValidVR(kOFIndex), true);
 
-      for (var s in ofVM1Tags) {
+      for (final s in ofVM1Tags) {
         global.throwOnError = false;
         expect(OF.isValidVR(s.vrIndex), true);
       }
@@ -460,7 +460,7 @@ void main() {
       expect(() => OF.isValidVR(kAEIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var s in otherTags) {
+      for (final s in otherTags) {
         global.throwOnError = false;
         expect(OF.isValidVR(s.vrIndex), false);
 
@@ -474,7 +474,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rng.float32List(1, 1);
         global.throwOnError = false;
-        for (var tag in ofVM1Tags) {
+        for (final tag in ofVM1Tags) {
           expect(OF.isValidLength(tag, validMinVList), true);
         }
       }
@@ -484,7 +484,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rng.float32List(1, 1);
         global.throwOnError = false;
-        for (var tag in ofVMk1nTags) {
+        for (final tag in ofVMk1nTags) {
           expect(OF.isValidLength(tag, validMinVList), true);
         }
       }
@@ -494,7 +494,7 @@ void main() {
       global.throwOnError = false;
       expect(OF.isValidVR(kOFIndex), true);
 
-      for (var tag in ofVM1Tags) {
+      for (final tag in ofVM1Tags) {
         global.throwOnError = false;
         expect(OF.isValidVR(tag.vrIndex), true);
       }
@@ -508,7 +508,7 @@ void main() {
       expect(() => OF.isValidVR(kATIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OF.isValidVR(tag.vrIndex), false);
 
@@ -522,7 +522,7 @@ void main() {
       global.throwOnError = false;
       expect(OF.isValidVRCode(kOFCode), true);
 
-      for (var tag in ofVM1Tags) {
+      for (final tag in ofVM1Tags) {
         global.throwOnError = false;
         expect(OF.isValidVRCode(tag.vrCode), true);
       }
@@ -536,7 +536,7 @@ void main() {
       expect(() => OF.isValidVRCode(kATCode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OF.isValidVRCode(tag.vrCode), false);
 

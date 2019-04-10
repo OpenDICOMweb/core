@@ -77,7 +77,7 @@ class Formatter {
       while (!atMaxDepth(depth++))
         if (values is Iterable) {
           var depth = 0;
-          for (var value in values) {
+          for (final value in values) {
             if (value is Formattable) {
               try {
                 sb.write(value.format(this));
@@ -109,7 +109,7 @@ class Formatter {
       down;
       if (values is Iterable) {
         var depth = 0;
-        for (var value in values) {
+        for (final value in values) {
           if (value is Formattable) {
             try {
               sb.write(value.format(this));
@@ -140,7 +140,7 @@ class Formatter {
         down;
         if (values is Iterable) {
           var depth = 0;
-          for (var value in values) {
+          for (final value in values) {
             try {
               sb.write(value.format(this));
             } on NoSuchMethodError {
@@ -173,7 +173,7 @@ class Formatter {
       while (!atMaxDepth(depth++)) {
         if (values is Iterable) {
           var depth = 0;
-          for (var value in values) {
+          for (final value in values) {
             try {
               sb.write(value.format(this));
               if (atMaxDepth(depth++)) break;

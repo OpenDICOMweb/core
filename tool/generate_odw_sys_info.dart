@@ -59,7 +59,7 @@ class UnknownValueTypeError extends Error {
 
 String generateList(List list) {
   final entries = <String>[];
-  for (var value in list) {
+  for (final value in list) {
     if (value is List) {
       entries.add('${generateList(value)}');
     } else {

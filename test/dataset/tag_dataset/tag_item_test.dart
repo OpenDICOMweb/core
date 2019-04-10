@@ -21,8 +21,7 @@ void main() {
     test('[] and []=', () {
       final item = TagItem.empty(rds, null);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransFerSyntax =
-          UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      final uiTransFerSyntax = UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');
       item[uiTransFerSyntax.index] = uiTransFerSyntax;
       log.debug('elements: $item');
@@ -201,8 +200,7 @@ void main() {
       final rds1 = TagRootDataset.empty();
       final itemList = <Item>[];
       item0[kRecognitionCode] = SHtag(PTag.kRecognitionCode, ['foo bar']);
-      item0[kInstitutionAddress] =
-          STtag(PTag.kInstitutionAddress, ['foo bar']);
+      item0[kInstitutionAddress] = STtag(PTag.kInstitutionAddress, ['foo bar']);
       item0[kExtendedCodeMeaning] =
           LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
@@ -219,7 +217,7 @@ void main() {
       expect(noValues0.isEmpty, false);
 
       noValues0 = item0.noValuesAll(as0.code);
-      for (var e in noValues0) {
+      for (final e in noValues0) {
         expect(e.values.isEmpty, true);
         log.debug('noValues0: $noValues0');
       }
@@ -308,6 +306,9 @@ void main() {
       final dup = item.history;
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
+      expect(dup.duplicates, equals(item.history.duplicates));
+      expect(item.hasDuplicates, true);
+      expect(item.hasDuplicates == dup.duplicates.isNotEmpty, true);
     });
 
     test('removeDuplicates', () {
@@ -336,6 +337,8 @@ void main() {
       log.debug('item: $item, removeDup: $removeDup');
       //expect(dup, equals(<Element>[]));
       expect(removeDup, <Element>[]);
+      expect(item.hasDuplicates, false);
+      expect(dup.duplicates.isEmpty, true);
     });
 
     test('getElementsInRange', () {

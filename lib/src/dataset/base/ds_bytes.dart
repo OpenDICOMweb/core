@@ -128,8 +128,8 @@ class RDSBytes extends DSBytes {
   int get rdsStart => fmiEnd;
   int get rdsEnd => dsEnd;
 
-  Uint8List get fmiBytes =>
-      hasPrefix ? bytes.buffer.asUint8List(bytes.offset, 132) : kEmptyUint8List;
+  Bytes get fmiBytes =>
+      hasPrefix ? bytes.sublist(bytes.offset, 132) : Bytes.kDefaultLength;
 
   @override
   int get vfLength => dsLength - 132;

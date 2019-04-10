@@ -28,7 +28,7 @@ import 'package:core/src/tag.dart';
 String makeDeIdList() {
   final sb = StringBuffer()
     ..writeln('static const List<DeIdProfile> deIdTags = const <DeIdProfile>[');
-  for (var v in DeIdTags.map.values) sb.writeln('  k${v.tag.keyword},');
+  for (final v in DeIdTags.map.values) sb.writeln('  k${v.tag.keyword},');
   sb.writeln('];\n');
   final out = '$sb';
   print(out);
@@ -46,7 +46,7 @@ String makeDeIdUidList() {
     ..writeln('const Map<int, String> deIdUidCodeToKeywordMap = '
         'const <int, String>{');
 
-  for (var v in DeIdTags.map.values) {
+  for (final v in DeIdTags.map.values) {
     if (v.tag.name.contains('UID')) {
       sb0.writeln('  k${v.tag.keyword},');
       sb1.writeln('  PTag.k${v.tag.keyword},');
@@ -74,7 +74,7 @@ String makeDeIdNonUidList() {
     ..writeln('const Map<int, String> deIdNonUidCodeToKeywordMap = '
         'const <int, String>{');
 
-  for (var v in DeIdTags.map.values) {
+  for (final v in DeIdTags.map.values) {
     if (!v.tag.name.contains('UID')) {
       sb0.writeln('  k${v.tag.keyword},');
       sb1.writeln('  PTag.k${v.tag.keyword},');
@@ -97,7 +97,7 @@ String makeDeIdNonUidList() {
 typedef ListMaker = StringBuffer Function(StringBuffer sb);
 
 StringBuffer makeUidTagList(StringBuffer sb) {
-  for (var v in DeIdTags.map.values) {
+  for (final v in DeIdTags.map.values) {
     print('name: "${v.tag.name}"');
     if (!v.tag.name.contains('UID')) {
       sb.writeln('  k${v.tag.keyword},');
@@ -107,7 +107,7 @@ StringBuffer makeUidTagList(StringBuffer sb) {
 }
 
 StringBuffer makeUidCodeToKeywordMap(StringBuffer sb) {
-  for (var v in DeIdTags.map.values) {
+  for (final v in DeIdTags.map.values) {
     print('name: "${v.tag.name}"');
     if (!v.tag.name.contains('UID')) {
       sb.writeln('  ${dcm(v.tag.code)}: "${v.tag.keyword}",');

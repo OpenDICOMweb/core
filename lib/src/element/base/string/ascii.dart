@@ -22,7 +22,7 @@ part of odw.sdk.element.base.string;
 // Note: Each [String] in a Value Field must be separated by a backslash ('\)
 //       character. Thus, the minimum length of each string in a Value
 //       Field is 2, unless it is empty.
-abstract class Ascii extends StringBase {
+abstract class AsciiString extends StringBase {
   @override
   StringList get values;
   // **** End of Interface
@@ -44,11 +44,12 @@ abstract class Ascii extends StringBase {
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.stringListFromAscii(allowInvalid: global.allowInvalidAscii);
 
-  Ascii append(String s) => update(values.append(s, maxValueLength));
+  AsciiString append(String s) => update(values.append(s, maxValueLength));
 
-  Ascii prepend(String s) => update(values.prepend(s, maxValueLength));
+  AsciiString prepend(String s) => update(values.prepend(s, maxValueLength));
 
-  Ascii truncate(int length) => update(values.truncate(length, maxValueLength));
+  AsciiString truncate(int length) =>
+      update(values.truncate(length, maxValueLength));
 
   bool match(String regexp) => values.match(regexp);
 
@@ -65,7 +66,7 @@ abstract class Ascii extends StringBase {
 }
 
 /// A Application Entity Title ([AE]) Element
-abstract class AE extends Ascii {
+abstract class AE extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -163,7 +164,7 @@ abstract class AE extends Ascii {
 }
 
 /// A Code String ([CS]) Element
-abstract class CS extends Ascii {
+abstract class CS extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -269,7 +270,7 @@ abstract class CS extends Ascii {
   }
 }
 
-abstract class UI extends Ascii {
+abstract class UI extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override

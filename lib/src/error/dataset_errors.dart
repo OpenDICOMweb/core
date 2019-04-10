@@ -200,6 +200,11 @@ Null duplicateEntityError(Entity oldE, Entity E) {
   return null;
 }
 
+bool invalidDuplicateEntityError(Entity oldE, Entity E) {
+  duplicateEntityError(oldE, E);
+  return false;
+}
+
 class MissingUidError<K> extends Error {
   final K key;
 

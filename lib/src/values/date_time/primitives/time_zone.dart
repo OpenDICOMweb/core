@@ -22,15 +22,6 @@ int timeZoneToMicroseconds(int sign, int h, int m) {
       : invalidTimeZoneError(sign, h, m);
 }
 
-/// _Deprecated_: Use [timeZoneToMicroseconds] instead.
-@deprecated
-int timeZoneInMinutes(int sign, int h, int m) {
-  final us = (sign * ((h.abs() * 60) + m)) * kMicrosecondsPerMinute;
-  return (isValidTimeZoneMicroseconds(us))
-      ? us ~/ kMicrosecondsPerMinute
-      : invalidTimeZoneError(sign, h, m);
-}
-
 /// Returns the total number of minutes from UTC.
 int timeZoneToMinutes(int sign, int h, int m) {
   final us = timeZoneToMicroseconds(sign, h, m);
@@ -217,27 +208,6 @@ Null invalidTimeZoneError(int sign, int h, int m,
   log.error(msg);
   if (issues != null) issues.add(msg);
   if (throwOnError) throw InvalidTimeZoneError(sign, h, m, error);
-  return null;
-}
-
-/// An invalid time zone minutes [Error].
-@deprecated
-class InvalidTimeZoneMinutesError extends Error {
-  int minutes;
-
-  InvalidTimeZoneMinutesError(this.minutes);
-
-  @override
-  String toString() => _msg(minutes);
-
-  static String _msg(int us) => 'InvalidTimeZoneMinutesError: us = $us';
-}
-
-@deprecated
-// ignore: prefer_void_to_null
-Null invalidTimeZoneMinutesError(int us) {
-  log.error(InvalidTimeZoneMinutesError._msg(us));
-  if (throwOnError) throw InvalidTimeZoneMinutesError(us);
   return null;
 }
 

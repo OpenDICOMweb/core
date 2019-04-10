@@ -16,52 +16,87 @@ mixin GrowableMixin {
   /// The upper bound on the length of this [Bytes]. If [limit]
   /// is _null_ then its length cannot be changed.
   int get limit;
-  ByteData get bd;
-  set bd(ByteData v);
+  Uint8List get _buf;
+  bool grow(int newLength);
 
-  int get length => bd.lengthInBytes;
+  int get length => _buf.length;
 
   set length(int newLength) {
-    if (newLength < bd.lengthInBytes) return;
+    if (newLength < _buf.lengthInBytes) return;
     grow(newLength);
   }
 
-  /// Ensures that [bd] is at least [length] long, and grows
+  /// Ensures that [_buf] is at least [length] long, and grows
   /// the buf if necessary, preserving existing data.
-  bool ensureLength(int length) => _ensureLength(bd, length);
+  bool ensureLength(int length) => _ensureLength(_buf, length);
+
+  /// Ensures that [list] is at least [minLength] long, and grows
+  /// the buf if necessary, preserving existing data.
+  static bool _ensureLength(Uint8List list, int minLength) =>
+      (minLength > list.lengthInBytes) ? _reallyGrow(list, minLength) : false;
+
+}
+
+class GrowableBytes extends Bytes with GrowableMixin {
+  /// The upper bound on the length of this [Bytes]. If [limit]
+  /// is _null_ then its length cannot be changed.
+  @override
+  final int limit;
+
+  /// Returns a new [Bytes] of [length].
+  GrowableBytes([int length, Endian endian, this.limit = kDefaultLimit])
+      : super(length, endian);
+
+  /// Returns a new [Bytes] of [length].
+  GrowableBytes._(int length, Endian endian, this.limit)
+      : super(length, endian);
+
+  GrowableBytes.from(Bytes bytes,
+      [int offset = 0, int length, Endian endian, this.limit = k1GB])
+      : super.from(bytes, offset, length, endian);
+
+  GrowableBytes.typedDataView(TypedData td,
+          [int offset = 0,
+          int lengthInBytes,
+          Endian endian,
+          int limit])
+      : limit = limit ?? k1GB,
+        super.typedDataView(td, offset, lengthInBytes, endian);
 
   /// Creates a new buffer of length at least [minLength] in size, or if
   /// [minLength == null, at least double the length of the current buffer;
   /// and then copies the contents of the current buffer into the new buffer.
   /// Finally, the new buffer becomes the buffer for _this_.
   bool grow([int minLength]) {
-    final old = bd;
-    bd = _grow(old, minLength ??= old.lengthInBytes * 2);
-    return bd == old;
+    final old = _buf;
+    _buf = _grow(old, minLength ??= old.lengthInBytes * 2);
+    return _buf == old;
   }
 
-  /// If [minLength] is less than or equal to the current length of
-  /// [bd] returns [bd]; otherwise, returns a new [ByteData] with a length
-  /// of at least [minLength].
-  static ByteData _grow(ByteData bd, int minLength) {
-    final oldLength = bd.lengthInBytes;
-    return (minLength <= oldLength) ? bd : _reallyGrow(bd, minLength);
-  }
+  static const int kMaximumLength = k1GB;
+}
 
-  /// Returns a new [ByteData] with length at least [minLength].
-  static ByteData _reallyGrow(ByteData bd, int minLength) {
-    var newLength = minLength;
-    do {
-      newLength *= 2;
-      if (newLength >= Bytes.kDefaultLimit) return null;
-    } while (newLength < minLength);
-    final newBD = ByteData(newLength);
-    for (var i = 0; i < bd.lengthInBytes; i++)
-      newBD.setUint8(i, bd.getUint8(i));
-    return newBD;
-  }
+/// If [minLength] is less than or equal to the current length of
+/// [bd] returns [bd]; otherwise, returns a new [ByteData] with a length
+/// of at least [minLength].
+Uint8List _grow(Uint8List bd, int minLength) {
+  final oldLength = bd.lengthInBytes;
+  return (minLength <= oldLength) ? bd : _reallyGrow(bd, minLength);
+}
 
-  static bool checkAllZeros(ByteData bd, int start, int end) {
+/// Returns a new [ByteData] with length at least [minLength].
+Uint8List _reallyGrow(Uint8List bd, int minLength) {
+  var newLength = minLength;
+  do {
+    newLength *= 2;
+    if (newLength >= kDefaultLimit) return null;
+  } while (newLength < minLength);
+  final newBD = Uint8List(newLength);
+  for (var i = 0; i < bd.lengthInBytes; i++) newBD[i] = bd[i];
+  return newBD;
+}
+
+  static bool checkAllZeros(Uint8List bd, int start, int end) {
     for (var i = start; i < end; i++) if (bd.getUint8(i) != 0) return false;
     return true;
   }

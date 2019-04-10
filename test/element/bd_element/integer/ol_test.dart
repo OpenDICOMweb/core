@@ -33,12 +33,16 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         global.throwOnError = false;
-        for (var code in olVM1Tags) {
+        for (final code in olVM1Tags) {
           final e0 = OLbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
+
+          expect(e1.hasValidValues, true);
+          expect(e1, equals(e0));
+          expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
@@ -50,7 +54,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });
@@ -59,12 +62,16 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint32List(1, i);
         global.throwOnError = false;
-        for (var code in olVM1nTags) {
+        for (final code in olVM1nTags) {
           final e0 = OLbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
+
+          expect(e1.hasValidValues, true);
+          expect(e1 == e0, true);
+          expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
           expect(e0.eLength == e0.bytes.eLength, true);
@@ -76,7 +83,6 @@ void main() {
           expect(e0.vfOffset == e0.bytes.vfOffset, true);
           expect(e0.vfBytes == e0.bytes.vfBytes, true);
           expect(e0.vfBytesLast == e0.bytes.vfBytesLast, true);
-//          expect(e0.hashCode == e0.bytes.hashCode, true);
         }
       }
     });

@@ -28,7 +28,7 @@ abstract class ReadBufferBase extends BytesBuffer {
   // **** ReadBuffer specific Getters and Methods
 
   @override
-  set bytes(Bytes bytes) => unsupportedError();
+  set bytes(Bytes bytes) => unsupportedSetter();
 }
 
 /// A read only buffer.
@@ -86,7 +86,7 @@ class ReadBuffer extends ReadBufferBase with ReadBufferMixin {
 }
 
 /// A mixin used for logging [ReadBuffer] methods.
-abstract class LoggingReadBufferMixin {
+mixin LoggingReadBufferMixin {
   /// The read index into the underlying [Bytes].
   int get rIndex;
 

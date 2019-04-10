@@ -166,7 +166,7 @@ void main() {
       expect(uInt8List3, isNot(u8List1));
     });
 
-    test('float326Base getLength', () {
+    test('float32Base getLength', () {
       for (var i = 4; i < 40; i += 4) {
         final vList = rng.float32List(i, i);
         final getLen0 = Float32Mixin.getLength(vList.length);

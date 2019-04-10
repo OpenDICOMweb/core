@@ -40,6 +40,6 @@ class TransformHandler extends HandlerBase {
 
   /// This Base implementation simply prints the log record.
   @override
-  Object call(LogRecord record, {bool flush}) =>
+  Object call(LogRecord record, {bool flush = false}) =>
       (transform == null) ? record : transform(record);
 }

@@ -27,7 +27,7 @@ void main() {
     '-67',
   ];
 
-  for (var s in goodIntegerStrings) {
+  for (final s in goodIntegerStrings) {
     final n = int.parse(s);
     print('s: "$s" n: $n');
   }

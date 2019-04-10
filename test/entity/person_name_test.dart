@@ -60,10 +60,20 @@ void main() {
     final namesList1 = strValid.split('=');
     final namesList2 = strValid1.split('=');
 
+    final strInValid = rsg.generateDcmPersonName(4, 5, 8);
     test('test for isValidList', () {
-      for (var name in namesList1) {
+      for (final name in namesList1) {
         expect(Name.isValidList(name.split('^')), true);
       }
+
+      final isValid0 = Name.isValidList(null);
+      expect(isValid0, false);
+
+      final isValid1 = Name.isValidList([]);
+      expect(isValid1, false);
+
+      final isValid2 = Name.isValidList([strInValid]);
+      expect(isValid2, false);
     });
 
     test('test for == in Name', () {
@@ -85,11 +95,13 @@ void main() {
       final n4 = Name.parse(namesList2[0]);
       final n5 = Name.parse(namesList1[0]);
 
+      final fromString0 = Name.fromString(namesList1[0]);
       log.debug(n5.components);
       expect(n1, null);
       expect(n2, null);
       expect(n3, null);
       expect(n4, null);
+      expect(n5, equals(fromString0));
     });
 
     test('test for isValidComponentGroup', () {

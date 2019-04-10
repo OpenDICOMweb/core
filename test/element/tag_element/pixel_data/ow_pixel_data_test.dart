@@ -55,7 +55,7 @@ void main() {
       final s = Sha256.uint16(pixels0);
       expect(ow0.sha256, equals(ow0.update(s)));
 
-      for (var s in u8Frame) {
+      for (final s in u8Frame) {
         expect(ow0.checkValue(s), true);
       }
 
@@ -97,7 +97,7 @@ void main() {
       final s = Sha256.uint16(pixels0);
       expect(ow0.sha256, equals(ow0.update(s)));
 
-      for (var s in u8Frame) {
+      for (final s in u8Frame) {
         expect(ow0.checkValue(s), true);
       }
 
@@ -176,7 +176,7 @@ void main() {
       final s = Sha256.uint16(pixels0);
       expect(ow0.sha256, equals(ow0.update(s)));
 
-      for (var s in u8Frame) {
+      for (final s in u8Frame) {
         expect(ow0.checkValue(s), true);
       }
       expect(ow0.checkValue(kUint16Max), true);
@@ -216,7 +216,7 @@ void main() {
       expect(ow0.valuesCopy, equals(ow0.values));
       expect(ow0.typedData is Uint16List, true);
 
-      for (var s in u8Frame) {
+      for (final s in u8Frame) {
         expect(ow0.checkValue(s), true);
       }
       expect(ow0.checkValue(kUint16Max), true);
@@ -287,7 +287,7 @@ void main() {
       final e3 = e0.update(s);
       expect(e2, equals(e3));
 
-      for (var s in u8Frame) {
+      for (final s in u8Frame) {
         expect(e0.checkValue(s), true);
       }
 

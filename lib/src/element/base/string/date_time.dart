@@ -20,7 +20,7 @@ part of odw.sdk.element.base.string;
 //       bool isEmptyStringAllowed = x;
 
 /// DICOM Age (AS) Value Representation
-abstract class AS extends Ascii {
+abstract class AS extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -153,7 +153,7 @@ abstract class AS extends Ascii {
 // **** Date/Time Elements
 
 /// An abstract class for date ([DA]) [Element]s.
-abstract class DA extends Ascii {
+abstract class DA extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -179,7 +179,7 @@ abstract class DA extends Ascii {
   @override
   DA get hash {
     final dList = <String>[];
-    for (var date in dates) {
+    for (final date in dates) {
       final h = date.hash;
       dList.add(h.dcm);
     }
@@ -220,7 +220,10 @@ abstract class DA extends Ascii {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  void clearDates() => _dates = null;
+  void clearDates() {
+    _dates = null;
+    return;
+  }
 
   static const int kVRIndex = kDAIndex;
   static const int kVRCode = kDACode;
@@ -302,7 +305,7 @@ abstract class DA extends Ascii {
 }
 
 /// An abstract class for time ([TM]) [Element]s.
-abstract class DT extends Ascii {
+abstract class DT extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -340,7 +343,10 @@ abstract class DT extends Ascii {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  void clearDcmDateTimes() => _dateTimes = null;
+  void clearDcmDateTimes() {
+    _dateTimes = null;
+    return;
+  }
 
   static const int kVRIndex = kDTIndex;
   static const int kVRCode = kDTCode;
@@ -427,7 +433,7 @@ abstract class DT extends Ascii {
 /// [Time] [String]s have the following format: HHMMSS.ffffff.
 /// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/
 /// html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
-abstract class TM extends Ascii {
+abstract class TM extends AsciiString {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -464,7 +470,10 @@ abstract class TM extends Ascii {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
- void clearTimes() => _times = null;
+ void clearTimes() {
+   _times = null;
+   return;
+ }
 
   static const int kVRIndex = kTMIndex;
   static const int kVRCode = kTMCode;

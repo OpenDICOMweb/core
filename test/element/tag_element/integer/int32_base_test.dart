@@ -27,6 +27,22 @@ void main() {
     const int32Max = [kInt32Max];
     expect(Int32.fromList(int32Max), int32Max);
     expect(Int32.fromList(int32Min), int32Min);
+
+    const int64Max = [kInt64Max];
+    final from1 = Int32.fromList(int64Max, check: true);
+    expect(from1, isNull);
+    expect(from1 is Int32List, false);
+
+    final from2 = Int32.fromList(null);
+    expect(from2 == kEmptyInt32List, true);
+
+    final from3 = Int32.fromList([]);
+    expect(from3.isEmpty, true);
+    expect(from3 == kEmptyInt32List, true);
+
+    global.throwOnError = true;
+    expect(() => Int32.fromList(int64Max),
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int32Base fromUint8List', () {

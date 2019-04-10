@@ -18,18 +18,18 @@ void main() {
 
   group('SopClass Tests', () {
     test('SopClassUids', () {
-      for (var s in sopClassMap.keys) {
+      for (final s in sopClassMap.keys) {
         expect(isValidUidString(s), true);
       }
 
-      for (var s in sopClassMap.keys) {
+      for (final s in sopClassMap.keys) {
         final uid = Uid.parse(s);
         final v = uid is SopClass;
         if (!v) log.debug('Bad SopClass: $uid');
         expect(uid is SopClass, true);
       }
 
-      for (var c in sopClassList) {
+      for (final c in sopClassList) {
         expect(c is SopClass, true);
       }
     });
@@ -54,7 +54,7 @@ void main() {
     global.throwOnError = true;
 
     test('parse InvalidUidStringError', () {
-      for (var s in badUids) {
+      for (final s in badUids) {
         expect(() => Uid.parse(s, onError: null),
             throwsA(const TypeMatcher<InvalidUidError>()));
       }

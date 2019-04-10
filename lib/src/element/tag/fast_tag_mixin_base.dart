@@ -60,7 +60,7 @@ mixin TagMixinBase<V> {
       vList is List<V> && isValidLength(tag, vList) && _isValidValues(vList);
 
   bool _isValidValues(List<V> vList) {
-    for (var v in vList) if (isNotValidValue(v)) return false;
+    for (final v in vList) if (isNotValidValue(v)) return false;
     return true;
   }
 

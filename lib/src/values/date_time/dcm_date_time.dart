@@ -199,7 +199,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   ///
   Date toDate() => Date(year, month, day);
 
-  static final Duration zeroDuration = Duration();
+  static const Duration zeroDuration = Duration();
 
   // Urgent unit test: if m >= 12 returns null
   /// See Dart Doc for [DateTime].[add].

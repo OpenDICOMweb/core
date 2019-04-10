@@ -49,7 +49,7 @@ mixin NoValuesMixin {
   List<Element> noValuesAll(int index) {
     assert(index != null);
     final result = <Element>[]..add(noValues(index));
-    for (var e in elements) {
+    for (final e in elements) {
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
       } else if (e.index == index) {

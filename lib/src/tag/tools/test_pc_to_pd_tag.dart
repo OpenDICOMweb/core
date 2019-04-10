@@ -12,7 +12,7 @@ void main() {
     ['ACUSON', 0x00090e00]
   ];
 
-  for (var entry in codes) {
+  for (final entry in codes) {
     final pdTags = creatorIdMap['ACUSON'];
 
     log.debug('pdTags: ');

@@ -66,7 +66,7 @@ void main() {
 
   group('DA Tests', () {
     test('DA hasValidValues good values', () {
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         global.throwOnError = false;
         log.debug('DA: "$s"');
         final e0 = DAtag(PTag.kCreationDate, s);
@@ -80,7 +80,7 @@ void main() {
     });
 
     test('DA hasValidValues for bad year, month, and day values', () {
-      for (Iterable<String> s in badDAList) {
+      for (final s in badDAList) {
         global.throwOnError = false;
         final e1 = DAtag(PTag.kCreationDate, s);
         expect(e1, isNull);
@@ -102,7 +102,7 @@ void main() {
     });
 
     test('DA hasValidValues for bad values length', () {
-      for (Iterable<String> s in badDALengthList) {
+      for (final s in badDALengthList) {
         global.throwOnError = false;
         final e1 = DAtag(PTag.kCreationDate, s);
         expect(e1, isNull);
@@ -160,7 +160,7 @@ void main() {
       expect(e2 == e4, false);
       expect(e3 == e4, true);
 
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final e5 = DAtag(PTag.kCreationDate, s);
         final e6 = e5.update(['20150817']);
         final e7 = e5.update(['20150817']);
@@ -186,7 +186,7 @@ void main() {
       expect(daNoValues1.values.isEmpty, true);
       log.debug('daNoValues1:$daNoValues1');
 
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final e1 = DAtag(PTag.kCreationDate, s);
         final daNoValues1 = e1.noValues;
         expect(daNoValues1.values.isEmpty, true);
@@ -219,7 +219,7 @@ void main() {
       expect(e2 == e3, true);
       expect(e2.hashCode == e3.hashCode, true);
 
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final e4 = DAtag(PTag.kCreationDate, s);
         final e5 = e4.copy;
         expect(e4 == e5, true);
@@ -296,7 +296,7 @@ void main() {
     });
 
     test('DA valuesCopy ranodm', () {
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final e0 = DAtag(PTag.kCalibrationDate, s);
         expect(s, equals(e0.valuesCopy));
       }
@@ -309,7 +309,7 @@ void main() {
     });
 
     test('DA checkLength', () {
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final e0 = DAtag(PTag.kCreationDate, s);
         expect(e0.checkLength(e0.values), true);
       }
@@ -325,7 +325,7 @@ void main() {
 
     test('DA isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final e0 = DAtag(PTag.kCreationDate, s);
         expect(e0.hasValidValues, true);
       }
@@ -333,7 +333,7 @@ void main() {
 
     test('DA isValidValues bad values', () {
       global.throwOnError = false;
-      for (var s in badDAList) {
+      for (final s in badDAList) {
         global.throwOnError = false;
         final e0 = DAtag(PTag.kCreationDate, s);
         expect(e0, isNull);
@@ -391,7 +391,7 @@ void main() {
     });
 
     test('DA getAsciiList', () {
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = Bytes.asciiFromList(s);
         log.debug('bytes:$bytes');
@@ -418,44 +418,44 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
         log.debug('vList0: $vList0');
-        final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
+        final fvf0 = AsciiString.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
 
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList1 = rsg.getDAList(1, i);
-        final fvf1 = Ascii.fromValueField(vList1, k8BitMaxLongVF);
+        final fvf1 = AsciiString.fromValueField(vList1, k8BitMaxLongVF);
         expect(fvf1, equals(vList1));
       }
       global.throwOnError = false;
-      final fvf1 = Ascii.fromValueField(null, k8BitMaxLongLength);
+      final fvf1 = AsciiString.fromValueField(null, k8BitMaxLongLength);
       expect(fvf1, <String>[]);
       expect(fvf1 == kEmptyStringList, true);
 
-      final fvf2 = Ascii.fromValueField(<String>[], k8BitMaxLongLength);
+      final fvf2 = AsciiString.fromValueField(<String>[], k8BitMaxLongLength);
       expect(fvf2, <String>[]);
       expect(fvf2 == kEmptyStringList, false);
       expect(fvf2.isEmpty, true);
 
-      final fvf3 = Ascii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      final fvf3 = AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength);
       expect(fvf3, isNull);
 
       global.throwOnError = true;
-      expect(() => Ascii.fromValueField(<int>[1234], k8BitMaxLongLength),
+      expect(() => AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final vList2 = rsg.getCSList(1, 1);
       final bytes = Bytes.utf8FromList(vList2);
-      final fvf4 = Ascii.fromValueField(bytes, k8BitMaxLongLength);
+      final fvf4 = AsciiString.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
     });
 
     test('DA fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDAList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           final e1 = DAtag.fromBytes(PTag.kSelectorDAValue, bytes0);
           log.debug('e1: $e1');
@@ -467,7 +467,7 @@ void main() {
     test('DA fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDAList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           final e1 = DAtag.fromBytes(PTag.kSelectorAEValue, bytes0);
@@ -483,7 +483,7 @@ void main() {
     test('DA checkLength', () {
       global.throwOnError = false;
       final e0 = DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = DAtag(PTag.kCreationDate, ['19930822']);
@@ -497,7 +497,7 @@ void main() {
     test('DA checkLength good values random', () {
       final vList0 = rsg.getDAList(1, 1);
       final e0 = DAtag(PTag.kCreationDate, vList0);
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = DAtag(PTag.kCreationDate, vList0);
@@ -513,8 +513,8 @@ void main() {
 
     test('DA checkValue good values', () {
       final e0 = DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in goodDAList) {
-        for (var a in s) {
+      for (final s in goodDAList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -522,8 +522,8 @@ void main() {
 
     test('DA checkValue bad values', () {
       final e0 = DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in badDAList) {
-        for (var a in s) {
+      for (final s in badDAList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
         }
@@ -534,8 +534,8 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
       final e0 = DAtag(PTag.kCreationDate, vList0);
-      for (var s in goodDAList) {
-        for (var a in s) {
+      for (final s in goodDAList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -544,8 +544,8 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
       final e0 = DAtag(PTag.kCreationDate, vList0);
-      for (var s in badDAList) {
-        for (var a in s) {
+      for (final s in badDAList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
         }
@@ -617,6 +617,10 @@ void main() {
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
         expect(append0, isNotNull);
+
+        final append1 = e0.values.append(vList1, e0.maxValueLength);
+        log.debug('e0.append: $append1');
+        expect(append0, equals(append1));
       }
     });
 
@@ -628,6 +632,10 @@ void main() {
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
         expect(prepend0, isNotNull);
+
+        final prepend1 = e0.values.prepend(vList1, e0.maxValueLength);
+        log.debug('e0.prepend: $prepend1');
+        expect(prepend0, equals(prepend1));
       }
     });
 
@@ -745,7 +753,7 @@ void main() {
       global.throwOnError = false;
       expect(DA.isValidTag(PTag.kSelectorDAValue), true);
 
-      for (var tag in daVM1Tags) {
+      for (final tag in daVM1Tags) {
         final validT0 = DA.isValidTag(tag);
         expect(validT0, true);
       }
@@ -758,7 +766,7 @@ void main() {
       expect(() => DA.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = DA.isValidTag(tag);
         expect(validT0, false);
@@ -773,7 +781,7 @@ void main() {
       global.throwOnError = false;
       expect(DA.isValidVRIndex(kDAIndex), true);
 
-      for (var tag in daVM1Tags) {
+      for (final tag in daVM1Tags) {
         global.throwOnError = false;
         expect(DA.isValidVRIndex(tag.vrIndex), true);
       }
@@ -787,7 +795,7 @@ void main() {
       expect(() => DA.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(DA.isValidVRIndex(tag.vrIndex), false);
 
@@ -801,7 +809,7 @@ void main() {
       global.throwOnError = false;
       expect(DA.isValidVRCode(kDACode), true);
 
-      for (var tag in daVM1Tags) {
+      for (final tag in daVM1Tags) {
         expect(DA.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -814,7 +822,7 @@ void main() {
       expect(() => DA.isValidVRCode(kSSCode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(DA.isValidVRCode(tag.vrCode), false);
 
@@ -836,8 +844,8 @@ void main() {
 
     test('DA isValidValueLength good values', () {
       global.throwOnError = false;
-      for (var s in goodDAList) {
-        for (var a in s) {
+      for (final s in goodDAList) {
+        for (final a in s) {
           expect(DA.isValidValueLength(a), true);
         }
       }
@@ -853,7 +861,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getDAList(1, 1);
-        for (var tag in daVM1Tags) {
+        for (final tag in daVM1Tags) {
           expect(DA.isValidLength(tag, vList), true);
         }
       }
@@ -862,7 +870,7 @@ void main() {
     test('DA isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getDAList(2, i + 1);
-        for (var tag in daVM1Tags) {
+        for (final tag in daVM1Tags) {
           global.throwOnError = false;
           expect(DA.isValidLength(tag, vList), false);
 
@@ -889,7 +897,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDAList(1, i);
-        for (var tag in daVM1nTags) {
+        for (final tag in daVM1nTags) {
           log.debug('tag: $tag');
           expect(DA.isValidLength(tag, vList0), true);
         }
@@ -898,8 +906,8 @@ void main() {
 
     test('DA isValidValue good values', () {
       global.throwOnError = false;
-      for (var s in goodDAList) {
-        for (var a in s) {
+      for (final s in goodDAList) {
+        for (final a in s) {
           expect(DA.isValidValue(a), true);
         }
       }
@@ -907,8 +915,8 @@ void main() {
 
     test('DA isValidValue bad values', () {
       global.throwOnError = false;
-      for (var s in badDAList) {
-        for (var a in s) {
+      for (final s in badDAList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(DA.isValidValue(a), false);
         }
@@ -917,14 +925,14 @@ void main() {
 
     test('DA isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         expect(DA.isValidValues(PTag.kDate, s), true);
       }
     });
 
     test('DA isValidValues bad values', () {
       global.throwOnError = false;
-      for (var s in badDAList) {
+      for (final s in badDAList) {
         global.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), false);
 
@@ -936,7 +944,7 @@ void main() {
 
     test('DA isValidValues bad date values length', () {
       global.throwOnError = false;
-      for (var s in badDALengthList) {
+      for (final s in badDALengthList) {
         global.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), false);
 
@@ -948,7 +956,7 @@ void main() {
 
     test('DA isValidValues bad values length', () {
       global.throwOnError = false;
-      for (var s in badDateValuesLengthList) {
+      for (final s in badDateValuesLengthList) {
         global.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), false);
 
@@ -961,7 +969,7 @@ void main() {
     test('DA isValidValues VM.k1 good values length', () {
       for (var i = 0; i < 10; i++) {
         final validList = rsg.getDAList(1, 1);
-        for (var tag in daVM1Tags) {
+        for (final tag in daVM1Tags) {
           global.throwOnError = false;
           expect(DA.isValidValues(tag, validList), true);
         }
@@ -971,7 +979,7 @@ void main() {
     test('DA isValidValues VM.k1 bad values length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getDAList(2, i + 1);
-        for (var tag in daVM1Tags) {
+        for (final tag in daVM1Tags) {
           global.throwOnError = false;
           expect(DA.isValidValues(tag, validList), false);
           expect(DA.isValidValues(tag, invalidList), false);
@@ -988,7 +996,7 @@ void main() {
     test('DA isValidValues VM.k1_n length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getDAList(1, i);
-        for (var tag in daVM1nTags) {
+        for (final tag in daVM1nTags) {
           global.throwOnError = false;
           expect(DA.isValidValues(tag, validList), true);
         }
@@ -997,7 +1005,7 @@ void main() {
 
     test('DA getAsciiList', () {
       //    	system.level = Level.info;
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final bytes = Bytes.asciiFromList(s);
         log.debug('DA.getAsciiList(bytes): $bytes');
         expect(bytes.stringListFromAscii(), equals(s));
@@ -1005,7 +1013,7 @@ void main() {
     });
 
     test('DA toUint8List good values', () {
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         log.debug('Bytes.fromAsciiList(s): ${Bytes.asciiFromList(s)}');
 
         if (s[0].length.isOdd) s[0] = '${s[0]} ';
@@ -1041,7 +1049,7 @@ void main() {
       final vList0 = ['19500712'];
       expect(DA.isValidValues(PTag.kDate, vList0), true);
 
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         global.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), true);
       }
@@ -1056,7 +1064,7 @@ void main() {
       expect(() => DA.isValidValues(PTag.kDate, vList1),
           throwsA(const TypeMatcher<StringError>()));
 
-      for (var s in badDAList) {
+      for (final s in badDAList) {
         global.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), false);
 
@@ -1085,8 +1093,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodDAList) {
-        for (var a in s) {
+      for (final s in goodDAList) {
+        for (final a in s) {
           final values = cvt.ascii.encode(a);
           final tbd2 = Bytes.asciiFromList(s);
           final tbd3 = Bytes.asciiFromList(s);
@@ -1105,7 +1113,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
@@ -1122,7 +1130,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodDAList) {
+      for (final s in goodDAList) {
         final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -1151,12 +1159,12 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in daVM1Tags) {
+          for (final tag in daVM1Tags) {
             final e0 = DA.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in daVM1nTags) {
+          for (final tag in daVM1nTags) {
             final e0 = DA.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

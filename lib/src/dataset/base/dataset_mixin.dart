@@ -39,9 +39,12 @@ import 'package:core/src/values/uid.dart';
 //   [Element.index] is currently [Element.code], but that is likely
 //   to change in the future.
 
+/// A Function that take an [Iterable<V>] and returns an [Iterable<V>].
+typedef IterableGen<V> = Iterable<V> Function(Iterable<V> list);
+
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
-abstract class DatasetMixin {
+mixin DatasetMixin {
   // **** Start of Interface ****
 
   /// Returns the Element with [index], if present; otherwise, returns _null_.
@@ -115,28 +118,42 @@ abstract class DatasetMixin {
   /// Walk the [Dataset] recursively and return the count of [Element]s
   /// for which [test] is true.
   /// Note: It ignores duplicates.
-  int counter(ElementTest test) {
+  // Urgent: remove debug statements, total and level when profiling debugged.
+  int counter(ElementTest test, [int total = 0, int level = 0]) {
+    var _total = total;
     var count = 0;
-    for (var e in elements)
+    log.debug('* DS start $level: count $count total $_total');
+    for (final e in elements) {
       if (e is SQ) {
-        count += e.counter(test);
-      } else {
-        if (test(e)) count++;
+        log.debug('*   DS SQ start: count $count total $_total: $e');
+        final n = e.counter(test, _total, level + 1);
+        count += n;
+        _total += n;
+        log.debug('*   DS SQ end: count $count total $_total');
+
       }
+      if (test(e)) {
+        _total++;
+        count++;
+        log.debug('$_total: $e');
+      }
+    }
+    log.debug('* DS end $level: count $count total $_total');
     return count;
   }
 
   // **** Section Start: Element related Getters and Methods
 
   bool hasElementsInRange(int min, int max) {
-    for (var e in elements) if (e.code >= min && e.code <= max) return true;
+    for (final e in elements) if (e.code >= min && e.code <= max) return true;
     return false;
   }
 
   /// Returns a [List] of the Elements that satisfy [min] <= e.code <= [max].
   List<Element> getElementsInRange(int min, int max) {
     final elements = <Element>[];
-    for (var e in elements) if (e.code >= min && e.code < max) elements.add(e);
+    for (final e in elements)
+      if (e.code >= min && e.code < max) elements.add(e);
     return elements;
   }
 
@@ -170,7 +187,7 @@ abstract class DatasetMixin {
     vList ??= <V>[];
     final v = update(index, vList, required: required);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAll<V>(index, vList, required: required));
       } else {
@@ -187,7 +204,7 @@ abstract class DatasetMixin {
       {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAllF<V>(index, f, required: required));
       } else {
@@ -271,7 +288,7 @@ abstract class DatasetMixin {
   List<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.replaceAll(index, vList));
       } else {
@@ -283,7 +300,7 @@ abstract class DatasetMixin {
   List<Iterable<V>> replaceAllF<V>(int index, Iterable<V> f(List<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.replaceAllF(index, f));
       } else {
@@ -310,7 +327,7 @@ abstract class DatasetMixin {
   List<Element> replaceAllUids(int index, Iterable<Uid> uids) {
     final v = updateUid(index, uids);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAllUids(index, uids));
       } else {
@@ -336,7 +353,7 @@ abstract class DatasetMixin {
   Iterable<Element> noValuesAll(int index) {
     assert(index != null);
     final result = <Element>[]..add(noValues(index));
-    for (var e in elements) {
+    for (final e in elements) {
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
       } else if (e.index == index) {
@@ -362,7 +379,7 @@ abstract class DatasetMixin {
     assert(codes != null);
     final deleted = <Element>[];
     if (codes.isEmpty) return deleted;
-    for (var code in codes) {
+    for (final code in codes) {
       final e = deleteCode(code);
       if (e != null) deleted.add(e);
     }
@@ -376,9 +393,9 @@ abstract class DatasetMixin {
     if (e != null) results.add(e);
     assert(lookup(index) == null);
     if (recursive)
-      for (var e in elements) {
+      for (final e in elements) {
         if (e is SQ) {
-          for (var item in e.items) {
+          for (final item in e.items) {
             final deleted = item.deleteAll(index, recursive: recursive);
             if (deleted != null) results.addAll(deleted);
           }
@@ -390,12 +407,12 @@ abstract class DatasetMixin {
   // TODO Jim: maybe remove recursive call
   List<Element> deleteIfTrue(bool test(Element e), {bool recursive = false}) {
     final deleted = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) {
         delete(e.index);
         deleted.add(e);
       } else if (e is SQ) {
-        for (var item in e.items) {
+        for (final item in e.items) {
           final dList = item.deleteIfTrue(test, recursive: recursive);
           deleted.addAll(dList);
         }
@@ -406,7 +423,7 @@ abstract class DatasetMixin {
 
   Iterable<Element> copyWhere(bool test(Element e)) {
     final result = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) result.add(e);
     }
     return result;
@@ -414,7 +431,7 @@ abstract class DatasetMixin {
 
   Iterable<Element> findWhere(bool test(Element e)) {
     final result = <Element>[];
-    for (var e in elements) {
+    for (final e in elements) {
       if (test(e)) result.add(e);
     }
     return result;
@@ -425,15 +442,15 @@ abstract class DatasetMixin {
   //TODO improve doc
   Iterable<Object> findAllWhere(bool test(Element e)) {
     final result = <Object>[];
-    for (var e in elements) if (test(e)) result.add(e);
+    for (final e in elements) if (test(e)) result.add(e);
     return result;
   }
 
   Map<SQ, Element> findSQWhere(bool test(Element e)) {
     final map = <SQ, Element>{};
-    for (var e in elements) {
+    for (final e in elements) {
       if (e is SQ) {
-        for (var item in e.items) {
+        for (final item in e.items) {
           final eList = item.findAllWhere(test);
           if (eList.isNotEmpty) {
             map[e] = eList;
@@ -456,14 +473,14 @@ abstract class DatasetMixin {
   bool _isPrivate(Element e) => e.isPrivate;
   Iterable<Element> findAllPrivate0() => findAllWhere(_isPrivate);
 
-  List<int> findAllPrivateCodes({bool recursive = false}) {
+  List<int> findAllPrivateCodes({bool recursive = true}) {
     final privates = <int>[];
-    for (var e in elements) if (e.isPrivate) privates.add(e.code);
+    for (final e in elements) if (e.isPrivate) privates.add(e.code);
     if (recursive) {
-      for (var sq in sequences) {
+      for (final sq in sequences) {
         for (var i = 0; i < sq.items.length; i++) {
           final Iterable<int> codes =
-            sq.items.elementAt(i).findAllPrivateCodes(recursive: true);
+              sq.items.elementAt(i).findAllPrivateCodes(recursive: true);
           privates.addAll(codes);
         }
       }
@@ -473,18 +490,17 @@ abstract class DatasetMixin {
 
   // Urgent: change the structure of privates and deleted to be:
   // code or [sqCode [codes]]
-  List<Element> deleteAllPrivate({bool recursive = false}) {
-    final privates = findAllPrivateCodes(recursive: recursive);
+  List<Element> deleteAllPrivate({bool recursive = true}) {
+    final privates = findAllPrivateCodes(recursive: false);
     if (privates.isEmpty && recursive == false) return <Element>[];
-    print('privates(${privates.length}): $privates');
     final deleted = deleteCodes(privates);
     if (recursive) {
       // Fix: you cant tell what sequence the element was in.
-      for (var sq in sequences) {
+      for (final sq in sequences) {
         final items = sq.items;
-        for (var item in items) {
+        for (final item in items) {
           final Iterable<int> codes = item.findAllPrivateCodes(recursive: true);
-          final elements = deleteCodes(codes);
+          final elements = item.deleteCodes(codes);
           deleted.addAll(elements);
         }
       }
@@ -496,8 +512,8 @@ abstract class DatasetMixin {
   // TODO: doesn't implement recursion
   List<Element> deleteAllPrivateInPublicSQs({bool recursive = false}) {
     final deleted = <Element>[];
-    for (var sq in sequences) {
-      for (var item in sq.items) {
+    for (final sq in sequences) {
+      for (final item in sq.items) {
         final privates = item.deleteAllPrivate();
         if (privates.isNotEmpty) deleted.addAll(privates);
       }
@@ -717,7 +733,7 @@ abstract class DatasetMixin {
   /// _Note_: A [RootDataset] is its own [root].
   DatasetMixin get root => isRoot ? this : parent.root;
 
-  Charset get charset => parent.charset;
+  Ascii get charset => parent.charset;
 
   // **************** Element values accessors
   //TODO: when fast_tag is working replace code with index.
@@ -748,11 +764,11 @@ abstract class DatasetMixin {
 
   double get pixelAspectRatio {
     final vList = getStringList(kPixelAspectRatio);
-    if (vList == null || vList.isEmpty) return 1.0;
+    if (vList == null || vList.isEmpty) return 1;
     if (vList.length != 2) {
       badValuesLength(vList, 2, 2, null, PTag.kPixelAspectRatio);
       //Issue: is this reasonable?
-      return 1.0;
+      return 1;
     }
     final numerator = int.parse(vList[0]);
     final denominator = int.parse(vList[1]);

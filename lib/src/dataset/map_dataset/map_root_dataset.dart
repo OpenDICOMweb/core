@@ -88,7 +88,7 @@ class FmiMap extends Fmi {
   int get length => eMap.length;
 
   @override
-  set length(int n) => unsupportedError();
+  set length(int n) => unsupportedSetter();
 
   @override
   String toString() => '$runtimeType: $length elements';

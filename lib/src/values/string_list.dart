@@ -40,8 +40,8 @@ class StringList extends ListBase<String> {
 
   StringList._(this._values);
 
-  StringList.decode(Bytes bytes, [Charset charset]) : 
-        _values = bytes.getStringList(charset);
+  StringList.decode(Bytes bytes, [Charset charset])
+      : _values = bytes.getStringList(charset ?? utf8);
 
   @override
   String operator [](int i) => _values[i];
@@ -68,7 +68,7 @@ class StringList extends ListBase<String> {
 
   /// [StringList]s are immutable.
   @override
-  set length(int i) => unsupportedError();
+  set length(int i) => unsupportedSetter();
 
   // Performance: This is very inefficient
   int get lengthInBytes => asBytes.length;
@@ -85,7 +85,7 @@ class StringList extends ListBase<String> {
 
   List<String> get rightTrimmed => _values.map((v) => v.trim());
 
-  List<String> trim(Trim trim) {
+  Iterable<String> trim(Trim trim) {
     switch (trim) {
       case Trim.trailing:
         return _values.map((v) => v.trimRight());
@@ -217,7 +217,7 @@ class AsciiList extends StringList {
     final last = length - 1;
     final bytes = Bytes(ByteData(length));
     int j;
-    for (var s in _values) {
+    for (final s in _values) {
       for (var i = 0; i < s.length; i++) {
         final c = s.codeUnitAt(i);
         if (c > kDel) invalidCharacterInString(s, i);
@@ -230,8 +230,8 @@ class AsciiList extends StringList {
   }
 
   static bool isAsciiList(List<String> sList) {
-    for (var s in sList) {
-      for (var c in s.codeUnits) if (c <= 0 || c >= 127) return false;
+    for (final s in sList) {
+      for (final c in s.codeUnits) if (c <= 0 || c >= 127) return false;
     }
     return true;
   }

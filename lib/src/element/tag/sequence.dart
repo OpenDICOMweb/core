@@ -43,7 +43,7 @@ class SQtag extends SQ with TagElement<Item> {
   /// Creates a  [SQtag] instance.
   SQtag._(this.parent, this.tag, [Iterable<Item> vList, this.bytes])
       : _values = (vList == null)
-            ? emptyTagItemList
+            ? SQ.kEmptyList
             : (vList is List) ? vList : vList.toList(growable: false);
 
   /// The [Iterable<ItemTag>] that are the [values] of _this_.
@@ -57,7 +57,7 @@ class SQtag extends SQ with TagElement<Item> {
   Bytes get vfBytes => unimplementedError('vfBytes in SQtag');
 
   @override
-  SQtag get noValues => update(emptyTagItemList);
+  SQtag get noValues => update(SQ.kEmptyList);
 
   @override
   SQtag get sha256 => throw UnsupportedError('Can\t hash a sequence');
@@ -67,7 +67,7 @@ class SQtag extends SQ with TagElement<Item> {
 
   /// Returns a copy of _this_ Sequence, with a  [List] of [Item]s.
   @override
-  SQtag update([Iterable<Item> vList = emptyTagItemList]) =>
+  SQtag update([Iterable<Item> vList = SQ.kEmptyList]) =>
       SQtag(parent, tag, vList);
 
   /// Returns a copy of _this_ Sequence, with a  [List] of Tag[Item]s.
@@ -89,8 +89,6 @@ class SQtag extends SQ with TagElement<Item> {
 
   @override
   String toString() => '$runtimeType $dcm ${tag.keyword} ${items.length} items';
-
-  static const Iterable<Item> emptyTagItemList = <TagItem>[];
 
   // ignore: prefer_constructors_over_static_methods
   static SQtag fromValues(Tag tag, Iterable<Item> values,

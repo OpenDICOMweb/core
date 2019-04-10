@@ -97,11 +97,12 @@ void main() {
       global.throwOnError = false;
       final e4 = ATtag(PTag.kFunctionalGroupPointer, null);
       log.debug('e4: $e4');
-      expect(e4, isNull);
+      //expect(e4, isNull);
+      expect(e4.values, kEmptyUint32List);
 
-      global.throwOnError = true;
+      /* global.throwOnError = true;
       expect(() => ATtag(PTag.kFunctionalGroupPointer, null),
-          throwsA(const TypeMatcher<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));*/
     });
 
     test('AT update random', () {
@@ -312,6 +313,10 @@ void main() {
         final e0 = ATtag(PTag.kFunctionalGroupPointer, vList0);
         expect(e0.checkLength(e0.values), true);
       }
+
+      final vList0 = rng.uint32List(2, 2);
+      final e0 = ATtag(PTag.kFunctionalGroupPointer);
+      expect(e0.checkLength(vList0), false);
     });
 
     test('AT checkLength', () {
@@ -320,16 +325,32 @@ void main() {
     });
 
     test('AT checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final e0 = ATtag(PTag.kFunctionalGroupPointer, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int64List(1, 1);
+      final e0 = ATtag(PTag.kFunctionalGroupPointer);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('AT checkValues', () {
+      global.throwOnError = false;
       final e0 = ATtag(PTag.kFunctionalGroupPointer, uInt32Max);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('AT valuesCopy random', () {
@@ -611,7 +632,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 1);
         global.throwOnError = false;
-        for (var tag in atVM1Tags) {
+        for (final tag in atVM1Tags) {
           expect(AT.isValidLength(tag, vList), true);
           expect(AT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
           expect(AT.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
@@ -622,7 +643,7 @@ void main() {
     test('AT isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final invalidMinVList = rng.uint32List(2, i + 1);
-        for (var tag in atVM1Tags) {
+        for (final tag in atVM1Tags) {
           global.throwOnError = false;
           expect(AT.isValidLength(tag, invalidMinVList), false);
           expect(AT.isValidLength(tag, invalidVList), false);
@@ -652,7 +673,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint32List(1, i);
         global.throwOnError = false;
-        for (var tag in atVM1nTags) {
+        for (final tag in atVM1nTags) {
           expect(AT.isValidLength(tag, vList), true);
 
           expect(AT.isValidLength(tag, invalidVList.sublist(0, AT.kMaxLength)),
@@ -665,7 +686,7 @@ void main() {
       global.throwOnError = false;
       expect(AT.isValidTag(PTag.kSelectorATValue), true);
 
-      for (var tag in atVM1Tags) {
+      for (final tag in atVM1Tags) {
         expect(AT.isValidTag(tag), true);
       }
     });
@@ -678,7 +699,7 @@ void main() {
       expect(() => AT.isValidTag(PTag.kSelectorUSValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(AT.isValidTag(tag), false);
 
@@ -692,7 +713,7 @@ void main() {
       global.throwOnError = false;
       expect(AT.isValidVRIndex(kATIndex), true);
 
-      for (var tag in atVM1Tags) {
+      for (final tag in atVM1Tags) {
         expect(AT.isValidVRIndex(tag.vrIndex), true);
       }
     });
@@ -705,7 +726,7 @@ void main() {
       expect(() => AT.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(AT.isValidVRIndex(tag.vrIndex), false);
 
@@ -719,7 +740,7 @@ void main() {
       global.throwOnError = false;
       expect(AT.isValidVRCode(kATCode), true);
 
-      for (var tag in atVM1Tags) {
+      for (final tag in atVM1Tags) {
         expect(AT.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -732,7 +753,7 @@ void main() {
       expect(() => AT.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(AT.isValidVRCode(tag.vrCode), false);
 
@@ -823,12 +844,12 @@ void main() {
         final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in atVM1Tags) {
+          for (final tag in atVM1Tags) {
             final e0 = AT.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in atVM1nTags) {
+          for (final tag in atVM1nTags) {
             final e0 = AT.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

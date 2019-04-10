@@ -64,7 +64,7 @@ void main() {
 
   group('ASTag', () {
     test('AS hasValidValues Element good values', () {
-      for (var s in goodASList) {
+      for (final s in goodASList) {
         global.throwOnError = false;
         final e0 = AStag(PTag.kPatientAge, s);
         log.debug('e0 $e0');
@@ -73,7 +73,7 @@ void main() {
     });
 
     test('AS hasValidValues Element bad values', () {
-      for (var s in badASList) {
+      for (final s in badASList) {
         global.throwOnError = false;
         final e1 = AStag(PTag.kPatientAge, s);
         expect(e1, isNull);
@@ -349,44 +349,44 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
         log.debug('vList0: $vList0');
-        final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
+        final fvf0 = AsciiString.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
 
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList1 = rsg.getASList(1, i);
-        final fvf1 = Ascii.fromValueField(vList1, k8BitMaxLongVF);
+        final fvf1 = AsciiString.fromValueField(vList1, k8BitMaxLongVF);
         expect(fvf1, equals(vList1));
       }
       global.throwOnError = false;
-      final fvf1 = Ascii.fromValueField(null, k8BitMaxLongLength);
+      final fvf1 = AsciiString.fromValueField(null, k8BitMaxLongLength);
       expect(fvf1, <String>[]);
       expect(fvf1 == kEmptyStringList, true);
 
-      final fvf2 = Ascii.fromValueField(<String>[], k8BitMaxLongLength);
+      final fvf2 = AsciiString.fromValueField(<String>[], k8BitMaxLongLength);
       expect(fvf2, <String>[]);
       expect(fvf2 == kEmptyStringList, false);
       expect(fvf2.isEmpty, true);
 
-      final fvf3 = Ascii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      final fvf3 = AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength);
       expect(fvf3, isNull);
 
       global.throwOnError = true;
-      expect(() => Ascii.fromValueField(<int>[1234], k8BitMaxLongLength),
+      expect(() => AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final vList2 = rsg.getCSList(1, 1);
       final bytes = Bytes.utf8FromList(vList2);
-      final fvf4 = Ascii.fromValueField(bytes, k8BitMaxLongLength);
+      final fvf4 = AsciiString.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
     });
 
     test('AS fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getASList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           final e1 = AStag.fromBytes(PTag.kSelectorASValue, bytes0);
           log.debug('e1: $e1');
@@ -398,7 +398,7 @@ void main() {
     test('AS fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getASList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           final e1 = AStag.fromBytes(PTag.kSelectorAEValue, bytes0);
@@ -414,7 +414,7 @@ void main() {
     test('AS checkLength good values', () {
       final vList0 = rsg.getASList(1, 1);
       final e0 = AStag(PTag.kPatientAge, vList0);
-      for (var s in goodASList) {
+      for (final s in goodASList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = AStag(PTag.kPatientAge, vList0);
@@ -431,8 +431,8 @@ void main() {
     test('AS checkValue good values', () {
       final vList0 = rsg.getASList(1, 1);
       final e0 = AStag(PTag.kPatientAge, vList0);
-      for (var s in goodASList) {
-        for (var a in s) {
+      for (final s in goodASList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -441,8 +441,8 @@ void main() {
     test('AS checkValue bad values', () {
       final vList0 = rsg.getASList(1, 1);
       final e0 = AStag(PTag.kPatientAge, vList0);
-      for (var s in badASList) {
-        for (var a in s) {
+      for (final s in badASList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
 
@@ -497,6 +497,10 @@ void main() {
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
         expect(append0, isNotNull);
+
+        final append1 = e0.values.append(vList1, e0.maxValueLength);
+        log.debug('e0.append: $append1');
+        expect(append0, equals(append1));
       }
     });
 
@@ -509,6 +513,10 @@ void main() {
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
         expect(prepend0, isNotNull);
+
+        final prepend1 = e0.values.prepend(vList1, e0.maxValueLength);
+        log.debug('e0.prepend: $prepend1');
+        expect(prepend0, equals(prepend1));
       }
     });
 
@@ -613,7 +621,7 @@ void main() {
       global.throwOnError = false;
       expect(AS.isValidTag(PTag.kSelectorASValue), true);
 
-      for (var tag in asVM1Tags) {
+      for (final tag in asVM1Tags) {
         final validT0 = AS.isValidTag(tag);
         expect(validT0, true);
       }
@@ -626,7 +634,7 @@ void main() {
       expect(() => AS.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = AS.isValidTag(tag);
         expect(validT0, false);
@@ -641,7 +649,7 @@ void main() {
       global.throwOnError = false;
       expect(AS.isValidVRIndex(kASIndex), true);
 
-      for (var tag in asVM1Tags) {
+      for (final tag in asVM1Tags) {
         expect(AS.isValidVRIndex(tag.vrIndex), true);
       }
     });
@@ -654,7 +662,7 @@ void main() {
       expect(() => AS.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(AS.isValidVRIndex(tag.vrIndex), false);
 
@@ -668,7 +676,7 @@ void main() {
       global.throwOnError = false;
       expect(AS.isValidVRCode(kASCode), true);
 
-      for (var tag in asVM1Tags) {
+      for (final tag in asVM1Tags) {
         expect(AS.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -681,7 +689,7 @@ void main() {
       expect(() => AS.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(AS.isValidVRCode(tag.vrCode), false);
 
@@ -703,8 +711,8 @@ void main() {
 
     test('AS isValidValueLength good values', () {
       for (var i = 0; i < 10; i++) {
-        for (var s in goodASList) {
-          for (var a in s) {
+        for (final s in goodASList) {
+          for (final a in s) {
             expect(AS.isValidValueLength(a), true);
           }
         }
@@ -714,7 +722,7 @@ void main() {
 
     test('AS isValidValueLength bad values', () {
       global.throwOnError = false;
-      for (var s in badAgeLengthList) {
+      for (final s in badAgeLengthList) {
         expect(AS.isValidValueLength(s), false);
       }
       expect(AS.isValidValueLength('00M'), false);
@@ -724,7 +732,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getASList(1, 1);
-        for (var tag in asVM1Tags) {
+        for (final tag in asVM1Tags) {
           expect(AS.isValidLength(tag, vList), true);
         }
       }
@@ -733,7 +741,7 @@ void main() {
     test('AS isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getASList(2, i + 1);
-        for (var tag in asVM1Tags) {
+        for (final tag in asVM1Tags) {
           global.throwOnError = false;
           expect(AS.isValidLength(tag, vList), false);
 
@@ -760,7 +768,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getASList(1, i);
-        for (var tag in asVM1nTags) {
+        for (final tag in asVM1nTags) {
           log.debug('tag: $tag');
           expect(AS.isValidLength(tag, vList0), true);
         }
@@ -768,16 +776,16 @@ void main() {
     });
 
     test('AS isValidValue good values', () {
-      for (var s in goodASList) {
-        for (var a in s) {
+      for (final s in goodASList) {
+        for (final a in s) {
           expect(AS.isValidValue(a), true);
         }
       }
     });
 
     test('AS isValidValue bad values', () {
-      for (var s in badASList) {
-        for (var a in s) {
+      for (final s in badASList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(AS.isValidValue(a), false);
 
@@ -790,14 +798,14 @@ void main() {
 
     test('AS isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodASList) {
+      for (final s in goodASList) {
         expect(AS.isValidValues(PTag.kPatientAge, s), true);
       }
     });
 
     test('AS isValidValues bad values', () {
       global.throwOnError = false;
-      for (var s in badASList) {
+      for (final s in badASList) {
         global.throwOnError = false;
         expect(AS.isValidValues(PTag.kPatientAge, s), false);
 
@@ -820,7 +828,7 @@ void main() {
     test('AS isValidValues VM.k1 good values length', () {
       for (var i = 0; i < 10; i++) {
         final validList = rsg.getASList(1, 1);
-        for (var tag in asVM1Tags) {
+        for (final tag in asVM1Tags) {
           expect(AS.isValidValues(tag, validList), true);
         }
       }
@@ -829,7 +837,7 @@ void main() {
     test('AS isValidValues VM.k1 bad values length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getASList(2, i + 1);
-        for (var tag in asVM1Tags) {
+        for (final tag in asVM1Tags) {
           global.throwOnError = false;
           expect(AS.isValidValues(tag, validList), false);
           expect(AS.isValidValues(tag, invalidList), false);
@@ -846,7 +854,7 @@ void main() {
     test('AS isValidValues VM.k1_n Length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getASList(1, i);
-        for (var tag in asVM1nTags) {
+        for (final tag in asVM1nTags) {
           global.throwOnError = false;
           expect(AS.isValidValues(tag, validList), true);
         }
@@ -897,7 +905,7 @@ void main() {
       final vList1 = ['024Y'];
       expect(AS.isValidValues(PTag.kPatientAge, vList1), true);
 
-      for (var s in goodASList) {
+      for (final s in goodASList) {
         global.throwOnError = false;
         expect(AS.isValidValues(PTag.kPatientAge, s), true);
       }
@@ -912,7 +920,7 @@ void main() {
       expect(() => AS.isValidValues(PTag.kPatientAge, vList2),
           throwsA(const TypeMatcher<StringError>()));
 
-      for (var s in badASList) {
+      for (final s in badASList) {
         global.throwOnError = false;
         expect(AS.isValidValues(PTag.kPatientAge, s), false);
 
@@ -942,8 +950,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodASList) {
-        for (var a in s) {
+      for (final s in goodASList) {
+        for (final a in s) {
           final values = ascii.encode(a);
           final tbd2 = Bytes.asciiFromList(s);
           final tbd3 = Bytes.asciiFromList(s);
@@ -962,7 +970,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodASList) {
+      for (final s in goodASList) {
         final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
@@ -979,7 +987,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodASList) {
+      for (final s in goodASList) {
         final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -1008,12 +1016,12 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in asVM1Tags) {
+          for (final tag in asVM1Tags) {
             final e0 = AS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in asVM1nTags) {
+          for (final tag in asVM1nTags) {
             final e0 = AS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

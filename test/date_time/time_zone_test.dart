@@ -111,24 +111,24 @@ void main() {
 
   group('Test for TimeZone', () {
     test('isValidString', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final tz = TimeZone.isValidString(s);
         expect(tz, true);
       }
 
-      for (var s in inValidTimeZoneStrings) {
+      for (final s in inValidTimeZoneStrings) {
         final tz = TimeZone.isValidString(s);
         expect(tz, false);
       }
     });
 
     test('TimeZone', () {
-      for (var i in validTimeZones) {
+      for (final i in validTimeZones) {
         final tz = TimeZone(i[0], i[1], i[2]);
         expect(tz, isNotNull);
       }
 
-      for (var i in invalidTimeZones) {
+      for (final i in invalidTimeZones) {
         global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
         final tz = TimeZone(i[0], i[1], i[2]);
@@ -142,12 +142,12 @@ void main() {
     });
 
     test('parse', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final tz = TimeZone.parse(s);
         expect(tz, isNotNull);
       }
 
-      for (String s in inValidTimeZoneStrings) {
+      for (final s in inValidTimeZoneStrings) {
         global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
         final tz = TimeZone.parse(s);
@@ -181,12 +181,12 @@ void main() {
     });
 
     test('issue', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final issues = TimeZone.issues(s, start: 0);
         expect(issues.isEmpty, true);
       }
 
-      for (String s in inValidTimeZoneStrings) {
+      for (final s in inValidTimeZoneStrings) {
         global.throwOnError = false;
         log..debug('s: $s')..debug('throwOnError: $throwOnError');
         final issues = TimeZone.issues(s, start: 0);
@@ -216,12 +216,12 @@ void main() {
     });
 
     test('timeZoneToMicroseconds', () {
-      for (var i in validTimeZones) {
+      for (final i in validTimeZones) {
         final tz = timeZoneToMicroseconds(i[0], i[1], i[2]);
         expect(tz, isNotNull);
       }
 
-      for (var i in invalidTimeZones) {
+      for (final i in invalidTimeZones) {
         global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
         final tz = timeZoneToMicroseconds(i[0], i[1], i[2]);
@@ -235,13 +235,13 @@ void main() {
     });
 
     test('hashString', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final hs0 = TimeZone.hashString(s);
         log.debug('hs0: $hs0');
         expect(hs0, isNotNull);
       }
 
-      for (var s in inValidTimeZoneStrings) {
+      for (final s in inValidTimeZoneStrings) {
         global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
         final hs0 = TimeZone.hashString(s);
@@ -255,7 +255,7 @@ void main() {
     });
 
     test('==', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final t0 = TimeZone.parse(s);
         final t1 = TimeZone.parse(s);
         log
@@ -273,7 +273,7 @@ void main() {
     });
 
     test('hash', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         log.debug('TZ: $s');
         final t0 = TimeZone.parse(s);
         final t1 = TimeZone.parse(s);
@@ -292,7 +292,7 @@ void main() {
     }); //, skip:'InvalidTimeZoneStringError');
 
     test('hashCode', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final t0 = TimeZone.parse(s);
         final t1 = TimeZone.parse(s);
         log
@@ -370,7 +370,7 @@ void main() {
         expect(tz0, isNotNull);
       }
 
-      for (var invalid in inValidTimeZoneStrings) {
+      for (final invalid in inValidTimeZoneStrings) {
         global.throwOnError = false;
         final tz1 = TimeZone.parseDicom(invalid);
         expect(tz1, isNull);
@@ -382,70 +382,70 @@ void main() {
     });
 
     test('isValidDcmString', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final tz = TimeZone.isValidDcmString(s);
         expect(tz, true);
       }
 
-      for (var s in inValidTimeZoneStrings) {
+      for (final s in inValidTimeZoneStrings) {
         final tz = TimeZone.isValidDcmString(s);
         expect(tz, false);
       }
     });
 
     test('isValidInternetString', () {
-      for (var s in kValidInetTZStrings) {
+      for (final s in kValidInetTZStrings) {
         final tz = TimeZone.isValidInternetString(s);
         expect(tz, true);
       }
 
-      for (var s in inValidInternetTimeZoneStrings) {
+      for (final s in inValidInternetTimeZoneStrings) {
         final tz = TimeZone.isValidInternetString(s);
         expect(tz, false);
       }
     });
 
     test('isValidInternetTimeZoneString', () {
-      for (var s in kValidInetTZStrings) {
+      for (final s in kValidInetTZStrings) {
         final tz = isValidInternetTimeZoneString(s);
         expect(tz, true);
       }
 
-      for (var s in inValidInternetTimeZoneStrings) {
+      for (final s in inValidInternetTimeZoneStrings) {
         final tz = isValidInternetTimeZoneString(s);
         expect(tz, false);
       }
     });
 
     test('isValidTimeZoneString', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final tz = isValidTimeZoneString(s);
         expect(tz, true);
       }
 
-      for (var s in kValidInetTZStrings) {
+      for (final s in kValidInetTZStrings) {
         final tz = isValidTimeZoneString(s, asDicom: false);
         expect(tz, true);
       }
 
-      for (var s in inValidInternetTimeZoneStrings) {
+      for (final s in inValidInternetTimeZoneStrings) {
         final tz = isValidTimeZoneString(s);
         expect(tz, false);
       }
 
-      for (var s in inValidInternetTimeZoneStrings) {
+      for (final s in inValidInternetTimeZoneStrings) {
         final tz = isValidTimeZoneString(s, asDicom: false);
         expect(tz, false);
       }
     });
 
     test('isValidDcmTimeZoneString', () {
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final tz = isValidDcmTimeZoneString(s);
         expect(tz, true);
       }
 
-      for (var s in inValidInternetTimeZoneStrings) {
+      for (final s in inValidInternetTimeZoneStrings) {
         final tz = isValidDcmTimeZoneString(s);
         expect(tz, false);
       }
@@ -453,13 +453,13 @@ void main() {
 
     test('parseInternetTimeZone', () {
       var i = 0;
-      for (var s in kValidInetTZStrings) {
+      for (final s in kValidInetTZStrings) {
         final tz = parseInternetTimeZone(s);
         expect(tz, equals(kValidTZMicroseconds[i]));
         i++;
       }
 
-      for (var s in inValidInternetTimeZoneStrings) {
+      for (final s in inValidInternetTimeZoneStrings) {
         global.throwOnError = false;
         final tz = parseInternetTimeZone(s);
         expect(tz, isNull);
@@ -472,13 +472,13 @@ void main() {
 
     test('parseDcmTimeZone', () {
       var i = 0;
-      for (var s in kValidDcmTZStrings) {
+      for (final s in kValidDcmTZStrings) {
         final tz = parseDcmTimeZone(s);
         expect(tz, equals(kValidTZMicroseconds[i]));
         i++;
       }
 
-      for (var s in inValidInternetTimeZoneStrings) {
+      for (final s in inValidInternetTimeZoneStrings) {
         global.throwOnError = false;
         final tz = parseDcmTimeZone(s);
         expect(tz, null);

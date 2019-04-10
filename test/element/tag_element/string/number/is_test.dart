@@ -36,7 +36,7 @@ void main() {
 
   group('Integer String Tests', () {
     test('Is valid integer string -  good values', () {
-      for (var s in goodIntegerStrings) {
+      for (final s in goodIntegerStrings) {
         global.throwOnError = false;
         log.debug('s: "$s"');
         final n = IS.tryParse(s);
@@ -89,7 +89,7 @@ void main() {
 
   group('IStag', () {
     test('IS hasValidValues good values', () {
-      for (var s in goodISList) {
+      for (final s in goodISList) {
         global.throwOnError = false;
         final e0 = IStag(PTag.kSeriesNumber, s);
         expect(e0.hasValidValues, true);
@@ -101,7 +101,7 @@ void main() {
     });
 
     test('IS hasValidValues bad values', () {
-      for (var s in badISList) {
+      for (final s in badISList) {
         global.throwOnError = false;
         final e0 = IStag(PTag.kSeriesNumber, s);
         expect(e0, isNull);
@@ -269,12 +269,26 @@ void main() {
       }
     });
 
-    test('IS isValidValues random', () {
+    test('IS checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(2, 2);
         final e0 = IStag(PTag.kPresentationPixelAspectRatio, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('IS checkValues bad values random', () {
+      final vList0 = rsg.getISList(1, 1);
+      final e1 = IStag(PTag.kMemoryAllocation, vList0);
+
+      for (final s in badISList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -320,44 +334,44 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
         log.debug('vList0: $vList0');
-        final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
+        final fvf0 = AsciiString.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
 
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList1 = rsg.getISList(1, i);
-        final fvf1 = Ascii.fromValueField(vList1, k8BitMaxLongVF);
+        final fvf1 = AsciiString.fromValueField(vList1, k8BitMaxLongVF);
         expect(fvf1, equals(vList1));
       }
       global.throwOnError = false;
-      final fvf1 = Ascii.fromValueField(null, k8BitMaxLongLength);
+      final fvf1 = AsciiString.fromValueField(null, k8BitMaxLongLength);
       expect(fvf1, <String>[]);
       expect(fvf1 == kEmptyStringList, true);
 
-      final fvf2 = Ascii.fromValueField(<String>[], k8BitMaxLongLength);
+      final fvf2 = AsciiString.fromValueField(<String>[], k8BitMaxLongLength);
       expect(fvf2, <String>[]);
       expect(fvf2 == kEmptyStringList, false);
       expect(fvf2.isEmpty, true);
 
-      final fvf3 = Ascii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      final fvf3 = AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength);
       expect(fvf3, isNull);
 
       global.throwOnError = true;
-      expect(() => Ascii.fromValueField(<int>[1234], k8BitMaxLongLength),
+      expect(() => AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final vList2 = rsg.getCSList(1, 1);
       final bytes = Bytes.utf8FromList(vList2);
-      final fvf4 = Ascii.fromValueField(bytes, k8BitMaxLongLength);
+      final fvf4 = AsciiString.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
     });
 
     test('IS fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getISList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           final ur1 = IStag.fromBytes(PTag.kSelectorISValue, bytes0);
           log.debug('ur1: ${ur1.info}');
@@ -369,7 +383,7 @@ void main() {
     test('IS fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getISList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           final ur1 = IStag.fromBytes(PTag.kSelectorAEValue, bytes0);
@@ -417,7 +431,7 @@ void main() {
     test('IS checkLength good values', () {
       final vList0 = rsg.getISList(1, 1);
       final e0 = IStag(PTag.kWaveformChannelNumber, vList0);
-      for (var s in goodISList) {
+      for (final s in goodISList) {
         expect(e0.checkLength(s), true);
       }
       final e2 = IStag(PTag.kWaveformChannelNumber, vList0);
@@ -434,8 +448,8 @@ void main() {
     test('IS checkValue good values', () {
       final vList0 = rsg.getISList(1, 1);
       final e0 = IStag(PTag.kStopTrim, vList0);
-      for (var s in goodISList) {
-        for (var a in s) {
+      for (final s in goodISList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -444,8 +458,8 @@ void main() {
     test('IS checkValue bad values', () {
       final vList0 = rsg.getISList(1, 1);
       final e0 = IStag(PTag.kStopTrim, vList0);
-      for (var s in badISList) {
-        for (var a in s) {
+      for (final s in badISList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
         }
@@ -456,8 +470,33 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getISList(1, 1);
       final e0 = IStag(PTag.kEchoNumbers);
-      expect(e0.hashStringList(vList0), isNotNull);
+
+      final hashString0 = e0.hashStringList(vList0);
+      expect(hashString0, isNotNull);
+      expect(hashString0, equals([vList0[0].hashCode.toString()]));
     });
+
+/*
+    // Urgent Sharath: this test doesn't work! What is it testing?
+    test('IS hashIntList', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(1, i + 1);
+        print(vList0);
+        final e0 = IStag(PTag.kEchoNumbers);
+
+        for (var j = 0; j < vList0.length; j++) {
+          //final vList1 = int.parse(vList0[j]);
+          // Urgent Sharath what is this?
+          final vList1 = int.parse('+6196627304');
+          print(vList1);
+          final hashInt0 = e0.hashIntList([vList1]);
+          print(hashInt0);
+          expect(hashInt0, equals([vList1]));
+        }
+      }
+    });
+*/
 
     test('IS compareTo & compareValueTo', () {
       for (var i = 1; i <= 10; i++) {
@@ -472,7 +511,7 @@ void main() {
         final compare1 = e0.compareTo(e0a);
         expect(compare1 == 0, true);
       }
-      for (var vList1 in goodISList) {
+      for (final vList1 in goodISList) {
         final e1 = IStag(PTag.kEchoNumbers, vList1);
         final nList = [int.parse(e1.value)];
         final compare1 = e1.compareValuesTo(nList);
@@ -485,7 +524,7 @@ void main() {
 
       final vList2 = rsg.getISList(1, 1);
       final e2 = IStag(PTag.kEchoNumbers, vList2);
-      for (var n in goodIntegerStrings) {
+      for (final n in goodIntegerStrings) {
         final nList = [int.parse(n)];
         final compare2 = e2.compareValuesTo(nList);
         log.debug('compare2: $compare2');
@@ -530,20 +569,26 @@ void main() {
     test('IS increment', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
+        log.debug('vList0: $vList0');
         final e0 = IStag(PTag.kStageNumber, vList0);
         final increment0 = e0.increment();
         log.debug('increment0: $increment0');
         expect(increment0.hasValidValues, true);
+        expect(
+            increment0.values, equals([(parseInt(e0.value) + 1).toString()]));
       }
     });
 
     test('IS decrement', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
+        log.debug('vList0: $vList0');
         final e0 = IStag(PTag.kStageNumber, vList0);
         final decrement0 = e0.decrement();
         log.debug('decrement0: $decrement0');
         expect(decrement0.hasValidValues, true);
+        expect(
+            decrement0.values, equals([(parseInt(e0.value) - 1).toString()]));
       }
     });
 
@@ -551,19 +596,31 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 4);
+        log.debug('vList0: $vList0');
         final e0 = IStag(PTag.kSelectorISValue, vList0);
         const vList1 = '100';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
         expect(append0, isNotNull);
+        expect(append0.hasValidValues, true);
+
+        final append1 = e0.values.append(vList1, e0.maxValueLength);
+        log.debug('e0.append: $append1');
+        expect(append0, equals(append1));
       }
     });
 
     test('IS prepend', () {
-      final vList = ['111'];
-      final e0 = IStag(PTag.kSelectorISValue, vList);
-      final prepend0 = e0.append('123');
+      global.throwOnError = false;
+      final vList0 = ['111'];
+      final e0 = IStag(PTag.kSelectorISValue, vList0);
+      const vList1 = '100';
+      final prepend0 = e0.prepend(vList1);
       expect(prepend0, isNotNull);
+
+      final prepend1 = e0.values.prepend(vList1, e0.maxValueLength);
+      log.debug('e0.prepend: $prepend1');
+      expect(prepend0, equals(prepend1));
     });
 
     test('IS truncate', () {
@@ -696,7 +753,7 @@ void main() {
       global.throwOnError = false;
       expect(IS.isValidTag(PTag.kSelectorISValue), true);
 
-      for (var tag in isVM1Tags) {
+      for (final tag in isVM1Tags) {
         final validT0 = IS.isValidTag(tag);
         expect(validT0, true);
       }
@@ -709,7 +766,7 @@ void main() {
       expect(() => IS.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = IS.isValidTag(tag);
         expect(validT0, false);
@@ -724,7 +781,7 @@ void main() {
       global.throwOnError = false;
       expect(IS.isValidVRIndex(kISIndex), true);
 
-      for (var tag in isVM1Tags) {
+      for (final tag in isVM1Tags) {
         global.throwOnError = false;
         expect(IS.isValidVRIndex(tag.vrIndex), true);
       }
@@ -737,7 +794,7 @@ void main() {
       global.throwOnError = true;
       expect(() => IS.isValidVRIndex(kSSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(IS.isValidVRIndex(tag.vrIndex), false);
 
@@ -751,7 +808,7 @@ void main() {
       global.throwOnError = false;
       expect(IS.isValidVRCode(kISCode), true);
 
-      for (var tag in isVM1Tags) {
+      for (final tag in isVM1Tags) {
         expect(IS.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -763,7 +820,7 @@ void main() {
       global.throwOnError = true;
       expect(() => IS.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(IS.isValidVRCode(tag.vrCode), false);
 
@@ -790,7 +847,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getISList(1, 1);
-        for (var tag in isVM1Tags) {
+        for (final tag in isVM1Tags) {
           expect(IS.isValidLength(tag, vList), true);
 
           expect(IS.isValidLength(tag, badLengthList.take(tag.vmMax)), true);
@@ -802,7 +859,7 @@ void main() {
     test('IS isValidVListLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getISList(2, i + 1);
-        for (var tag in isVM1Tags) {
+        for (final tag in isVM1Tags) {
           global.throwOnError = false;
           expect(IS.isValidLength(tag, vList), false);
 
@@ -831,7 +888,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getISList(2, 2);
-        for (var tag in isVM2Tags) {
+        for (final tag in isVM2Tags) {
           expect(IS.isValidLength(tag, vList), true);
 
           expect(IS.isValidLength(tag, badLengthList.take(tag.vmMax)), true);
@@ -843,7 +900,7 @@ void main() {
     test('IS isValidVListLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final vList = rsg.getISList(3, i + 1);
-        for (var tag in isVM2Tags) {
+        for (final tag in isVM2Tags) {
           global.throwOnError = false;
           expect(IS.isValidLength(tag, vList), false);
 
@@ -864,7 +921,7 @@ void main() {
     test('IS isValidVListLength VM.k2_2n good values', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
-        for (var tag in isVM22nTags) {
+        for (final tag in isVM22nTags) {
           final validMinVList = rsg.getISList(2, 2);
           final validMaxVList = badLengthList.sublist(0, tag.maxValues);
           expect(IS.isValidLength(tag, validMinVList), true);
@@ -879,7 +936,7 @@ void main() {
     test('IS isValidVListLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getISList(1, 1);
-        for (var tag in isVM22nTags) {
+        for (final tag in isVM22nTags) {
           global.throwOnError = false;
           expect(IS.isValidLength(tag, vList), false);
 
@@ -896,7 +953,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getISList(3, 3);
-        for (var tag in isVM3Tags) {
+        for (final tag in isVM3Tags) {
           expect(IS.isValidLength(tag, vList), true);
 
           expect(IS.isValidLength(tag, badLengthList.take(tag.vmMax)), true);
@@ -908,7 +965,7 @@ void main() {
     test('IS isValidVListLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
         final vList = rsg.getISList(4, i + 1);
-        for (var tag in isVM3Tags) {
+        for (final tag in isVM3Tags) {
           global.throwOnError = false;
           expect(IS.isValidLength(tag, vList), false);
 
@@ -930,7 +987,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getISList(1, i);
         final validMaxLengthList = badLengthList.sublist(0, IS.kMaxLength);
-        for (var tag in isVM1nTags) {
+        for (final tag in isVM1nTags) {
           log.debug('tag: $tag');
           expect(IS.isValidLength(tag, vList0), true);
           expect(IS.isValidLength(tag, validMaxLengthList), true);
@@ -939,32 +996,32 @@ void main() {
     });
 
     test('IS isValidValueLength good values', () {
-      for (var s in goodISList) {
-        for (var a in s) {
+      for (final s in goodISList) {
+        for (final a in s) {
           expect(IS.isValidValueLength(a), true);
         }
       }
     });
 
     test('IS isValidValueLength bad values', () {
-      for (var s in badISLengthValues) {
-        for (var a in s) {
+      for (final s in badISLengthValues) {
+        for (final a in s) {
           expect(IS.isValidValueLength(a), false);
         }
       }
     });
 
     test('IS isValidValue good values', () {
-      for (var s in goodISList) {
-        for (var a in s) {
+      for (final s in goodISList) {
+        for (final a in s) {
           expect(IS.isValidValue(a), true);
         }
       }
     });
 
     test('IS isValidValue bad values', () {
-      for (var s in badISList) {
-        for (var a in s) {
+      for (final s in badISList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(IS.isValidValue(a), false);
         }
@@ -973,14 +1030,14 @@ void main() {
 
     test('IS isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodISList) {
+      for (final s in goodISList) {
         expect(IS.isValidValues(PTag.kBeamOrderIndexTrial, s), true);
       }
     });
 
     test('IS isValidValues bad values', () {
       global.throwOnError = false;
-      for (var s in badISList) {
+      for (final s in badISList) {
         global.throwOnError = false;
         expect(IS.isValidValues(PTag.kBeamOrderIndexTrial, s), false);
 
@@ -992,7 +1049,7 @@ void main() {
 
     test('IS isValidValues bad values length', () {
       global.throwOnError = false;
-      for (var s in badISLengthList) {
+      for (final s in badISLengthList) {
         global.throwOnError = false;
         expect(IS.isValidValues(PTag.kBeamOrderIndexTrial, s), false);
 
@@ -1116,7 +1173,7 @@ void main() {
       final vList0 = ['560'];
       expect(IS.isValidValues(PTag.kBeamOrderIndexTrial, vList0), true);
 
-      for (var s in goodISList) {
+      for (final s in goodISList) {
         global.throwOnError = false;
         expect(IS.isValidValues(PTag.kBeamOrderIndexTrial, s), true);
       }
@@ -1131,7 +1188,7 @@ void main() {
       expect(() => IS.isValidValues(PTag.kBeamOrderIndexTrial, vList1),
           throwsA(const TypeMatcher<StringError>()));
 
-      for (var s in badISList) {
+      for (final s in badISList) {
         global.throwOnError = false;
         expect(IS.isValidValues(PTag.kBeamOrderIndexTrial, s), false);
 
@@ -1143,7 +1200,7 @@ void main() {
 
     test('IS isValidValues bad values length', () {
       global.throwOnError = false;
-      for (var s in badISLengthList) {
+      for (final s in badISLengthList) {
         global.throwOnError = false;
         expect(IS.isValidValues(PTag.kBeamOrderIndexTrial, s), false);
 
@@ -1166,8 +1223,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodISList) {
-        for (var a in s) {
+      for (final s in goodISList) {
+        for (final a in s) {
           final values = ascii.encode(a);
           final tbd2 = Bytes.asciiFromList(s);
           final tbd3 = Bytes.asciiFromList(s);
@@ -1186,7 +1243,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodISList) {
+      for (final s in goodISList) {
         final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
@@ -1203,7 +1260,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodISList) {
+      for (final s in goodISList) {
         final toB1 = Bytes.asciiFromList(s);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -1232,22 +1289,22 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in isVM1Tags) {
+          for (final tag in isVM1Tags) {
             final e0 = IS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 2) {
-          for (var tag in isVM2Tags) {
+          for (final tag in isVM2Tags) {
             final e0 = IS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 3) {
-          for (var tag in isVM3Tags) {
+          for (final tag in isVM3Tags) {
             final e0 = IS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in isVM1nTags) {
+          for (final tag in isVM1nTags) {
             final e0 = IS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

@@ -28,6 +28,11 @@ Null unimplementedError([String msg = '']) {
   return null;
 }
 
+void unsupportedSetter([String msg = '']) {
+  if (throwOnError) throw UnsupportedError(msg);
+  return;
+}
+
 /// An Internal system error.
 class InternalError extends Error {
   final String msg;

@@ -301,6 +301,10 @@ void main() {
         final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList);
         expect(e0.checkLength(e0.values), true);
       }
+
+      final vList0 = rng.uint32List(2, 2);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples);
+      expect(e0.checkLength(vList0), false);
     });
 
     test('UL checkLength', () {
@@ -309,16 +313,32 @@ void main() {
     });
 
     test('UL checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int64List(1, 1);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UL checkValues', () {
+      global.throwOnError = false;
       final e0 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UL valuesCopy random', () {
@@ -576,7 +596,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint32List(1, 1);
-        for (var tag in ulVM1Tags) {
+        for (final tag in ulVM1Tags) {
           expect(UL.isValidLength(tag, vList), true);
           expect(UL.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
           expect(UL.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
@@ -588,7 +608,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final invalidMinVList = rng.uint32List(2, i + 1);
-        for (var tag in ulVM1Tags) {
+        for (final tag in ulVM1Tags) {
           global.throwOnError = false;
           expect(UL.isValidLength(tag, invalidMinVList), false);
           expect(UL.isValidLength(tag, invalidVList), false);
@@ -619,7 +639,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(3, 3);
-        for (var tag in ulVM3Tags) {
+        for (final tag in ulVM3Tags) {
           expect(UL.isValidLength(tag, vList), true);
           expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), false);
           expect(SS.isValidLength(tag, invalidVList.take(tag.vmMin)), false);
@@ -630,7 +650,7 @@ void main() {
     test('UL isValidLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
         final invalidMinVList = rng.uint32List(4, i + 1);
-        for (var tag in ulVM3Tags) {
+        for (final tag in ulVM3Tags) {
           global.throwOnError = false;
           expect(UL.isValidLength(tag, invalidMinVList), false);
           expect(UL.isValidLength(tag, invalidVList), false);
@@ -647,7 +667,7 @@ void main() {
     test('UL isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint32List(1, i);
-        for (var tag in ulVM1nTags) {
+        for (final tag in ulVM1nTags) {
           expect(UL.isValidLength(tag, vList), true);
 
           expect(UL.isValidLength(tag, invalidVList.sublist(0, UL.kMaxLength)),
@@ -660,7 +680,7 @@ void main() {
       global.throwOnError = false;
       expect(UL.isValidTag(PTag.kSelectorULValue), true);
 
-      for (var tag in ulVM1Tags) {
+      for (final tag in ulVM1Tags) {
         expect(UL.isValidTag(tag), true);
       }
     });
@@ -673,7 +693,7 @@ void main() {
       expect(() => UL.isValidTag(PTag.kSelectorUSValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(UL.isValidTag(tag), false);
 
@@ -687,7 +707,7 @@ void main() {
       global.throwOnError = false;
       expect(UL.isValidVRIndex(kULIndex), true);
 
-      for (var tag in ulVM1Tags) {
+      for (final tag in ulVM1Tags) {
         global.throwOnError = false;
         expect(UL.isValidVRIndex(tag.vrIndex), true);
       }
@@ -700,7 +720,7 @@ void main() {
       expect(() => UL.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(UL.isValidVRIndex(tag.vrIndex), false);
 
@@ -714,7 +734,7 @@ void main() {
       global.throwOnError = false;
       expect(UL.isValidVRCode(kULCode), true);
 
-      for (var tag in ulVM1Tags) {
+      for (final tag in ulVM1Tags) {
         expect(UL.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -725,7 +745,7 @@ void main() {
       global.throwOnError = true;
       expect(() => UL.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(UL.isValidVRCode(tag.vrCode), false);
 
@@ -832,12 +852,12 @@ void main() {
         final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in ulVM1Tags) {
+          for (final tag in ulVM1Tags) {
             final e0 = UL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in ulVM1nTags) {
+          for (final tag in ulVM1nTags) {
             final e0 = UL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

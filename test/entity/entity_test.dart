@@ -46,12 +46,14 @@ void main() {
 
     test('Patient', () {
       final patientUid = Uid();
-      final patient = Patient('A001', patientUid, rootDataset);
+      final patient0 = Patient('A001', patientUid, rootDataset);
       final patient1 = Patient('A002', patientUid, rootDataset);
 
-      expect(patient == patient1, true);
-      expect(patient.hashCode == patient1.hashCode, true);
-      expect(patient.key, isNotNull);
+      expect(patient0 == patient1, true);
+      expect(patient0.hashCode == patient1.hashCode, true);
+      expect(patient0.key, isNotNull);
+      expect(patient0.key == patientUid, true);
+      expect(patient0.pid == 'A001', true);
     });
 
     test('Study', () {
@@ -70,6 +72,9 @@ void main() {
       expect(study0 == study1, true);
       expect(study0.hashCode == study1.hashCode, true);
       expect(study0.key, isNotNull);
+
+      expect(subject0.key == subjectUid0, true);
+      expect(subject0.pid == 'A001', true);
 
       //Adding Entity
       subject0.addIfAbsent(study0);

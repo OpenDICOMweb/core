@@ -86,7 +86,7 @@ void main() {
       expect(update1.isEmpty, false);
     });
 
-    test('duplicate', () {
+    test('duplicates', () {
       global.doTestElementValidity = true;
       final rds = ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -113,6 +113,9 @@ void main() {
       final dup = rds.duplicates;
       log.debug('rds: $rds, dup: $dup');
       expect(dup, isNotNull);
+      expect(dup, equals(rds.history.duplicates));
+      expect(rds.hasDuplicates, true);
+      expect(rds.hasDuplicates == dup.isNotEmpty, true);
     });
 
     test('removeDuplicates', () {
@@ -140,6 +143,26 @@ void main() {
       log.debug('rds: $rds, removeDup: $removeDup');
       expect(dup, equals(<Element>[]));
       expect(removeDup, <Element>[]);
+      expect(rds.hasDuplicates, false);
+      expect(dup.isEmpty, true);
+    });
+
+    test('remove', () {
+      final rds = ListRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final as1 = AStag(PTag.kPatientAge, ['024Y']);
+      final as2 = AStag(PTag.kSelectorASValue, ['012M']);
+      final ob0 = OBtag(PTag.kICCProfile, [123]);
+      final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
+
+      rds..add(fd0)..add(fd1)..add(as0)..add(as1)..add(as2)..add(ob0)..add(ae0);
+      assert(rds.length == 5);
+      final rem = rds.remove(fd0);
+      log.debug('rem: $rem');
+      assert(rds.length == 4);
+      expect(rds.hasDuplicates, true);
     });
 
     test('getElementsInRange', () {
@@ -549,13 +572,22 @@ void main() {
       final ob0 = OBtag(PTag.kICCProfile, [123]);
       final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
 
-      item[fd0.code] = fd0;
+      /*item[fd0.code] = fd0;
       item[fd1.code] = fd1;
       item[as0.code] = as0;
       item[as1.code] = as1;
       item[as2.code] = as2;
       item[ob0.code] = ob0;
-      item[ae0.code] = ae0;
+      item[ae0.code] = ae0;*/
+
+      item
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
 
       final dup = item.history;
       log.debug('item: $item, dup: $dup');
@@ -563,6 +595,8 @@ void main() {
       final removeDup = item.deleteDuplicates();
       log.debug('item: $item, removeDup: $removeDup');
       expect(removeDup, <Element>[]);
+      expect(item.hasDuplicates, false);
+      expect(dup.duplicates.isEmpty, true);
     });
 
     test('getValue', () {
@@ -615,6 +649,62 @@ void main() {
       global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const TypeMatcher<ElementNotPresentError>()));
+    });
+
+    test('updateAll(string)', () {
+      final item = ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      item[as0.code] = as0;
+
+      final update0 = item.updateAll<String>(as0.index, vList: as0.values);
+      expect(update0.isEmpty, false);
+    });
+
+    test('updateAllF(string)', () {
+      final item = ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      item[as0.code] = as0;
+
+      final update0 = item.updateAllF<String>(as0.index, (n) => n);
+      expect(update0.isEmpty, false);
+    });
+
+    test('updateAll (int)', () {
+      final item = ListRootDataset.empty('', kEmptyBytes, 0);
+      final vList0 = [kInt16Min];
+      final ss0 = SStag(PTag.kSelectorSSValue, vList0);
+      item.add(ss0);
+
+      final update2 = item.updateAll<int>(ss0.index, vList: <int>[]);
+      expect(update2.isEmpty, false);
+    });
+
+    test('updateAllF (int)', () {
+      final item = ListRootDataset.empty('', kEmptyBytes, 0);
+      final vList0 = [kInt16Min];
+      final ss0 = SStag(PTag.kSelectorSSValue, vList0);
+      item.add(ss0);
+
+      final update2 = item.updateAllF<int>(ss0.index, (n) => n);
+      expect(update2.isEmpty, false);
+    });
+
+    test('updateAll (float)', () {
+      final item = ListRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item.add(fd0);
+
+      final update1 = item.updateAll<double>(fd0.index, vList: <double>[]);
+      expect(update1.isEmpty, false);
+    });
+
+    test('updateAllF (float)', () {
+      final item = ListRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item.add(fd0);
+
+      final update1 = item.updateAllF<double>(fd0.index, (n) => n);
+      expect(update1.isEmpty, false);
     });
 
     test('hasElementsInRange', () {

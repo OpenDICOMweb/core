@@ -7,5 +7,4 @@
 //  See the AUTHORS file for other contributors.
 //
 export 'package:core/src/utils/indenter/indenter.dart';
-export 'package:core/src/utils/indenter/indenter_old_old.dart';
 export 'package:core/src/utils/indenter/prefixer.dart';

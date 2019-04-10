@@ -93,7 +93,7 @@ List<File> getFilesFromDirectory(String source, [String ext = '.dcm']) {
   final dir = Directory(source);
   final entities = dir.listSync(recursive: true, followLinks: false);
   final files = <File>[];
-  for (var e in entities)
+  for (final e in entities)
     if (e is File && path.extension(e.path) == ext) files.add(e);
   return files;
 }

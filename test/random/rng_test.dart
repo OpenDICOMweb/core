@@ -45,7 +45,7 @@ void main() {
         log.debug('IntList: (${list.length})$list');
         expect(list is List<int>, true);
         expect(list.length, inInclusiveRange(minMin, maxMin));
-        for (var i in list) expect(i, inInclusiveRange(-20, 60));
+        for (final i in list) expect(i, inInclusiveRange(-20, 60));
       }
     });
 
@@ -55,7 +55,7 @@ void main() {
         log.debug('IntList: (${list.length})$list');
         expect(list is List<int>, true);
         expect(list.length, inInclusiveRange(minMin, maxMin));
-        for (var i in list) expect(i, inInclusiveRange(i, i + 1));
+        for (final i in list) expect(i, inInclusiveRange(i, i + 1));
       }
     });
 
@@ -66,7 +66,7 @@ void main() {
         log.debug('IntList: (${list.length})$list');
         expect(list is List<int>, true);
         expect(list.length, inInclusiveRange(minMin, minMax));
-        for (var i in list) expect(i, inInclusiveRange(i, i + 1));
+        for (final i in list) expect(i, inInclusiveRange(i, i + 1));
       }
     });
   });
@@ -88,7 +88,7 @@ void main() {
       log.debug('IntList: (${list.length})$list');
       expect(list is List<int>, true);
       expect(list.length, inInclusiveRange(minLength, maxLength));
-      for (var i in list) expect(i, inInclusiveRange(-20, 60));
+      for (final i in list) expect(i, inInclusiveRange(-20, 60));
     });
 
     test('Int8List Test', () {

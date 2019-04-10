@@ -10,8 +10,6 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-
-
 // TODO: add tests for all three errors in core/src/uid/uid_errors.dart.
 
 void main() {
@@ -43,7 +41,7 @@ const List<String> badUids = <String>[
   '1.4.1.2.840.10008.1.2.4.64.1.2.840.10008.1.2.4.64.1.2.840.10008.1.2.4.64',
   '0.0.000.00000.0.0.00',
   '1.2.a840.1b0008.1.2.4.64', // Uid can't have letters
-  '1.2.840.10a08.0.1.2'  // letters can't be used
+  '1.2.840.10a08.0.1.2' // letters can't be used
 ];
 
 // well known Uids
@@ -84,7 +82,7 @@ void uidTest() {
     });
 
     test('Good UIDs', () {
-      for (var s in goodUids) {
+      for (final s in goodUids) {
         final uid = Uid.parse(s);
         expect(uid, isNotNull);
         expect(uid is Uid, true);
@@ -105,7 +103,7 @@ void uidTest() {
     });
 
     test('Bad UIDs', () {
-      for (var s in badUids) {
+      for (final s in badUids) {
         expect(Uid.isValidString(s), false);
         final uid = Uid.parse(s, onError: (s) => null);
         expect(uid, isNull);
@@ -120,21 +118,21 @@ void uidTest() {
       expect(uid == TransferSyntax.kExplicitVRLittleEndian, true);
     });
 
-    test('Generate Uid', (){
-      for(var s in goodUids){
-        final uid0 = Uid(s);// checks 's' as valid Uid
+    test('Generate Uid', () {
+      for (final s in goodUids) {
+        final uid0 = Uid(s); // checks 's' as valid Uid
         log.debug('uid0:$uid0');
         expect(uid0.value, equals(s));
       }
-      final uid1 =  Uid();// generates Uid
+      final uid1 = Uid(); // generates Uid
       log.debug('uid1:$uid1');
       expect(uid1, isNotNull);
     });
 
-    test('bad uid string test',(){
-      for(var s in badUids){
-        final uid0 = Uid(s);// checks 's' as valid Uid
-        expect(uid0,isNull);
+    test('bad uid string test', () {
+      for (final s in badUids) {
+        final uid0 = Uid(s); // checks 's' as valid Uid
+        expect(uid0, isNull);
       }
     });
   });

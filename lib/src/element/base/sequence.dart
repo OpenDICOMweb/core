@@ -78,10 +78,10 @@ abstract class SQ extends Element<Item> {
 
   List sqMap(Object f(Element e)) {
     final iList = List<Object>(items.length);
-    for (var item in items) {
+    for (final item in items) {
       final eList = List<Object>(item.length);
       iList.add(eList);
-      for (var e in item)
+      for (final e in item)
         if (e is SQ) {
           eList.add(sqMap(f));
         } else {
@@ -109,14 +109,19 @@ Summary $tag
   /// Walk the [Dataset] recursively and return the count of [Element]s
   /// for which [test] is true.
   /// Note: It ignores duplicates.
-  @override
-  int counter(ElementTest test) {
-    var count = 1;
-    for (var item in items) {
-      for (var e in item) {
-        count += (e is SQ) ? e.counter(test) : 1;
-      }
+  // Urgent: remove comments, total and level when profiling debugged
+  int counter(ElementTest test, [int total = 0, int level = 0]) {
+    var _total = total;
+    var count = 0;
+//    log.debug('** SQ start$level: total $_total items ${items.length}');
+    for (final item in items) {
+//      log.debug('** SQ count $count total $_total item: $item');
+      final n = item.counter(test, _total, level);
+      count += n;
+      _total += n;
     }
+//    log.debug('** SQ end $level: count $count total $_total: $this');
+//    log.debug('SQ end: level $level count $count total $_total');
     return count;
   }
 
@@ -128,7 +133,7 @@ Summary $tag
       items.fold(initialValue, combine);
 
   Element lookup(int index, {bool required = false}) {
-    for (var item in items) {
+    for (final item in items) {
       final e = item.lookup(index, required: required);
       if (e != null) return e;
     }
@@ -137,7 +142,7 @@ Summary $tag
 
   Iterable<Element> lookupAll(int index, {bool required = false}) {
     final result = <Element>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item.lookup(index, required: required);
       if (e != null) result.add(e);
     }
@@ -157,7 +162,7 @@ Summary $tag
   /// [Iterable<Element].
   Iterable<Element> getAll(int index) {
     final eList = <Element>[];
-    for (var item in items) eList.addAll(item.map<Element>((e) => e));
+    for (final item in items) eList.addAll(item.map<Element>((e) => e));
     return eList;
   }
 
@@ -175,7 +180,7 @@ Summary $tag
 
   Iterable<Element> noValuesAll(int index) {
     final result = <Element>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item.lookup(index);
       item[index] = e.noValues;
       result.add(e);
@@ -189,7 +194,7 @@ Summary $tag
   Iterable<Element> updateAll<V>(int index, Iterable<V> vList,
       {bool required = false}) {
     final eList = <Element>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item[index];
       if (e == null) continue;
       eList.add(e.update(vList));
@@ -200,7 +205,7 @@ Summary $tag
   Iterable<Element> updateAllF<V>(int index, Iterable<V> f(List<V> vList),
       {bool required = false}) {
     final eList = <Element>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item[index];
       if (e == null) continue;
       eList.add(e.update(f(e.values) ?? const <Object>[]));
@@ -212,7 +217,7 @@ Summary $tag
       {bool required = false}) {
     final eList = <Element>[];
     final vList = uids.map((v) => asString).toList(growable: false);
-    for (var item in items) {
+    for (final item in items) {
       final e = item[index];
       if (e == null) continue;
       eList.add(e.update(vList));
@@ -234,7 +239,7 @@ Summary $tag
   Iterable<Iterable<V>> replaceAllF<V>(
       int index, Iterable<V> f(List<V> vList)) {
     final result = <Iterable<V>>[];
-    for (var item in items) {
+    for (final item in items) {
       final e = item.lookup(index);
       final old = item.replace<V>(index, f(e.values));
       result.add(old);

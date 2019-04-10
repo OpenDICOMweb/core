@@ -11,9 +11,8 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-// Urgent Sharath: create unit test that verify that these Lists and Map
-// contain the same codes and tags. check length first then compare element
-// by element
+// These Lists and Map contain the same codes and tags.
+// check length first then compare element by element
 
 /// Date codes that must be de-identified.
 const List<int> deIdDateCodes = <int>[

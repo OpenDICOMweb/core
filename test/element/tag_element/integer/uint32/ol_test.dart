@@ -298,16 +298,32 @@ void main() {
     });
 
     test('OL checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final e0 = OLtag(PTag.kLongVertexPointIndexList, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int64List(1, 1);
+      final e0 = OLtag(PTag.kLongVertexPointIndexList);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('OL checkValues', () {
+      global.throwOnError = false;
       final e0 = OLtag(PTag.kLongVertexPointIndexList, uInt32Max);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('OL valuesCopy random', () {
@@ -519,7 +535,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidTag(PTag.kSelectorOLValue), true);
 
-      for (var tag in olVM1Tags) {
+      for (final tag in olVM1Tags) {
         expect(OL.isValidTag(tag), true);
       }
     });
@@ -532,7 +548,7 @@ void main() {
       expect(() => OL.isValidTag(PTag.kSelectorUSValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OL.isValidTag(tag), false);
 
@@ -546,7 +562,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidVRIndex(kOLIndex), true);
 
-      for (var tag in olVM1Tags) {
+      for (final tag in olVM1Tags) {
         global.throwOnError = false;
         expect(OL.isValidVRIndex(tag.vrIndex), true);
       }
@@ -556,7 +572,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidVRIndex(kOLIndex), true);
 
-      for (var tag in olVM1nTags) {
+      for (final tag in olVM1nTags) {
         global.throwOnError = false;
         expect(OL.isValidVRIndex(tag.vrIndex), true);
       }
@@ -570,7 +586,7 @@ void main() {
       expect(() => OL.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OL.isValidVRIndex(tag.vrIndex), false);
 
@@ -584,7 +600,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidVRCode(kOLCode), true);
 
-      for (var tag in olVM1Tags) {
+      for (final tag in olVM1Tags) {
         expect(OL.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -597,7 +613,7 @@ void main() {
       expect(() => OL.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(OL.isValidVRCode(tag.vrCode), false);
 
@@ -674,12 +690,12 @@ void main() {
         final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in olVM1Tags) {
+          for (final tag in olVM1Tags) {
             final e0 = OL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in olVM1nTags) {
+          for (final tag in olVM1nTags) {
             final e0 = OL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

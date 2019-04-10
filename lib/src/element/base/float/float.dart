@@ -40,9 +40,6 @@ abstract class Float extends Element<double> {
   int get sizeInBytes;
   // **** End of Interface ****
 
-  @deprecated
-  bool get isBinary => true;
-
   @override
   int get vfLength => length * sizeInBytes;
 
@@ -84,7 +81,7 @@ abstract class Float extends Element<double> {
 }
 
 /// FL
-abstract class FL extends Float with Float32Mixin {
+abstract class FL extends Float with FloatMixin, Float32Mixin {
   static const int kVRIndex = kFLIndex;
   static const int kVRCode = kFLCode;
   static const int kSizeInBytes = 4;
@@ -178,7 +175,7 @@ abstract class FL extends Float with Float32Mixin {
   }
 }
 
-abstract class OF extends Float with Float32Mixin {
+abstract class OF extends Float with FloatMixin, Float32Mixin {
   static const int kVRIndex = kOFIndex;
   static const int kVRCode = kOFCode;
   static const int kSizeInBytes = 4;
@@ -268,7 +265,7 @@ abstract class OF extends Float with Float32Mixin {
   }
 }
 
-abstract class FD extends Float with Float64Mixin {
+abstract class FD extends Float with FloatMixin, Float64Mixin {
   static const int kVRIndex = kFDIndex;
   static const int kVRCode = kFDCode;
   static const int kSizeInBytes = 8;
@@ -358,7 +355,7 @@ abstract class FD extends Float with Float64Mixin {
   }
 }
 
-abstract class OD extends Float with Float64Mixin {
+abstract class OD extends Float with FloatMixin, Float64Mixin {
   static const int kVRIndex = kODIndex;
   static const int kVRCode = kODCode;
   static const int kSizeInBytes = 8;

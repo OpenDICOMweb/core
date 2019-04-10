@@ -310,11 +310,15 @@ void main() {
     });
 
     test('SS checkLength random', () {
-      for (var i = 0; i < 10; i++) {
-        final int16List = rng.int16List(1, 10);
+      for (var i = 1; i < 10; i++) {
+        final int16List = rng.int16List(1, i);
         final e0 = SStag(PTag.kSelectorSSValue, int16List);
         expect(e0.checkLength(e0.values), true);
       }
+
+      final vList0 = rng.int16List(2, 2);
+      final e0 = SStag(PTag.kTagAngleSecondAxis);
+      expect(e0.checkLength(vList0), false);
     });
 
     test('SS checkLength ', () {
@@ -323,11 +327,20 @@ void main() {
     });
 
     test('SS checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final int16List = rng.int16List(1, 10);
         final e0 = SStag(PTag.kSelectorSSValue, int16List);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int32List(1, 1);
+      final e0 = SStag(PTag.kTagAngleSecondAxis);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('SS checkValues', () {
@@ -337,6 +350,12 @@ void main() {
 
       final e1 = SStag(PTag.kTagAngleSecondAxis, [rng.nextInt32]);
       expect(e1, isNull);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('SS valuesCopy random', () {
@@ -556,7 +575,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.int16List(1, 1);
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
-        for (var tag in ssVM1Tags) {
+        for (final tag in ssVM1Tags) {
           expect(SS.isValidLength(tag, validMinVList), true);
 
           expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -569,7 +588,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final invalidMinVList = rng.int16List(2, i + 2);
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
-        for (var tag in ssVM1Tags) {
+        for (final tag in ssVM1Tags) {
           global.throwOnError = false;
           expect(SS.isValidLength(tag, invalidMinVList), false);
           expect(SS.isValidLength(tag, invalidVList), false);
@@ -594,7 +613,7 @@ void main() {
         final validMinVList = rng.int16List(2, 2);
         global.throwOnError = false;
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
-        for (var tag in ssVM2Tags) {
+        for (final tag in ssVM2Tags) {
           expect(SS.isValidLength(tag, validMinVList), true);
 
           expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -606,7 +625,7 @@ void main() {
     test('SS isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final invalidMinVList = rng.int16List(3, i + 1);
-        for (var tag in ssVM2Tags) {
+        for (final tag in ssVM2Tags) {
           global.throwOnError = false;
           expect(SS.isValidLength(tag, invalidMinVList), false);
           expect(SS.isValidLength(tag, invalidVList), false);
@@ -623,7 +642,7 @@ void main() {
     test('SS isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.int16List(1, i);
-        for (var tag in ssVM1nTags) {
+        for (final tag in ssVM1nTags) {
           expect(SS.isValidLength(tag, validMinVList), true);
           expect(SS.isValidLength(tag, invalidVList.sublist(0, SS.kMaxLength)),
               true);
@@ -637,7 +656,7 @@ void main() {
       expect(SS.isValidTag(PTag.kZeroVelocityPixelValue), true);
       expect(SS.isValidTag(PTag.kGrayLookupTableData), true);
 
-      for (var tag in ssVM1Tags) {
+      for (final tag in ssVM1Tags) {
         expect(SS.isValidTag(tag), true);
       }
     });
@@ -650,7 +669,7 @@ void main() {
       expect(() => SS.isValidTag(PTag.kSelectorUSValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(SS.isValidTag(tag), false);
 
@@ -664,7 +683,7 @@ void main() {
       global.throwOnError = false;
       expect(SS.isValidVRIndex(kSSIndex), true);
 
-      for (var tag in ssVM1Tags) {
+      for (final tag in ssVM1Tags) {
         global.throwOnError = false;
         expect(SS.isValidVRIndex(tag.vrIndex), true);
       }
@@ -675,7 +694,7 @@ void main() {
       global.throwOnError = true;
       expect(() => SS.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(SS.isValidVRIndex(tag.vrIndex), false);
 
@@ -688,7 +707,7 @@ void main() {
     test('SS isValidVRCode good values', () {
       global.throwOnError = false;
       expect(SS.isValidVRCode(kSSCode), true);
-      for (var tag in ssVM1Tags) {
+      for (final tag in ssVM1Tags) {
         expect(SS.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -700,7 +719,7 @@ void main() {
       expect(() => SS.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(SS.isValidVRCode(tag.vrCode), false);
 
@@ -806,17 +825,17 @@ void main() {
         final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in ssVM1Tags) {
+          for (final tag in ssVM1Tags) {
             final e0 = SS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 2) {
-          for (var tag in ssVM2Tags) {
+          for (final tag in ssVM2Tags) {
             final e0 = SS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in ssVM1nTags) {
+          for (final tag in ssVM1nTags) {
             final e0 = SS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

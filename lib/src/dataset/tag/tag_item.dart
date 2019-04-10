@@ -49,7 +49,7 @@ class TagItem extends MapItem with TagDataset {
   factory TagItem.fromList(Dataset parent, Iterable<Element> elements,
       [SQtag sequence]) {
     final eMap = <int, Element>{};
-    for (var e in elements) eMap[e.index] = e;
+    for (final e in elements) eMap[e.index] = e;
     //TODO: handle PrivateGroups
     return TagItem(parent, sequence, eMap);
   }

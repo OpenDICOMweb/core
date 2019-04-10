@@ -294,6 +294,10 @@ void main() {
         final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
         expect(e0.checkLength(e0.values), true);
       }
+
+      final vList0 = rng.uint16List(2, 2);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber);
+      expect(e0.checkLength(vList0), false);
     });
 
     test('US checkLength', () {
@@ -302,16 +306,32 @@ void main() {
     });
 
     test('US checkValues random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
         expect(e0.checkValues(e0.values), true);
       }
+
+      final vList0 = rng.int64List(1, 1);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber);
+      expect(e0.checkValues(vList0), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues(vList0),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('US checkValues ', () {
+      global.throwOnError = false;
       final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
       expect(e0.checkValues(e0.values), true);
+
+      expect(e0.checkValues([kUint64Max]), false);
+
+      global.throwOnError = true;
+      expect(() => e0.checkValues([kUint64Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('US valuesCopy random', () {
@@ -583,7 +603,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint16List(1, 1);
-        for (var tag in usVM1Tags) {
+        for (final tag in usVM1Tags) {
           expect(US.isValidLength(tag, vList), true);
           expect(US.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
           expect(US.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
@@ -594,7 +614,7 @@ void main() {
     test('US isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final invalidMinVList = rng.uint16List(2, i + 1);
-        for (var tag in usVM1Tags) {
+        for (final tag in usVM1Tags) {
           global.throwOnError = false;
           expect(US.isValidLength(tag, invalidMinVList), false);
           expect(US.isValidLength(tag, invalidVList), false);
@@ -618,7 +638,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint16List(2, 2);
-        for (var tag in usVM2Tags) {
+        for (final tag in usVM2Tags) {
           expect(US.isValidLength(tag, vList), true);
 
           expect(US.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -630,7 +650,7 @@ void main() {
     test('US isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final invalidMinVList = rng.uint16List(3, i + 1);
-        for (var tag in usVM2Tags) {
+        for (final tag in usVM2Tags) {
           global.throwOnError = false;
           expect(US.isValidLength(tag, invalidMinVList), false);
           expect(US.isValidLength(tag, invalidVList), false);
@@ -648,7 +668,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint16List(3, 3);
-        for (var tag in usVM3Tags) {
+        for (final tag in usVM3Tags) {
           expect(US.isValidLength(tag, vList), true);
 
           expect(US.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -660,7 +680,7 @@ void main() {
     test('US isValidLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
         final invalidMinVList = rng.uint16List(4, i + 1);
-        for (var tag in usVM3Tags) {
+        for (final tag in usVM3Tags) {
           global.throwOnError = false;
           expect(US.isValidLength(tag, invalidMinVList), false);
           expect(US.isValidLength(tag, invalidVList), false);
@@ -678,7 +698,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint16List(4, 4);
-        for (var tag in usVM4Tags) {
+        for (final tag in usVM4Tags) {
           expect(US.isValidLength(tag, vList), true);
 
           expect(US.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -690,7 +710,7 @@ void main() {
     test('US isValidLength VM.k4 bad values', () {
       for (var i = 4; i < 10; i++) {
         final invalidMinVList = rng.uint16List(5, i + 1);
-        for (var tag in usVM4Tags) {
+        for (final tag in usVM4Tags) {
           global.throwOnError = false;
           expect(US.isValidLength(tag, invalidMinVList), false);
           expect(US.isValidLength(tag, invalidVList), false);
@@ -707,7 +727,7 @@ void main() {
     test('US isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint16List(1, i);
-        for (var tag in usVM1nTags) {
+        for (final tag in usVM1nTags) {
           expect(US.isValidLength(tag, vList), true);
 
           expect(US.isValidLength(tag, invalidVList.sublist(0, US.kMaxLength)),
@@ -725,7 +745,7 @@ void main() {
       expect(US.isValidTag(PTag.kZeroVelocityPixelValue), true);
       expect(US.isValidTag(PTag.kGrayLookupTableData), true);
 
-      for (var tag in usVM1Tags) {
+      for (final tag in usVM1Tags) {
         expect(US.isValidTag(tag), true);
       }
     });
@@ -738,7 +758,7 @@ void main() {
       expect(() => US.isValidTag(PTag.kSelectorAEValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(US.isValidTag(tag), false);
 
@@ -754,7 +774,7 @@ void main() {
       expect(US.isValidTag(PTag.kZeroVelocityPixelValue), true);
       expect(US.isValidTag(PTag.kGrayLookupTableData), true);
 
-      for (var tag in usVM1Tags) {
+      for (final tag in usVM1Tags) {
         expect(US.isValidTag(tag), true);
       }
     });
@@ -767,7 +787,7 @@ void main() {
       expect(() => US.isValidTag(PTag.kSelectorAEValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(US.isValidTag(tag), false);
 
@@ -781,14 +801,14 @@ void main() {
       global.throwOnError = false;
       expect(US.isValidVRIndex(kUSIndex), true);
 
-      for (var tag in usVM1Tags) {
+      for (final tag in usVM1Tags) {
         global.throwOnError = false;
         expect(US.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('US isValidVRIndex VM.k1_n good values', () {
-      for (var tag in usVM1Tags) {
+      for (final tag in usVM1Tags) {
         global.throwOnError = false;
         expect(US.isValidVRIndex(tag.vrIndex), true);
       }
@@ -802,7 +822,7 @@ void main() {
       expect(() => US.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(US.isValidVRIndex(tag.vrIndex), false);
 
@@ -815,14 +835,14 @@ void main() {
     test('US isValidVRCode VM.k1 good values', () {
       global.throwOnError = false;
       expect(US.isValidVRCode(kUSCode), true);
-      for (var tag in usVM1Tags) {
+      for (final tag in usVM1Tags) {
         expect(US.isValidVRCode(tag.vrCode), true);
       }
     });
 
     test('US isValidVRCode VM.k1_n good values', () {
       global.throwOnError = false;
-      for (var tag in usVM1Tags) {
+      for (final tag in usVM1Tags) {
         expect(US.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -835,7 +855,7 @@ void main() {
       expect(() => US.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(US.isValidVRCode(tag.vrCode), false);
 
@@ -978,27 +998,27 @@ void main() {
         final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in usVM1Tags) {
+          for (final tag in usVM1Tags) {
             final e0 = US.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 2) {
-          for (var tag in usVM2Tags) {
+          for (final tag in usVM2Tags) {
             final e0 = US.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 3) {
-          for (var tag in usVM3Tags) {
+          for (final tag in usVM3Tags) {
             final e0 = US.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 4) {
-          for (var tag in usVM4Tags) {
+          for (final tag in usVM4Tags) {
             final e0 = US.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in usVM1nTags) {
+          for (final tag in usVM1nTags) {
             final e0 = US.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

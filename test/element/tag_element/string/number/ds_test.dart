@@ -6,12 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert';
 
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
+//import 'package:decimal/decimal.dart';
 
 RSG rsg = RSG(seed: 1);
 RNG rng = RNG(1);
@@ -50,7 +50,7 @@ void main() {
 
   group('Decimal String Tests', () {
     test('DS isValidValue good values', () {
-      for (var s in goodDecimalStrings) {
+      for (final s in goodDecimalStrings) {
         global.throwOnError = false;
         log.debug('s: "$s"');
         final n = DS.tryParse(s);
@@ -106,7 +106,7 @@ void main() {
 
   group('DS Tests', () {
     test('DS isValidValue good values', () {
-      for (var vList in goodDSList) {
+      for (final vList in goodDSList) {
         global.throwOnError = false;
         log.debug('s: "$vList"');
         expect(DS.isValidValue(vList[0]), true);
@@ -114,7 +114,7 @@ void main() {
     });
 
     test('DS hasValidValues good values', () {
-      for (var s in goodDSList) {
+      for (final s in goodDSList) {
         global.throwOnError = false;
         log.debug('s: "$s"');
         final e0 = DStag(PTag.kProcedureStepProgress, s);
@@ -127,7 +127,7 @@ void main() {
     });
 
     test('DS hasValidValues bad values', () {
-      for (var s in badDSList) {
+      for (final s in badDSList) {
         global.throwOnError = false;
         final e0 = DStag(PTag.kProcedureStepProgress, s);
         expect(e0, isNull);
@@ -298,7 +298,7 @@ void main() {
       }
     });
 
-    test('DS isValidValues random', () {
+    test('DS checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
         final e0 = DStag(PTag.kPresentationPixelSpacing, vList0);
@@ -307,7 +307,22 @@ void main() {
       }
     });
 
+    test('DS checkValues bad values random', () {
+      final vList0 = rsg.getDSList(1, 1);
+      final e1 = DStag(PTag.kProcedureStepProgress, vList0);
+
+      for (final s in badDSList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
+      }
+    });
+
     test('DS replace random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
         final e0 = DStag(PTag.kSamplingFrequency, vList0);
@@ -337,44 +352,44 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
         log.debug('vList0: $vList0');
-        final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
+        final fvf0 = AsciiString.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
 
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList1 = rsg.getDSList(1, i);
-        final fvf1 = Ascii.fromValueField(vList1, k8BitMaxLongVF);
+        final fvf1 = AsciiString.fromValueField(vList1, k8BitMaxLongVF);
         expect(fvf1, equals(vList1));
       }
       global.throwOnError = false;
-      final fvf1 = Ascii.fromValueField(null, k8BitMaxLongLength);
+      final fvf1 = AsciiString.fromValueField(null, k8BitMaxLongLength);
       expect(fvf1, <String>[]);
       expect(fvf1 == kEmptyStringList, true);
 
-      final fvf2 = Ascii.fromValueField(<String>[], k8BitMaxLongLength);
+      final fvf2 = AsciiString.fromValueField(<String>[], k8BitMaxLongLength);
       expect(fvf2, <String>[]);
       expect(fvf2 == kEmptyStringList, false);
       expect(fvf2.isEmpty, true);
 
-      final fvf3 = Ascii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      final fvf3 = AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength);
       expect(fvf3, isNull);
 
       global.throwOnError = true;
-      expect(() => Ascii.fromValueField(<int>[1234], k8BitMaxLongLength),
+      expect(() => AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final vList2 = rsg.getCSList(1, 1);
       final bytes = Bytes.utf8FromList(vList2);
-      final fvf4 = Ascii.fromValueField(bytes, k8BitMaxLongLength);
+      final fvf4 = AsciiString.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
     });
 
     test('DS fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDSList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           final ur1 = DStag.fromBytes(PTag.kSelectorDSValue, bytes0);
           log.debug('ur1: ${ur1.info}');
@@ -386,7 +401,7 @@ void main() {
     test('DS fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDSList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           final ur1 = DStag.fromBytes(PTag.kSelectorAEValue, bytes0);
@@ -438,7 +453,7 @@ void main() {
     test('DS checkLength good values', () {
       final vList0 = rsg.getDSList(1, 1);
       final e0 = DStag(PTag.kSamplingFrequency, vList0);
-      for (var s in goodDSList) {
+      for (final s in goodDSList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = DStag(PTag.kSamplingFrequency, vList0);
@@ -455,8 +470,8 @@ void main() {
     test('DS checkValue good values', () {
       final vList0 = rsg.getDSList(1, 1);
       final e0 = DStag(PTag.kPatientSize, vList0);
-      for (var s in goodDSList) {
-        for (var a in s) {
+      for (final s in goodDSList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -464,8 +479,8 @@ void main() {
     test('DS checkValue bad values', () {
       final vList0 = rsg.getDSList(1, 1);
       final e0 = DStag(PTag.kPatientSize, vList0);
-      for (var s in badDSList) {
-        for (var a in s) {
+      for (final s in badDSList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
         }
@@ -483,7 +498,7 @@ void main() {
         final compare1 = e0.compareTo(e0a);
         expect(compare1 == 0, true);
       }
-      for (var vList1 in goodDSList) {
+      for (final vList1 in goodDSList) {
         final e1 = DStag(PTag.kPatientSize, vList1);
         final nList = [double.parse(e1.value)];
         final compare1 = e1.compareValuesTo(nList);
@@ -497,7 +512,7 @@ void main() {
       final vList2 = rsg.getDSList(1, 1);
       final e2 = DStag(PTag.kPatientSize, vList2);
 
-      for (var n in goodDecimalStrings) {
+      for (final n in goodDecimalStrings) {
         final nList = [double.parse(n)];
         final compare2 = e2.compareValuesTo(nList);
         log.debug('compare2: $compare2');
@@ -541,13 +556,30 @@ void main() {
       expect(compare6 == 0, true);
     });
 
+    //Urgent Sharath: decide what to do about Decimal. Change print to log.debug
     test('DS increment', () {
-      global.throwOnError = false;
-      final vList0 = rsg.getDSList(1, 1);
-      final e0 = DStag(PTag.kPatientSize, vList0);
-      final increment0 = e0.increment();
-      log.debug('increment0: $increment0');
-      expect(increment0.hasValidValues, true);
+      global.throwOnError = true;
+      const limit = 10000;
+
+      for (var i = 0; i < limit; i++) {
+        final vList0 = rsg.getDSList(1, 1);
+        log.debug('vList0: $vList0');
+        final e0 = DStag(PTag.kPatientSize, vList0);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        //print(double.parse(e0.value).toStringAsFixed(2));
+        final e1 = e0.increment();
+        // print(e1);
+        log.debug('increment0: $e1');
+        expect(e1.hasValidValues, true);
+        //expect(e1.values, equals([(double.parse(e0.value) + 1).toString()]));
+      }
+
+      // with double
+     // print(-0.9 + 1.0); // displays 0.30000000000000004
+
+      // with decimal
+     // print(Decimal.parse('0.2') + Decimal.parse('0.1')); // displays 0.3
     });
 
     test('DS decrement', () {
@@ -741,7 +773,7 @@ void main() {
       global.throwOnError = false;
       expect(DS.isValidTag(PTag.kSelectorDSValue), true);
 
-      for (var tag in dsVM1Tags) {
+      for (final tag in dsVM1Tags) {
         final validT0 = DS.isValidTag(tag);
         expect(validT0, true);
       }
@@ -754,7 +786,7 @@ void main() {
       expect(() => DS.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in badDSTags) {
+      for (final tag in badDSTags) {
         global.throwOnError = false;
         final validT0 = DS.isValidTag(tag);
         expect(validT0, false);
@@ -769,7 +801,7 @@ void main() {
       global.throwOnError = false;
       expect(DS.isValidVRIndex(kDSIndex), true);
 
-      for (var tag in dsVM1Tags) {
+      for (final tag in dsVM1Tags) {
         global.throwOnError = false;
         expect(DS.isValidVRIndex(tag.vrIndex), true);
       }
@@ -783,7 +815,7 @@ void main() {
       expect(() => DS.isValidVRIndex(kSSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in badDSTags) {
+      for (final tag in badDSTags) {
         global.throwOnError = false;
         expect(DS.isValidVRIndex(tag.vrIndex), false);
 
@@ -797,7 +829,7 @@ void main() {
       global.throwOnError = false;
       expect(DS.isValidVRCode(kDSCode), true);
 
-      for (var tag in dsVM1Tags) {
+      for (final tag in dsVM1Tags) {
         expect(DS.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -810,7 +842,7 @@ void main() {
       expect(() => DS.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in badDSTags) {
+      for (final tag in badDSTags) {
         global.throwOnError = false;
         expect(DS.isValidVRCode(tag.vrCode), false);
 
@@ -834,8 +866,8 @@ void main() {
     });
 
     test('DS isValidValueLength good values', () {
-      for (var s in goodDSList) {
-        for (var a in s) {
+      for (final s in goodDSList) {
+        for (final a in s) {
           expect(DS.isValidValueLength(a), true);
         }
       }
@@ -845,8 +877,8 @@ void main() {
 
     test('DS isValidValueLength bad values', () {
       global.throwOnError = false;
-      for (var s in badDSLengthValues) {
-        for (var a in s) {
+      for (final s in badDSLengthValues) {
+        for (final a in s) {
           log.debug(a);
           expect(DS.isValidValueLength(a), false);
         }
@@ -858,7 +890,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(1, 1);
-        for (var tag in dsVM1Tags) {
+        for (final tag in dsVM1Tags) {
           expect(DS.isValidLength(tag, validMinVList), true);
 
           expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -870,7 +902,7 @@ void main() {
     test('DS isValidVListLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rsg.getDSList(2, i + 1);
-        for (var tag in dsVM1Tags) {
+        for (final tag in dsVM1Tags) {
           global.throwOnError = false;
           expect(DS.isValidLength(tag, validMinVList), false);
 
@@ -899,7 +931,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(2, 2);
-        for (var tag in dsVM2Tags) {
+        for (final tag in dsVM2Tags) {
           expect(DS.isValidLength(tag, validMinVList), true);
 
           expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -911,7 +943,7 @@ void main() {
     test('DS isValidVListLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final validMinVList = rsg.getDSList(3, i + 1);
-        for (var tag in dsVM2Tags) {
+        for (final tag in dsVM2Tags) {
           global.throwOnError = false;
           expect(DS.isValidLength(tag, validMinVList), false);
 
@@ -934,7 +966,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(10, 10);
 
-        for (var tag in dsVM22nTags) {
+        for (final tag in dsVM22nTags) {
           log..debug('tag: $tag')..debug('max: ${tag.maxValues}');
           final validMaxLengthList = invalidVList.sublist(0, tag.maxValues);
 
@@ -947,7 +979,7 @@ void main() {
     test('DS isValidVListLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(1, 1);
-        for (var tag in dsVM22nTags) {
+        for (final tag in dsVM22nTags) {
           global.throwOnError = false;
           expect(DS.isValidLength(tag, validMinVList), false);
 
@@ -964,7 +996,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(3, 3);
-        for (var tag in dsVM3Tags) {
+        for (final tag in dsVM3Tags) {
           expect(DS.isValidLength(tag, validMinVList), true);
 
           expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -976,7 +1008,7 @@ void main() {
     test('DS isValidVListLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
         final validMinVList = rsg.getDSList(4, i + 1);
-        for (var tag in dsVM3Tags) {
+        for (final tag in dsVM3Tags) {
           global.throwOnError = false;
           expect(DS.isValidLength(tag, validMinVList), false);
 
@@ -997,7 +1029,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(9, 9);
-        for (var tag in dsVM3_3nTags) {
+        for (final tag in dsVM3_3nTags) {
           expect(DS.isValidLength(tag, validMinVList), true);
         }
       }
@@ -1006,7 +1038,7 @@ void main() {
     test('DS isValidVListLength VM.k3_3n bad values', () {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(1, 1);
-        for (var tag in dsVM3_3nTags) {
+        for (final tag in dsVM3_3nTags) {
           global.throwOnError = false;
           expect(DS.isValidLength(tag, validMinVList), false);
 
@@ -1024,7 +1056,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(4, 4);
-        for (var tag in dsVM4Tags) {
+        for (final tag in dsVM4Tags) {
           expect(DS.isValidLength(tag, validMinVList), true);
 
           expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -1036,7 +1068,7 @@ void main() {
     test('DS isValidVListLength VM.k4 bad values', () {
       for (var i = 4; i < 10; i++) {
         final validMinVList = rsg.getDSList(5, i + 1);
-        for (var tag in dsVM4Tags) {
+        for (final tag in dsVM4Tags) {
           global.throwOnError = false;
           expect(DS.isValidLength(tag, validMinVList), false);
 
@@ -1057,7 +1089,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(6, 6);
-        for (var tag in dsVM6Tags) {
+        for (final tag in dsVM6Tags) {
           expect(DS.isValidLength(tag, validMinVList), true);
 
           expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -1069,7 +1101,7 @@ void main() {
     test('DS isValidVListLength VM.k6 bad values', () {
       for (var i = 6; i < 10; i++) {
         final validMinVList = rsg.getDSList(7, i + 1);
-        for (var tag in dsVM6Tags) {
+        for (final tag in dsVM6Tags) {
           global.throwOnError = false;
           expect(DS.isValidLength(tag, validMinVList), false);
 
@@ -1087,7 +1119,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rsg.getDSList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, DS.kMaxLength);
-        for (var tag in dsVM1nTags) {
+        for (final tag in dsVM1nTags) {
           log.debug('tag: $tag');
           expect(DS.isValidLength(tag, validMinVList0), true);
           expect(DS.isValidLength(tag, validMaxLengthList), true);
@@ -1096,16 +1128,16 @@ void main() {
     });
 
     test('DS isValidValue good values', () {
-      for (var s in goodDSList) {
-        for (var a in s) {
+      for (final s in goodDSList) {
+        for (final a in s) {
           expect(DS.isValidValue(a), true);
         }
       }
     });
 
     test('DS isValidValue bad values', () {
-      for (var s in badDSList) {
-        for (var a in s) {
+      for (final s in badDSList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(DS.isValidValue(a), false);
         }
@@ -1114,14 +1146,14 @@ void main() {
 
     test('DS isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodDSList) {
+      for (final s in goodDSList) {
         expect(DS.isValidValues(PTag.kSelectorDSValue, s), true);
       }
     });
 
     test('DS isValidValues bad values', () {
       global.throwOnError = false;
-      for (var s in badDSList) {
+      for (final s in badDSList) {
         global.throwOnError = false;
         expect(DS.isValidValues(PTag.kSelectorDSValue, s), false);
 
@@ -1133,7 +1165,7 @@ void main() {
 
     test('DS isValidValues bad values length', () {
       global.throwOnError = false;
-      for (var s in badDSLengthList) {
+      for (final s in badDSLengthList) {
         global.throwOnError = false;
         expect(DS.isValidValues(PTag.kPatientSize, s), false);
 
@@ -1313,7 +1345,7 @@ void main() {
         final vList = rsg.getDSList(1, 1);
         expect(DS.isValidValues(PTag.kSelectorDSValue, vList), true);
       }
-      for (var s in goodDSList) {
+      for (final s in goodDSList) {
         global.throwOnError = false;
         expect(DS.isValidValues(PTag.kSelectorDSValue, s), true);
       }
@@ -1330,7 +1362,7 @@ void main() {
       expect(() => DS.isValidValues(PTag.kSelectorDSValue, vList1),
           throwsA(const TypeMatcher<StringError>()));
 
-      for (var s in badDSList) {
+      for (final s in badDSList) {
         global.throwOnError = false;
         expect(DS.isValidValues(PTag.kSelectorDSValue, s), false);
 
@@ -1342,7 +1374,7 @@ void main() {
 
     test('DS isValidValues bad values length', () {
       global.throwOnError = false;
-      for (var s in badDSLengthList) {
+      for (final s in badDSLengthList) {
         global.throwOnError = false;
         expect(DS.isValidValues(PTag.kPatientSize, s), false);
 
@@ -1379,8 +1411,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodDSList) {
-        for (var a in s) {
+      for (final s in goodDSList) {
+        for (final a in s) {
           final values = ascii.encode(a);
           final tbd2 = Bytes.asciiFromList(s);
           final tbd3 = Bytes.asciiFromList(s);
@@ -1399,7 +1431,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodDSList) {
+      for (final s in goodDSList) {
         final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
@@ -1416,7 +1448,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodDSList) {
+      for (final s in goodDSList) {
         final toB1 = Bytes.asciiFromList(s);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -1445,32 +1477,32 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in dsVM1Tags) {
+          for (final tag in dsVM1Tags) {
             final e0 = DS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 2) {
-          for (var tag in dsVM2Tags) {
+          for (final tag in dsVM2Tags) {
             final e0 = DS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 3) {
-          for (var tag in dsVM3Tags) {
+          for (final tag in dsVM3Tags) {
             final e0 = DS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 4) {
-          for (var tag in dsVM4Tags) {
+          for (final tag in dsVM4Tags) {
             final e0 = DS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else if (vList0.length == 6) {
-          for (var tag in dsVM6Tags) {
+          for (final tag in dsVM6Tags) {
             final e0 = DS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in dsVM1nTags) {
+          for (final tag in dsVM1nTags) {
             final e0 = DS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

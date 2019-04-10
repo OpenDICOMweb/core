@@ -48,7 +48,7 @@ void main() {
         expect(
             word.length >= minWordLength && word.length <= maxWordLength, true);
         final codeUnits = word.codeUnits;
-        for (var c in codeUnits) expect(isWordChar(c), true);
+        for (final c in codeUnits) expect(isWordChar(c), true);
       }
 
       minWordLength = 16;
@@ -59,7 +59,7 @@ void main() {
         expect(
             word.length >= minWordLength && word.length <= maxWordLength, true);
         final codeUnits = word.codeUnits;
-        for (var c in codeUnits) expect(isWordChar(c), true);
+        for (final c in codeUnits) expect(isWordChar(c), true);
       }
     });
   });

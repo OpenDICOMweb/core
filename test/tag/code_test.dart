@@ -48,7 +48,7 @@ void main() {
   ];
 
   test('Private Group Length Code', () {
-    for (var code in kValidPrivateGroupLengthCodes) {
+    for (final code in kValidPrivateGroupLengthCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
@@ -58,7 +58,7 @@ void main() {
       expect(isPrivateGroupLengthCode(code), true);
     }
 
-    for (var code in kInvalidPrivateCodes) {
+    for (final code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
@@ -90,7 +90,7 @@ void main() {
   ];
 
   test('Invalid Private Code', () {
-    for (var code in kPrivateInvalidCodes) {
+    for (final code in kPrivateInvalidCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
@@ -99,7 +99,7 @@ void main() {
       expect(isValidPrivateCode(code), false);
     }
 
-    for (var code in kInvalidPrivateCodes) {
+    for (final code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
@@ -108,7 +108,7 @@ void main() {
   });
 
   test('Private Creator Codes', () {
-    for (var code in kValidPrivateCreatorCodes) {
+    for (final code in kValidPrivateCreatorCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
@@ -118,7 +118,7 @@ void main() {
       expect(isPCCode(code), true);
     }
 
-    for (var code in kInvalidPrivateCodes) {
+    for (final code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
@@ -126,7 +126,7 @@ void main() {
       expect(isPCCode(code), false);
     }
 
-    for (var code in kValidPrivateDataCodes) {
+    for (final code in kValidPrivateDataCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), true);
       expect(isInvalidPrivateCode(code), false);
@@ -136,7 +136,7 @@ void main() {
   });
 
   test('Valid Private Data Codes', () {
-    for (var code in kValidPrivateDataCodes) {
+    for (final code in kValidPrivateDataCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
@@ -146,7 +146,7 @@ void main() {
       expect(isPDCode(code), true);
     }
 
-    for (var code in kInvalidPrivateCodes) {
+    for (final code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
@@ -154,7 +154,7 @@ void main() {
       expect(isPDCode(code), false);
     }
 
-    for (var code in kValidPrivateCreatorCodes) {
+    for (final code in kValidPrivateCreatorCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), true);
       expect(isInvalidPrivateCode(code), false);
@@ -175,7 +175,7 @@ void main() {
   ];
 
   test('Valid Private Data Codes with Creator', () {
-    for (var list in kValidPrivateDataCodesWithCreator) {
+    for (final list in kValidPrivateDataCodesWithCreator) {
       final code = list[0];
       final creator = list[1];
       log.debug('${code.toRadixString(16)}');
@@ -187,7 +187,7 @@ void main() {
       expect(isPDCode(code, creator), true);
     }
 
-    for (var code in kInvalidPrivateCodes) {
+    for (final code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
@@ -195,7 +195,7 @@ void main() {
       expect(isPDCode(code, code - 1), false);
     }
 
-    for (var code in kValidPrivateCreatorCodes) {
+    for (final code in kValidPrivateCreatorCodes) {
       log.debug('${code.toRadixString(16)}');
       expect(isPrivateCode(code), true);
       expect(isInvalidPrivateCode(code), false);

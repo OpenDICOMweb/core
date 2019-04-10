@@ -44,7 +44,7 @@ void main() {
 
   group('LO Tests', () {
     test('LO hasValidValues good values', () {
-      for (var s in goodLOList) {
+      for (final s in goodLOList) {
         global.throwOnError = false;
         final e0 = LOtag(PTag.kReceiveCoilManufacturerName, s);
         expect(e0.hasValidValues, true);
@@ -57,7 +57,7 @@ void main() {
     });
 
     test('LO hasValidValues bad values', () {
-      for (var s in badLOList) {
+      for (final s in badLOList) {
         global.throwOnError = false;
         final e0 = LOtag(PTag.kReceiveCoilManufacturerName, s);
         expect(e0, isNull);
@@ -214,12 +214,26 @@ void main() {
       }
     });
 
-    test('LO isValidValues random', () {
+    test('LO checkValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('LO checkValues bad values random', () {
+      final vList0 = rsg.getLOList(1, 1);
+      final e1 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+
+      for (final s in badLOList) {
+        global.throwOnError = false;
+        expect(e1.checkValues(s), false);
+
+        global.throwOnError = true;
+        expect(
+            () => e1.checkValues(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -273,7 +287,7 @@ void main() {
     test('LO fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
           final e1 = LOtag.fromBytes(PTag.kSelectorLOValue, bytes0, utf8);
@@ -286,7 +300,7 @@ void main() {
     test('LO fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 10);
-        for (var listS in vList1) {
+        for (final listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
@@ -343,7 +357,7 @@ void main() {
     test('LO checkLength good values', () {
       final vList0 = rsg.getLOList(1, 1);
       final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
-      for (var s in goodLOList) {
+      for (final s in goodLOList) {
         expect(e0.checkLength(s), true);
       }
       final e1 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
@@ -351,7 +365,7 @@ void main() {
 
       final vList1 = rsg.getLOList(1, 10);
       final e2 = LOtag(PTag.kReference, vList1);
-      for (var s in goodLOList) {
+      for (final s in goodLOList) {
         expect(e2.checkLength(s), true);
       }
     });
@@ -370,8 +384,8 @@ void main() {
     test('LO checkValue good values', () {
       final vList0 = rsg.getLOList(1, 1);
       final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
-      for (var s in goodLOList) {
-        for (var a in s) {
+      for (final s in goodLOList) {
+        for (final a in s) {
           expect(e0.checkValue(a), true);
         }
       }
@@ -381,8 +395,8 @@ void main() {
       final vList0 = rsg.getLOList(1, 1);
       final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
 
-      for (var s in badLOList) {
-        for (var a in s) {
+      for (final s in badLOList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(e0.checkValue(a), false);
 
@@ -402,6 +416,10 @@ void main() {
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
         expect(append0, isNotNull);
+
+        final append1 = e0.values.append(vList1, e0.maxValueLength);
+        log.debug('e0.append: $append1');
+        expect(append0, equals(append1));
       }
     });
 
@@ -414,6 +432,10 @@ void main() {
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
         expect(prepend0, isNotNull);
+
+        final prepend1 = e0.values.prepend(vList1, e0.maxValueLength);
+        log.debug('e0.prepend: $prepend1');
+        expect(prepend0, equals(prepend1));
       }
     });
 
@@ -496,37 +518,37 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         log.debug('vList0: $vList0');
-        final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
+        final fvf0 = AsciiString.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
 
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList1 = rsg.getLOList(1, i);
-        final fvf1 = Ascii.fromValueField(vList1, k8BitMaxLongVF);
+        final fvf1 = AsciiString.fromValueField(vList1, k8BitMaxLongVF);
         expect(fvf1, equals(vList1));
       }
       global.throwOnError = false;
-      final fvf1 = Ascii.fromValueField(null, k8BitMaxLongLength);
+      final fvf1 = AsciiString.fromValueField(null, k8BitMaxLongLength);
       expect(fvf1, <String>[]);
       expect(fvf1 == kEmptyStringList, true);
 
-      final fvf2 = Ascii.fromValueField(<String>[], k8BitMaxLongLength);
+      final fvf2 = AsciiString.fromValueField(<String>[], k8BitMaxLongLength);
       expect(fvf2, <String>[]);
       expect(fvf2 == kEmptyStringList, false);
       expect(fvf2.isEmpty, true);
 
-      final fvf3 = Ascii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      final fvf3 = AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength);
       expect(fvf3, isNull);
 
       global.throwOnError = true;
-      expect(() => Ascii.fromValueField(<int>[1234], k8BitMaxLongLength),
+      expect(() => AsciiString.fromValueField(<int>[1234], k8BitMaxLongLength),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final vList2 = rsg.getCSList(1, 1);
       final bytes = Bytes.utf8FromList(vList2);
-      final fvf4 = Ascii.fromValueField(bytes, k8BitMaxLongLength);
+      final fvf4 = AsciiString.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
     });
   });
@@ -592,7 +614,7 @@ void main() {
       global.throwOnError = false;
       expect(LO.isValidTag(PTag.kSelectorLOValue), true);
 
-      for (var tag in loVM1Tags) {
+      for (final tag in loVM1Tags) {
         final validT0 = LO.isValidTag(tag);
         expect(validT0, true);
       }
@@ -605,7 +627,7 @@ void main() {
       expect(() => LO.isValidTag(PTag.kSelectorFDValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         final validT0 = LO.isValidTag(tag);
         expect(validT0, false);
@@ -620,7 +642,7 @@ void main() {
       global.throwOnError = false;
       expect(LO.isValidVRIndex(kLOIndex), true);
 
-      for (var tag in loVM1Tags) {
+      for (final tag in loVM1Tags) {
         global.throwOnError = false;
         expect(LO.isValidVRIndex(tag.vrIndex), true);
       }
@@ -634,7 +656,7 @@ void main() {
       expect(() => LO.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(LO.isValidVRIndex(tag.vrIndex), false);
 
@@ -648,7 +670,7 @@ void main() {
       global.throwOnError = false;
       expect(LO.isValidVRCode(kLOCode), true);
 
-      for (var tag in loVM1Tags) {
+      for (final tag in loVM1Tags) {
         expect(LO.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -661,7 +683,7 @@ void main() {
       expect(() => LO.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (final tag in otherTags) {
         global.throwOnError = false;
         expect(LO.isValidVRCode(tag.vrCode), false);
 
@@ -685,8 +707,8 @@ void main() {
     });
 
     test('LO isValidValueLength good values', () {
-      for (var s in goodLOList) {
-        for (var a in s) {
+      for (final s in goodLOList) {
+        for (final a in s) {
           expect(LO.isValidValueLength(a), true);
         }
       }
@@ -700,7 +722,7 @@ void main() {
 
     test('LO isValidValueLength bad values', () {
       global.throwOnError = false;
-      for (var s in badLOLengthList) {
+      for (final s in badLOLengthList) {
         expect(LO.isValidValueLength(s), false);
       }
 
@@ -714,7 +736,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getLOList(1, 1);
-        for (var tag in loVM1Tags) {
+        for (final tag in loVM1Tags) {
           expect(LO.isValidLength(tag, vList), true);
 
           expect(LO.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -726,7 +748,7 @@ void main() {
     test('LO isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getLOList(2, i + 1);
-        for (var tag in loVM1Tags) {
+        for (final tag in loVM1Tags) {
           global.throwOnError = false;
           expect(LO.isValidLength(tag, vList), false);
 
@@ -757,7 +779,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, LO.kMaxLength);
-        for (var tag in loVM1nTags) {
+        for (final tag in loVM1nTags) {
           log.debug('tag: $tag');
           expect(LO.isValidLength(tag, vList0), true);
           expect(LO.isValidLength(tag, validMaxLengthList), true);
@@ -766,16 +788,16 @@ void main() {
     });
 
     test('LO isValidValue good values', () {
-      for (var s in goodLOList) {
-        for (var a in s) {
+      for (final s in goodLOList) {
+        for (final a in s) {
           expect(LO.isValidValue(a), true);
         }
       }
     });
 
     test('LO isValidValue bad values', () {
-      for (var s in badLOList) {
-        for (var a in s) {
+      for (final s in badLOList) {
+        for (final a in s) {
           global.throwOnError = false;
           expect(LO.isValidValue(a), false);
 
@@ -789,13 +811,13 @@ void main() {
 
     test('LO isValidValues good values', () {
       global.throwOnError = false;
-      for (var s in goodLOList) {
+      for (final s in goodLOList) {
         expect(LO.isValidValues(PTag.kDataSetSubtype, s), true);
       }
     });
 
     test('LO isValidValues bad values', () {
-      for (var s in badLOList) {
+      for (final s in badLOList) {
         global.throwOnError = false;
         expect(LO.isValidValues(PTag.kDataSetSubtype, s), false);
 
@@ -833,7 +855,7 @@ void main() {
       final vList0 = ['5b9LE'];
       expect(LO.isValidValues(PTag.kDataSetSubtype, vList0), true);
 
-      for (var s in goodLOList) {
+      for (final s in goodLOList) {
         global.throwOnError = false;
         expect(LO.isValidValues(PTag.kDataSetSubtype, s), true);
       }
@@ -848,7 +870,7 @@ void main() {
       expect(() => LO.isValidValues(PTag.kDataSetSubtype, vList1),
           throwsA(const TypeMatcher<StringError>()));
 
-      for (var s in badLOList) {
+      for (final s in badLOList) {
         global.throwOnError = false;
         expect(LO.isValidValues(PTag.kDataSetSubtype, s), false);
 
@@ -869,8 +891,8 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodLOList) {
-        for (var a in s) {
+      for (final s in goodLOList) {
+        for (final a in s) {
           final values = ascii.encode(a);
           final tbd2 = Bytes.utf8FromList(s);
           final tbd3 = Bytes.utf8FromList(s);
@@ -889,7 +911,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodLOList) {
+      for (final s in goodLOList) {
         final bd0 = Bytes.utf8FromList(s);
         final fbd0 = bd0.stringListFromUtf8();
         expect(fbd0, equals(s));
@@ -906,7 +928,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodLOList) {
+      for (final s in goodLOList) {
         final toB1 = Bytes.utf8FromList(s, kMaxShortVF);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -975,12 +997,12 @@ void main() {
         final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
-          for (var tag in loVM1Tags) {
+          for (final tag in loVM1Tags) {
             final e0 = LO.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }
         } else {
-          for (var tag in loVM1nTags) {
+          for (final tag in loVM1nTags) {
             final e0 = LO.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

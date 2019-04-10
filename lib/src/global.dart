@@ -196,7 +196,7 @@ abstract class Global {
   @override
   String toString() => '$banner';
 
-  static final Duration kZeroDuration = Duration();
+  static const Duration kZeroDuration = Duration();
 
   // Date/Time stuff
   static final DateTime kStartTime = DateTime.now();

@@ -12,7 +12,7 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/buffer/write_buffer_mixin.dart';
 
 /// A writable [ByteBuffer].
-class WriteBuffer extends Object with WriteBufferMixin {
+class WriteBuffer with WriteBufferMixin {
   @override
   GrowableBytes bytes;
   /// Returns the current read index.

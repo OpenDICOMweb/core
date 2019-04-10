@@ -36,7 +36,7 @@ String makeDeIdDateClasses() {
     ..writeln('const Map<int, String> deIdRemoveCodeToKeywordMap = '
         'const <int, String>{');
 
-  for (var v in DeIdTags.map.values) {
+  for (final v in DeIdTags.map.values) {
     if (v.name == 'X' &&
         v.tag.vrIndex != kDAIndex &&
         v.tag.vrIndex != kUIIndex) {

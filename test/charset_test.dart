@@ -22,14 +22,14 @@ void main() {
 
   group('Charset', () {
     test('Create Charset', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       log.debug('charset0: $charset0');
 
       expect(charset0.name == ascii.name, true);
       expect(charset0.language == ascii.language, true);
       expect(charset0.identifiers == ascii.identifiers, true);
 
-      const charset1 = Charset('ASCII-1', 'US English',
+      const charset1 = Ascii('ASCII-1', 'US English',
           ['ASCII', 'US-ASCII', 'ISO_IR 6', 'ISO/IEC 646']);
 
       expect(charset1.name == 'ASCII-1', true);
@@ -39,28 +39,39 @@ void main() {
     });
 
     test('isValid', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
-      for (var i = Charset.kMin; i <= Charset.kMax; i++) {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = Ascii.kMin; i <= Ascii.kMax; i++) {
         expect(charset0.isValid(i), true);
       }
-      expect(charset0.isValid(Charset.kMax + 1), false);
-      expect(charset0.isValid(Charset.kMin - 1), false);
+      expect(charset0.isValid(Ascii.kMax + 1), false);
+      expect(charset0.isValid(Ascii.kMin - 1), false);
     });
 
     test('isVisible', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
-          final visible0 =
-              charset0.isVisible(vList0.elementAt(j).codeUnitAt(j));
-          expect(visible0, true);
+          final char = vList0.elementAt(j).codeUnitAt(j);
+          final visible = charset0.isVisible(char);
+          log.debug('char: $char visible: $visible');
+          expect(visible, true);
+        }
+      }
+
+      final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
+      for (final i in vList1) {
+        final char = i.codeUnits;
+        for (var j = 0; j < char.length; j++) {
+          final visible1 = charset0.isVisible(char[j]);
+          log.debug('char: $char visible: $visible1');
+          expect(visible1, false);
         }
       }
     });
 
     test('decode and encode', () {
-      final charset0 = Charset(ascii.name, ascii.language, ascii.identifiers);
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
       //final vList0 = rng.uint8List(1, 1);
       const vList0 = [123, 23, 69, 98];
       final list0 = Uint8List.fromList(vList0);
@@ -71,6 +82,118 @@ void main() {
       final encode0 = charset0.encode(decode0);
       log.debug('encode0: $encode0');
       expect(encode0, equals(vList0));
+    });
+
+    test('isValidString', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = 1; i < 20; i++) {
+        final vList0 = rsg.getLOList(1, i);
+        for (var j = 0; j < vList0.length; j++) {
+          final isValid0 = charset0.isValidString(vList0[j]);
+          expect(isValid0, true);
+        }
+      }
+
+      const vList1 = '/TX\\&{Y2-w';
+      final isValid1 = charset0.isValidString(vList1);
+      expect(isValid1, false);
+
+      final vList2 = ['\b', '\t', '\n', '\f', '\v', '\r'];
+      for (final i in vList2) {
+        final isValid2 = charset0.isValidString(i);
+        log.debug(' isValid2: $isValid2');
+        expect(isValid2, false);
+      }
+    });
+
+    test('isSpace', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool space0;
+
+        if (i == kSpace) {
+          space0 = charset0.isSpace(i);
+          expect(space0, true);
+        } else {
+          space0 = charset0.isSpace(i);
+          expect(space0, false);
+        }
+      }
+    });
+
+    test('isBackSpace', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool backSpace0;
+
+        if (i == kBackspace) {
+          backSpace0 = charset0.isBackspace(i);
+          expect(backSpace0, true);
+        } else {
+          backSpace0 = charset0.isBackspace(i);
+          expect(backSpace0, false);
+        }
+      }
+    });
+
+    test('isWhiteSpace', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool whiteSpace0;
+
+        if (i == kSp || (i >= kBs && i <= kCr)) {
+          whiteSpace0 = charset0.isWhitespace(i);
+          expect(whiteSpace0, true);
+        } else {
+          whiteSpace0 = charset0.isWhitespace(i);
+          expect(whiteSpace0, false);
+        }
+      }
+    });
+
+    test('isDigit', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool digit0;
+
+        if (i >= k0 && i < k9) {
+          digit0 = charset0.isDigit(i);
+          expect(digit0, true);
+        } else {
+          digit0 = charset0.isDigit(i);
+          expect(digit0, false);
+        }
+      }
+    });
+
+    test('isControl', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool control0;
+
+        if (i >= kNul && i < kSp) {
+          control0 = charset0.isControl(i);
+          expect(control0, true);
+        } else {
+          control0 = charset0.isControl(i);
+          expect(control0, false);
+        }
+      }
+    });
+
+    test('isEscape', () {
+      final charset0 = Ascii(ascii.name, ascii.language, ascii.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool escape0;
+
+        if (i == kEsc) {
+          escape0 = charset0.isEscape(i);
+          expect(escape0, true);
+        } else {
+          escape0 = charset0.isEscape(i);
+          expect(escape0, false);
+        }
+      }
     });
   });
 
@@ -106,8 +229,20 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         for (var j = 0; j < vList0.length; j++) {
-          final visible0 = latin0.isVisible(vList0.elementAt(j).codeUnitAt(j));
-          expect(visible0, true);
+          final char = vList0.elementAt(j).codeUnitAt(j);
+          final v = latin0.isVisible(char);
+          if (!v) log.debug('char: $char');
+          expect(v, true);
+        }
+      }
+
+      final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
+      for (final i in vList1) {
+        final char = i.codeUnits;
+        for (var j = 0; j < char.length; j++) {
+          final v = latin0.isVisible(char[j]);
+          log.debug('char: $char visible: $v');
+          expect(v, false);
         }
       }
     });
@@ -125,6 +260,51 @@ void main() {
       log.debug('encode0: $encode0');
       expect(encode0, equals(vList0));
       expect(encode0, equals(cvt.ascii.encode(decode0)));
+    });
+
+    test('isSpace', () {
+      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool space0;
+
+        if (i == kSp || i == Latin.kNBSP) {
+          space0 = latin0.isSpace(i);
+          expect(space0, true);
+        } else {
+          space0 = latin0.isSpace(i);
+          expect(space0, false);
+        }
+      }
+    });
+
+    test('isWhiteSpace', () {
+      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool whiteSpace0;
+
+        if (i == kSp || i == Latin.kNBSP || (i >= kBs && i <= kCr)) {
+          whiteSpace0 = latin0.isWhitespace(i);
+          expect(whiteSpace0, true);
+        } else {
+          whiteSpace0 = latin0.isWhitespace(i);
+          expect(whiteSpace0, false);
+        }
+      }
+    });
+
+    test('isControl', () {
+      final latin0 = Latin(latin1.name, latin1.language, latin1.identifiers);
+      for (var i = kNull; i <= kDelete; i++) {
+        bool control0;
+
+        if (i >= kNull && i < kSpace || i >= 128 && i <= 159) {
+          control0 = latin0.isControl(i);
+          expect(control0, true);
+        } else {
+          control0 = latin0.isControl(i);
+          expect(control0, false);
+        }
+      }
     });
   });
 
@@ -158,6 +338,16 @@ void main() {
         for (var j = 0; j < vList0.length; j++) {
           final visible0 = utf8_0.isVisible(vList0.elementAt(j).codeUnitAt(j));
           expect(visible0, true);
+        }
+      }
+
+      final vList1 = ['\b', '\t', '\n', '\f', '\v', '\r'];
+      for (final i in vList1) {
+        final char = i.codeUnits;
+        for (var j = 0; j < char.length; j++) {
+          final visible1 = utf8_0.isVisible(char[j]);
+          log.debug('char: $char visible: $visible1');
+          expect(visible1, false);
         }
       }
     });

@@ -12,7 +12,7 @@ import 'package:core/src/utils/bytes.dart';
 
 // ignore_for_file: public_member_api_docs
 
-abstract class ReadBufferMixin {
+mixin ReadBufferMixin {
   Bytes get bytes;
   int get rIndex;
   set rIndex(int n);

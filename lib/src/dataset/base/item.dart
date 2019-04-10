@@ -42,13 +42,6 @@ abstract class Item extends Dataset {
   /// Returns _true_ if [vfLengthField] equals[kUndefinedLength].
   bool get hasULength => vfLengthField == kUndefinedLength;
 
-  /// _Deprecated_: Use [sequence] = [sq] instead.
-  @deprecated
-  void addSQ(SQ sq) {
-    assert(sq is SQ && sq != null);
-    sequence = sq;
-  }
-
   /// Sets [dsBytes] to the empty list.
   IDSBytes clearDSBytes() {
     final dsb = dsBytes;

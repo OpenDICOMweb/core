@@ -187,7 +187,7 @@ class FrameDescriptor {
   bool get isNotValid => !isValid;
 
   void _checkValidity(FrameDescriptor desc) {
-    if (desc.isNotValid) return invalidFrameDescriptorError(desc);
+    if (desc.isNotValid) invalidFrameDescriptorError(desc);
   }
 
   int get pixelSizeInBits => bitsAllocated;
