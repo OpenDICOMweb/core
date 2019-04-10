@@ -32,10 +32,6 @@ void main(List<String> args) {
     assert(bd.lengthInBytes == length, true);
     // Initialization
 
-    // Warm up
-    for (var k = 0; k < length; k++) final x = uint8List[k];
-    for (var k = 0; k < length; k++) final x = bd.getUint8(k);
-
     // Test
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) {
@@ -65,5 +61,6 @@ void main(List<String> args) {
 
     length *= 2;
   }
+
   print('read uint: $total0 bd0: $total1 ratio ${total1 / total0}');
 }

@@ -32,38 +32,45 @@ bool ignorePadding = true;
 /// [Uint8List] and [ByteData] interfaces.
 class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
-  ByteData _bd;
+  Uint8List _buf;
+  ByteData __bd;
   @override
   Endian endian;
+
+  @override
+  ByteData get _bd => __bd ??= _buf.buffer.asByteData();
+
+  ByteData get bd => _bd;
+
 
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [kDefaultLength] and [endian] defaults
   /// to [Endian.host].
   Bytes([int length = kDefaultLength, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = ByteData(length ?? k1MB);
+        _buf = Uint8List(length ?? k1MB);
 
   Bytes.view(Bytes bytes, [int offset = 0, int length, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = _bdView(bytes._bd, offset, length ?? bytes.length);
+        _buf = _bytesView(bytes._buf, offset, length ?? bytes.length);
 
   /// Creates a new [Bytes] from [bytes] containing the specified region
   /// and [endian]ness. [endian] defaults to [Endian.host].
   Bytes.from(Bytes bytes, [int offset = 0, int length, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = _copyByteData(bytes._bd, offset, length ?? bytes.length);
+        _buf = _copyBytes(bytes._buf, offset, length ?? bytes.length);
 
   /// Creates a new [Bytes] from [bd]. [endian] defaults to [Endian.host].
   Bytes.fromByteData(ByteData bd, [Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = bd;
+        _buf = bd.buffer.asUint8List();
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.  [endian] defaults to [Endian.host].
   Bytes.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
+        _buf = td.buffer.asUint8List(td.offsetInBytes + offsetInBytes,
             lengthInBytes ?? td.lengthInBytes);
 
   /// Creates a new [Bytes] from a [List<int>].  [endian] defaults
@@ -71,9 +78,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// are truncated.
   Bytes.fromList(List<int> list, [Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = (list is Uint8List)
-            ? list.buffer.asByteData()
-            : Uint8List.fromList(list).buffer.asByteData();
+        _buf = (list is Uint8List) ? list : Uint8List.fromList(list);
 
   // TODO: Either remove fromFile and fromPath or add doAsync
 
@@ -193,9 +198,9 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   // *** List interface
 
   @override
-  int operator [](int i) => _getUint8(i);
+  int operator [](int i) => _buf[i];
   @override
-  void operator []=(int i, int v) => _setUint8(i, v);
+  void operator []=(int i, int v) => _buf[i] = v;
 
   @override
   bool operator ==(Object other) =>
@@ -205,7 +210,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
   int get hashCode {
     var hashCode = 0;
-    for (var i = 0; i < bdLength; i++) hashCode += _getUint8(i) + i;
+    for (var i = 0; i < bdLength; i++) hashCode += _buf[i] + i;
     return hashCode;
   }
 
@@ -248,8 +253,8 @@ bool __bytesEqual(Bytes a, Bytes b, bool ignorePadding) {
 // Note: optimized to use 4 byte boundary
 bool _uint8Equal(Bytes a, Bytes b, bool ignorePadding) {
   for (var i = 0; i < a.length; i += 1) {
-    final x = a._getUint8(i);
-    final y = b._getUint8(i);
+    final x = a._buf[i];
+    final y = b._buf[i];
     if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
   }
   return true;
@@ -312,18 +317,17 @@ $i: $x | $y')
 
 //TODO: move this to the appropriate place
 /// Returns a [ByteData] that is a copy of the specified region of _this_.
-ByteData _copyByteData(ByteData bd, int offset, int length) {
-  final _length = length ?? bd.lengthInBytes;
-  final bdNew = ByteData(_length);
-  for (var i = 0, j = offset; i < _length; i++, j++)
-    bdNew.setUint8(i, bd.getUint8(j));
-  return bdNew;
+Uint8List _copyBytes(Uint8List list, int offset, int length) {
+  final _length = length ?? list.lengthInBytes;
+  final list1 = Uint8List(_length);
+  for (var i = 0, j = offset; i < _length; i++, j++) list1[i] = list[j];
+  return list1;
 }
 
 //TODO: move this to the appropriate place
 /// Returns a [ByteData] that is a copy of the specified region of _this_.
-ByteData _bdView(ByteData bd, int offset, int end) {
-  final _offset = bd.offsetInBytes + offset;
-  final _length = (end ?? bd.lengthInBytes) - _offset;
-  return bd.buffer.asByteData(_offset, _length);
+Uint8List _bytesView(Uint8List list, int offset, int end) {
+  final _offset = list.offsetInBytes + offset;
+  final _length = (end ?? list.lengthInBytes) - _offset;
+  return list.buffer.asUint8List(_offset, _length);
 }

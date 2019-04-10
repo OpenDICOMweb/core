@@ -12,7 +12,7 @@ import 'package:core/core.dart';
 
 void main(List<String> args) {
   const loops = 12;
-  const repetitions = 1024 * 8;
+  const repetitions = 1024 * 16;
 
   int start;
   int end;
@@ -75,6 +75,7 @@ void main(List<String> args) {
     print('$i $length uint8: $time0 bd: $time1 bytes[] $time2 bytes.get()');
     print('ratios: ${time1 / time0} ${time2 / time0} ${time3 / time0}');
 
+    assert(v == 0);
     length *= 2;
   }
   print('read uint: $total0 bd: $total1 bytes[] $total2 bytes*: $total3');
