@@ -14,24 +14,24 @@ mixin GrowableMixin {
   /// The upper bound on the length of this [Bytes]. If [limit]
   /// is _null_ then its length cannot be changed.
   int get limit;
-  ByteData get _bd;
+  Uint8List get _buf;
   bool grow(int newLength);
 
-  int get length => _bd.lengthInBytes;
+  int get length => _buf.length;
 
   set length(int newLength) {
-    if (newLength < _bd.lengthInBytes) return;
+    if (newLength < _buf.lengthInBytes) return;
     grow(newLength);
   }
 
-  /// Ensures that [_bd] is at least [length] long, and grows
+  /// Ensures that [_buf] is at least [length] long, and grows
   /// the buf if necessary, preserving existing data.
-  bool ensureLength(int length) => _ensureLength(_bd, length);
+  bool ensureLength(int length) => _ensureLength(_buf, length);
 
-  /// Ensures that [bd] is at least [minLength] long, and grows
+  /// Ensures that [list] is at least [minLength] long, and grows
   /// the buf if necessary, preserving existing data.
-  static bool _ensureLength(ByteData bd, int minLength) =>
-      (minLength > bd.lengthInBytes) ? _reallyGrow(bd, minLength) : false;
+  static bool _ensureLength(Uint8List list, int minLength) =>
+      (minLength > list.lengthInBytes) ? _reallyGrow(list, minLength) : false;
 
 }
 
@@ -67,9 +67,9 @@ class GrowableBytes extends Bytes with GrowableMixin {
   /// Finally, the new buffer becomes the buffer for _this_.
   @override
   bool grow([int minLength]) {
-    final old = _bd;
-    _bd = _grow(old, minLength ??= old.lengthInBytes * 2);
-    return _bd == old;
+    final old = _buf;
+    _buf = _grow(old, minLength ??= old.lengthInBytes * 2);
+    return _buf == old;
   }
 
   static const int kMaximumLength = k1GB;
@@ -78,20 +78,20 @@ class GrowableBytes extends Bytes with GrowableMixin {
 /// If [minLength] is less than or equal to the current length of
 /// [bd] returns [bd]; otherwise, returns a new [ByteData] with a length
 /// of at least [minLength].
-ByteData _grow(ByteData bd, int minLength) {
+Uint8List _grow(Uint8List bd, int minLength) {
   final oldLength = bd.lengthInBytes;
   return (minLength <= oldLength) ? bd : _reallyGrow(bd, minLength);
 }
 
 /// Returns a new [ByteData] with length at least [minLength].
-ByteData _reallyGrow(ByteData bd, int minLength) {
+Uint8List _reallyGrow(Uint8List bd, int minLength) {
   var newLength = minLength;
   do {
     newLength *= 2;
     if (newLength >= kDefaultLimit) return null;
   } while (newLength < minLength);
-  final newBD = ByteData(newLength);
-  for (var i = 0; i < bd.lengthInBytes; i++) newBD.setUint8(i, bd.getUint8(i));
+  final newBD = Uint8List(newLength);
+  for (var i = 0; i < bd.lengthInBytes; i++) newBD[i] = bd[i];
   return newBD;
 }
 

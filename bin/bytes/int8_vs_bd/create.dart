@@ -22,21 +22,17 @@ void main(List<String> args) {
   final timer = Stopwatch()..start();
 
   for (var i = 0; i < loops; i++) {
-    Uint8List uint8List;
     start = timer.elapsedMicroseconds;
-    for (var j = 0; j < repetitions; j++) {
-      uint8List = Uint8List(length);
-    }
+    for (var j = 0; j < repetitions; j++) Uint8List(length);
+
     end = timer.elapsedMicroseconds;
     // assert(uint8List.length == length, true);
     final time0 = end - start;
     total0 += time0;
 
-    ByteData bd0;
     start = timer.elapsedMicroseconds;
-    for (var j = 0; j < repetitions; j++) {
-      bd0 = ByteData(length);
-    }
+    for (var j = 0; j < repetitions; j++) ByteData(length);
+
     end = timer.elapsedMicroseconds;
     // assert(bd0.lengthInBytes == length, true);
 

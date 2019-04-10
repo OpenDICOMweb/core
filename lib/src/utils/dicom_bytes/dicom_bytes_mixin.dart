@@ -61,7 +61,7 @@ mixin DicomBytesMixin {
 
   int setUtf8(int start, String s, [int padChar = kSpace]);
 
-  String toBDDescriptor(ByteData bd);
+  String toBDDescriptor(Uint8List bd);
 
   Bytes asBytes([int offset = 0, int length, Endian endian]);
 
