@@ -17,8 +17,6 @@ import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes/bytes_mixin.dart';
 import 'package:core/src/utils/character/charset.dart';
 
-// ignore_for_file: public_member_api_docs
-
 /// Bytes Package Overview
 ///
 /// - All get_XXX_List methods return fixed length (unmodifiable) Lists.

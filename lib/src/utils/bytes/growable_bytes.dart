@@ -11,34 +11,10 @@ import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/bytes/constants.dart';
+import 'package:core/src/utils/bytes/growable_bytes_mixin.dart';
 
-// ignore_for_file: public_member_api_docs
-
-mixin GrowableMixin {
-  /// The upper bound on the length of this [Bytes]. If [limit]
-  /// is _null_ then its length cannot be changed.
-  int get limit;
-  Uint8List get buf;
-  bool grow(int newLength);
-
-  int get length => buf.length;
-
-  set length(int newLength) {
-    if (newLength < buf.lengthInBytes) return;
-    grow(newLength);
-  }
-
-  /// Ensures that [buf] is at least [length] long, and grows
-  /// the buf if necessary, preserving existing data.
-  bool ensureLength(int length) => _ensureLength(buf, length);
-
-  /// Ensures that [list] is at least [minLength] long, and grows
-  /// the buf if necessary, preserving existing data.
-  static bool _ensureLength(Uint8List list, int minLength) =>
-      (minLength > list.lengthInBytes) ? _reallyGrow(list, minLength) : false;
-}
-
-class GrowableBytes extends Bytes with GrowableMixin {
+/// A [Bytes] that can incrementally grow in size.
+class GrowableBytes extends Bytes with GrowableBytesMixin {
   /// The upper bound on the length of this [Bytes]. If [limit]
   /// is _null_ then its length cannot be changed.
   @override
@@ -65,42 +41,8 @@ class GrowableBytes extends Bytes with GrowableMixin {
       : limit = limit ?? k1GB,
         super.typedDataView(td, offset, lengthInBytes, endian);
 
-  /// Creates a new buffer of length at least [minLength] in size, or if
-  /// [minLength == null, at least double the length of the current buffer;
-  /// and then copies the contents of the current buffer into the new buffer.
-  /// Finally, the new buffer becomes the buffer for _this_.
-  @override
-  bool grow([int minLength]) {
-    final old = buf;
-    buf = _grow(old, minLength ??= old.lengthInBytes * 2);
-    return buf == old;
-  }
 
   static const int k1GB = 1024 * 1024;
   static const int kMaximumLength = k1GB;
 }
 
-/// If [minLength] is less than or equal to the current length of
-/// [bd] returns [bd]; otherwise, returns a new [ByteData] with a length
-/// of at least [minLength].
-Uint8List _grow(Uint8List bd, int minLength) {
-  final oldLength = bd.lengthInBytes;
-  return (minLength <= oldLength) ? bd : _reallyGrow(bd, minLength);
-}
-
-/// Returns a new [ByteData] with length at least [minLength].
-Uint8List _reallyGrow(Uint8List bd, int minLength) {
-  var newLength = minLength;
-  do {
-    newLength *= 2;
-    if (newLength >= kDefaultLimit) return null;
-  } while (newLength < minLength);
-  final newBD = Uint8List(newLength);
-  for (var i = 0; i < bd.lengthInBytes; i++) newBD[i] = bd[i];
-  return newBD;
-}
-
-bool checkAllZeros(ByteData bd, int start, int end) {
-  for (var i = start; i < end; i++) if (bd.getUint8(i) != 0) return false;
-  return true;
-}

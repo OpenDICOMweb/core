@@ -14,7 +14,6 @@ import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/bytes/constants.dart';
 import 'package:core/src/utils/character/charset.dart';
 
-// ignore_for_file: public_member_api_docs
 
 // Move to global
 bool showByteValues = false;
@@ -311,14 +310,6 @@ mixin BytesMixin {
     return Bytes.typedDataView(list);
   }
 
-/*
-  /// Creates an [Int8List] copy of the specified region of _this_.
-  Bytes getBytes([int offset = 0, int length]) {
-    final bd = getUint8List(offset, length);
-    return Bytes.typedDataView(bd);
-  }
-*/
-
   /// Creates an [Int8List] copy of the specified region of _this_.
   ByteData getByteData([int offset = 0, int length]) =>
       getUint8List(offset, length).buffer.asByteData();
@@ -532,7 +523,6 @@ mixin BytesMixin {
     return length;
   }
 
-// Urgent Int List and Uint List methods should be the same
   void setInt16(int i, int v) => bd.setInt16(i, v, endian);
 
   int setInt16List(int start, List<int> list, [int offset = 0, int length]) {
