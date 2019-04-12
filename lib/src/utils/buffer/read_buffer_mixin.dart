@@ -23,7 +23,7 @@ mixin ReadBufferMixin {
 
   // End of Interface
 
-  ByteBuffer get buffer => bytes.buffer;
+  // ByteBuffer get buffer => bytes.buf.buffer;
 
   int get readIndex => _rIndex;
   int get writeIndex => _wIndex;
@@ -147,7 +147,7 @@ mixin ReadBufferMixin {
   }
 
   String getAscii(int length) =>
-      bytes.stringFromAscii(offset: _rIndex, length: length);
+      bytes.getAscii(offset: _rIndex, length: length);
 
   String readAscii(int length) {
     final s = getAscii(length);
@@ -156,7 +156,7 @@ mixin ReadBufferMixin {
   }
 
   String getUtf8(int length) =>
-      bytes.stringFromUtf8(offset: _rIndex, length: length);
+      bytes.getUtf8(offset: _rIndex, length: length);
 
   String readUtf8(int length) {
     final s = getUtf8(length);
@@ -247,14 +247,14 @@ mixin ReadBufferMixin {
   }
 
   List<String> readAsciiList(int length) {
-    final v = bytes.stringListFromAscii(
+    final v = bytes.getAsciiList(
         offset: _rIndex, length: length, allowInvalid: true);
     _rIndex += length;
     return v;
   }
 
   List<String> readUtf8List(int length) {
-    final v = bytes.stringListFromUtf8(
+    final v = bytes.getUtf8List(
         offset: _rIndex, length: length, allowInvalid: true);
     _rIndex += length;
     return v;
@@ -269,16 +269,20 @@ mixin ReadBufferMixin {
     return offset;
   }
 
-  Uint8List get contentsRead => bytes.buffer.asUint8List(bytes.offset, _rIndex);
-  Uint8List get contentsUnread => bytes.buffer.asUint8List(_rIndex, _wIndex);
+  Uint8List get contentsRead =>
+      bytes.buf.buffer.asUint8List(bytes.offset, _rIndex);
 
-  Uint8List get contentsWritten => bytes.buffer.asUint8List(_rIndex, _wIndex);
+  Uint8List get contentsUnread =>
+      bytes.buf.buffer.asUint8List(_rIndex, _wIndex);
+
+  Uint8List get contentsWritten =>
+      bytes.buf.buffer.asUint8List(_rIndex, _wIndex);
 
   @override
   String toString() => '$runtimeType: @R$_rIndex @W$_wIndex $bytes';
 
   /// The underlying [ByteData]
-  ByteData get bd => isClosed ? null : buffer.asByteData();
+  ByteData get bd => isClosed ? null : bytes.buf.buffer.asByteData();
 
   /// Returns _true_ if this reader isClosed and it [isNotEmpty].
   bool get hadTrailingBytes {
@@ -296,7 +300,7 @@ mixin ReadBufferMixin {
   ByteData close() {
     if (hadTrailingBytes)
       _hadTrailingZeros = _checkAllZeros(_wIndex, bytes.length);
-    final bd = buffer.asByteData(0, _wIndex);
+    final bd = bytes.buf.buffer.asByteData(0, _wIndex);
     _isClosed = true;
     return bd;
   }

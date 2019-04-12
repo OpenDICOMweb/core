@@ -32,7 +32,7 @@ void main() {
         final vList0 = rsg.getSTList(0, 1);
         final bytes0 = Bytes.asciiFromList(vList0, kMaxShortVF);
         final sList0 = vList0.map((v) => '$v');
-        final vList1 = bytes0.stringListFromAscii();
+        final vList1 = bytes0.getAsciiList();
         final sList1 = vList1.map((v) => '$v');
         log
           ..debug('vList0: $vList0')
@@ -57,7 +57,7 @@ void main() {
         final vList0 = rsg.getSHList(0, 10);
         final bytes0 = Bytes.asciiFromList(vList0);
         final sList0 = vList0.map((v) => '"$v"');
-        final vList1 = bytes0.stringListFromAscii();
+        final vList1 = bytes0.getAsciiList();
         final sList1 = vList1.map((v) => '"$v"');
         log
           ..debug('vList0: $vList0')
@@ -83,7 +83,7 @@ void main() {
         final vList0 = rsg.getSHList(1, 10);
         final bytes0 = Bytes.asciiFromList(vList0, kMaxShortVF);
         final bytes = Bytes.ascii(vList0.join('\\'));
-        final vList1 = bytes.getStringList(ascii);
+        final vList1 = bytes.getAsciiList();
         log
           ..debug('vList0: $vList0')
           ..debug('vList1: $vList1')

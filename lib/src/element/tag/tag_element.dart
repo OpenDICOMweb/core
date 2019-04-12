@@ -63,7 +63,7 @@ mixin TagElement<V> {
   }
 
   static PC _getPCTagFromBytes(int code, DicomBytes bytes) {
-    final token = bytes.vfBytes.stringFromUtf8().trim();
+    final token = bytes.vfBytes.getUtf8().trim();
     final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
     return PCtag.fromBytes(tag, bytes.vfBytes);
   }

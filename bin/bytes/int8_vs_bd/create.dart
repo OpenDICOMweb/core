@@ -9,6 +9,8 @@
 
 import 'dart:typed_data';
 
+import 'package:core/core.dart';
+
 void main(List<String> args) {
   const loops = 12;
   const repetitions = 1024 * 16;
@@ -17,30 +19,38 @@ void main(List<String> args) {
   int end;
   var total0 = 0;
   var total1 = 0;
+  var total2 = 0;
 
   var length = 4;
   final timer = Stopwatch()..start();
 
   for (var i = 0; i < loops; i++) {
+    // Uint8List
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) Uint8List(length);
-
     end = timer.elapsedMicroseconds;
-    // assert(uint8List.length == length, true);
     final time0 = end - start;
     total0 += time0;
 
+    // ByteData
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) ByteData(length);
-
     end = timer.elapsedMicroseconds;
-    // assert(bd0.lengthInBytes == length, true);
-
     final time1 = end - start;
-    total1 += time0;
-    print('$i $length uint8: $time0 bd0: $time1 ratio ${time1 / time0}');
+    total1 += time1;
+
+    // Bytes
+    start = timer.elapsedMicroseconds;
+    for (var j = 0; j < repetitions; j++) Bytes(length);
+    end = timer.elapsedMicroseconds;
+    final time2 = end - start;
+    total2 += time2;
+
+    print('$i length $length uint8 $time0 bd $time1 bytes $time2');
+    print('  ratio ${time1 / time0} ${time2 / time0}');
 
     length *= 2;
   }
-  print('create: $total0 bd0: $total1 ratio ${total1 / total0}');
+  print('create: $total0 bd $total1 bytes $total2');
+  print('  ratio ${total1 / total0} ${total2 / total0}');
 }

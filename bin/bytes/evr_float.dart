@@ -13,7 +13,7 @@ void main() {
 
   final vList = <double>[1, 1.1, 1.2];
 
-  final fl = FLbytes.fromValues(kSelectorFLValue, vList);
+  final fl = FLbytes.fromValues(kSelectorFLValue, vList, isEvr: true);
   assert(fl.bytes is DicomBytes);
   assert(fl.vfBytes is Bytes);
   assert(fl.hasValidValues);
@@ -25,7 +25,7 @@ void main() {
   assert(fl1.hasValidValues);
   printEvr(fl1, kFLCode, fl1.vfBytes);
 
-  final of = OFbytes.fromValues(kSelectorOFValue, vList);
+  final of = OFbytes.fromValues(kSelectorOFValue, vList, isEvr: true);
   assert(of.bytes is DicomBytes);
   assert(of.vfBytes is Bytes);
   assert(of.hasValidValues);
@@ -37,7 +37,7 @@ void main() {
   assert(of1.hasValidValues);
   printEvr(of1, kOFCode, of1.vfBytes);
 
-  final fd = FDbytes.fromValues(kSelectorOFValue, vList);
+  final fd = FDbytes.fromValues(kSelectorOFValue, vList, isEvr: true);
   assert(fd.bytes is DicomBytes);
   assert(fd.vfBytes is Bytes);
   assert(fd.hasValidValues);
@@ -49,7 +49,7 @@ void main() {
   assert(fd1.hasValidValues);
   printEvr(fd1, kOFCode, fd1.vfBytes);
 
-  final od = ODbytes.fromValues(kSelectorOFValue, vList);
+  final od = ODbytes.fromValues(kSelectorOFValue, vList, isEvr: true);
   assert(od.bytes is DicomBytes);
   assert(od.vfBytes is Bytes);
   assert(od.hasValidValues);

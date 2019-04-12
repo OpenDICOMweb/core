@@ -19,8 +19,9 @@ void main() {
 
   group('UNbytes', () {
     test('UNbytes from VM.k1', () {
-      for (var i = 1; i < 10; i++) {
-        final vList0 = rng.uint8List(1, i);
+      for (var i = 0; i < 20; i += 2) {
+        // Only generate even length lists so Value Field will be correct
+        final vList0 = rng.uint8List(i, i);
         final bytes = Bytes.fromList(vList0);
         global.throwOnError = false;
         final e0 = UNbytes.fromValues(kPixelData, vList0);

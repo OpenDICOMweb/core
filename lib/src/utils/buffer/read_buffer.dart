@@ -13,9 +13,11 @@ abstract class ReadBufferBase extends BytesBuffer {
   /// The [Bytes] that _this_ reads from.
   @override
   Bytes get bytes;
+
   /// The current read index.
   @override
   int get _rIndex;
+
   /// The current write index.
   @override
   int get _wIndex;
@@ -57,7 +59,7 @@ class ReadBuffer extends ReadBufferBase with ReadBufferMixin {
         _wIndex = length ?? bd.lengthInBytes;
 
   /// Creates a [ReadBuffer] from an [List<int>].
-  ReadBuffer.fromList(List<int> list, [Endian endian])
+  ReadBuffer.fromList(List<int> list, [Endian endian = Endian.little])
       : bytes = Bytes.fromList(list, endian ?? Endian.little),
         _rIndex = 0,
         _wIndex = list.length;
@@ -103,11 +105,12 @@ class LoggingReadBuffer extends ReadBuffer with LoggingReadBufferMixin {
 
   /// Creates a [LoggingReadBuffer] from a [Uint8List].
   factory LoggingReadBuffer.fromUint8List(Uint8List _bytes,
-      [int offset = 0, int length, Endian endian]) {
+      [int offset = 0, int length, Endian endian = Endian.little]) {
     final bd = _bytes.buffer.asByteData(offset, length);
     return LoggingReadBuffer._(bd, offset, length, endian);
   }
 
-  LoggingReadBuffer._(TypedData td, [int offset = 0, int length, Endian endian])
+  LoggingReadBuffer._(TypedData td,
+      [int offset = 0, int length, Endian endian = Endian.little])
       : super.typedDataView(td, offset, length, endian);
 }

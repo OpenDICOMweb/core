@@ -81,7 +81,7 @@ class AEtag extends AE with TagElement<String>, TagStringMixin {
 
   // ignore: prefer_constructors_over_static_methods
   static AEtag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      AEtag(tag, bytes.stringListFromAscii());
+      AEtag(tag, bytes.getAsciiList());
 }
 
 class CStag extends CS with TagElement<String> {
@@ -122,7 +122,9 @@ class CStag extends CS with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static CStag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      CStag(tag, bytes.stringListFromAscii(removeNull: true));
+      // Urgent: fix
+      //    CStag(tag, bytes.getAsciiList(removeNull: true));
+      CStag(tag, bytes.getAsciiList());
 }
 
 class DStag extends DS with TagElement<String> {
@@ -155,7 +157,7 @@ class DStag extends DS with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static DStag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      DStag(tag, bytes.stringListFromAscii());
+      DStag(tag, bytes.getAsciiList());
 }
 
 class IStag extends IS with TagElement<String> {
@@ -188,7 +190,7 @@ class IStag extends IS with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static IStag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      IStag(tag, bytes.stringListFromAscii());
+      IStag(tag, bytes.getAsciiList());
 }
 
 /// A Long String (LO) Element
@@ -221,9 +223,8 @@ class LOtag extends LO with TagElement<String> {
       LOtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static LOtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-      // Urgent fix:
-      LOtag(tag, bytes.getStringList(charset ??= utf8));
+  static LOtag fromBytes(Tag tag, Bytes bytes, [Charset charset = utf8]) =>
+      LOtag(tag, bytes.getStringList(charset: charset));
 }
 
 class PCtag extends PC with TagElement<String> {
@@ -258,7 +259,7 @@ class PCtag extends PC with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static PCtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) {
-    final s = bytes.stringFromUtf8().trim();
+    final s = bytes.getUtf8().trim();
     return PCtag(tag, StringList.from([s]));
   }
 
@@ -311,7 +312,7 @@ class LTtag extends LT with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static LTtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-      LTtag(tag, StringList.from([bytes.stringFromUtf8()]));
+      LTtag(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// A Person Name ([PN]) Element.
@@ -345,7 +346,7 @@ class PNtag extends PN with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static PNtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-      PNtag(tag, bytes.stringListFromUtf8());
+      PNtag(tag, bytes.getUtf8List());
 }
 
 /// A Short String (SH) Element
@@ -379,7 +380,7 @@ class SHtag extends SH with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static SHtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-      SHtag(tag, bytes.stringListFromUtf8());
+      SHtag(tag, bytes.getUtf8List());
 }
 
 /// An Short Text (ST) Element
@@ -413,7 +414,7 @@ class STtag extends ST with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static STtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-      STtag(tag, StringList.from([bytes.stringFromUtf8()]));
+      STtag(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// An Unlimited Characters (UC) Element
@@ -447,7 +448,7 @@ class UCtag extends UC with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static UCtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-      UCtag(tag, bytes.stringListFromUtf8());
+      UCtag(tag, bytes.getUtf8List());
 }
 
 class UItag extends UI with TagElement<String> {
@@ -494,7 +495,7 @@ class UItag extends UI with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static UItag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      UItag(tag, bytes.stringListFromAscii());
+      UItag(tag, bytes.getAsciiList());
 }
 
 /// Value Representation of [Uri].
@@ -530,7 +531,7 @@ class URtag extends UR with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static URtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-      URtag(tag, StringList.from([bytes.stringFromUtf8()]));
+      URtag(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// An Unlimited Text (UT) Element
@@ -564,7 +565,7 @@ class UTtag extends UT with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static UTtag fromBytes(Tag tag, Bytes bytes, [Ascii charset]) =>
-      UTtag(tag, StringList.from([bytes.stringFromUtf8()]));
+      UTtag(tag, StringList.from([bytes.getUtf8()]));
 }
 
 // **** Date/Time classes
@@ -599,7 +600,7 @@ class AStag extends AS with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static AStag fromBytes(Tag tag, Bytes bytes, [Ascii _]) =>
-      AStag(tag, bytes.stringListFromAscii());
+      AStag(tag, bytes.getAsciiList());
 }
 
 /// A DICOM Date ([DA]) [Element].

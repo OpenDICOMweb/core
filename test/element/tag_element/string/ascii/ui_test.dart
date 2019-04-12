@@ -910,8 +910,8 @@ void main() {
       final vList1 = rsg.getUIList(1, 1);
       final bytes = Bytes.asciiFromList(vList1);
       log.debug('bytes.stringListFromAsciiList(): '
-          '${bytes.stringListFromAscii()}, bytes: $bytes');
-      expect(bytes.stringListFromAscii(), equals(vList1));
+          '${bytes.getAsciiList()}, bytes: $bytes');
+      expect(bytes.getAsciiList(), equals(vList1));
     });
 
     test('UI Bytes.fromAsciiList', () {
@@ -990,13 +990,13 @@ void main() {
         final vList0 = rsg.getUIList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.asciiFromList(vList0);
-        final fbd0 = bd0.stringListFromAscii();
+        final fbd0 = bd0.getAsciiList();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (final s in goodUIList) {
         final bd0 = Bytes.asciiFromList(s);
-        final fbd0 = bd0.stringListFromAscii();
+        final fbd0 = bd0.getAsciiList();
         expect(fbd0, equals(s));
       }
     });
@@ -1028,9 +1028,12 @@ void main() {
       final toB4 = Bytes.asciiFromList(null, kMaxShortVF);
       expect(toB4, isNull);
 
+/* Now longer throws
       global.throwOnError = true;
       expect(() => Bytes.asciiFromList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+*/
+
     });
 
     test('UI isValidBytesArgs', () {

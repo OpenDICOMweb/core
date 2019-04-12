@@ -8,7 +8,6 @@
 //
 
 import 'dart:typed_data';
-import 'package:core/core.dart';
 
 void main(List<String> args) {
   const loops = 12;
@@ -18,8 +17,6 @@ void main(List<String> args) {
   int end;
   var total0 = 0;
   var total1 = 0;
-  var total2 = 0;
-  var total3 = 0;
   int v;
 
   var length = 4;
@@ -52,38 +49,10 @@ void main(List<String> args) {
     final time1 = end - start;
     total1 += time1;
 
-    // Bytes
-    final bytes = Bytes(length);
-    start = timer.elapsedMicroseconds;
-    for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) {
-        bytes[k] = 1;
-        v = bytes[k];
-      }
-    }
-    end = timer.elapsedMicroseconds;
-    final time2 = end - start;
-    total2 += time2;
-
-    // ByteData
-    start = timer.elapsedMicroseconds;
-    for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) {
-        bytes.setUint8(k, 1);
-        v = bytes.getUint8(k);
-      }
-    }
-    end = timer.elapsedMicroseconds;
-    final time3 = end - start;
-    total3 += time3;
+    print('$i $length uint8 $time0 bd $time1 ratio ${time1 / time0}');
 
     assert(v == 1);
-
-    print('$i $length uint8 $time0 bd $time1 bytes[] $time2 bytes* $time3');
-    print('ratio ${time1 / time0} ${time2 / time0} ${time3 / time0}');
-
     length *= 2;
   }
-  print('store then read $total0 bd0 $total1 bytes[] $total2 bytes* $total3');
-  print('ratio ${total1 / total0} ${total2 / total0} ${total3 / total0}');
+  print('store then read $total0 bd0 $total1 ratio ${total1 / total0}');
 }

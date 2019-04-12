@@ -40,7 +40,7 @@ class StringList extends ListBase<String> {
   StringList._(this._values);
 
   StringList.decode(Bytes bytes, [Charset charset])
-      : _values = bytes.getStringList(charset ?? utf8);
+      : _values = bytes.getStringList(charset: charset = utf8);
 
   @override
   String operator [](int i) => _values[i];
@@ -197,7 +197,7 @@ class AsciiList extends StringList {
       ? StringList.from(vList)
       : badStringList('Invalid AsciiList: $vList');
 
-  AsciiList.decode(Bytes bytes) : super._(bytes.stringListFromAscii());
+  AsciiList.decode(Bytes bytes) : super._(bytes.getAsciiList());
 
   @override
   int get lengthInBytes {

@@ -7,3 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 export 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+export 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
+export 'package:core/src/utils/dicom_bytes/dicom_growable_bytes.dart';
+export 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
+export 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+export 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';

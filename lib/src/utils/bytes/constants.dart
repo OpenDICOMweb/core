@@ -4,7 +4,6 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 //
-import 'package:core/src/global.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -44,5 +43,6 @@ const int kUint32MaxValue = 0xFFFFFFFF;
 const int kUint64MaxValue = 0xFFFFFFFFFFFFFFFF;
 
 const int kDefaultLength = 4096;
-const int kDefaultLimit = k1GB;
+
+const int kDefaultLimit = 1024 * 1024; // 1 GB
 

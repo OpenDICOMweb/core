@@ -381,11 +381,11 @@ void main() {
         final vList1 = rsg.getUTList(1, 1);
         final s0 = vList1[0];
         final bytes = Bytes.utf8(s0);
-        final s1 = bytes.stringFromUtf8();
+        final s1 = bytes.getUtf8();
         log.debug('s1: $s1');
         expect(s1, equals(s0));
 
-        final s2 = bytes.stringFromUtf8();
+        final s2 = bytes.getUtf8();
         log.debug('s2: $s2');
         expect(s2, equals(s1));
       }
@@ -851,14 +851,14 @@ void main() {
         global.throwOnError = false;
         final s0 = vList0[0];
         final bd0 = Bytes.utf8(s0);
-        final s1 = bd0.stringFromUtf8();
+        final s1 = bd0.getUtf8();
         log.debug('fbd0: $s1, vList0: $vList0');
         expect(s1, equals(s0));
       }
       for (final sList in goodUTList) {
         final s0 = sList[0];
         final bytes = Bytes.utf8(s0);
-        final s1 = bytes.stringFromUtf8();
+        final s1 = bytes.getUtf8();
         expect(s1, equals(s0));
       }
     });
@@ -868,7 +868,7 @@ void main() {
       final s = vList[0];
       final bytes = Bytes.utf8(s);
       log.debug('UT.fromBytes(bytes):  $bytes');
-      expect(bytes.stringFromUtf8(), equals(s));
+      expect(bytes.getUtf8(), equals(s));
     });
 
     test('UT toUint8List', () {

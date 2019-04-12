@@ -35,14 +35,19 @@ abstract class BytesBuffer {
   set _rIndex(int n);
   int get _wIndex;
 
-  // **** Internal Primitives
-  int get _offset => bytes.offset;
-  int get _start => bytes.offset;
-  int get _length => bytes.length;
 
-  int get _end => _start + bytes.length;
+  /// The offset of _this_ in the underlying [ByteBuffer].
+  int get offset => bytes.offset;
 
-  // **** End Internal Primitives
+  /// The start of _this_ in the underlying [ByteBuffer].
+ // int get start => _start;
+  int get start => bytes.offset;
+
+  /// The length of the [bytes].
+  int get length => bytes.length;
+
+  /// The index of the _end_ of _this_. _Note_: [end] is not a legal index.
+  int get end => start + bytes.length;
 
   /// The underlying [Bytes] for the buffer.
  // Bytes get bytes => _bytes;
@@ -70,22 +75,10 @@ abstract class BytesBuffer {
   // ****  External Getters
 
   /// The maximum [length] of _this_.
-  int get limit => bytes.limit;
+  int get limit => bytes.length;
 
   /// The endianness of _this_.
   Endian get endian => bytes.endian;
-
-  /// The offset of _this_ in the underlying [ByteBuffer].
-  int get offset => _offset;
-
-  /// The offset of [bytes] in the underlying [ByteBuffer].
-  int get start => _start;
-
-  /// The length of the [bytes].
-  int get length => _length;
-
-  /// The index of the _end_ of _this_. _Note_: [end] is not a legal index.
-  int get end => _start + _length;
 
   /// The number of readable bytes in [bytes].
   int get readRemaining;
@@ -111,7 +104,7 @@ abstract class BytesBuffer {
   bool rHasRemaining(int n) => (readIndex + n) <= writeIndex;
 
   /// Returns _true_ if _this_ has [n] writable bytes.
-  bool wHasRemaining(int n) => (writeIndex + n) <= _end;
+  bool wHasRemaining(int n) => (writeIndex + n) <= end;
 
   /// Returns a _view_ of [bytes] containing the bytes from [start] inclusive
   /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.

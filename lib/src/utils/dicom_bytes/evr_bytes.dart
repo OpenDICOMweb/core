@@ -6,11 +6,19 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.dicom_bytes;
+import 'dart:typed_data';
+
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+import 'package:core/src/error.dart';
+import 'package:core/src/vr/vr_base.dart';
+import 'package:core/src/vr/vr_external.dart';
 
 // ignore_for_file: public_member_api_docs
 
 abstract class EvrBytes extends DicomBytes {
+  EvrBytes._(int eLength, Endian endian) : super(eLength, endian);
+
   factory EvrBytes.from(Bytes bytes, int start, int vrIndex, int end) {
     if (isEvrShortVRIndex(vrIndex)) {
       return EvrShortBytes.from(bytes, start, end);
@@ -21,10 +29,8 @@ abstract class EvrBytes extends DicomBytes {
     }
   }
 
-  EvrBytes._(int eLength, Endian endian) : super._(eLength, endian);
-
   EvrBytes._from(Bytes bytes, int start, int end, Endian endian)
-      : super.from(bytes, start, end, endian ?? Endian.host);
+      : super.from(bytes, start, end, endian ?? Endian.little);
 
   factory EvrBytes.view(
       Bytes bytes, int start, int vrIndex, int end, Endian endian) {
@@ -38,7 +44,7 @@ abstract class EvrBytes extends DicomBytes {
   }
 
   EvrBytes._view(Bytes bytes, int offset, int length, Endian endian)
-      : super._view(bytes, offset, length, endian);
+      : super.internalView(bytes, offset, length, endian);
 
   @override
   bool get isEvr => true;
@@ -54,17 +60,20 @@ abstract class EvrBytes extends DicomBytes {
 }
 
 class EvrShortBytes extends EvrBytes {
-  EvrShortBytes(int eLength, [Endian endian]) : super._(eLength, endian);
+  EvrShortBytes(int eLength, [Endian endian = Endian.little])
+      : super._(eLength, endian);
 
-  EvrShortBytes.from(Bytes bytes, [int start = 0, int end, Endian endian])
+  EvrShortBytes.from(Bytes bytes,
+      [int start = 0, int end, Endian endian = Endian.little])
       : super._from(bytes, start, end, endian);
 
-  EvrShortBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
+  EvrShortBytes.view(Bytes bytes,
+      [int start = 0, int end, Endian endian = Endian.little])
       : super._view(bytes, start, end, endian);
 
   /// Returns an [EvrShortBytes] with an empty Value Field.
   factory EvrShortBytes.empty(int code, int vfLength, int vrCode,
-      [Endian endian]) {
+      [Endian endian = Endian.little]) {
     final e = EvrShortBytes(kHeaderLength + vfLength, endian)
       ..evrSetShortHeader(code, vfLength, vrCode);
     return e;
@@ -88,7 +97,7 @@ class EvrShortBytes extends EvrBytes {
   @override
   int get vfLengthField {
     final vlf = getUint16(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
+    assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
 
@@ -106,18 +115,20 @@ class EvrShortBytes extends EvrBytes {
 }
 
 class EvrLongBytes extends EvrBytes {
-  EvrLongBytes(int eLength, [Endian endian]) : super._(eLength, endian);
+  EvrLongBytes(int eLength, [Endian endian = Endian.little])
+      : super._(eLength, endian);
 
-  EvrLongBytes.from(Bytes bytes, [int start = 0, int end, Endian endian])
+  EvrLongBytes.from(Bytes bytes,
+      [int start = 0, int end, Endian endian = Endian.little])
       : super._from(bytes, start, end, endian);
 
-  EvrLongBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
+  EvrLongBytes.view(Bytes bytes,
+      [int start = 0, int end, Endian endian = Endian.little])
       : super._view(bytes, start, end, endian);
 
   /// Returns an [EvrLongBytes] with an empty Value Field.
   factory EvrLongBytes.empty(int code, int vfLength, int vrCode,
-      [Endian endian]) {
-    //assert(vfLength.isEven);
+      [Endian endian = Endian.little]) {
     final e = EvrLongBytes(kHeaderLength + vfLength, endian)
       ..evrSetLongHeader(code, vfLength, vrCode);
     return e;
@@ -125,7 +136,7 @@ class EvrLongBytes extends EvrBytes {
 
   /// Creates an [EvrLongBytes].
   factory EvrLongBytes.fromBytes(int code, Bytes vfBytes, int vrCode,
-      [Endian endian]) {
+      [Endian endian = Endian.little]) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
     final e = EvrLongBytes(kHeaderLength + vfLength, endian)
@@ -142,7 +153,7 @@ class EvrLongBytes extends EvrBytes {
   @override
   int get vfLengthField {
     final vlf = getUint32(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
+    assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
 

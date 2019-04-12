@@ -6,30 +6,35 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.dicom_bytes;
+import 'dart:typed_data';
+
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+import 'package:core/src/vr/vr_base.dart';
+import 'package:core/src/vr/vr_external.dart';
 
 // ignore_for_file: public_member_api_docs
 
 class IvrBytes extends DicomBytes {
-  IvrBytes(int eLength) : super._(eLength, Endian.little);
+  IvrBytes(int eLength) : super(eLength, Endian.little);
 
   IvrBytes.from(Bytes bytes, int start, int end)
       : super.from(bytes, start, end, Endian.little);
 
-  IvrBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
-      : super._view(bytes, start, end, endian);
+  IvrBytes.view(Bytes bytes,
+      [int start = 0, int end, Endian endian = Endian.little])
+      : super.internalView(bytes, start, end, endian);
 
   /// Returns an [IvrBytes] with an empty Value Field.
   factory IvrBytes.empty(
-      int code,
-      int vfLength,
-      int vrCode,
-      ) {
+    int code,
+    int vfLength,
+    int vrCode,
+  ) {
     assert(vfLength.isEven);
     return IvrBytes(kHeaderLength + vfLength)
       ..ivrSetHeader(code, vfLength, vrCode);
   }
-
 
   /// Creates an [IvrBytes].
   factory IvrBytes.makeFromBytes(
@@ -61,7 +66,7 @@ class IvrBytes extends DicomBytes {
   @override
   int get vfLengthField {
     final vlf = getUint32(kVFLengthOffset);
-    assert(_checkVFLengthField(vlf, vfLength));
+    assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
 

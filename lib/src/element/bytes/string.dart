@@ -45,7 +45,7 @@ mixin AsciiMixin {
 
   String get vfString {
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.stringFromAscii(length: length, allowInvalid: allowInvalid);
+    return vfBytes.getAscii(length: length, allowInvalid: allowInvalid);
   }
 }
 
@@ -80,7 +80,7 @@ class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
   static ASbytes fromBytes(DicomBytes bytes, [Ascii _]) {
     final eLength = bytes.length;
     if (eLength != 12 && eLength != 8)
-      log.warn('Invalid Age (AS) "${bytes.stringFromAscii()}"');
+      log.warn('Invalid Age (AS) "${bytes.getAscii()}"');
     return ASbytes(bytes);
   }
 
@@ -123,7 +123,7 @@ class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
   static DAbytes fromBytes(DicomBytes bytes, [Ascii _]) {
     final eLength = bytes.length;
     if (eLength != 16 && eLength != 8)
-      log.debug('Invalid Date (DA) "${bytes.stringFromAscii()}"');
+      log.debug('Invalid Date (DA) "${bytes.getAscii()}"');
     return DAbytes(bytes);
   }
 
@@ -202,7 +202,7 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
 
   @override
   List<Uid> get uids => Uid.parseList(
-      bytes.stringListFromAscii(offset: vfOffset, length: vfLength));
+      bytes.getAsciiList(offset: vfOffset, length: vfLength));
 
   // ignore: prefer_constructors_over_static_methods
   static UIbytes fromBytes(DicomBytes bytes, [Ascii _]) => UIbytes(bytes);
@@ -252,7 +252,7 @@ mixin Utf8Mixin {
     //   final vf = hasPadding ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
     //   return vf.stringFromUtf8(allowInvalid: allowMalformed);
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.stringFromUtf8(length: length, allowInvalid: allowMalformed);
+    return vfBytes.getUtf8(length: length, allowInvalid: allowMalformed);
   }
 }
 
@@ -374,7 +374,7 @@ mixin TextMixin {
 
   String get vfString {
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.stringFromUtf8(length: length, allowInvalid: allowMalformed);
+    return vfBytes.getUtf8(length: length, allowInvalid: allowMalformed);
   }
 
   String get value => vfString;
@@ -450,17 +450,19 @@ class UTbytes extends UT with ByteElement<String>, StringMixin, TextMixin {
   @override
   final DicomBytes bytes;
 
-  UTbytes(this.bytes);
+  UTbytes(this.bytes) {print('UTBytes: $bytes'); }
 
   // ignore: prefer_constructors_over_static_methods
   static UTbytes fromBytes(DicomBytes bytes, [Ascii _]) => UTbytes(bytes);
 
   // ignore: prefer_constructors_over_static_method
   static UTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
+    assert(vList.length <= UT.kMaxVFLength);
     final bytes = _makeLongString(code, vList, kUTCode, isEvr);
     if (bytes == null) return null;
     bytes.writeTextVF(vList);
-    assert(vList.length <= UT.kMaxVFLength);
+    print('list(${vList[0].length}): ${vList[0].codeUnits}');
+    print(' buf(${bytes.length}): ${bytes.buf}');
     return fromBytes(bytes);
   }
 }

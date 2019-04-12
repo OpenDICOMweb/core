@@ -383,11 +383,11 @@ void main() {
         final vList = rsg.getSTList(1, 1);
         final s0 = vList[0];
         final bytes = Bytes.utf8(s0);
-        final s1 = bytes.stringFromUtf8();
+        final s1 = bytes.getUtf8();
         log.debug('s1: $s1');
         expect(s1, equals(s0));
 
-        final s2 = bytes.stringFromUtf8();
+        final s2 = bytes.getUtf8();
         log.debug('s2: $s2');
         expect(s2, equals(s1));
       }
@@ -792,14 +792,14 @@ void main() {
         final vList0 = rsg.getSTList(1, 1);
         final s0 = vList0[0];
         final bytes = Bytes.utf8(s0);
-        final s1 = bytes.stringFromUtf8();
+        final s1 = bytes.getUtf8();
         log.debug('s1: $s1, s0: $s0');
         expect(s1, equals(s0));
       }
       for (final vList1 in goodSTList) {
         final s0 = vList1[0];
         final bytes = Bytes.utf8(s0);
-        final s1 = bytes.stringFromUtf8();
+        final s1 = bytes.getUtf8();
         expect(s1, equals(s0));
       }
     });
@@ -809,7 +809,7 @@ void main() {
       final s0 = vList[0];
       final bytes = Bytes.utf8(s0);
       log.debug('ST.fromBytes(bytes):  $bytes');
-      expect(bytes.stringFromUtf8(), equals(s0));
+      expect(bytes.getUtf8(), equals(s0));
     });
 
     test('ST fromUtf8', () {
@@ -849,9 +849,12 @@ void main() {
       final toB4 = Bytes.utf8FromList(null, kMaxShortVF);
       expect(toB4, isNull);
 
+/* No longer throws
       global.throwOnError = true;
       expect(() => Bytes.utf8FromList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+*/
+
     });
 
     test('ST isValidBytesArgs', () {

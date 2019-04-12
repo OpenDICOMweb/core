@@ -32,8 +32,8 @@ void main(List<String> args) {
       for (var k = 0; k < length; k++) uint8List[k] = 1;
     }
     end = timer.elapsedMicroseconds;
-
-    total0 += end - start;
+    final time0 = end - start;
+    total0 += time0;
 
     // ByteData
     final bd = ByteData(length);
@@ -42,8 +42,8 @@ void main(List<String> args) {
       for (var k = 0; k < length; k++) bd.setUint8(k, 1);
     }
     end = timer.elapsedMicroseconds;
-
-    total1 += end - start;
+    final time1 = end - start;
+    total1 += time1;
 
     // Bytes[]
     final bytes = Bytes(length);
@@ -52,25 +52,27 @@ void main(List<String> args) {
       for (var k = 0; k < length; k++) bytes[k] = 1;
     }
     end = timer.elapsedMicroseconds;
+    final time2 = end - start;
+    total2 += time2;
 
-    total2 += end - start;
-
-    // Bytes.getUint8()
+    // Bytes.setUint8
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) {
       for (var k = 0; k < length; k++) bytes.setUint8(k, 1);
     }
     end = timer.elapsedMicroseconds;
+    final time3 = end - start;
+    total3 += time3;
 
-    total3 += end - start;
-
-
-    // print('$i $length uint8: $total0 bd: $total1 ratio ${total1 / total0}');
+    print('$i length $length uint8 $time0 bd $time1 '
+        'bytes $time2 bytes* $time3');
+    print('  ratio ${time1 / time0} ${time2 / time0} ${time3 / time0}');
 
     length *= 2;
   }
+
   final total = timer.elapsedMicroseconds;
-  print('store then read: $total0 bd $total1 bytes[] $total2 bytes* $total3');
-  print('ratio ${total1 / total0} ${total2 / total0} ${total3 / total0}');
+  print('store then read: $total0 bd $total1 bytes $total2 bytes* $total3');
+  print('  ratio ${total1 / total0} ${total2 / total0} ${total3 / total0}');
   print('total elapsed us: $total');
 }

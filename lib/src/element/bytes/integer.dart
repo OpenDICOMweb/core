@@ -63,7 +63,9 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
   final DicomBytes bytes;
 
   /// Returns a new [OBbytes] [Element].
-  OBbytes(this.bytes);
+  OBbytes(this.bytes) {
+    print('OBBytes: $bytes');
+  }
 
   /// Returns a new [OBbytes] [Element].
   // ignore: prefer_constructors_over_static_methods

@@ -31,12 +31,12 @@ mixin WriteBufferMixin {
     _wIndex = n;
   }
 
-  ByteBuffer get buffer => bytes.buffer;
+  ByteBuffer get buffer => bytes.buf.buffer;
 
   int get limit => bytes.limit;
 
   ByteData asByteData([int offset, int length]) =>
-      bytes.buffer.asByteData(offset, length);
+      bytes.buf.buffer.asByteData(offset, length);
 
 
   // **** WriteBuffer specific Getters and Methods
@@ -258,7 +258,7 @@ mixin WriteBufferMixin {
   bool _ensureRemaining(int remaining) => _ensureCapacity(_wIndex + remaining);
 
   /// Ensures that [bytes] is at least [capacity] long, and grows
-  /// the buf if necessary, preserving existing data.
+  /// the buffer if necessary, preserving existing data.
   bool ensureCapacity(int capacity) => _ensureCapacity(capacity);
 
   bool _ensureCapacity(int capacity) {
@@ -266,7 +266,8 @@ mixin WriteBufferMixin {
     return false;
   }
 
-  /// Grow the buf if the _wIndex is at, or beyond, the end of the current buf.
+  /// Grow the buffer if the _wIndex is at, or beyond,
+  /// the end of the current buf.
   bool maybeGrow(int size) {
     if (_wIndex + size < length) return false;
     return bytes.grow(_wIndex + size);

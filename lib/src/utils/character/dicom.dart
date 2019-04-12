@@ -43,13 +43,16 @@ bool isDcmStringCharWithEscape(int c, {bool isEscapeAllowed = false}) =>
 
 /// Returns _true_ if [c] is a DICOM Text Character. Used for VRs of LT,
 /// ST, UR, and UT. Backslash (\) is allowed in these [String]s.
-bool isDcmTextChar(int c) =>
-    _isDcrChar(c) ||
-    c == kLinefeed ||
-    c == kReturn ||
-    c == kFormfeed ||
-    c == kHTab;
-
+bool isDcmTextChar(int c) {
+  final v = _isDcrChar(c) ||
+      c == kLinefeed ||
+      c == kReturn ||
+      c == kFormfeed ||
+      c == kHTab;
+  if (!v)
+    print('bad char($c) ${String.fromCharCode(c)}');
+  return v;
+}
 int checkDcmTextChar(int c) => (isDcmTextChar(c)) ? c : null;
 
 /// Returns _true_ if c is legal in an AE Title; otherwise, _false_.

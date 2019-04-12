@@ -11,56 +11,43 @@ import 'dart:typed_data';
 
 void main(List<String> args) {
   const loops = 12;
-  const repetitions = 1024 * 8;
+  const repetitions = 1024 * 16;
 
   int start;
   int end;
   var total0 = 0;
   var total1 = 0;
+  int v;
 
   var length = 4;
   final timer = Stopwatch()..start();
 
   for (var i = 0; i < loops; i++) {
-    // Initialization
+    // Uint8List
     final uint8List = Uint8List(length);
-    for (var k = 0; k < length; k++) uint8List[k] = k % 255;
-    assert(uint8List.length == length, true);
-
-    final bd = ByteData(length);
-    for (var k = 0; k < length; k++) bd.setUint8(k, k % 255);
-    assert(bd.lengthInBytes == length, true);
-    // Initialization
-
-    // Test
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) {
-        final v = k % 255;
-        assert(uint8List[k] == v);
-      }
+      for (var k = 0; k < length; k++) v = uint8List[k];
     }
     end = timer.elapsedMicroseconds;
-
     final time0 = end - start;
     total0 += time0;
 
+    // ByteData
+    final bd = ByteData(length);
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) {
-        final v = k % 255;
-        assert(bd.getUint8(k) == v);
-      }
+      for (var k = 0; k < length; k++) v = bd.getUint8(k);
     }
     end = timer.elapsedMicroseconds;
     assert(bd.lengthInBytes == length, true);
-
     final time1 = end - start;
     total1 += time1;
- //   print('$i $length uint8: $time0 bd0: $time1 ratio ${time1 / time0}');
 
+    print('$i length $length uint8 $time0 bd $time1 ratio ${time1 / time0}');
+
+    assert(v == 0);
     length *= 2;
   }
-
-  print('read uint: $total0 bd0: $total1 ratio ${total1 / total0}');
+  print('read uint8 $total0 bd $total1 ratio ${total1 / total0}');
 }

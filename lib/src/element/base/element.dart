@@ -369,10 +369,10 @@ abstract class Element<V> extends ListBase<V> {
       (checkValues(values)) ? Bytes.typedDataView(typedData) : null;
 
   /// Converts [vfBytes] to an ASCII [String] and returns it.
-  String get vfBytesAsAscii => vfBytes.stringFromAscii();
+  String get vfBytesAsAscii => vfBytes.getAscii();
 
   /// Converts [vfBytes] to a [List<String>] of ASCII [String]s and returns it.
-  Iterable<String> get vfBytesAsAsciiList => vfBytes.stringListFromAscii();
+  Iterable<String> get vfBytesAsAsciiList => vfBytes.getAsciiList();
 
   /// Converts [vfBytes] to a UTF8 [String] and returns it.
   String get vfBytesAsUtf8 => utf8.decode(vfBytes, allowMalformed: true);

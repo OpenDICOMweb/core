@@ -7,4 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 export 'package:core/src/utils/bytes/bytes.dart';
+export 'package:core/src/utils/bytes/bytes_mixin.dart';
 export 'package:core/src/utils/bytes/constants.dart';
+export 'package:core/src/utils/bytes/growable_bytes.dart';

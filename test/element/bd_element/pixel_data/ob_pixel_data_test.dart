@@ -16,14 +16,14 @@ RNG rng = RNG(1);
 void main() {
   Server.initialize(name: 'bd_element/pixel_data', level: Level.info);
 
-  group('OBbytes', () {
+  group('OBbytesPixelData', () {
     test('OBbytes from VM.k1', () {
-      for (var i = 1; i < 10; i++) {
-        final vList0 = rng.uint8List(1, i);
+      for (var i = 0; i < 20; i += 2) {
+        // Only generate even length lists so Value Field will be correct
+        final vList0 = rng.uint8List(i, i);
         final bytes = Bytes.fromList(vList0);
         global.throwOnError = false;
         final e0 = OBbytes.fromValues(kPixelData, vList0);
-        //final e0 = OBbytesPixelData(bytes);
         log.debug('e0: $e0');
         const ts = TransferSyntax.kExplicitVRLittleEndian;
         final e1 = OBbytesPixelData.fromBytes(e0.bytes, ts);

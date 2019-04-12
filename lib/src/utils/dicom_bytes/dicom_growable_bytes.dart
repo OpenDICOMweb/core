@@ -6,13 +6,15 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.dicom_bytes;
+import 'dart:typed_data';
+
+import 'package:core/src/utils/bytes.dart';
 
 // ignore_for_file: public_member_api_docs
 
-/// A growable [DicomBytes].
+/// A growable DicomBytes.
 class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
-  /// Creates a growable [DicomBytes].
+  /// Creates a growable DicomBytes.
   GrowableDicomBytes([int length, Endian endian, int limit = kDefaultLimit])
       : super(length, endian, limit);
 
@@ -20,7 +22,7 @@ class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
   GrowableDicomBytes._(int length, Endian endian, int limit)
       : super(length, endian, limit);
 
-  /// Creates a growable [DicomBytes] from [bytes].
+  /// Creates a growable DicomBytes from [bytes].
   factory GrowableDicomBytes.from(Bytes bytes,
           [int offset = 0,
           int length,
@@ -32,31 +34,34 @@ class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
       [int limit = kDefaultLimit])
       : super.from(bytes, offset, length, endian, limit);
 
-  /// Creates a growable [DicomBytes] from a view of [td].
+  /// Creates a growable DicomBytes from a view of [td].
   GrowableDicomBytes.typedDataView(TypedData td,
-      [int offset = 0, int lengthInBytes, Endian endian, int limit = k1GB])
+      [int offset = 0,
+      int lengthInBytes,
+      Endian endian,
+      int limit = 1024 * 1024])
       : super.typedDataView(td, offset, lengthInBytes, endian, limit);
 }
 
 mixin DicomWriterMixin {
-  ByteData _bd;
+  ByteData bd;
 // **** End of Interface
 
   /// Returns the Tag Code from [Bytes].
   void setCode(int code) {
-    _bd..setUint16(0, code >> 16)..setUint16(2, code & 0xFFFF);
+    bd..setUint16(0, code >> 16)..setUint16(2, code & 0xFFFF);
   }
 
   void setVRCode(int vrCode) {
-    _bd..setUint8(4, vrCode >> 8)..setUint8(5, vrCode & 0xFF);
+    bd..setUint8(4, vrCode >> 8)..setUint8(5, vrCode & 0xFF);
   }
 
-  void setShortVLF(int vlf) => _bd.setUint16(6, vlf);
-  void setLongVLF(int vlf) => _bd.setUint32(8, vlf);
+  void setShortVLF(int vlf) => bd.setUint16(6, vlf);
+  void setLongVLF(int vlf) => bd.setUint32(8, vlf);
 
   /// Write a short EVR header.
   void evrSetShortHeader(int code, int vrCode, int vlf) {
-    _bd
+    bd
       ..setUint16(0, code >> 16)
       ..setUint16(2, code & 0xFFFF)
       ..setUint16(4, vrCode)
@@ -65,7 +70,7 @@ mixin DicomWriterMixin {
 
   /// Write a short EVR header.
   void evrSetLongHeader(int code, int vrCode, int vlf) {
-    _bd
+    bd
       ..setUint16(0, code >> 16)
       ..setUint16(2, code & 0xFFFF)
       ..setUint16(4, vrCode)
@@ -75,9 +80,11 @@ mixin DicomWriterMixin {
 
   /// Write a short EVR header.
   void ivrSetHeader(int offset, int code, int vlf) {
-    _bd
+    bd
       ..setUint16(offset, code >> 16)
       ..setUint16(2, code & 0xFFFF)
       ..setUint32(4, vlf);
   }
+
+
 }

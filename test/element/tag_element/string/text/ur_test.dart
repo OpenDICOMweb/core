@@ -348,11 +348,11 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getURList(1, 1);
         final bytes = Bytes.asciiFromList(vList1);
-        final dbTxt0 = bytes.stringListFromUtf8();
+        final dbTxt0 = bytes.getUtf8List();
         log.debug('dbTxt0: $dbTxt0');
         expect(dbTxt0, equals(vList1));
 
-        final dbTxt1 = bytes.stringListFromUtf8();
+        final dbTxt1 = bytes.getUtf8List();
         log.debug('dbTxt1: $dbTxt1');
         expect(dbTxt1, equals(vList1));
       }
@@ -734,8 +734,8 @@ void main() {
       final vList1 = rsg.getURList(1, 1);
       final bytes = Bytes.asciiFromList(vList1);
       log.debug('bytes.stringListFromAsciiList(): '
-          '${bytes.stringListFromAscii()}, bytes: $bytes');
-      expect(bytes.stringListFromAscii(), equals(vList1));
+          '${bytes.getAsciiList()}, bytes: $bytes');
+      expect(bytes.getAsciiList(), equals(vList1));
     });
 
     test('UR Bytes.fromAsciiList', () {
@@ -841,13 +841,13 @@ void main() {
         final vList0 = rsg.getURList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.asciiFromList(vList0);
-        final fbd0 = bd0.stringListFromAscii();
+        final fbd0 = bd0.getAsciiList();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (final s in goodURList) {
         final bd0 = Bytes.asciiFromList(s);
-        final fbd0 = bd0.stringListFromAscii();
+        final fbd0 = bd0.getAsciiList();
         expect(fbd0, equals(s));
       }
     });

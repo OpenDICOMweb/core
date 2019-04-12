@@ -832,7 +832,7 @@ void main() {
       final vList1 = rsg.getLOList(1, 1);
       final bytes = Bytes.utf8FromList(vList1);
       log.debug('LO.fromBytes(bytes):  $bytes');
-      expect(bytes.stringListFromUtf8(), equals(vList1));
+      expect(bytes.getUtf8List(), equals(vList1));
     });
 
     test('LO toUint8List', () {
@@ -907,13 +907,13 @@ void main() {
         final vList0 = rsg.getLOList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.utf8FromList(vList0);
-        final fbd0 = bd0.stringListFromUtf8();
+        final fbd0 = bd0.getUtf8List();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (final s in goodLOList) {
         final bd0 = Bytes.utf8FromList(s);
-        final fbd0 = bd0.stringListFromUtf8();
+        final fbd0 = bd0.getUtf8List();
         expect(fbd0, equals(s));
       }
     });
@@ -945,9 +945,12 @@ void main() {
       final toB4 = Bytes.utf8FromList(null, kMaxShortVF);
       expect(toB4, isNull);
 
+/* No longer throws
       global.throwOnError = true;
       expect(() => Bytes.utf8FromList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+*/
+
     });
 
     test('LO fromValueField', () {

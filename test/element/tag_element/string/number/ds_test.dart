@@ -1179,10 +1179,10 @@ void main() {
       //  system.level = Level.info;;
       final vList0 = rsg.getDSList(1, 1);
       final bytes = Bytes.asciiFromList(vList0);
-      final vList1 = bytes.stringListFromAscii();
+      final vList1 = bytes.getAsciiList();
       log.debug('DS.decodeBinaryVF(bytes): $vList1, '
           'bytes: $bytes');
-      expect(bytes.stringListFromAscii(), equals(vList0));
+      expect(bytes.getAsciiList(), equals(vList0));
     });
 
     test('DS toBytes', () {
@@ -1388,16 +1388,16 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getDSList(1, i);
         final bytes = Bytes.asciiFromList(vList1);
-        final dbStr0 = bytes.stringListFromAscii();
+        final dbStr0 = bytes.getAsciiList();
         log.debug('dbStr0: $dbStr0');
         expect(dbStr0, vList1);
 
-        final dbStr1 = bytes.stringListFromUtf8();
+        final dbStr1 = bytes.getUtf8List();
         log.debug('dbStr1: $dbStr1');
         expect(dbStr1, vList1);
       }
       final bytes = Bytes.asciiFromList([]);
-      expect(bytes.stringListFromAscii(), <String>[]);
+      expect(bytes.getAsciiList(), <String>[]);
     });
 
     test('DS toByteData', () {
@@ -1427,13 +1427,13 @@ void main() {
         final vList0 = rsg.getDSList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.asciiFromList(vList0);
-        final fbd0 = bd0.stringListFromAscii();
+        final fbd0 = bd0.getAsciiList();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (final s in goodDSList) {
         final bd0 = Bytes.asciiFromList(s);
-        final fbd0 = bd0.stringListFromAscii();
+        final fbd0 = bd0.getAsciiList();
         expect(fbd0, equals(s));
       }
     });
@@ -1465,9 +1465,12 @@ void main() {
       final toB4 = Bytes.asciiFromList(null);
       expect(toB4, isNull);
 
+/* No longer throws
       global.throwOnError = true;
       expect(() => Bytes.asciiFromList(null),
           throwsA(const TypeMatcher<GeneralError>()));
+*/
+
     });
 
     test('DS isValidBytesArgs', () {

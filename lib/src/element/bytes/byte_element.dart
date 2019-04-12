@@ -172,10 +172,11 @@ mixin ByteElement<V> {
 
 DicomBytes _makeShort<V>(
     int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize) {
-  final vfLength = vList.length * eSize;
+  var vlf = vList.length * eSize;
+  if (vlf.isOdd) vlf++;
   return isEvr
-      ? EvrShortBytes.empty(code, vfLength, vrCode)
-      : IvrBytes.empty(code, vfLength, vrCode);
+      ? EvrShortBytes.empty(code, vlf, vrCode)
+      : IvrBytes.empty(code, vlf, vrCode);
 }
 
 DicomBytes _makeShortString(
@@ -189,15 +190,17 @@ DicomBytes _makeShortString(
 }
 
 DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
-  final vfLength = vList.length * eSize;
+  var vlf = vList.length * eSize;
+  if (vlf.isOdd) vlf++;
   return isEvr
-      ? EvrLongBytes.empty(code, vfLength, vrCode)
-      : IvrBytes.empty(code, vfLength, vrCode);
+      ? EvrLongBytes.empty(code, vlf, vrCode)
+      : IvrBytes.empty(code, vlf, vrCode);
 }
 
 DicomBytes _makeLongString(
     int code, List<String> sList, int vrCode, bool isEvr) {
   final vlf = stringListLength(sList, pad: true);
+  print('vlf: $vlf');
   return isEvr
       ? EvrLongBytes.empty(code, vlf, vrCode)
       : IvrBytes.empty(code, vlf, vrCode);

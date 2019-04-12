@@ -43,7 +43,7 @@ abstract class Utf8String extends StringBase {
   Uint8List get bulkdata => typedData;
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.stringListFromUtf8(allowInvalid: global.allowMalformedUtf8);
+      bytes.getUtf8List(allowInvalid: global.allowMalformedUtf8);
 
   Utf8String append(String s) => update(values.append(s, maxValueLength));
 
@@ -59,7 +59,7 @@ abstract class Utf8String extends StringBase {
       {bool isAscii = false}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.stringListFromUtf8();
+    if (vf is Bytes) return vf.getUtf8List();
     if (vf is Uint8List)
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);

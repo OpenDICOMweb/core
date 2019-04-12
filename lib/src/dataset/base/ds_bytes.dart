@@ -67,7 +67,7 @@ abstract class DSBytes {
 
   /// Returns the Value Field as a [Uint8List].
   Uint8List get vfAsUint8List =>
-      bytes.buffer.asUint8List(bytes.offset, bytes.length);
+      bytes.buf.buffer.asUint8List(bytes.offset, bytes.length);
 
   // **** Internal Stuff ****
 
@@ -138,7 +138,7 @@ class RDSBytes extends DSBytes {
 
   @override
   Uint8List get vfAsUint8List =>
-      bytes.buffer.asUint8List(bytes.offset + kHeaderSize, bytes.length);
+      bytes.buf.buffer.asUint8List(bytes.offset + kHeaderSize, bytes.length);
 
   @override
   String toString() {
@@ -206,7 +206,8 @@ class IDSBytes extends DSBytes {
   int get trailerLength => hasULength ? kTrailerSize : 0;
 
   @override
-  Bytes get vfBytes => bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
+  Bytes get vfBytes =>
+      bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
 
   static const int kStartDelimiterOffset = 0;
   static const int kVFLengthFieldOffset = 4;

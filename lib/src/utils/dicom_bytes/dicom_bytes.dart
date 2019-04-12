@@ -6,8 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-library odw.sdk.utils.dicom_bytes;
-
 import 'dart:typed_data';
 
 import 'package:core/src/global.dart';
@@ -16,38 +14,42 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/dicom.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string.dart';
-import 'package:core/src/vr.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
-
-part 'package:core/src/utils/dicom_bytes/dicom_growable_bytes.dart';
-part 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
-part 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
+import 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
+import 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
+import 'package:core/src/vr.dart';
 
 /// A abstract subclass of [Bytes] that supports Explicit Value
 /// Representations (EVR) and Implicit Value Representations (IVR).
 abstract class DicomBytes extends Bytes with DicomBytesMixin {
+  /// Creates an empty [DicomBytes].
+  DicomBytes(int length, Endian endian) : super(length, endian);
+
   /// Creates a [DicomBytes] view of [bytes].
   factory DicomBytes.view(Bytes bytes, int vrIndex,
-          {bool isEvr = true, int offset = 0, int end, Endian endian}) =>
+          {bool isEvr = true,
+          int offset = 0,
+          int end,
+          Endian endian = Endian.little}) =>
       (!isEvr)
           ? IvrBytes.view(bytes, offset, end, endian)
           : (isEvrLongVR(vrIndex))
               ? EvrLongBytes.view(bytes, offset, end, endian)
               : EvrShortBytes.view(bytes, offset, end, endian);
 
-  DicomBytes._(int length, Endian endian) : super(length, endian);
-
   /// Creates a [DicomBytes] from a copy of [bytes].
   DicomBytes.from(Bytes bytes, int start, int end, Endian endian)
       : super.from(bytes, start, end, endian);
 
-  DicomBytes._view(Bytes bytes, [int offset = 0, int end, Endian endian])
+  /// __For internal use only__
+  DicomBytes.internalView(Bytes bytes,
+      [int offset = 0, int end, Endian endian = Endian.little])
       : super.view(bytes, offset, end, endian);
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
-  /// region and [endian]ness.  [endian] defaults to [Endian.host].
+  /// region and [endian]ness.  [endian] defaults to [Endian.little].
   DicomBytes.typedDataView(TypedData td,
-      [int offsetInBytes = 0, int lengthInBytes, Endian endian])
+      [int offsetInBytes = 0, int lengthInBytes, Endian endian = Endian.little])
       : super.typedDataView(td, offsetInBytes, lengthInBytes, endian);
 
   @override
@@ -56,6 +58,22 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
     return '$runtimeType ${dcm(code)} $vrId($vrIndex, ${hex16(vrCode)}) '
         'vlf($vlf, ${hex32(vlf)}) vfl($vfLength) ${super.toString()}';
   }
+
+/*
+  /// UTF-8 encodes the specified range of [s] and then writes the
+  /// code units to _this_ starting at [start].
+  /// _Note_: UTF8 {String]s are always padded with the S
+  /// pace (kSpace) character.
+  @override
+  int setUtf8(int start, String s, [int padChar = kSpace]) {
+    final offset = super.setUtf8(start, s, padChar);
+    if (offset.isOdd && padChar != null && buf.length > offset) {
+      setUint8(offset, padChar);
+      return offset + 1;
+    }
+    return offset;
+  }
+*/
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].
   /// If [s].length is odd, [padChar] is appended to [s] before
@@ -104,7 +122,7 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
 }
 
 /// Checks the Value Field length.
-bool _checkVFLengthField(int vfLengthField, int vfLength) {
+bool checkVFLengthField(int vfLengthField, int vfLength) {
   if (vfLengthField != vfLength && vfLengthField != kUndefinedLength) {
     log.warn('** vfLengthField($vfLengthField) != vfLength($vfLength)');
     if (vfLengthField == vfLength + 1) {

@@ -12,7 +12,7 @@ import 'package:core/core.dart';
 
 void main(List<String> args) {
   const loops = 12;
-  const repetitions = 1024 * 16;
+  const repetitions = 1024 * 8;
 
   int start;
   int end;
@@ -27,57 +27,67 @@ void main(List<String> args) {
 
   for (var i = 0; i < loops; i++) {
     // Uint8List
-    final uint8List = Uint8List(length);
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) v = uint8List[k];
+      final uint8List = Uint8List(length);
+      for (var k = 0; k < length; k++) {
+        uint8List[k] = 1;
+        v = uint8List[k];
+      }
     }
     end = timer.elapsedMicroseconds;
-
     final time0 = end - start;
     total0 += time0;
 
     // ByteData
-    final bd = ByteData(length);
+
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) v = bd.getUint8(k);
+      final bd = ByteData(length);
+      for (var k = 0; k < length; k++) {
+        bd.setUint8(k, 1);
+        v = bd.getUint8(k);
+      }
     }
     end = timer.elapsedMicroseconds;
-    assert(bd.lengthInBytes == length, true);
-
     final time1 = end - start;
     total1 += time1;
 
     // Bytes[]
-    final bytes = Bytes(length);
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) v = bytes[k];
+      final bytes = Bytes(length);
+      for (var k = 0; k < length; k++) {
+        bytes[k] = 1;
+        v = bytes[k];
+      }
     }
     end = timer.elapsedMicroseconds;
-    assert(bd.lengthInBytes == length, true);
-
     final time2 = end - start;
     total2 += time2;
 
-    // Bytes.getUint8()
+    // Bytes bd
     start = timer.elapsedMicroseconds;
     for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) v = bytes.getUint8(k);
+      final bytes = Bytes(length);
+      for (var k = 0; k < length; k++) {
+        bytes.setUint8(k, 1);
+        v = bytes.getUint8(k);
+      }
     }
     end = timer.elapsedMicroseconds;
-    assert(bd.lengthInBytes == length, true);
-
     final time3 = end - start;
     total3 += time3;
 
-    print('$i $length uint8: $time0 bd: $time1 bytes[] $time2 bytes.get()');
-    print('ratios: ${time1 / time0} ${time2 / time0} ${time3 / time0}');
+    assert(v == 1);
 
-    assert(v == 0);
+    print('$i\t$length\tuint8\t$time0\tbd $time1'
+        '\tbytes[]\t$time2\tbytes*\t$time3'
+        '\tratio ${time1 / time0}\t${time2 / time0}\t${time3 / time0}');
+
     length *= 2;
   }
-  print('read uint: $total0 bd: $total1 bytes[] $total2 bytes*: $total3');
-  print('ratio: ${total1 / total0} ${total2 / total0} ${total3 / total0}');
+  print('store then read\n\t\tuint8\t$total0\tbd0 $total1'
+      '\tbytes[]\t$total2\tbytes*\t$total3'
+      '\tratio\t${total1 / total0}\t${total2 / total0}\t${total3 / total0}');
 }

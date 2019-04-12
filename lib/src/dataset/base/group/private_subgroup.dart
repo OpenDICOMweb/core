@@ -82,7 +82,7 @@ class PrivateSubgroup {
       var tag = pc.tag;
       if (tag is! PCTagKnown) {
         final String token =
-            (pc is ByteElement) ? pc.vfBytes.stringFromUtf8() : pc.value;
+            (pc is ByteElement) ? pc.vfBytes.getUtf8() : pc.value;
         final tagNew = PCTag.lookupByToken(pcCode, vrIndex, token);
         if (tagNew is PCTagKnown) tag = tagNew;
       }

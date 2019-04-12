@@ -1064,7 +1064,7 @@ void main() {
       final vList1 = rsg.getISList(1, 1);
       final bytes = Bytes.asciiFromList(vList1);
       log.debug('fromAsciiList): $bytes');
-      expect(bytes.stringListFromAscii(), equals(vList1));
+      expect(bytes.getAsciiList(), equals(vList1));
     });
 
     test('Bytes.fromAsciiList', () {
@@ -1239,13 +1239,13 @@ void main() {
         final vList0 = rsg.getISList(1, 1);
         global.throwOnError = false;
         final bd0 = Bytes.asciiFromList(vList0);
-        final fbd0 = bd0.stringListFromAscii();
+        final fbd0 = bd0.getAsciiList();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (final s in goodISList) {
         final bd0 = Bytes.asciiFromList(s);
-        final fbd0 = bd0.stringListFromAscii();
+        final fbd0 = bd0.getAsciiList();
         expect(fbd0, equals(s));
       }
     });
@@ -1277,9 +1277,12 @@ void main() {
       final toB4 = Bytes.asciiFromList(null);
       expect(toB4, isNull);
 
+/* No longer throws
       global.throwOnError = true;
       expect(() => Bytes.asciiFromList(null),
           throwsA(const TypeMatcher<GeneralError>()));
+*/
+
     });
 
     test('IS isValidBytesArgs', () {

@@ -36,11 +36,11 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 1);
         final bytes = Bytes.utf8FromList(vList1);
-        final dbTxt0 = bytes.stringListFromUtf8();
+        final dbTxt0 = bytes.getUtf8List();
         log.debug('dbTxt0: $dbTxt0');
         expect(dbTxt0, equals(vList1));
 
-        final dbTxt1 = bytes.stringListFromUtf8();
+        final dbTxt1 = bytes.getUtf8List();
         log.debug('dbTxt1: $dbTxt1');
         expect(dbTxt1, equals(vList1));
       }
@@ -485,7 +485,7 @@ void main() {
       assert(vList1.length == 1);
       final bytes = Bytes.ascii(vList1[0]);
       log.debug('fromAscii: $bytes');
-      final s = bytes.stringFromAscii();
+      final s = bytes.getAscii();
       expect([s], equals(vList1));
     });
 
@@ -572,7 +572,7 @@ void main() {
       final vList1 = rsg.getLTList(1, 1);
       final bytes = Bytes.utf8(vList1[0]);
       log.debug('LT.fromBytes(bytes):  $bytes');
-      final s = bytes.stringFromUtf8();
+      final s = bytes.getUtf8();
       expect([s], equals(vList1));
     });
 
@@ -845,14 +845,14 @@ void main() {
         final s0 = vList0[0];
         global.throwOnError = false;
         final bytes0 = Bytes.utf8(s0);
-        final s1 = bytes0.stringFromUtf8();
+        final s1 = bytes0.getUtf8();
         log.debug('s1: $s1, s0: $s0');
         expect(s1, equals(s0));
       }
       for (final vList1 in goodLTList) {
         final s0 = vList1[0];
         final bytes1 = Bytes.utf8(s0);
-        final s1 = bytes1.stringFromUtf8();
+        final s1 = bytes1.getUtf8();
         expect(s1, equals(s0));
       }
     });
@@ -883,9 +883,12 @@ void main() {
       final toB4 = Bytes.utf8FromList(null, kMaxShortVF);
       expect(toB4, isNull);
 
+/* No longer throws
       global.throwOnError = true;
       expect(() => Bytes.utf8FromList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+*/
+
     });
 
     test('LT fromValueField', () {

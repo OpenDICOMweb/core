@@ -48,7 +48,7 @@ class WriteBuffer with WriteBufferMixin {
       : _rIndex = offset ?? 0,
         _wIndex = lengthInBytes ?? td.lengthInBytes,
         bytes = GrowableBytes.typedDataView(td, offset ?? 0,
-            lengthInBytes ?? td.lengthInBytes, endian ?? Endian.host, limit);
+            lengthInBytes ?? td.lengthInBytes, endian ?? Endian.little, limit);
 
   /// Returns the current read index.
   int get rIndex => _rIndex;
