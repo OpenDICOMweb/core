@@ -59,22 +59,6 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
         'vlf($vlf, ${hex32(vlf)}) vfl($vfLength) ${super.toString()}';
   }
 
-/*
-  /// UTF-8 encodes the specified range of [s] and then writes the
-  /// code units to _this_ starting at [start].
-  /// _Note_: UTF8 {String]s are always padded with the S
-  /// pace (kSpace) character.
-  @override
-  int setUtf8(int start, String s, [int padChar = kSpace]) {
-    final offset = super.setUtf8(start, s, padChar);
-    if (offset.isOdd && padChar != null && buf.length > offset) {
-      setUint8(offset, padChar);
-      return offset + 1;
-    }
-    return offset;
-  }
-*/
-
   /// Returns a [Bytes] containing the ASCII encoding of [s].
   /// If [s].length is odd, [padChar] is appended to [s] before
   /// encoding it.

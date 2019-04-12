@@ -18,6 +18,7 @@ import 'package:core/src/utils/dicom_bytes.dart';
 
 import 'package:core/src/vr.dart';
 
+// TODO: decide if these parts are needed. Would mixins be better.
 part 'read_buffer.dart';
 part 'read_buffer_mixin.dart';
 part 'write_buffer.dart';
@@ -94,9 +95,6 @@ abstract class BytesBuffer {
 
   /// The maximum number of writable bytes in [bytes].
   int get writeRemainingMax;
-
-  /// Returns the number of writeable bytes left in _this_.
-//  int get wRemaining => _wRemaining;
 
   // ****  End of External Getters
 

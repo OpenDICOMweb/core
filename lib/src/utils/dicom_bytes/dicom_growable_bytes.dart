@@ -10,8 +10,6 @@ import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes.dart';
 
-// ignore_for_file: public_member_api_docs
-
 /// A growable DicomBytes.
 class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
   /// Creates a growable DicomBytes.

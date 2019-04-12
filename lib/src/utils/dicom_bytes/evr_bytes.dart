@@ -14,7 +14,6 @@ import 'package:core/src/error.dart';
 import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
-// ignore_for_file: public_member_api_docs
 
 abstract class EvrBytes extends DicomBytes {
   EvrBytes._(int eLength, Endian endian) : super(eLength, endian);

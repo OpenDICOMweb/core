@@ -17,6 +17,7 @@ class DicomReadBuffer extends ReadBufferBase with ReadBufferMixin {
   /// The [Bytes] being read.
   ///
   /// _Note_: This MUST NOT be a [DicomBytes].
+  // Urgent why not? explain.
   @override
   final Bytes bytes;
   @override

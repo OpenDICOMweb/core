@@ -13,8 +13,6 @@ import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
-// ignore_for_file: public_member_api_docs
-
 class IvrBytes extends DicomBytes {
   IvrBytes(int eLength) : super(eLength, Endian.little);
 

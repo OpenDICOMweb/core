@@ -17,8 +17,6 @@ import 'package:core/src/utils/character/charset.dart';
 import 'package:core/src/utils/dicom.dart';
 import 'package:core/src/utils/primitives.dart';
 
-// ignore_for_file: public_member_api_docs
-
 mixin DicomBytesMixin {
   Uint8List get buf;
   bool get isEvr;
@@ -54,6 +52,10 @@ mixin DicomBytesMixin {
   int setFloat64List(int start, List<double> list,
       [int offset = 0, int length]);
 
+  Bytes asBytes([int offset = 0, int length, Endian endian = Endian.little]);
+
+  // **** End of Interface
+
   Uint8List _removePadding(Uint8List list) {
     if (list.isEmpty) return list;
     final lastIndex = list.length - 1;
@@ -63,10 +65,10 @@ mixin DicomBytesMixin {
         : list;
   }
 
-  String _getString(int offset, int length, bool allowInvalid, bool removeNull,
+  String _getString(int offset, int length, bool allowInvalid, bool noPadding,
       Charset charset) {
     var list = asUint8List(offset, length ?? buf.length);
-    list = removeNull ? _removePadding(list) : list;
+    list = noPadding ? _removePadding(list) : list;
     return list.isEmpty ? '' : charset.decode(list, allowInvalid: true);
   }
 
@@ -76,9 +78,9 @@ mixin DicomBytesMixin {
           int length,
           bool allowInvalid = true,
           Charset charset = utf8,
-          bool removeNull = false}) =>
+          bool noPadding = false}) =>
       _getString(
-          offset, length ?? buf.length, allowInvalid, removeNull, charset);
+          offset, length ?? buf.length, allowInvalid, noPadding, charset);
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
@@ -97,17 +99,15 @@ mixin DicomBytesMixin {
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
-  // TODO: rewrite in terms of getString
   /// Returns a [String] containing a _ASCII_ decoding of the specified
   /// region of _this_. Also allows the removal of a padding character.
   String getAscii(
           {int offset = 0,
           int length,
           bool allowInvalid = true,
-          bool removeNull = false}) =>
-      _getString(offset, length, allowInvalid, removeNull, ascii);
+          bool noPadding = false}) =>
+      _getString(offset, length, allowInvalid, noPadding, ascii);
 
-  // TODO: rewrite in terms of getStringList
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _ASCII_, and then _split_ing the
   /// resulting [String] using the [separator]. Also allows the
@@ -117,29 +117,27 @@ mixin DicomBytesMixin {
       int length,
       bool allowInvalid = true,
       String separator = '\\',
-      bool removeNull = false}) {
+      bool noPadding = false}) {
     final s = getAscii(
         offset: offset,
         length: length,
         allowInvalid: allowInvalid,
-        removeNull: removeNull);
+        noPadding: noPadding);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
-  // TODO: rewrite in terms of getString
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
   /// Also, allows the removal of padding characters.
   String getUtf8(
           {int offset = 0,
           int length,
           bool allowInvalid = true,
-          bool removeNull = false}) =>
-      _getString(offset, length, allowInvalid, removeNull, utf8);
+          bool noPadding = false}) =>
+      _getString(offset, length, allowInvalid, noPadding, utf8);
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
-  // TODO: rewrite in terms of getStringList
   List<String> getUtf8List(
       {int offset = 0,
       int length,
@@ -150,18 +148,19 @@ mixin DicomBytesMixin {
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
-  // TODO: rewrite in terms of getString
+  /// Decoding the bytes in the specified region as _Latin1_ to _latin9_
+  /// characters and returns them as a [String]. Also, allows
+  /// the removal of padding characters.
   String getLatin(
           {int offset = 0,
           int length,
           bool allowInvalid = true,
-          bool removeNull = false}) =>
-      _getString(offset, length, allowInvalid, removeNull, ascii);
+          bool noPadding = false}) =>
+      _getString(offset, length, allowInvalid, noPadding, latin1);
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
-  // TODO: rewrite in terms of getStringList
   List<String> getLatinList(
       {int offset = 0,
       int length,
@@ -172,29 +171,13 @@ mixin DicomBytesMixin {
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
-  // int setUtf8List(int start, List<String> list, [int padChar = kSpace]);
-
-  // int setUtf8(int start, String s, [int padChar = kSpace]);
-
-  Bytes asBytes([int offset = 0, int length, Endian endian = Endian.little]);
-
-  // **** End of Interface
-
   bool ignorePadding = true;
 
   @override
   bool operator ==(Object other) =>
       (other is Bytes) && _bytesEqual(this, other, ignorePadding);
 
-  int get code {
-    final group = getUint16(0);
-  //  print('get code ${hex(group)} $group');
-    final elt = getUint16(2);
- //   print('get code ${hex(elt)} $elt');
-    final v = (group << 16) + elt;
-  //  print('get code ${hex(v)} $v');
-    return v;
-  }
+  int get code => getCode(offset);
 
   /// The Element Group Field
   int get group => getUint16(_kGroupOffset);
@@ -227,9 +210,7 @@ mixin DicomBytesMixin {
   Uint8List get vfUint8List =>
       buf.buffer.asUint8List(offset + vfOffset, vfLength);
 
-  // ** Primitive Getters
-
-  // Urgent Do we need both code and getCode?
+  /// Gets the DICOM Tag Code at [offset].
   int getCode(int offset) {
     //print('get code ${hex(code)} $code');
     final group = getUint16(offset);
@@ -247,7 +228,6 @@ mixin DicomBytesMixin {
 
   /// Returns the Tag Code from [Bytes].
   void setCode(int code) {
- //   print('set code ${hex(code)} $code');
     setUint16(0, code >> 16);
     setUint16(2, code & 0xFFFF);
   }
@@ -275,7 +255,7 @@ mixin DicomBytesMixin {
     setUint16(2, code & 0xFFFF);
     setUint8(4, vrCode >> 8);
     setUint8(5, vrCode & 0xFF);
-    // The Uint16 field at offset 6 is already zero.
+    // Note: The Uint16 field at offset 6 is already zero.
     setUint32(8, vlf);
   }
 
@@ -316,8 +296,7 @@ mixin DicomBytesMixin {
   int setUint8List(int start, List<int> list,
       [int offset = 0, int length, int pad = kSpace]) {
     length ??= list.length;
-    for (var i = offset, j = start; i < length; i++, j++)
-      buf[j] = list[i];
+    for (var i = offset, j = start; i < length; i++, j++) buf[j] = list[i];
     if (length.isOdd && pad != null) {
       setUint8(length + start, pad);
       print('setUint8List: ${length + start}');
@@ -372,6 +351,7 @@ mixin DicomBytesMixin {
     return k - start;
   }
 
+  // Urgent: are these really needed??
   void writeInt8VF(List<int> vList) => setInt8List(vfOffset, vList);
   void writeInt16VF(List<int> vList) => setInt16List(vfOffset, vList);
   void writeInt32VF(List<int> vList) => setInt32List(vfOffset, vList);
@@ -408,6 +388,7 @@ mixin DicomBytesMixin {
     }
     return index;
   }
+// Urgent remove above if not needed
 
   // Allows the removal of padding characters.
   Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {

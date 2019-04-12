@@ -15,7 +15,7 @@ import 'package:core/src/utils/bytes/constants.dart';
 import 'package:core/src/utils/character/charset.dart';
 
 
-// Move to global
+// Urgent Move to global
 bool showByteValues = false;
 int truncateBytesLength = 16;
 
@@ -87,15 +87,12 @@ mixin BytesMixin {
 
   // **** Public Getters
 
-  /// Returns an 8-bit integer values at
-  ///     `index = [buf].offsetInBytes + [i]`
-  /// in the underlying [Uint8List].
-  /// _Note_: [i] may be negative.
+  /// Returns an 8-bit integer values at `index = [buf].offsetInBytes + [i]`
+  /// in the underlying [Uint8List]. _Note_: [i] may be negative.
   int getInt8(int i) => buf[i];
 
   int getInt16(int i) => bd.getInt16(i, endian);
   int getInt32(int i) => bd.getInt32(i, endian);
-
   int getInt64(int i) => bd.getInt64(i, endian);
 
   Int32x4 getInt32x4(int offset) {
@@ -438,6 +435,9 @@ mixin BytesMixin {
     return (s.isEmpty) ? <String>[] : s.split(separator);
   }
 
+  // Urgent decide if these should be here. I don't think so. Use DicomBytes
+  // instead.
+
   // TODO: rewrite in terms of getString
   /// Returns a [String] containing a _ASCII_ decoding of the specified
   /// region of _this_.
@@ -485,8 +485,7 @@ mixin BytesMixin {
   String getLatin(
       {int offset = 0,
       int length,
-      bool allowInvalid = true,
-      bool removeNull = false}) {
+      bool allowInvalid = true}) {
     final v = _asUint8ListForString(offset, length ?? buf.length);
     return v.isEmpty ? '' : cvt.latin1.decode(v, allowInvalid: allowInvalid);
   }
@@ -686,7 +685,8 @@ mixin BytesMixin {
       setUint8List(start, bd.buffer.asUint8List(), offset, length);
 
   // **** String List Setters
-
+// Urgent: Move this to DicomBytesMixin
+  // Urgent: move up next to primitives
   // TODO: unit test
   /// UTF-8 encodes the specified range of [s] and then writes the
   /// code units to _this_ starting at [start]. Returns the offset
