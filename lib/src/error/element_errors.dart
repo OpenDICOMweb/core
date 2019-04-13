@@ -94,7 +94,6 @@ bool invalidValueField(String message, [Bytes vfBytes]) {
   return false;
 }
 
-
 class InvalidValuesError extends Error {
   final String msg;
   final Object values;

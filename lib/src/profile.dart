@@ -20,5 +20,3 @@ export 'package:core/src/profile/profile.dart';
 export 'package:core/src/profile/replace_uids.dart';
 export 'package:core/src/profile/rule.dart';
 export 'package:core/src/profile/trial.dart';
-
-

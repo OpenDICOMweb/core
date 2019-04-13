@@ -11,7 +11,6 @@ import 'package:core/src/element/base/element.dart';
 // ignore_for_file: public_member_api_docs
 
 abstract class DatasetPrimitives<V> {
-
   List<V> empty(int tag);
 
   List<V> value(int tag);
@@ -34,7 +33,6 @@ abstract class DatasetPrimitives<V> {
 
   /// Removes all [Element]s int [group] from _this_.
   void removeGroup(int group);
-
 }
 
 abstract class ElementPrimitives<V> {

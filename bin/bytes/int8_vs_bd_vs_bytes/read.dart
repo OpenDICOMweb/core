@@ -19,9 +19,9 @@ void main(List<String> args) {
   var total0 = 0;
   var total1 = 0;
   var total2 = 0;
-  var total3 = 0;
   int v;
 
+  print('Read: ${DateTime.now()}');
   var length = 4;
   final timer = Stopwatch()..start();
 
@@ -58,23 +58,12 @@ void main(List<String> args) {
     final time2 = end - start;
     total2 += time2;
 
-    // Bytes.getUint8()
-    start = timer.elapsedMicroseconds;
-    for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) v = bytes.getUint8(k);
-    }
-    end = timer.elapsedMicroseconds;
-    assert(bd.lengthInBytes == length, true);
-    final time3 = end - start;
-    total3 += time3;
-
-    print('$i length $length uint8 $time0 bd $time1 '
-        'bytes[] $time2 bytes* $time3');
-    print('  ratios: ${time1 / time0} ${time2 / time0} ${time3 / time0}');
+    print('$i length $length uint8 $time0 bd $time1 bytes[] $time2 '
+        'ratios: ${time1 / time0} ${time2 / time0}');
 
     assert(v == 0);
     length *= 2;
   }
-  print('read uint: $total0 bd: $total1 bytes[] $total2 bytes*: $total3');
-  print('ratio: ${total1 / total0} ${total2 / total0} ${total3 / total0}');
+  print('read uint: $total0 bd: $total1 bytes[] $total2 '
+      'ratio: ${total1 / total0} ${total2 / total0}');
 }

@@ -964,7 +964,7 @@ class SopClass extends WKUid {
           'Patient_StudyOnlyQueryRetrieveInformationModel_FIND_Retired',
           UidType.kSOPClass,
           'Patient/Study Only Query/Retrieve Information Model '
-          '- FIND (Retired)',
+              '- FIND (Retired)',
           isRetired: true);
   static const SopClass kPatientStudyOnlyQueryRetrieveInformationModelMOVE =
       SopClass(
@@ -972,7 +972,7 @@ class SopClass extends WKUid {
           'Patient_StudyOnlyQueryRetrieveInformationModel_MOVE_Retired',
           UidType.kSOPClass,
           'Patient/Study Only Query/Retrieve Information Model '
-          '- MOVE (Retired)',
+              '- MOVE (Retired)',
           isRetired: true);
   static const SopClass kPatientStudyOnlyQueryRetrieveInformationModelGET =
       SopClass(

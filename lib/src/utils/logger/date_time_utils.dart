@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-
 /// Returns the date in Internet format.
 String date(DateTime dt) => '${dt.year}-${dt.month}-${dt.day}';
 

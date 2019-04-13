@@ -32,7 +32,7 @@ abstract class AsciiString extends StringBase {
   @override
   bool get isSingleValued => false;
 
-  Bytes get asBytes => Bytes.asciiFromList(values, maxVFLength);
+  Bytes get asBytes => Bytes.asciiFromList(values);
 
   @override
   TypedData get typedData =>

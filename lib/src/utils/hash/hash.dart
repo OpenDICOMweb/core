@@ -39,13 +39,12 @@ abstract class Hash {
       finish(combine(combine(0, o0.hashCode), o1.hashCode));
 
   /// Generates a hash code for three objects.
-  int n3(Object o0, Object o1, Object o2) => finish(combine(
-      combine(combine(0, o0.hashCode), o1.hashCode), o2.hashCode));
+  int n3(Object o0, Object o1, Object o2) => finish(
+      combine(combine(combine(0, o0.hashCode), o1.hashCode), o2.hashCode));
 
   /// Generates a hash code for four objects.
   int n4(Object o0, Object o1, Object o2, Object o3) => finish(combine(
-      combine(
-          combine(combine(0, o0.hashCode), o1.hashCode), o2.hashCode),
+      combine(combine(combine(0, o0.hashCode), o1.hashCode), o2.hashCode),
       o3.hashCode));
 
   /// Generates a hash code for four objects.
@@ -53,22 +52,21 @@ abstract class Hash {
       finish(combine(
           combine(
               combine(combine(combine(kHashSeed, o0.hashCode), o1.hashCode),
-                             o2.hashCode),
+                  o2.hashCode),
               o3.hashCode),
           o4.hashCode));
 
   /// Generates a hash code for multiple [objects].
   int nList(Iterable<Object> objects) {
     if (objects == null) throw ArgumentError('Invalid null argument');
-    return finish(
-        objects.fold(kHashSeed, (h, o) => combine(h, o.hashCode)));
+    return finish(objects.fold(kHashSeed, (h, o) => combine(h, o.hashCode)));
   }
 
   /// Generates a hash code for multiple [vList].
   int intList(Iterable<int> vList) {
     if (vList == null) throw ArgumentError('Invalid null argument');
     var seed = kHashSeed;
-    for(final i in vList) seed = combine(seed, i);
+    for (final i in vList) seed = combine(seed, i);
     return finish(seed);
   }
 
@@ -77,9 +75,8 @@ abstract class Hash {
     if (bd == null) throw ArgumentError('Invalid null argument');
 
     var seed = kHashSeed;
-    for(var i = bd.offsetInBytes; i < bd.lengthInBytes; i++)
+    for (var i = bd.offsetInBytes; i < bd.lengthInBytes; i++)
       seed = combine(seed, bd.getUint8(i));
     return finish(seed);
   }
 }
-

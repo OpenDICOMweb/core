@@ -36,12 +36,11 @@ abstract class BytesBuffer {
   set _rIndex(int n);
   int get _wIndex;
 
-
   /// The offset of _this_ in the underlying [ByteBuffer].
   int get offset => bytes.offset;
 
   /// The start of _this_ in the underlying [ByteBuffer].
- // int get start => _start;
+  // int get start => _start;
   int get start => bytes.offset;
 
   /// The length of the [bytes].
@@ -51,7 +50,7 @@ abstract class BytesBuffer {
   int get end => start + bytes.length;
 
   /// The underlying [Bytes] for the buffer.
- // Bytes get bytes => _bytes;
+  // Bytes get bytes => _bytes;
   /// The read index into the underlying bytes.
   int get readIndex => _rIndex;
 

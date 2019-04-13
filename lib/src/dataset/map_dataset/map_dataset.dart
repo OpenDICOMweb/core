@@ -31,7 +31,9 @@ mixin MapDataset {
   /// Returns true if [other] has the same [Element]s as _this_.
   @override
   bool operator ==(Object other) =>
-    other is MapDataset && total == other.total && mapsEqual(eMap, other.eMap);
+      other is MapDataset &&
+      total == other.total &&
+      mapsEqual(eMap, other.eMap);
 
   @override
   int get hashCode => mapHash(eMap);

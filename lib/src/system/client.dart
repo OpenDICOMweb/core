@@ -17,7 +17,6 @@ import 'package:version/version.dart';
 //TODO: and initialize arguments for client and browers that
 // are same as server.dart
 
-
 /// A singleton class used to handle system-wide values and methods.
 ///
 /// This is an example implementation of [Client].
@@ -64,7 +63,6 @@ class Browser extends Global {
   String get type => 'Browser Client';
   @override
   String get script => document.title;
-
 
   @override
   void exit(int code, [String msg]) {

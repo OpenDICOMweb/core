@@ -1,7 +1,7 @@
 // Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
 // Use of this source code is governed by the open source license
 // that can be found in the LICENSE file.
-// Original author: Jim Philbin <jfphilbin@gmail.edu> - 
+// Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 //
 import 'package:core/src/tag.dart';
@@ -9,7 +9,7 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-void main(){
+void main() {
   final out = tokensToLookupMap(pcTagNames);
   print(out);
 }
@@ -18,7 +18,7 @@ String creatorTokenToId(String s) {
   final sb = StringBuffer();
 
   if (isDigitChar(s.codeUnitAt(0))) sb.write('Uid_');
-  for(var i = 0; i < s.length; i++) {
+  for (var i = 0; i < s.length; i++) {
     final c = s.codeUnitAt(i);
 
     if (isAlphanumericChar(c)) {

@@ -206,8 +206,7 @@ class IDSBytes extends DSBytes {
   int get trailerLength => hasULength ? kTrailerSize : 0;
 
   @override
-  Bytes get vfBytes =>
-      bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
+  Bytes get vfBytes => bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
 
   static const int kStartDelimiterOffset = 0;
   static const int kVFLengthFieldOffset = 4;

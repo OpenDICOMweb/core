@@ -38,7 +38,7 @@ class BasicProfileOptions {
       4,
       'Retain',
       'Retail Longitudinal Temporal Information with Full Dates '
-      'Option');
+          'Option');
 
   static const BasicProfileOptions kRetainModifiedDates = BasicProfileOptions(
       'RetainModifiedDates',
@@ -51,7 +51,7 @@ class BasicProfileOptions {
       6,
       'Clean',
       'Clean Descriptors '
-      'Option');
+          'Option');
 
   static const BasicProfileOptions kCleanStructuredContent =
       BasicProfileOptions('CleanStructuredContent', 7, 'Clean',
@@ -65,7 +65,7 @@ class BasicProfileOptions {
       6,
       'Clean',
       'Clean Pixel Data '
-      'Option');
+          'Option');
 
   static const BasicProfileOptions kCleanVisualFeatures = BasicProfileOptions(
       'CleanVisualFeatures',

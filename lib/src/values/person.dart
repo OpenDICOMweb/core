@@ -10,4 +10,3 @@ export 'package:core/src/values/person/address.dart';
 export 'package:core/src/values/person/person.dart';
 export 'package:core/src/values/person/person_name.dart';
 export 'package:core/src/values/person/sex.dart';
-

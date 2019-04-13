@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert' as cvt;
 
 import 'package:core/server.dart' hide group;
@@ -849,32 +848,32 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vsList0 = rsg.getPNList(1, 10);
         global.throwOnError = false;
-        final toB0 = Bytes.utf8FromList(vsList0, kMaxShortVF);
+        final toB0 = Bytes.utf8FromList(vsList0);
         final bytes0 = Bytes.ascii(vsList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (final s in goodPNList) {
-        final toB1 = Bytes.utf8FromList(s, kMaxShortVF);
+        final toB1 = Bytes.utf8FromList(s);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
       global.throwOnError = false;
-      final toB2 = Bytes.utf8FromList([''], kMaxShortVF);
+      final toB2 = Bytes.utf8FromList(['']);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.utf8FromList([], kMaxShortVF);
+      final toB3 = Bytes.utf8FromList([]);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = Bytes.utf8FromList(null, kMaxShortVF);
+      final toB4 = Bytes.utf8FromList(null);
       expect(toB4, isNull);
 
 /* No longer throws
       global.throwOnError = true;
-      expect(() => Bytes.utf8FromList(null, kMaxShortVF),
+      expect(() => Bytes.utf8FromList(null),
           throwsA(const TypeMatcher<GeneralError>()));
 */
 

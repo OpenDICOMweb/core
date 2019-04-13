@@ -57,25 +57,25 @@ class Term {
   static const Term kPhotometricInterpretation = Term(
       'Photometric Interpretation',
       'The values of Photometric Interpretation (0028,0004) specifies '
-      'the intended interpretation of the image pixel data. See PS3.5 '
-      'for restrictions imposed by compressed Transfer Syntaxes.'
-      'The following values are defined. Other values are permitted but '
-      'the meaning is not defined by this Standard.');
+          'the intended interpretation of the image pixel data. See PS3.5 '
+          'for restrictions imposed by compressed Transfer Syntaxes.'
+          'The following values are defined. Other values are permitted but '
+          'the meaning is not defined by this Standard.');
 
   static const Term kMonochrome1 = Term(
       'MONOCHROME1',
       'Pixel data represent a single monochrome image plane. The minimum '
-      'sample values is intended to be displayed as white after any VOI '
-      'gray scale transformations have been performed. See PS3.4. '
-      'This values may be used only when Samples per Pixel '
-      '(0028,0002) has a values of 1.');
+          'sample values is intended to be displayed as white after any VOI '
+          'gray scale transformations have been performed. See PS3.4. '
+          'This values may be used only when Samples per Pixel '
+          '(0028,0002) has a values of 1.');
   static const Term kMonochrome2 = Term(
       'MONOCHROME2',
       'Pixel data represent a single monochrome image plane. The minimum '
-      'sample values is intended to be displayed as black after any VOI '
-      'gray scale transformations have been performed. See PS3.4. This '
-      'values may be used only when Samples per Pixel (0028,0002) has a '
-      'values of 1.');
+          'sample values is intended to be displayed as black after any VOI '
+          'gray scale transformations have been performed. See PS3.4. This '
+          'values may be used only when Samples per Pixel (0028,0002) has a '
+          'values of 1.');
   static const Term kMonochrome3 = Term(
     'MONOCHROME3',
     'Pixel data describe a color image with a single sample per pixel (single '
@@ -103,21 +103,21 @@ class Term {
   static const Term kYBR_FULL = Term(
       'YBR_FULL',
       'Pixel data represent a color image described by one luminance (Y) '
-      'and two chrominance planes (CB and CR). This photometric '
-      'interpretation may be used only when Samples per Pixel (0028,0002) '
-      'has a values of 3. Black is represented by Y equal to zero. '
-      'The absence of color is represented by both CB and CR values '
-      'equal to half full scale.\n    '
-      'Note: In the case where Bits Allocated (0028,0100) has values of '
-      '8 half full scale is 128.\n'
-      'In the case where Bits Allocated (0028,0100) has a values of 8 '
-      'then the following equations convert between RGB and YCBCR '
-      'Photometric Interpretation.'
-      '\n  Y = + .2990R + .5870G + .1140B'
-      '\n  CB= - .1687R - .3313G + .5000B + 128'
-      '\n  CR= + .5000R - .4187G - .0813B + 128'
-      '\n    Note: The above is based on CCIR Recommendation 601-2 '
-      'dated 1990.');
+          'and two chrominance planes (CB and CR). This photometric '
+          'interpretation may be used only when Samples per Pixel (0028,0002) '
+          'has a values of 3. Black is represented by Y equal to zero. '
+          'The absence of color is represented by both CB and CR values '
+          'equal to half full scale.\n    '
+          'Note: In the case where Bits Allocated (0028,0100) has values of '
+          '8 half full scale is 128.\n'
+          'In the case where Bits Allocated (0028,0100) has a values of 8 '
+          'then the following equations convert between RGB and YCBCR '
+          'Photometric Interpretation.'
+          '\n  Y = + .2990R + .5870G + .1140B'
+          '\n  CB= - .1687R - .3313G + .5000B + 128'
+          '\n  CR= + .5000R - .4187G - .0813B + 128'
+          '\n    Note: The above is based on CCIR Recommendation 601-2 '
+          'dated 1990.');
 
   //TODO: finish
   // ignore: constant_identifier_names

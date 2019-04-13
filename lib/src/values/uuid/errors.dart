@@ -28,13 +28,12 @@ Null badUuid(String message, [Issues issues]) {
   return null;
 }
 
-Null badUuidList( String message, List<int> iList) {
- final msg = 'InvalidUuidListError: $message: $iList';
+Null badUuidList(String message, List<int> iList) {
+  final msg = 'InvalidUuidListError: $message: $iList';
   log.error(msg);
   if (throwOnError) throw UuidError(msg);
   return null;
 }
-
 
 Null invalidUuid(Object uuid, [Issues issues]) {
   final msg = 'Invalid Uuid Error: "$uuid"';

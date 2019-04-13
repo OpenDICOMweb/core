@@ -16,7 +16,6 @@ import 'package:core/src/error/general_errors.dart';
 
 /// A history of all changes to a [Dataset].
 class History {
-
   /// A list of elements that were _added_ to the dataset.
   List<Element> added;
 

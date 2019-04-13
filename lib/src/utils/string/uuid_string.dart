@@ -35,7 +35,6 @@ const List<int> kStarts = <int>[0, 9, 14, 19, 24];
 /// The offsets of the end of the hex values in a UUID [String].
 const List<int> kEnds = <int>[8, 13, 18, 23, kUuidStringLength];
 
-
 /// Returns _true_ if [uuidString] is a valid UUID [String]. If [type]
 /// is _null_ it just validates the format; otherwise, [type] must have
 /// a value between 1 and 5.
@@ -76,4 +75,3 @@ bool _isISOVariantFromString(String s) {
 
 /// The ASCII values for the dash (-) character, 0x2D in ASCII or UTF8
 const List<int> _kISOVariantAsLetter = <int>[k8, k9, ka, kb];
-

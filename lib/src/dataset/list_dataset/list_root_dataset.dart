@@ -29,8 +29,8 @@ class ListRootDataset extends RootDataset with ListDataset {
   List<Element> elements;
 
   /// Creates an [ListRootDataset].
-  ListRootDataset(this.fmi, this.codes, this.elements, String path,
-      Bytes bd, int fmiEnd)
+  ListRootDataset(
+      this.fmi, this.codes, this.elements, String path, Bytes bd, int fmiEnd)
       : super(path, bd, fmiEnd);
 
   /// Creates an empty, i.e. without [Element]s, [ListRootDataset].
@@ -46,7 +46,6 @@ class ListRootDataset extends RootDataset with ListDataset {
         codes = List<int>.from(rds.codes),
         elements = List<Element>.from(rds.elements),
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
-
 
   RootDataset copy([RootDataset rds]) => ListRootDataset.from(rds ?? this);
 }

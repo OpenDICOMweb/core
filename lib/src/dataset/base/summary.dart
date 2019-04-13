@@ -12,7 +12,6 @@ import 'package:core/src/utils/timer.dart';
 
 // ignore_for_file: public_member_api_docs
 
-
 //TODO: test
 class Summary {
   Timestamp timestamp;

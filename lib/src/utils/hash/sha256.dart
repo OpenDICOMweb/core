@@ -69,7 +69,6 @@ int int64Bit(int value) {
   return bd.getUint64(0);
 }
 
-
 /// Returns a [String] that is a hash of [String].
 String string(String s) => fromString(s);
 

@@ -80,26 +80,23 @@ class Rule {
     return (val != null) ? PTag.lookupByCode(val) : null;
   }
 
-
   bool get isValidArgs {
     final condition = args[1];
     final nArgsRequired = conditionMap[condition];
-    if ((nArgsRequired == null) || (nArgsRequired != argLength))
-      return false;
+    if ((nArgsRequired == null) || (nArgsRequired != argLength)) return false;
     return true;
   }
 
   Map<String, Object> get map => <String, Object>{
-    'index': index,
-    'target': targetTag,
-    'keyword': keyword,
-    'function': function,
-    'args': args,
-    'scripts': scripts,
-  };
+        'index': index,
+        'target': targetTag,
+        'keyword': keyword,
+        'function': function,
+        'args': args,
+        'scripts': scripts,
+      };
 
   String get json => cvt.json.encode(map);
-
 
   @override
   String toString() => 'Rule: $function($args) $scripts';

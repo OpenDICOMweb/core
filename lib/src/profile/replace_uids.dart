@@ -33,14 +33,14 @@ List<Element> replaceUids(TagRootDataset rds) {
 UI replaceUIFast(UI e) {
   final oldUids = e.uids;
   final length = oldUids.length;
-  final uids =  List<String>(length);
+  final uids = List<String>(length);
   for (var i = 0; i < length; i++) {
     final oldUid = oldUids.elementAt(i);
     var newUid = idToDeId[oldUid];
     if (newUid != null) {
       uids[i] = newUid.asString;
     } else {
-      newUid =  Uid();
+      newUid = Uid();
       idToDeId[oldUid] = newUid;
       uids[i] = newUid.asString;
     }
@@ -51,7 +51,7 @@ UI replaceUIFast(UI e) {
 UI replaceUIGeneral(UI e) {
   final oldUids = e.uids;
   final length = oldUids.length;
-  final uids =  List<String>(length);
+  final uids = List<String>(length);
   for (var i = 0; i < length; i++) {
     final old = oldUids.elementAt(i);
     var newUid = idToDeId[old];
@@ -62,7 +62,7 @@ UI replaceUIGeneral(UI e) {
     } else if (Uid.isDicom(old)) {
       uids[i] = old.asString;
     } else {
-      newUid =  Uid();
+      newUid = Uid();
       idToDeId[old] = newUid;
       uids[i] = newUid.asString;
     }

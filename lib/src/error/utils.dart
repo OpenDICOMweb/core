@@ -20,4 +20,3 @@ String keyTypeString<K>(K key) {
   }
   return 'Error: bad Tag($key) in _toMsgString($key)';
 }
-

@@ -11,14 +11,17 @@ import 'dart:typed_data';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 import 'package:core/src/vr/vr_base.dart';
-import 'package:core/src/vr/vr_external.dart';
 
+/// Implicit Little Endian [Bytes] with short (16-bit) Value Field Length.
 class IvrBytes extends DicomBytes {
-  IvrBytes(int eLength) : super(eLength, Endian.little);
+  /// Creates an [IvrBytes] Element of length.
+  IvrBytes(int length) : super(length, Endian.little);
 
+  /// Create an [IvrBytes] Element from [Bytes].
   IvrBytes.from(Bytes bytes, int start, int end)
       : super.from(bytes, start, end, Endian.little);
 
+  /// Create an [IvrBytes] Element from a view of [Bytes].
   IvrBytes.view(Bytes bytes,
       [int start = 0, int end, Endian endian = Endian.little])
       : super.internalView(bytes, start, end, endian);
@@ -55,7 +58,6 @@ class IvrBytes extends DicomBytes {
   int get vrIndex => kUNIndex;
   @override
   String get vrId => vrIdFromIndex(vrIndex);
-  VR get vr => VR.kUN;
   @override
   int get vfOffset => kVFOffset;
   @override
@@ -76,7 +78,12 @@ class IvrBytes extends DicomBytes {
   IvrBytes sublist([int start = 0, int end]) =>
       IvrBytes.from(this, start, (end ?? length) - start);
 
+  /// The offset of the Value Field Length in an IVR Element.
   static const int kVFLengthOffset = 4;
+
+  /// The offset of the Value Field in an IVR Element
   static const int kVFOffset = 8;
+
+  /// The length of an IVR Element Header.
   static const int kHeaderLength = 8;
 }

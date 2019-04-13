@@ -21,5 +21,4 @@ class HttpLoggingServer {
   //File _file;
 
   HttpLoggingServer(this.port, this.filename);
-
 }

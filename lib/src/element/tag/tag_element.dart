@@ -190,8 +190,7 @@ mixin TagElement<V> {
   ];
 
   /// Creates an [SQtag] [Element].
-  static SQ sqFromCode(
-      Dataset parent, int code, List<TagItem> items) {
+  static SQ sqFromCode(Dataset parent, int code, List<TagItem> items) {
     final tag = lookupTagByCode(code, kSQIndex, parent);
     assert(tag.vrIndex == kSQIndex, 'vrIndex: ${tag.vrIndex}');
     final values = (items == null) ? <TagItem>[] : items;

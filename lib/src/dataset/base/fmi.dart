@@ -80,8 +80,7 @@ class Fmi {
   Uid get privateInformationCreatorUID =>
       _privateInformationCreatorUID ??= getPrivateInfoCreatorUid(ds);
 
-  Bytes get privateInformation =>
-      _privateInformation ??= getPrivateInfo(ds);
+  Bytes get privateInformation => _privateInformation ??= getPrivateInfo(ds);
 
   WKUid get transferSyntaxUid => WKUid.lookup(_mediaStorageSopClass);
 
@@ -137,6 +136,5 @@ class Fmi {
   static Uid getPrivateInfoCreatorUid(Dataset ds) =>
       ds.getUid(kPrivateInformationCreatorUID);
 
-  static Bytes getPrivateInfo(Dataset ds) =>
-      ds.getIntList(kPrivateInformation);
+  static Bytes getPrivateInfo(Dataset ds) => ds.getIntList(kPrivateInformation);
 }

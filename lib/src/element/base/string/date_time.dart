@@ -470,10 +470,10 @@ abstract class TM extends AsciiString {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
- void clearTimes() {
-   _times = null;
-   return;
- }
+  void clearTimes() {
+    _times = null;
+    return;
+  }
 
   static const int kVRIndex = kTMIndex;
   static const int kVRCode = kTMCode;

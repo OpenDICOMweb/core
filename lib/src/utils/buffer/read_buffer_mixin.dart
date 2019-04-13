@@ -155,8 +155,7 @@ mixin ReadBufferMixin {
     return s;
   }
 
-  String getUtf8(int length) =>
-      bytes.getUtf8(offset: _rIndex, length: length);
+  String getUtf8(int length) => bytes.getUtf8(offset: _rIndex, length: length);
 
   String readUtf8(int length) {
     final s = getUtf8(length);
@@ -247,15 +246,15 @@ mixin ReadBufferMixin {
   }
 
   List<String> readAsciiList(int length) {
-    final v = bytes.getAsciiList(
-        offset: _rIndex, length: length, allowInvalid: true);
+    final v =
+        bytes.getAsciiList(offset: _rIndex, length: length, allowInvalid: true);
     _rIndex += length;
     return v;
   }
 
   List<String> readUtf8List(int length) {
-    final v = bytes.getUtf8List(
-        offset: _rIndex, length: length, allowInvalid: true);
+    final v =
+        bytes.getUtf8List(offset: _rIndex, length: length, allowInvalid: true);
     _rIndex += length;
     return v;
   }

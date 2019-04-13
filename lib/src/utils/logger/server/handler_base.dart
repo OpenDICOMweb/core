@@ -11,7 +11,6 @@ import 'dart:io';
 
 import 'package:core/src/utils/logger/log_record.dart';
 
-
 //TODO: move these comments elsewhere.
 /// Creates a default handler that outputs using the build-in [print] function.
 ///
@@ -25,28 +24,22 @@ import 'package:core/src/utils/logger/log_record.dart';
 ///
 ///     }
 
-
 /// Base Handler that can be passed to the [logger.onRecord.listen] handler.
 /// This Handler simply prints the log record before passing it up the chain.
 abstract class HandlerBase {
-	/// If _true_ prints the value.
-	bool doPrint;
+  /// If _true_ prints the value.
+  bool doPrint;
 
-	/// Constructor
-	HandlerBase({this.doPrint = true});
+  /// Constructor
+  HandlerBase({this.doPrint = true});
 
-	/// This Base implementation simply prints the log record.
-	Object call(LogRecord r, {bool flush = false}) {
-		final s = '$r';
-		if (doPrint) stdout.writeln(s);
-		return s;
-	}
+  /// This Base implementation simply prints the log record.
+  Object call(LogRecord r, {bool flush = false}) {
+    final s = '$r';
+    if (doPrint) stdout.writeln(s);
+    return s;
+  }
 
-	@override
-	String toString() => '$runtimeType';
+  @override
+  String toString() => '$runtimeType';
 }
-
-
-
-
-

@@ -18,13 +18,12 @@ mixin ByteDataset {
 
   List<Element> get elements => eMap.values.toList(growable: false);
 
-	bool get isImmutable => true;
+  bool get isImmutable => true;
 
   /// Returns _true_ if the [Dataset] can have an undefined length.
   bool get undefinedLengthAllowed => true;
 
-  int keyToIndex(int code)  => code;
+  int keyToIndex(int code) => code;
 
-	Tag getTag(int key, [int vrIndex, Object creator]) =>
-  Tag.lookupByCode(key);
+  Tag getTag(int key, [int vrIndex, Object creator]) => Tag.lookupByCode(key);
 }

@@ -51,8 +51,7 @@ class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
   static OFbytes fromBytes(DicomBytes bytes, [Ascii _]) => OFbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OFbytes fromValues(int code, List<double> vList,
-      {bool isEvr = true}) {
+  static OFbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOFCode, isEvr, OF.kSizeInBytes)
       ..writeFloat32VF(vList);
     assert(vList.length * OF.kSizeInBytes <= OF.kMaxVFLength);
@@ -82,8 +81,7 @@ class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
   static FDbytes fromBytes(DicomBytes bytes, [Ascii _]) => FDbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static FDbytes fromValues(int code, List<double> vList,
-      {bool isEvr = true}) {
+  static FDbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kFDCode, isEvr, FD.kSizeInBytes)
       ..writeFloat64VF(vList);
     assert(vList.length * FD.kSizeInBytes <= FD.kMaxVFLength);
@@ -101,8 +99,7 @@ class ODbytes extends OD with ByteElement<double>, BytesFloat64Mixin {
   static ODbytes fromBytes(DicomBytes bytes, [Ascii _]) => ODbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ODbytes fromValues(int code, List<double> vList,
-      {bool isEvr = true}) {
+  static ODbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kODCode, isEvr, OD.kSizeInBytes)
       ..writeFloat64VF(vList);
     assert(vList.length * OD.kSizeInBytes <= OD.kMaxVFLength);

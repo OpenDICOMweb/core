@@ -1037,32 +1037,32 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 10);
         global.throwOnError = false;
-        final toB0 = Bytes.asciiFromList(vList0, kMaxShortVF);
+        final toB0 = Bytes.asciiFromList(vList0);
         final bytes0 = Bytes.ascii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (final s in goodTMList) {
-        final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
+        final toB1 = Bytes.asciiFromList(s);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
       global.throwOnError = false;
-      final toB2 = Bytes.asciiFromList([''], kMaxShortVF);
+      final toB2 = Bytes.asciiFromList(['']);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.asciiFromList([], kMaxShortVF);
+      final toB3 = Bytes.asciiFromList([]);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = Bytes.asciiFromList(null, kMaxShortVF);
+      final toB4 = Bytes.asciiFromList(null);
       expect(toB4, isNull);
 
 /* No longer throws
       global.throwOnError = true;
-      expect(() => Bytes.asciiFromList(null, kMaxShortVF),
+      expect(() => Bytes.asciiFromList(null),
           throwsA(const TypeMatcher<GeneralError>()));
 */
 

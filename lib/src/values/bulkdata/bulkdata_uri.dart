@@ -20,10 +20,8 @@ class BulkdataUri {
 
   String get query => 'bytes=$offset-$length';
 
-  Uri get uri =>  Uri(scheme: scheme, path: path, query: query);
+  Uri get uri => Uri(scheme: scheme, path: path, query: query);
 
   @override
   String toString() => Uri.encodeFull('$uri');
 }
-
-

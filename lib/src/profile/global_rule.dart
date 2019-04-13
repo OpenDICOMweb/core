@@ -37,14 +37,24 @@ class TagGroup {
   static const TagGroup kCurves = kGroup50;
   static const TagGroup kOverLays = kGroup60;
 
-  static const List<TagGroup> validGroups =
-      [kGroup18, kGroup20, kGroup28, kGroup50, kGroup60]; // No reformat
+  static const List<TagGroup> validGroups = [
+    kGroup18,
+    kGroup20,
+    kGroup28,
+    kGroup50,
+    kGroup60
+  ]; // No reformat
 
-  static const List<TagGroup> defaultKeepGroups =
-      [kGroup18, kGroup20, kGroup28];  // No reformat
+  static const List<TagGroup> defaultKeepGroups = [
+    kGroup18,
+    kGroup20,
+    kGroup28
+  ]; // No reformat
 
-  static const List<TagGroup> defaultRemoveGroups =
-      [kGroup50, kGroup60];  // No reformat
+  static const List<TagGroup> defaultRemoveGroups = [
+    kGroup50,
+    kGroup60
+  ]; // No reformat
 }
 
 class GlobalRule {

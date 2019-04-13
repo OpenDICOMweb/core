@@ -14,6 +14,7 @@ import 'package:core/src/values/uid.dart';
 class UidMap {
   /// The Information Entity containing these [Uid]s.
   final Uid parentUid;
+
   /// The
   final Uid parentDeIdUid;
   final _uidMap = <Uid, Uid>{};

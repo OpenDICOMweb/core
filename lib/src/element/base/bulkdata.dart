@@ -35,5 +35,3 @@ mixin BulkdataRef<V> {
   /// Returns a List of Bulkdata Values associated with this.
   List<V> getBulkdata(int code, Uri uri) => unimplementedError();
 }
-
-

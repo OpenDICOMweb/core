@@ -130,7 +130,6 @@ mixin DatasetMixin {
         count += n;
         _total += n;
         log.debug('*   DS SQ end: count $count total $_total');
-
       }
       if (test(e)) {
         _total++;

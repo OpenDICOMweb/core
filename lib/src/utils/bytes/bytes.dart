@@ -10,7 +10,6 @@ library odw.sdk.utils.bytes;
 
 import 'dart:collection';
 import 'dart:convert' as cvt;
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:core/src/system.dart';
@@ -41,6 +40,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
       : endian = endian ?? Endian.little,
         buf = Uint8List(length ?? k1MB);
 
+  /// Returns a view of the specified region of _this_.
   Bytes.view(Bytes bytes,
       [int offset = 0, int length, Endian endian = Endian.little])
       : endian = endian ?? Endian.little,
@@ -58,19 +58,21 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
       : endian = endian ?? Endian.little,
         buf = bd.buffer.asUint8List(bd.offsetInBytes);
 
-  /// Creates a new [Bytes] from [list]. [endian] defaults to [Endian.little].
+  /// Creates a new [Bytes] that contains the specified view of [list].
+  /// [endian] defaults to [Endian.little].
   Bytes.fromUint8List(Uint8List list,
       [int offset = 0, int length, Endian endian = Endian.little])
       : endian = endian ?? Endian.little,
-        buf = copyUint8List(list, offset, length);
+        buf = list.buffer.asUint8List(offset, length ?? list.length);
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
-  /// region and [endian]ness.  [endian] defaults to [Endian.little].
+  /// region (from offset of length) and [endian]ness.
+  /// [endian] defaults to [Endian.little].
   Bytes.typedDataView(TypedData td,
-      [int offsetInBytes = 0, int lengthInBytes, Endian endian = Endian.little])
+      [int offset = 0, int lengthInBytes, Endian endian = Endian.little])
       : endian = endian ?? Endian.little,
-        buf = td.buffer.asUint8List(td.offsetInBytes + offsetInBytes,
-            lengthInBytes ?? td.lengthInBytes);
+        buf = td.buffer.asUint8List(
+            td.offsetInBytes + offset, lengthInBytes ?? td.lengthInBytes);
 
   /// Creates a new [Bytes] from a [List<int>].  [endian] defaults
   /// to [Endian.little]. Any values in [list] that are larger than 8-bits
@@ -78,21 +80,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   Bytes.fromList(List<int> list, [Endian endian = Endian.little])
       : endian = endian ?? Endian.little,
         buf = (list is Uint8List) ? list : Uint8List.fromList(list);
-
-  // TODO: Either remove fromFile and fromPath or add doAsync
-
-  /// Returns a [Bytes] buffer containing the contents of [File].
-  factory Bytes.fromFile(File file,
-      {Endian endian = Endian.little, bool doAsync = false}) {
-    final Uint8List bList = doAsync ? file.readAsBytes : file.readAsBytesSync();
-    return Bytes.typedDataView(bList, 0, bList.length, endian ?? Endian.little);
-  }
-
-  /// Returns a [Bytes] buffer containing the contents of the
-  /// [File] at [path].
-  factory Bytes.fromPath(String path,
-          {Endian endian = Endian.little, bool doAsync = false}) =>
-      Bytes.fromFile(File(path), endian: endian, doAsync: doAsync);
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
   factory Bytes.fromBase64(String s, {bool padToEvenLength = false}) {
@@ -123,7 +110,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
     return Bytes.typedDataView(u8List);
   }
 
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  /// Returns [Bytes] containing the Latin character set encoding of [s];
   factory Bytes.latin(String s) {
     if (s == null) return null;
     if (s.isEmpty) return kEmptyBytes;
@@ -131,7 +118,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
     return Bytes.typedDataView(u8List);
   }
 
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  /// Returns [Bytes] containing the [charset] encoding of [s];
   factory Bytes.fromString(String s, Ascii charset) {
     charset ??= utf8;
     if (s == null) return null;
@@ -143,38 +130,46 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
-  /// then they are encoded as ASCII. The result is returns as [Bytes].
-  factory Bytes.asciiFromList(List<String> vList,
-          [int maxLength, String separator = '\\']) =>
-      Bytes.ascii(_listToString(vList, maxLength, separator));
+  /// then they are encoded as ASCII, and returned as [Bytes].
+  factory Bytes.asciiFromList(List<String> vList, [String separator = '\\']) =>
+      Bytes.ascii(_listToString(vList, separator));
 
   /// Returns a [Bytes] containing UTF-8 code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
-  /// then they are encoded as UTF-8. The result is returns as [Bytes].
-  factory Bytes.utf8FromList(List<String> vList,
-          [int maxLength, String separator = '\\']) =>
-      Bytes.utf8(_listToString(vList, maxLength, separator));
+  /// then they are encoded as UTF-8 and returned as [Bytes].
+  factory Bytes.utf8FromList(List<String> vList, [String separator = '\\']) =>
+      Bytes.utf8(_listToString(vList, separator));
 
   /// Returns a [Bytes] containing Latin (1 - 9) code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
-  /// then they are encoded as UTF-8. The result is returns as [Bytes].
-  factory Bytes.latinFromList(List<String> vList,
-          [int maxLength, String separator = '\\']) =>
-      Bytes.latin(_listToString(vList, maxLength, separator));
+  /// then they are encoded as UTF-8, and returned as [Bytes].
+  factory Bytes.latinFromList(List<String> vList, [String separator = '\\']) =>
+      Bytes.latin(_listToString(vList, separator));
 
   /// Returns a [Bytes] containing [charset] code units.
   /// [charset] defaults to UTF8.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as UTF-8, and returned as [Bytes].
   factory Bytes.fromStringList(List<String> vList,
-          {Ascii charset, int maxLength, String separator = '\\'}) =>
-      Bytes.fromString(
-          _listToString(vList, maxLength, separator), charset ?? utf8);
+          {Ascii charset, String separator = '\\'}) =>
+      Bytes.fromString(_listToString(vList, separator), charset ?? utf8);
 
+  @override
+  int operator [](int i) => buf[i];
 
+  @override
+  void operator []=(int i, int v) => buf[i] = v;
+
+  /// Minimum [Bytes] length.
   static const int kMinLength = 16;
+
+  /// Default [Bytes] length.
   static const int kDefaultLength = 1024;
 
   /// The canonical empty (zero length) [Bytes] object.
@@ -189,10 +184,9 @@ Uint8List _bytesView(Uint8List list, int offset, int end) {
   return list.buffer.asUint8List(_offset, _length);
 }
 
-String _listToString(List<String> vList, int maxLength, String separator) {
+// TODO maxLength if for DICOM Value Field
+String _listToString(List<String> vList, String separator) {
   if (vList == null) return null;
   if (vList.isEmpty) return '';
-  final s = vList.length == 1 ? vList[0] : vList.join(separator);
-  if (s == null || s.length > (maxLength ?? s.length)) return null;
-  return s.isEmpty ? '' : s;
+  return vList.length == 1 ? vList[0] : vList.join(separator);
 }

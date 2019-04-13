@@ -1,7 +1,7 @@
 // Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
 // Use of this source code is governed by the open source license
 // that can be found in the LICENSE file.
-// Original author: Jim Philbin <jfphilbin@gmail.edu> - 
+// Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 //
 
@@ -45,4 +45,3 @@ const int kUint64MaxValue = 0xFFFFFFFFFFFFFFFF;
 const int kDefaultLength = 4096;
 
 const int kDefaultLimit = 1024 * 1024; // 1 GB
-

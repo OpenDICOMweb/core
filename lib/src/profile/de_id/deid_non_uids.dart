@@ -230,7 +230,6 @@ const List<int> deidNonUidOrDateCodes = <int>[
   kDataSetTrailingPadding,
 ];
 
-
 const List<PTag> deidNonUidOrDateTags = <PTag>[
   PTag.kStudyDate,
   PTag.kSeriesDate,
@@ -447,7 +446,6 @@ const List<PTag> deidNonUidOrDateTags = <PTag>[
   PTag.kDigitalSignaturesSequence,
   PTag.kDataSetTrailingPadding,
 ];
-
 
 // Issue: is this needed?
 /*
@@ -668,7 +666,3 @@ const Map<int, String> deIdNonUidCodeToKeywordMap = <int, String>{
   0xfffcfffc: 'DataSetTrailingPadding',
 };
 */
-
-
-
-

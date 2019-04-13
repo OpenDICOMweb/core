@@ -21,8 +21,7 @@ abstract class StackBase<E> {
   int get length => _stack.length;
 
   void push(E sq) {
-    if (_stack.length > limit)
-      throw const StackOverflowError();
+    if (_stack.length > limit) throw const StackOverflowError();
     _stack.add(sq);
   }
 
@@ -35,4 +34,3 @@ class Stack extends StackBase<Object> {
 
   Stack([this.limit = 100]);
 }
-

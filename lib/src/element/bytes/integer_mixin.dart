@@ -32,7 +32,6 @@ mixin Int32Mixin {
     return vfBytes.length ~/ 4;
   }
 
-
   Int32List get values => _values ??= vfBytes.asInt32List();
 }
 

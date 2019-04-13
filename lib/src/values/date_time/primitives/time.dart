@@ -20,17 +20,17 @@ int microsecondsToHour(int us) => us ~/ kMicrosecondsPerHour;
 /// Returns the minute part of microseconds ([us]).
 int microsecondToMinute(int us) =>
     (us - (microsecondsToHour(us) * kMicrosecondsPerHour)) ~/
-        kMicrosecondsPerMinute;
+    kMicrosecondsPerMinute;
 
 /// Returns the second part of microseconds ([us]).
 int microsecondsToSecond(int us) =>
     (us - (microsecondToMinute(us) * kMicrosecondsPerMinute)) ~/
-        kMicrosecondsPerSecond;
+    kMicrosecondsPerSecond;
 
 /// Returns the millisecond part of microseconds ([us]).
 int microsecondsToMillisecond(int us) =>
     (us - (microsecondsToSecond(us) * kMicrosecondsPerSecond)) ~/
-        kMicrosecondsPerMillisecond;
+    kMicrosecondsPerMillisecond;
 
 /// Returns the microsecond part of microseconds ([us]).
 int microsecondsToMicrosecond(int us) =>

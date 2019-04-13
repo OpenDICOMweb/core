@@ -49,10 +49,10 @@ bool isDcmTextChar(int c) {
       c == kReturn ||
       c == kFormfeed ||
       c == kHTab;
-  if (!v)
-    print('bad char($c) ${String.fromCharCode(c)}');
+  if (!v) print('bad char($c) ${String.fromCharCode(c)}');
   return v;
 }
+
 int checkDcmTextChar(int c) => (isDcmTextChar(c)) ? c : null;
 
 /// Returns _true_ if c is legal in an AE Title; otherwise, _false_.

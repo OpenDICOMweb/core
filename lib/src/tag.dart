@@ -28,5 +28,3 @@ export 'package:core/src/tag/tag.dart';
 export 'package:core/src/tag/tag_map.dart';
 export 'package:core/src/tag/term.dart';
 export 'package:core/src/tag/vm.dart';
-
-

@@ -21,7 +21,7 @@ Null invalidUidString(String uid, [Issues issues]) {
   String msg;
   if (pad == 0) {
     final v = uid.substring(0, lastIndex);
-     msg = 'Invalid Null character in Uid String Error: "$v*"';
+    msg = 'Invalid Null character in Uid String Error: "$v*"';
   } else {
     msg = 'Invalid Uid String Error: "$msg"';
   }
@@ -38,8 +38,8 @@ Null invalidUid(Object uid, [Issues issues]) {
 /// Logs an Error entry, and then if [throwOnError] is _true_ throws an
 /// [InvalidUidError]; otherwise, returns _null_.
 Null invalidUidList(List<Uid> uidList, [Issues issues]) {
- // final msg = 'Invalid List<Uid> Error: $uidList';
-   final msg = 'Invalid List<Uid> Error: "${uidList[0]}" ...';
+  // final msg = 'Invalid List<Uid> Error: $uidList';
+  final msg = 'Invalid List<Uid> Error: "${uidList[0]}" ...';
   return _doUidError(msg, issues);
 }
 
@@ -67,4 +67,3 @@ Null _doUidError(String msg, Issues issues) {
   if (throwOnError) throw InvalidUidError(msg);
   return null;
 }
-

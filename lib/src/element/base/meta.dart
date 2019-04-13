@@ -14,7 +14,7 @@ import 'package:core/src/tag.dart';
 
 // ignore_for_file: public_member_api_docs
 
-mixin MetaElementMixin  {
+mixin MetaElementMixin {
   Element get e;
 
   List get emptyList => e.emptyList;
@@ -54,4 +54,3 @@ mixin MetaElementMixin  {
 
   Element update([Iterable vList]) => e.update(vList);
 }
-

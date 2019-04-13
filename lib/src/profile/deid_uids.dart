@@ -65,7 +65,6 @@ const List<int> deleteUidCodes = <int>[
   kRelatedFrameOfReferenceUID,
 ];
 
-
 const List<int> deleteSequenceUidCodes = <int>[
   kReferencedStudySequence,
   kReferencedPatientSequence,

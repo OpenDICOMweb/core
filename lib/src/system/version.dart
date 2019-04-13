@@ -13,8 +13,7 @@ class Version {
   String name;
   List<String> number;
 
-    Version(this.name, String number)
-      : number = number.split('.');
+  Version(this.name, String number) : number = number.split('.');
 
   String get major => number[0];
   String get minor => number[1];

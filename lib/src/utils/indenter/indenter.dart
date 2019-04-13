@@ -46,11 +46,10 @@ class Indenter with IndenterMixin implements StringBuffer {
   void writeAll(Iterable objects, [String separator = '']) =>
       sb.writeAll(objects, separator);
 
-  void writeList(Iterable objects, [String separator = '']) =>
-    sb
-      ..write('[')
-      ..writeAll(objects, separator)
-      ..write(']');
+  void writeList(Iterable objects, [String separator = '']) => sb
+    ..write('[')
+    ..writeAll(objects, separator)
+    ..write(']');
 
   void _writeKeyValuePair(String key, Object value) =>
       sb.writeln('$key : $value');

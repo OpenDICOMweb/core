@@ -212,7 +212,6 @@ abstract class ProfileBase<V> {
   /// Ensures that [result] contains no [Element]s with a [Tag] in [group]
   /// that were not marked _keep_.
   void removeGroup(int group);
-
 }
 
 abstract class Database {
@@ -226,18 +225,19 @@ abstract class Database {
 class InvalidTag extends Error {}
 
 class InvalidIdentifier extends Error {}
+
 class UnknownIdentifier extends Error {}
 
 class InvalidValues extends Error {}
 
 class UnknownRow extends Error {}
+
 class UnknownColumn extends Error {}
 
 class InvalidElement extends Error {}
+
 class UnknownbElement extends Error {}
+
 class InvalidElementAccess extends Error {}
+
 class MissingElement extends Error {}
-
-
-
-

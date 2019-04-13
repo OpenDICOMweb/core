@@ -19,6 +19,7 @@ void main(List<String> args) {
   var total1 = 0;
   var total2 = 0;
 
+  print('Create: ${DateTime.now()}');
   var length = 4;
   final timer = Stopwatch()..start();
 

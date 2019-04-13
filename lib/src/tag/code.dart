@@ -28,6 +28,7 @@ int group(int code) => code >> 16;
 // TODO: should this be 0x00020000
 const int kMinTagCode = 0x00001000;
 const int kMaxTagCode = 0xFFFCFFFC;
+
 /// Returns_true_ if [code] is a valid Public Code, but
 /// _does not check that [code] is defined by the DICOM Standard.
 bool isPublicCode(int code) =>
@@ -47,7 +48,6 @@ bool _isPrivateGroup(int code) {
   final g = group(code);
   return g.isOdd && g >= kMinGroupCode && g <= kMaxGroupCode;
 }
-
 
 bool isInvalidPrivateCode(int code) {
   if (!_isPrivateGroup(code)) return true;
@@ -89,4 +89,3 @@ bool isPDCode(int code, [int creatorCode]) {
 
 int pcSubgroup(int creatorCode) => creatorCode & 0x00FF;
 int pdSubgroup(int dataCode) => (dataCode & 0xFF00) >> 8;
-

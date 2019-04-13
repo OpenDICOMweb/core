@@ -17,7 +17,6 @@ import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
 
-
 /// A [PrivateSubgroup] contains a Private [creator] and a set of Private
 /// Data Elements contained in the [PrivateSubgroup].
 ///
@@ -77,7 +76,6 @@ class PrivateSubgroup {
     final vrIndex = pc.vrIndex;
     if (vrIndex != kLOIndex) log.debug('Bad VR for Private Creator: $pc');
 
-
     if (pc is! PC) {
       var tag = pc.tag;
       if (tag is! PCTagKnown) {
@@ -106,8 +104,8 @@ class PrivateSubgroup {
         if (pdDef != null) {
           final pdTag = PDTagKnown(pdCode, pd.vrIndex, cTag, pdDef);
           pdNew = (pd.vrIndex == kSQIndex)
-          ? TagElement.sqFromTag(sqParent, tag, <TagItem>[])
-          : TagElement.fromTag(pdTag, pd.values, pd.vrIndex);
+              ? TagElement.sqFromTag(sqParent, tag, <TagItem>[])
+              : TagElement.fromTag(pdTag, pd.values, pd.vrIndex);
         }
       }
     }

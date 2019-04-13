@@ -60,15 +60,13 @@ mixin IndenterMixin {
 
   /// Starts a new line then prints [o] at the current indent, but down not
   /// terminate the line.
-  void startln([Object o = '', int count = 1]) =>
-    write('$prefix$o');
+  void startln([Object o = '', int count = 1]) => write('$prefix$o');
 
   /// Appends [o] as a [String] to the current line.
   void add(Object o) => write(o);
 
   /// Appends [o] as a [String] to the current line followed by a newline.
-  void endln([Object o = '', int count = 1]) =>
-    write('$o\n');
+  void endln([Object o = '', int count = 1]) => write('$o\n');
 
   bool get isEmpty => length == 0;
   bool get isNotEmpty => !isEmpty;
@@ -86,9 +84,7 @@ abstract class FastSpaces {
 
   List<String> get spacesList;
 
-  String get prefix => (depth < maxDepth)
-      ? spacesList[depth]
-      : spaces;
+  String get prefix => (depth < maxDepth) ? spacesList[depth] : spaces;
 
   List<String> getSpacesList(int tabSize, [int maxDepth = 12]) {
     final indents = List<String>(maxDepth);

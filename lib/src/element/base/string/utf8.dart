@@ -33,7 +33,7 @@ abstract class Utf8String extends StringBase {
   @override
   bool get isSingleValued => false;
 
-  Bytes get asBytes => Bytes.utf8FromList(values, maxVFLength);
+  Bytes get asBytes => Bytes.utf8FromList(values);
 
   @override
   TypedData get typedData =>

@@ -39,5 +39,5 @@ String dtToDateTimeString(DateTime dt,
     asDicom
         ? '${dtToDateString(dt)}${dtToTimeString(dt)}'
         : '${dtToDateString(dt, asDicom: asDicom)}'
-        '${global.dateTimeSeparator}'
-        '${dtToTimeString(dt, asDicom: asDicom, showFraction: showFraction)}';
+            '${global.dateTimeSeparator}'
+            '${dtToTimeString(dt, asDicom: asDicom, showFraction: showFraction)}';

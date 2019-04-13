@@ -15,6 +15,7 @@ import 'hash.dart';
 class Hash32 extends Hash {
   /// The 32-bit hash seed
   static const int k32BitHashSeed = 17;
+
   /// The 32-bit hash mask.
   static const int k32BitHashMask = 0x1fffffff;
 
@@ -74,7 +75,6 @@ class Hash32 extends Hash {
 //final _byteBuf = new ByteData(4);
 final _float32Buf = Float32List(1);
 final Uint32List _uint32Buf = _float32Buf.buffer.asUint32List();
-
 
 double _float32Hash(double n) {
   _float32Buf[0] = n;

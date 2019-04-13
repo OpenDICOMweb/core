@@ -29,6 +29,7 @@ mixin Int {
 
   static List<int> kEmptyList = <int>[];
 }
+
 /// A mixin class for 8-bit signed integer [Element]s.
 mixin Int8 {
   List<int> get values;
@@ -409,7 +410,7 @@ mixin Int32 {
 /// A mixin class for 64-bit signed integer [Element]s.
 mixin Int64 {
   List<int> get values;
-  Element<int>  update([Iterable<int> vList]);
+  Element<int> update([Iterable<int> vList]);
   // **** End of Interface ****
 
   int get sizeInBytes => kSizeInBytes;

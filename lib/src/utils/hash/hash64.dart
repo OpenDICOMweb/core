@@ -17,6 +17,7 @@ class Hash64 extends Hash {
   /// The 64-bit hash mask.
   // TODO: pick a larger hash seed = odd number > 0xFFFFFFFF
   static const int k64BitHashSeed = Hash.kHashSeed;
+
   /// The 64-bit hash mask.
   static const int k64BitHashMask = 0x1fffffffffffffff;
 
@@ -49,7 +50,6 @@ class Hash64 extends Hash {
   /// A constant hash function.
   static const Hash64 hash = Hash64(Hash.kHashSeed);
 
-
   /// Returns the [hash] of a [double].
   static double floatHash(double n) => hash.doubleHash(n);
 
@@ -80,7 +80,6 @@ class Hash64 extends Hash {
 final _byteBuf = ByteData(8);
 final Float64List _float64Buf = _byteBuf.buffer.asFloat64List();
 final Uint64List _uint64Buf = _byteBuf.buffer.asUint64List();
-
 
 double _float64Hash(double n) {
   _float64Buf[0] = n;

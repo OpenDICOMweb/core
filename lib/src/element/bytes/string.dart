@@ -201,8 +201,8 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
   UIbytes(this.bytes);
 
   @override
-  List<Uid> get uids => Uid.parseList(
-      bytes.getAsciiList(offset: vfOffset, length: vfLength));
+  List<Uid> get uids =>
+      Uid.parseList(bytes.getAsciiList(offset: vfOffset, length: vfLength));
 
   // ignore: prefer_constructors_over_static_methods
   static UIbytes fromBytes(DicomBytes bytes, [Ascii _]) => UIbytes(bytes);
@@ -450,7 +450,9 @@ class UTbytes extends UT with ByteElement<String>, StringMixin, TextMixin {
   @override
   final DicomBytes bytes;
 
-  UTbytes(this.bytes) {print('UTBytes: $bytes'); }
+  UTbytes(this.bytes) {
+    print('UTBytes: $bytes');
+  }
 
   // ignore: prefer_constructors_over_static_methods
   static UTbytes fromBytes(DicomBytes bytes, [Ascii _]) => UTbytes(bytes);

@@ -30,7 +30,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(0, 1);
-        final bytes0 = Bytes.asciiFromList(vList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiFromList(vList0);
         final sList0 = vList0.map((v) => '$v');
         final vList1 = bytes0.getAsciiList();
         final sList1 = vList1.map((v) => '$v');
@@ -81,7 +81,7 @@ void main() {
       final rsg = RSG();
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 10);
-        final bytes0 = Bytes.asciiFromList(vList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiFromList(vList0);
         final bytes = Bytes.ascii(vList0.join('\\'));
         final vList1 = bytes.getAsciiList();
         log

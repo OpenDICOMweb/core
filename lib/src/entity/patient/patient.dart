@@ -76,7 +76,7 @@ class Patient extends Entity {
       Study.fromRootDataset(rds, this);
 
   @override
-  String toPath() =>  '/$uid';
+  String toPath() => '/$uid';
 
   static Patient search(String pid, [PersonName name, Date dob]) =>
       activeStudies.search(pid, name: name, dob: dob);

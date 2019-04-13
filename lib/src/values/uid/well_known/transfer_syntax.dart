@@ -127,7 +127,7 @@ class TransferSyntax extends WKUid {
       '1.2.840.10008.1.2.4.50',
       'JPEGBaseline_1',
       'JPEG Baseline (Process 1) : Default Transfer Syntax for Lossy '
-      'JPEG 8 Bit Image Compression',
+          'JPEG 8 Bit Image Compression',
       'image/jpeg');
 
   static const TransferSyntax kJpegLossy8BitDefault = kJpegBaseline1;
@@ -136,7 +136,7 @@ class TransferSyntax extends WKUid {
       '1.2.840.10008.1.2.4.51',
       'JPEGExtended_2_4',
       'JPEG Extended (Process 2 & 4) : Default Transfer Syntax for '
-      'Lossy JPEG 12 Bit Image Compression (Process 4 only)',
+          'Lossy JPEG 12 Bit Image Compression (Process 4 only)',
       'image/jpeg');
 
   static const TransferSyntax kJpegLossy12BitDefault = kJpegExtended2_4;
@@ -258,8 +258,8 @@ class TransferSyntax extends WKUid {
           '1.2.840.10008.1.2.4.70',
           'JPEGLosslessNonHierarchicalFirst_OrderPrediction_14_1',
           'JPEG Lossless, Non-Hierarchical, First-Order Prediction '
-          '(Process 14 [Selection Value 1]) : Default Transfer Syntax '
-          'for Lossless JPEG Image Compression',
+              '(Process 14 [Selection Value 1]) : Default Transfer Syntax '
+              'for Lossless JPEG Image Compression',
           'image/jpeg');
 
   static const TransferSyntax kJpegLosslessDefault =

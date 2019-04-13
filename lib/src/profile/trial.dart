@@ -76,7 +76,6 @@ class Trial {
     //return profile.parameters[name];
     return null;
   }
-
 }
 
 class Site {

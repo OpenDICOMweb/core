@@ -36,7 +36,6 @@ class MapItem extends Item with MapDataset {
         super(parent ?? item.parent, sequence ?? item.sequence,
             item.dsBytes.bytes);
 
-
   MapItem copy([MapItem item, Dataset parent, SQ sequence]) {
     item ??= this;
     parent ??= item.parent;

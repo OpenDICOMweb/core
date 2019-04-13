@@ -13,12 +13,10 @@ import 'package:core/src/utils/logger/log_record.dart';
 /// Base class for [LogRecord] transformers.
 /// Implements the identify transform [LogRecord] -> [LogRecord].
 class Transformer {
-
   Transformer();
 
   Object call(LogRecord record) => record;
 
   @override
   String toString() => 'Log Transformer($runtimeType)';
-
 }

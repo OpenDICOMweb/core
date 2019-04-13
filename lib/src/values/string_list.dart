@@ -186,7 +186,7 @@ class StringList extends ListBase<String> {
     return StringList._(result);
   }
 
-  Bytes encode([int separator = kBackslash]) =>
+  Bytes encode([String separator = '\\']) =>
       Bytes.utf8FromList(_values, separator);
 
   static final StringList kEmptyList = StringList._(kEmptyStringList);
@@ -210,18 +210,19 @@ class AsciiList extends StringList {
   }
 
   @override
-  Bytes encode([int separator = kBackslash, int pad]) {
+  Bytes encode([String separator = '\\', int pad]) {
     var length = lengthInBytes;
     if (pad != null && length.isOdd) length++;
     final last = length - 1;
     final bytes = Bytes(length);
+    final sep = separator.codeUnitAt(0);
     int j;
     for (final s in _values) {
       for (var i = 0; i < s.length; i++) {
         final c = s.codeUnitAt(i);
         if (c > kDel) invalidCharacterInString(s, i);
         bytes[j++] = c;
-        if (i < last) bytes[j++] = separator;
+        if (i < last) bytes[j++] = sep;
       }
     }
     if (pad != null && length.isOdd) bytes[j++] = pad;

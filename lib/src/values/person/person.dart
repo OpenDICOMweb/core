@@ -19,7 +19,6 @@ class Person {
   /// Their date of birth.
   final Date dateOfBirth;
 
-  
   /// Their sex.
   final Sex sex;
 

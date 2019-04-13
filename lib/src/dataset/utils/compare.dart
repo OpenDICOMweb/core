@@ -75,8 +75,7 @@ class Compare {
 
   void compareElements(Element eo, Element e1) {
     // log.debug('Elements:\n\te0: $eo\n\te1: $e1');
-    if (eo.tag != e1.tag)
-      throw ArgumentError('Incomparable Tags: $eo, $e1');
+    if (eo.tag != e1.tag) throw ArgumentError('Incomparable Tags: $eo, $e1');
     if (eo.vrIndex != e1.vrIndex)
       throw ArgumentError('VRs are not equivalent: $eo, $e1');
     return (eo is SQ) ? compareSequences(eo, e1) : compareValues(eo, e1);

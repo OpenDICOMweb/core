@@ -41,20 +41,25 @@ class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
       : super.typedDataView(td, offset, lengthInBytes, endian, limit);
 }
 
+/// A mixin for a Dicom Writer.
 mixin DicomWriterMixin {
-  ByteData bd;
+  ByteData get bd;
 // **** End of Interface
 
-  /// Returns the Tag Code from [Bytes].
+  /// Returns the Tag Code from _this_.
   void setCode(int code) {
     bd..setUint16(0, code >> 16)..setUint16(2, code & 0xFFFF);
   }
 
+  /// Returns the VR Code from _this_.
   void setVRCode(int vrCode) {
     bd..setUint8(4, vrCode >> 8)..setUint8(5, vrCode & 0xFF);
   }
 
+  /// Returns the short Value Length Field from _this_.
   void setShortVLF(int vlf) => bd.setUint16(6, vlf);
+
+  /// Returns the long Value Length Field from _this_.
   void setLongVLF(int vlf) => bd.setUint32(8, vlf);
 
   /// Write a short EVR header.
@@ -83,6 +88,4 @@ mixin DicomWriterMixin {
       ..setUint16(2, code & 0xFFFF)
       ..setUint32(4, vlf);
   }
-
-
 }

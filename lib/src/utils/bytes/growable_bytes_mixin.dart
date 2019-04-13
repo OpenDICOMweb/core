@@ -34,7 +34,6 @@ mixin GrowableBytesMixin {
   /// [minLength == null, at least double the length of the current buffer;
   /// and then copies the contents of the current buffer into the new buffer.
   /// Finally, the new buffer becomes the buffer for _this_.
-  @override
   bool grow([int minLength]) {
     final old = buf;
     buf = _grow(old, minLength ??= old.lengthInBytes * 2);
@@ -65,9 +64,4 @@ Uint8List _reallyGrow(Uint8List bd, int minLength) {
   final newBD = Uint8List(newLength);
   for (var i = 0; i < bd.lengthInBytes; i++) newBD[i] = bd[i];
   return newBD;
-}
-
-bool checkAllZeros(ByteData bd, int start, int end) {
-  for (var i = start; i < end; i++) if (bd.getUint8(i) != 0) return false;
-  return true;
 }

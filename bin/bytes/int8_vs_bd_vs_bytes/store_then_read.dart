@@ -19,9 +19,9 @@ void main(List<String> args) {
   var total0 = 0;
   var total1 = 0;
   var total2 = 0;
-  var total3 = 0;
   int v;
 
+  print('Store, then Read: ${DateTime.now()}');
   var length = 4;
   final timer = Stopwatch()..start();
 
@@ -65,27 +65,16 @@ void main(List<String> args) {
     final time2 = end - start;
     total2 += time2;
 
-    // Bytes bd
-    start = timer.elapsedMicroseconds;
-    for (var j = 0; j < repetitions; j++) {
-      for (var k = 0; k < length; k++) {
-        bytes.setUint8(k, 1);
-        v = bytes.getUint8(k);
-      }
-    }
-    end = timer.elapsedMicroseconds;
-    final time3 = end - start;
-    total3 += time3;
-
     assert(v == 1);
 
-    print('$i\t$length\tuint8\t$time0\tbd $time1'
-        '\tbytes[]\t$time2\tbytes*\t$time3'
-        '\tratio ${time1 / time0}\t${time2 / time0}\t${time3 / time0}');
+    print('$i\t$length\tuint8\t$time0\tbd $time1\tbytes[]\t$time2'
+        '\tratio ${time1 / time0}\t${time2 / time0}');
 
     length *= 2;
   }
-  print('store then read\n\t\tuint8\t$total0\tbd0 $total1'
-      '\tbytes[]\t$total2\tbytes*\t$total3'
-      '\tratio\t${total1 / total0}\t${total2 / total0}\t${total3 / total0}');
+
+  final total = timer.elapsedMicroseconds;
+  print('store then read\n\t\tuint8\t$total0\tbd $total1\tbytes[]\t$total2'
+      '\tratio\t${total1 / total0}\t${total2 / total0}');
+  print('total elapsed us: $total');
 }

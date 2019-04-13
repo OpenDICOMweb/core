@@ -1,4 +1,4 @@
-  //  Copyright (c) 2016, 2017, 2018,
+//  Copyright (c) 2016, 2017, 2018,
 //  Poplar Hill Informatics and the American College of Radiology
 //  All rights reserved.
 //  Use of this source code is governed by the open source license
@@ -28,9 +28,8 @@ const int planarConfigSize = 16;
 
 // PixelAspectRatio defaults to 1
 abstract class ImageBase {
-
-   int get data0;
-   int get data1;
+  int get data0;
+  int get data1;
 
 //  set frameCount(int n) => (n < 1 || n > kMaxUint16)
 //      ? badFrameCount(n)
@@ -66,9 +65,7 @@ class Frames extends ImageBase {
 
   Frames(this.data0, this.data1);
 
-
   int get frameCount => data1 >> 32;
-
 }
 
 abstract class UnsignedPixelsMixin {}

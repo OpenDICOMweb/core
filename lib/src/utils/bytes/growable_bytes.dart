@@ -29,10 +29,12 @@ class GrowableBytes extends Bytes with GrowableBytesMixin {
   GrowableBytes._(int length, Endian endian, this.limit)
       : super(length, endian);
 
+  /// Returns a copy of the specified region and endianness of [Bytes].
   GrowableBytes.from(Bytes bytes,
       [int offset = 0, int length, Endian endian, this.limit = k1GB])
       : super.from(bytes, offset, length, endian);
 
+  /// Returns a view of [td].
   GrowableBytes.typedDataView(TypedData td,
       [int offset = 0,
       int lengthInBytes,
@@ -41,8 +43,9 @@ class GrowableBytes extends Bytes with GrowableBytesMixin {
       : limit = limit ?? k1GB,
         super.typedDataView(td, offset, lengthInBytes, endian);
 
-
+  /// 1 gigabyte.
   static const int k1GB = 1024 * 1024;
+
+  /// The maximum length of a [GrowableBytes].
   static const int kMaximumLength = k1GB;
 }
-

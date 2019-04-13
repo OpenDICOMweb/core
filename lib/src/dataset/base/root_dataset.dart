@@ -146,8 +146,7 @@ abstract class RootDataset extends Dataset {
 
   int get nSequences => counter((e) => e is SQ);
   int get nPrivate => counter((e) => isPrivateCode(e.code));
-  int get nPrivateSequences =>
-      counter((e) => isPrivateCode(e.code) && e is SQ);
+  int get nPrivateSequences => counter((e) => isPrivateCode(e.code) && e is SQ);
 
   /// Returns a formatted summary of _this_.
   String get summary {

@@ -796,30 +796,30 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         global.throwOnError = false;
-        final toB0 = Bytes.fromUtf8List(vList0, kMaxShortVF);
+        final toB0 = Bytes.fromUtf8List(vList0);
         final bytes0 = Bytes.fromAscii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (final s in goodUTList) {
-        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
+        final toB1 = Bytes.fromUtf8List(s);
         final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
+      final toB2 = Bytes.fromUtf8List(['']);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
+      final toB3 = Bytes.fromUtf8List([]);
       expect(toB3, equals(<String>[]));
       */ /*system.throwOnError = false;
-      final toB2 = Bytes.fromUtf8List([null], kMaxShortVF);
+      final toB2 = Bytes.fromUtf8List([null]);
       expect(toB2, isNull);
 
       system.throwOnError = true;
-      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+      expect(() => Bytes.fromUtf8List(null),
           throwsA(const TypeMatcher<GeneralError>()));*/ /*
     });*/
 
@@ -884,30 +884,30 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         global.throwOnError = false;
-        final toB0 = Bytes.utf8FromList(vList0, kMaxShortVF);
+        final toB0 = Bytes.utf8FromList(vList0);
         final bytes0 = Bytes.ascii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (final s in goodUTList) {
-        final toB1 = Bytes.utf8FromList(s, kMaxShortVF);
+        final toB1 = Bytes.utf8FromList(s);
         final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      final toB2 = Bytes.utf8FromList([''], kMaxShortVF);
+      final toB2 = Bytes.utf8FromList(['']);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.utf8FromList([], kMaxShortVF);
+      final toB3 = Bytes.utf8FromList([]);
       expect(toB3, equals(<String>[]));
       /*global.throwOnError = false;
-      final toB2 = Bytes.fromUtf8List([null], kMaxShortVF);
+      final toB2 = Bytes.fromUtf8List([null]);
       expect(toB2, isNull);
 
       global.throwOnError = true;
-      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+      expect(() => Bytes.fromUtf8List(null),
           throwsA(const TypeMatcher<GeneralError>()));*/
     });
 

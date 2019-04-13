@@ -12,7 +12,7 @@ import 'package:core/src/global.dart';
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: prefer_void_to_null
 
-typedef OnAgeError= int Function(String s);
+typedef OnAgeError = int Function(String s);
 
 class DateTimeError extends Error {
   final String message;

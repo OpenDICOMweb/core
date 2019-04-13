@@ -178,7 +178,6 @@ const List<int> deIdRemoveCodes = <int>[
   kDataSetTrailingPadding,
 ];
 
-
 const List<PTag> deIdRemoveTags = <PTag>[
   PTag.kOverlayTime,
   PTag.kCurveTime,
@@ -346,7 +345,6 @@ const List<PTag> deIdRemoveTags = <PTag>[
   PTag.kDataSetTrailingPadding,
 ];
 
-
 const Map<int, String> deIdRemoveCodeToKeywordMap = <int, String>{
   0x00080034: 'OverlayTime',
   0x00080035: 'CurveTime',
@@ -513,5 +511,3 @@ const Map<int, String> deIdRemoveCodeToKeywordMap = <int, String>{
   0xfffafffa: 'DigitalSignaturesSequence',
   0xfffcfffc: 'DataSetTrailingPadding',
 };
-
-

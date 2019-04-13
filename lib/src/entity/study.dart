@@ -41,10 +41,13 @@ class Study extends Entity {
   IELevel get level => IELevel.study;
   @override
   Type get childType => Series;
+
   /// Returns the [parent] of _this_ Study.
   Patient get patient => parent;
+
   /// Returns the [parent] of _this_ Study.
   Patient get subject => parent;
+
   /// Returns the [Series] of this [Study].
   Iterable<Series> get series => childMap.values;
 

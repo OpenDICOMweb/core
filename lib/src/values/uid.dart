@@ -13,4 +13,3 @@ export 'package:core/src/values/uid/uid.dart';
 export 'package:core/src/values/uid/uid_errors.dart';
 export 'package:core/src/values/uid/uid_string.dart';
 export 'package:core/src/values/uid/well_known_uids.dart';
-

@@ -7051,7 +7051,7 @@ class PTag extends Tag {
           'GeneralizedDefectCorrectedSensitivityDeviationProbabilityValue',
           0x00240104,
           'Generalized Defect Corrected Sensitivity '
-          'Deviation Probability Value',
+              'Deviation Probability Value',
           kFLIndex,
           VM.k1,
           false);

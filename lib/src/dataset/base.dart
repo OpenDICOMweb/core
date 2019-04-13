@@ -21,6 +21,5 @@ export 'package:core/src/dataset/base/summary.dart';
 export 'package:core/src/element/base/tag_utils.dart';
 export 'package:core/src/error/dataset_errors.dart';
 
-
 // TODO: needed
 //export 'package:core/src/dataset/base/fmi.dart';

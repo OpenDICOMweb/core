@@ -59,8 +59,7 @@ mixin TagPixelData {
 ///
 // _Note_: Pixel Data Tag Elements do not have [VFFragments].
 //         [VFFragments] must be converted before they are created.
-class OBtagPixelData extends OB
-    with PixelDataMixin, TagPixelData, OBPixelData {
+class OBtagPixelData extends OB with PixelDataMixin, TagPixelData, OBPixelData {
   @override
   List<int> _values;
 
@@ -187,7 +186,6 @@ class OWtagPixelData extends OW
 
   factory OWtagPixelData.fromBulkdata(Uri url, [TransferSyntax ts]) =>
       OWtagPixelData(IntBulkdataRef(kPixelData, url), ts);
-
 
   OWtagPixelData._(this._values, [this.ts]) : assert(_values is Uint16List);
 

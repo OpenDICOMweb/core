@@ -171,6 +171,7 @@ mixin DicomBytesMixin {
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
+  /// If _true_ padding characters will not be included in the equality test.
   bool ignorePadding = true;
 
   @override

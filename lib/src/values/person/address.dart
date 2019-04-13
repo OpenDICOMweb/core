@@ -34,5 +34,5 @@ class Address {
   //TODO add address parser and address type
   /// Creates an instance of _this_.
   Address(this.type, this.street1, this.city, this.state, this.postalCode,
-          [this.street2 = '', this.country = 'USA']);
+      [this.street2 = '', this.country = 'USA']);
 }

@@ -32,7 +32,6 @@ bool isValidLength(int length, int max, {bool onError(int length, int max)}) {
   return onError(length, max);
 }
 
-
 final Bytes kEmptyBytes = Bytes.kEmptyBytes;
 
 const List<String> kEmptyStringList = <String>[];
@@ -54,5 +53,3 @@ final Float32List kEmptyFloat32List = Float32List(0);
 final Float64List kEmptyFloat64List = Float64List(0);
 
 final ByteData kEmptyByteData = ByteData(0);
-
-

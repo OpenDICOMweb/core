@@ -45,12 +45,11 @@ class Server extends Global {
       bool showSdkBanner = false})
       : super(
             name: name,
-      minYear: minYear,
-      maxYear: maxYear,
-      hasher: hasher,
+            minYear: minYear,
+            maxYear: maxYear,
+            hasher: hasher,
             version: (version == null) ? Version(0, 6, 1) : version,
             buildNumber: buildNumber,
-
             mediaStorageSopClassUid: mediaStorageSopClassUid,
             mediaStorageSopInstanceUid: mediaStorageSopInstanceUid,
             implementationClassUid: implementationClassUid,

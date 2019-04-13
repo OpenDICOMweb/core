@@ -29,7 +29,7 @@ class FileHandler {
         _doPrint = doPrint;
 
   /// Write the [LogRecord] to the File.
-  String call(LogRecord record, {bool flush = false})  {
+  String call(LogRecord record, {bool flush = false}) {
     final entry = '$record\n';
     final shouldFlush = doFlush || flush;
     if (isAsync) {

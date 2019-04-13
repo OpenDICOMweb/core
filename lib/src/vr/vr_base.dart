@@ -21,8 +21,7 @@ const int kOWIndex = 3;
 bool isMaybeUndefinedLengthVR(int vrIndex) =>
     vrIndex >= kUNIndex && vrIndex <= kOWIndex;
 
-bool isUndefinedLengthAllowed(int vrIndex) =>
-    isMaybeUndefinedLengthVR(vrIndex);
+bool isUndefinedLengthAllowed(int vrIndex) => isMaybeUndefinedLengthVR(vrIndex);
 
 // Defined Long EVRs
 const int kODIndex = 4; // Defined Long EVR Min, Defined Long Int EVR Min

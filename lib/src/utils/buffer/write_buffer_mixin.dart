@@ -38,7 +38,6 @@ mixin WriteBufferMixin {
   ByteData asByteData([int offset, int length]) =>
       bytes.buf.buffer.asByteData(offset, length);
 
-
   // **** WriteBuffer specific Getters and Methods
 
   int get length => bytes.length;

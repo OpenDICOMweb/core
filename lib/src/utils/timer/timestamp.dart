@@ -51,9 +51,8 @@ class Timestamp {
       '${dt.hour}:${dt.minute}:${dt.second}.${dt.millisecond}';
 
   /// Returns a formatted String of the time component including microseconds.
-  String get microsecond =>
-      '${dt.hour}:${dt.minute}:${dt.second}.'
-          '${dt.millisecond},${dt.microsecond}';
+  String get microsecond => '${dt.hour}:${dt.minute}:${dt.second}.'
+      '${dt.millisecond},${dt.microsecond}';
 
   /// Returns the name of the Time Zone for _this_.
   String get tzName => dt.timeZoneName;

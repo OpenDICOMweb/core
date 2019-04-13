@@ -18,8 +18,10 @@ import 'package:core/src/values/bulkdata/bulkdata_file.dart';
 class Bulkdata {
   /// Dicom Tag Code
   int code;
+
   /// The byte offset of this in the Bulkdata File.
   int offset;
+
   /// Value Field
   Bytes vf;
 
@@ -27,6 +29,3 @@ class Bulkdata {
 
   int get length => vf.length;
 }
-
-
-

@@ -21,7 +21,6 @@ import 'package:core/src/values.dart';
 
 String cleanPath(String path) => path.replaceAll('\\', '/');
 
-
 /// Checks that [file] is not empty.
 void checkFile(File file, {bool overWrite = false}) {
   if (file == null) throw ArgumentError('null File');
@@ -65,7 +64,6 @@ String getVNAPath(RootDataset rds, String rootDir, String ext) {
       : '$dirPath$instance.$ext';
 }
 
-
 /// Returns a [Uid] value for the [UI] [Element] with [index].
 /// If the [Element] is not present or if the [Element] has more
 /// than one value, either throws or returns _null_.
@@ -97,5 +95,3 @@ List<File> getFilesFromDirectory(String source, [String ext = '.dcm']) {
     if (e is File && path.extension(e.path) == ext) files.add(e);
   return files;
 }
-
-

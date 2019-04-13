@@ -25,7 +25,7 @@ class LogList {
 }
 
 class ListHandler extends HandlerBase {
-  final List<LogRecord>logEntries = <LogRecord>[];
+  final List<LogRecord> logEntries = <LogRecord>[];
   final String name;
 
   ListHandler(this.name, {bool doPrint = true}) : super(doPrint: doPrint);
@@ -39,8 +39,8 @@ class ListHandler extends HandlerBase {
 
   @override
   String toString() {
-  	final sb = StringBuffer('ListHandler: $name\n');
-    for(final v in logEntries) sb.write('  $v\n');
+    final sb = StringBuffer('ListHandler: $name\n');
+    for (final v in logEntries) sb.write('  $v\n');
     return sb.toString();
   }
 }

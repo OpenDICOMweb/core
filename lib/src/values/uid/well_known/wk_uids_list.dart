@@ -18,7 +18,6 @@ import 'package:core/src/values/uid/well_known/sop_instance.dart';
 import 'package:core/src/values/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/values/uid/well_known/wk_uid.dart';
 
-
 /// This library contains compile time constant definitions of
 /// "Well Known" [SopClass]s and there corresponding [String] values.
 const List<WKUid> wkUids = [
@@ -94,11 +93,11 @@ const List<WKUid> wkUids = [
   SopClass.kStorageCommitmentPushModel,
   SopInstance.kStorageCommitmentPushModel,
   SopClass.kStorageCommitmentPullModel,
-  SopInstance .kStorageCommitmentPullModel,
+  SopInstance.kStorageCommitmentPullModel,
   SopClass.kProceduralEventLogging,
-  SopInstance .kProceduralEventLogging,
+  SopInstance.kProceduralEventLogging,
   SopClass.kSubstanceAdministrationLogging,
-  SopInstance .kSubstanceAdministrationLogging,
+  SopInstance.kSubstanceAdministrationLogging,
   CodingSchemeUid.kDicomUIDRegistry,
   CodingSchemeUid.kDicomControlledTerminology,
   WKUid.kDicomApplicationContextName,
@@ -126,15 +125,15 @@ const List<WKUid> wkUids = [
   SopClass.kBasicAnnotationBox,
   SopClass.kPrinter,
   SopClass.kPrinterConfigurationRetrieval,
-  SopInstance .kPrinter,
-  SopInstance .kPrinterConfigurationRetrieval,
+  SopInstance.kPrinter,
+  SopInstance.kPrinterConfigurationRetrieval,
   MetaSopClass.kBasicColorPrintManagement,
   MetaSopClass.kReferencedColorPrintManagement,
   SopClass.kVOILUTBox,
   SopClass.kPresentationLUT,
   SopClass.kImageOverlayBox,
   SopClass.kBasicPrintImageOverlayBox,
-  SopInstance  .kPrintQueue,
+  SopInstance.kPrintQueue,
   SopClass.kPrintQueueManagement,
   SopClass.kStoredPrintStorage,
   SopClass.kHardcopyGrayscaleImageStorage,
