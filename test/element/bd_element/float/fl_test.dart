@@ -227,7 +227,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -256,7 +256,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -285,7 +285,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -314,7 +314,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -342,7 +342,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -370,7 +370,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -398,7 +398,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);

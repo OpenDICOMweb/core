@@ -70,7 +70,7 @@ abstract class BytesBuffer {
   // ****  External Getters
 
   /// The maximum [length] of _this_.
-  int get limit => bytes.limit;
+  int get limit => bytes.length;
 
   /// The endianness of _this_.
   Endian get endian => bytes.endian;

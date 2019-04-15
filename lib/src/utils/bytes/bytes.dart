@@ -10,7 +10,6 @@ library odw.sdk.utils.bytes;
 
 import 'dart:collection';
 import 'dart:convert' as cvt;
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:core/src/system.dart';
@@ -37,10 +36,23 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
   Endian endian;
 
+  Uint8List get buf => _buf;
   @override
   ByteData get _bd => __bd ??= _buf.buffer.asByteData(_buf.offsetInBytes);
 
   ByteData get bd => _bd;
+
+  // **** TypedData interface.
+  int get elementSizeInBytes => 1;
+
+  int get offset => _buf.offsetInBytes;
+
+  int get length => _buf.length;
+  set length(int length) =>
+      throw UnsupportedError('$runtimeType: length is not modifiable');
+
+  ByteBuffer get buffer => _buf.buffer;
+
 
 
   /// Creates a new [Bytes] containing [length] zero elements.
@@ -80,6 +92,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
       : endian = endian ?? Endian.host,
         _buf = (list is Uint8List) ? list : Uint8List.fromList(list);
 
+/*
   // TODO: Either remove fromFile and fromPath or add doAsync
 
   /// Returns a [Bytes] buffer containing the contents of [File].
@@ -94,6 +107,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   factory Bytes.fromPath(String path,
           {Endian endian = Endian.little, bool doAsync = false}) =>
       Bytes.fromFile(File(path), endian: endian, doAsync: doAsync);
+*/
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
   factory Bytes.fromBase64(String s, {bool padToEvenLength = false}) {
@@ -210,7 +224,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
   int get hashCode {
     var hashCode = 0;
-    for (var i = 0; i < bdLength; i++) hashCode += _buf[i] + i;
+    for (var i = 0; i < length; i++) hashCode += _buf[i] + i;
     return hashCode;
   }
 

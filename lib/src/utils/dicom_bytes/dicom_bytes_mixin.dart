@@ -17,18 +17,18 @@ import 'package:core/src/utils/primitives.dart';
 // ignore_for_file: public_member_api_docs
 
 mixin DicomBytesMixin {
-  bool get isEvr;
+  Uint8List get buf;
   ByteData get bd;
+  bool get isEvr;
   int get vrCode;
   int get vrIndex;
   String get vrId;
   Endian get endian;
-  int get bdOffset;
-  int get bdLength;
+  int get offset;
+  int get length;
   int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
-  int get length;
 
   int getUint16(int offset);
   int getUint8(int offset);
@@ -82,27 +82,24 @@ mixin DicomBytesMixin {
   Tag get tag => Tag.lookup(code);
 
   /// Returns the length in bytes of _this_ Element.
-  int get eLength => bdLength;
+//  int get eLength => bdLength;
 
   /// Returns _true_ if [vfLengthField] equals [kUndefinedLength].
   bool get hasUndefinedLength => vfLengthField == kUndefinedLength;
 
   /// Returns the actual length of the Value Field.
-  int get vfLength => bdLength - vfOffset;
+  int get vfLength => length - vfOffset;
 
   /// Returns the Value Field bytes.
   Bytes get vfBytes => asBytes(vfOffset, vfLength);
 
   /// Returns the last Uint8 element in [vfBytes], if [vfBytes]
   /// is not empty; otherwise, returns _null_.
-  int get vfBytesLast {
-    final len = eLength;
-    return (len == 0) ? null : getUint8(len - 1);
-  }
+  int get vfBytesLast => (length == 0) ? null : getUint8(length - 1);
 
   /// Returns the Value Field as a Uint8List.
   Uint8List get vfUint8List =>
-      bd.buffer.asUint8List(bdOffset + vfOffset, vfLength);
+      bd.buffer.asUint8List(offset + vfOffset, vfLength);
 
   // ** Primitive Getters
 
@@ -199,7 +196,7 @@ mixin DicomBytesMixin {
   // Allows the removal of padding characters.
   Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {
     assert(padChar == null || padChar == kSpace || padChar == kNull);
-    length ??= eLength;
+    length ??= buf.length;
     return (length == 0)
         ? kEmptyUint8List
         : bd.buffer.asUint8List(bd.offsetInBytes + offset, length - offset);
