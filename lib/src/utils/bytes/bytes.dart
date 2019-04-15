@@ -6,13 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-library odw.sdk.utils.bytes;
-
 import 'dart:collection';
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/src/system.dart';
+//import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes/bytes_mixin.dart';
 import 'package:core/src/utils/character/charset.dart';
 
@@ -38,7 +36,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// to [Endian.little].
   Bytes([int length = kDefaultLength, Endian endian = Endian.little])
       : endian = endian ?? Endian.little,
-        buf = Uint8List(length ?? k1MB);
+        buf = Uint8List(length ?? 1024 * 1024); //1MB
 
   /// Returns a view of the specified region of _this_.
   Bytes.view(Bytes bytes,
