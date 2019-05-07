@@ -119,7 +119,7 @@ void main() {
       rds0[of.code] = of;
       rds0[fd.code] = fd;
       rds0[od.code] = od;
-      itemsList = <TagItem>[]..add(TagItem.fromList(rds, rds0));
+      itemsList = <TagItem>[TagItem.fromList(rds, rds0)];
 
       final sq2 = sq.update(itemsList);
       log.debug(sq2.info);
@@ -141,7 +141,7 @@ void main() {
       rds0[of.code] = of;
       rds0[fd.code] = fd;
       rds0[od.code] = od;
-      itemsList = <TagItem>[]..add(TagItem.fromList(rds, rds0));
+      itemsList = <TagItem>[TagItem.fromList(rds, rds0)];
       final sq2 = sq.update(itemsList);
       expect(sq2.values.isEmpty, false);
       log.debug('sq2.items: ${sq2.items}');
@@ -172,7 +172,7 @@ void main() {
       rds0[sh.code] = sh;
       rds0[fd.code] = fd;
 
-      final itemsList = <TagItem>[]..add(TagItem.fromList(rds0, rds0));
+      final itemsList = <TagItem>[TagItem.fromList(rds0, rds0)];
       final sq = SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
 
       global.throwOnError = false;
@@ -209,7 +209,7 @@ void main() {
       rds0[sh.code] = sh;
       rds0[fd.code] = fd;
 
-      final itemsList = <TagItem>[]..add(TagItem.fromList(rds0, rds0));
+      final itemsList = <TagItem>[TagItem.fromList(rds0, rds0)];
       final sq = SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
 
       global.throwOnError = false;
