@@ -202,7 +202,7 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
 
   @override
   List<Uid> get uids =>
-      Uid.parseList(bytes.getAsciiList(offset: vfOffset, length: vfLength));
+      Uid.parseList(bytes.getAsciiList(offset: vfOffset, length: bytes.length));
 
   // ignore: prefer_constructors_over_static_methods
   static UIbytes fromBytes(DicomBytes bytes, [Ascii _]) => UIbytes(bytes);

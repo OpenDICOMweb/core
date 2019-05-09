@@ -28,9 +28,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
   Endian endian;
 
-  @override
-  ByteData get bd => _bd ??= buf.buffer.asByteData(buf.offsetInBytes);
-
   /// Creates a new [Bytes] containing [length] zero elements.
   /// [length] defaults to [kDefaultLength] and [endian] defaults
   /// to [Endian.little].
@@ -163,6 +160,9 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
 
   @override
   void operator []=(int i, int v) => buf[i] = v;
+
+  @override
+  ByteData get bd => _bd ??= buf.buffer.asByteData(buf.offsetInBytes);
 
   /// Minimum [Bytes] length.
   static const int kMinLength = 16;

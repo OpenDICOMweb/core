@@ -222,8 +222,8 @@ mixin BytesMixin {
   /// view of the specified region; otherwise, creates a [Int64List] that
   /// is a copy of the specified region and returns it.
   Int64List asInt64List([int offset = 0, int length]) {
-    final index = _absIndex(offset);
     length ??= _length64(offset);
+    final index = _absIndex(offset);
     return (_isAligned64(index))
         ? buf.buffer.asInt64List(index, length)
         : getInt64List(offset, length);
@@ -284,8 +284,8 @@ mixin BytesMixin {
   /// view of the specified region; otherwise, creates a [Float64List] that
   /// is a copy of the specified region and returns it.
   Float64List asFloat64List([int offset = 0, int length]) {
-    final index = _absIndex(offset);
     length ??= _length64(offset);
+    final index = _absIndex(offset);
     return (_isAligned64(index))
         ? buf.buffer.asFloat64List(index, length)
         : getFloat64List(offset, length);
@@ -300,7 +300,7 @@ mixin BytesMixin {
 
   /// Creates an [Int8List] copy of the specified region of _this_.
   ByteData getByteData([int offset = 0, int length]) =>
-      getUint8List(offset, length).buffer.asByteData();
+      getUint8List(offset, length ?? buf.length).buffer.asByteData();
 
   /// Creates an [Int8List] copy of the specified region of _this_.
   Int8List getInt8List([int start = 0, int length]) =>
@@ -390,7 +390,7 @@ mixin BytesMixin {
   /// Returns a [String] containing a _Base64_ encoding of the specified
   /// region of _this_.
   String getBase64([int offset = 0, int length]) {
-    final bList = asUint8List(offset, length);
+    final bList = asUint8List(offset, length ?? buf.length);
     return bList.isEmpty ? '' : cvt.base64.encode(bList);
   }
 
@@ -567,7 +567,7 @@ mixin BytesMixin {
   int setUint8List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
     _checkRange(offset, length);
-    for (var i = start, j = offset; i < length; i++, j++) buf[i] = list[j];
+    for (var i = offset, j = start; i < length; i++, j++) buf[j] = list[i];
     return length;
   }
 
@@ -667,13 +667,14 @@ mixin BytesMixin {
   /// Copies [length] bytes from other starting at offset into _this_
   /// starting at [start]. [length] defaults [bytes].length.
   void setBytes(int start, Bytes bytes, [int offset = 0, int length]) {
-    length ?? bytes.length;
+    length ??= bytes.length;
     _checkRange(offset, length);
-    for (var i = start, j = offset; i < length; i++, j++) buf[i] = bytes[j];
+    for (var i = offset, j = start; i < length; i++, j++) buf[j] = bytes[i];
   }
 
   void setByteData(int start, ByteData bd, [int offset = 0, int length]) =>
-      setUint8List(start, bd.buffer.asUint8List(), offset, length);
+      setUint8List(
+          start, bd.buffer.asUint8List(), offset, length ?? bd.lengthInBytes);
 
   // **** String List Setters
 // Urgent: Move this to DicomBytesMixin

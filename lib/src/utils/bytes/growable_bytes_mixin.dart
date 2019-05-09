@@ -47,21 +47,21 @@ mixin GrowableBytesMixin {
 }
 
 /// If [minLength] is less than or equal to the current length of
-/// [bd] returns [bd]; otherwise, returns a new [ByteData] with a length
+/// [buf] returns [buf]; otherwise, returns a new [ByteData] with a length
 /// of at least [minLength].
-Uint8List _grow(Uint8List bd, int minLength) {
-  final oldLength = bd.lengthInBytes;
-  return (minLength <= oldLength) ? bd : _reallyGrow(bd, minLength);
+Uint8List _grow(Uint8List buf, int minLength) {
+  final oldLength = buf.lengthInBytes;
+  return (minLength <= oldLength) ? buf : _reallyGrow(buf, minLength);
 }
 
 /// Returns a new [ByteData] with length at least [minLength].
-Uint8List _reallyGrow(Uint8List bd, int minLength) {
+Uint8List _reallyGrow(Uint8List buf, int minLength) {
   var newLength = minLength;
   do {
     newLength *= 2;
     if (newLength >= kDefaultLimit) return null;
   } while (newLength < minLength);
   final newBD = Uint8List(newLength);
-  for (var i = 0; i < bd.lengthInBytes; i++) newBD[i] = bd[i];
+  for (var i = 0; i < buf.lengthInBytes; i++) newBD[i] = buf[i];
   return newBD;
 }

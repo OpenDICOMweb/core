@@ -24,10 +24,10 @@ abstract class DSBytes {
   int get dsStart => bytes.offset;
 
   /// The number of bytes from the beginning to the end of the Dataset.
-  int get dsLength => bytes.length;
+  int get length => bytes.length;
 
   /// The index of the last byte of the Dataset in [bytes].
-  int get dsEnd => dsStart + dsLength;
+  int get dsEnd => dsStart + length;
 
   /// The length of the entire Dataset including header, trailer, preamble, etc.
   // int get eLength => bd.length;
@@ -132,7 +132,7 @@ class RDSBytes extends DSBytes {
       hasPrefix ? bytes.sublist(bytes.offset, 132) : Bytes.kDefaultLength;
 
   @override
-  int get vfLength => dsLength - 132;
+  int get vfLength => length - 132;
   @override
   int get vfLengthField => vfLength;
 
@@ -143,9 +143,9 @@ class RDSBytes extends DSBytes {
   @override
   String toString() {
     final fmiLength = fmiEnd - 132;
-    final dsLength = dsEnd - dsStart;
+    final dsLength = dsEnd - fmiEnd;
     return '$runtimeType: FMI 132-$fmiEnd:$fmiLength '
-        'RDS $dsStart-$dsEnd:$dsLength';
+        'RDS $fmiEnd-$dsEnd:$dsLength Bytes ${bytes.length}';
   }
 
   static const int kPreambleOffset = 0;
@@ -178,16 +178,16 @@ class IDSBytes extends DSBytes {
 
   /// The actual length of the Value Field for _this_
   @override
-  int get vfLength => dsLength - 8;
+  int get vfLength => length - 8;
 
   /// Returns the values in the Value Field Length field.
   @override
   int get vfLengthField => bytes.getUint32(kVFLengthFieldOffset);
 
   int get endDelimiter =>
-      hasULength ? getUint32(dsLength - kTrailerSize) : null;
+      hasULength ? getUint32(length - kTrailerSize) : null;
   int get trailerLengthField =>
-      hasULength ? getUint32(dsLength - kTrailerSize) : 0;
+      hasULength ? getUint32(length - kTrailerSize) : 0;
 
   bool get isValidItem =>
       startDelimiter == kStartDelimiter && hasValidEndDelimiter;

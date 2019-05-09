@@ -52,11 +52,11 @@ class ReadBuffer extends ReadBufferBase with ReadBufferMixin {
         _wIndex = length ?? rb.bytes.length;
 
   /// Creates a [ReadBuffer] from a [ByteData].
-  ReadBuffer.fromByteData(ByteData bd,
+  ReadBuffer.fromByteData(ByteData td,
       [int offset, int length, Endian endian = Endian.little])
-      : bytes = Bytes.typedDataView(bd, offset, length, endian),
-        _rIndex = offset ?? bd.offsetInBytes,
-        _wIndex = length ?? bd.lengthInBytes;
+      : bytes = Bytes.typedDataView(td, offset, length, endian),
+        _rIndex = offset ?? td.offsetInBytes,
+        _wIndex = length ?? td.lengthInBytes;
 
   /// Creates a [ReadBuffer] from an [List<int>].
   ReadBuffer.fromList(List<int> list, [Endian endian = Endian.little])
@@ -98,16 +98,16 @@ mixin LoggingReadBufferMixin {
 /// A [ReadBuffer] that logs calls to methods.
 class LoggingReadBuffer extends ReadBuffer with LoggingReadBufferMixin {
   /// Creates a [LoggingReadBuffer] from [ByteData].
-  factory LoggingReadBuffer(ByteData bd,
+  factory LoggingReadBuffer(Uint8List buf,
           [int offset = 0, int length, Endian endian = Endian.little]) =>
       LoggingReadBuffer._(
-          bd.buffer.asByteData(offset, length), 0, length, endian);
+          buf.buffer.asUint8List(offset, length), 0, length, endian);
 
   /// Creates a [LoggingReadBuffer] from a [Uint8List].
-  factory LoggingReadBuffer.fromUint8List(Uint8List _bytes,
+  factory LoggingReadBuffer.fromByteData(ByteData bd,
       [int offset = 0, int length, Endian endian = Endian.little]) {
-    final bd = _bytes.buffer.asByteData(offset, length);
-    return LoggingReadBuffer._(bd, offset, length, endian);
+    final td = bd.buffer.asUint8List(offset, length);
+    return LoggingReadBuffer._(td, offset, length, endian);
   }
 
   LoggingReadBuffer._(TypedData td,

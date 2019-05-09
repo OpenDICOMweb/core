@@ -252,7 +252,7 @@ void main() {
       expect(dsBytes0.bytes, equals(bytes));
 
       expect(dsBytes0.vfLength, equals(bytes.length - 132));
-      expect(dsBytes0.dsLength, equals(bytes.length));
+      expect(dsBytes0.length, equals(bytes.length));
 
       expect(dsBytes0.fmiEnd == 0, true);
       expect(dsBytes0.fmiStart == 0, true);
@@ -293,7 +293,7 @@ void main() {
       expect(idsBytes0.bytes, equals(bytes));
 
       expect(idsBytes0.vfLength, equals(bytes.length - 8));
-      expect(idsBytes0.dsLength, equals(bytes.length));
+      expect(idsBytes0.length, equals(bytes.length));
 
       expect(idsBytes0.dsStart, equals(bytes.offset));
       expect(idsBytes0.dsEnd, equals(bytes.offset + bytes.length));

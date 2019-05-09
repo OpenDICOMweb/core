@@ -36,7 +36,7 @@ mixin WriteBufferMixin {
   int get limit => bytes.limit;
 
   ByteData asByteData([int offset, int length]) =>
-      bytes.buf.buffer.asByteData(offset, length);
+      bytes.buf.buffer.asByteData(offset, length ?? bytes.length);
 
   // **** WriteBuffer specific Getters and Methods
 
@@ -200,17 +200,19 @@ mixin WriteBufferMixin {
   }
 
   void writeInt64List(Int64List list, [int offset = 0, int length]) {
+    length ??= list.length;
     bytes.setInt64List(_wIndex, list, offset, length);
-    _wIndex += list.length * 8;
+    _wIndex += length * 8;
   }
 
   void writeUint8List(Uint8List list, [int offset = 0, int length]) {
+    length ??= list.length;
     if (list.lengthInBytes == 0) return;
-    writeByteData(list.buffer.asByteData(list.offsetInBytes, list.length));
+    writeByteData(list.buffer.asByteData(list.offsetInBytes, length));
   }
 
   void writeByteData(ByteData bd, [int offset = 0, int length]) {
-    final length = bd.lengthInBytes;
+    length ??= bd.lengthInBytes;
     if (length == 0) return;
     ensureRemaining(length);
     bytes.setByteData(_wIndex, bd, offset, length);
@@ -242,10 +244,10 @@ mixin WriteBufferMixin {
     _wIndex += list.length * 8;
   }
 
-  void writeAsciiList(List<String> list, [int offset = 0, int length]) =>
+  void writeAsciiList(List<String> list) =>
       _wIndex += bytes.setAsciiList(_wIndex, list);
 
-  void writeUtf8List(List<String> list, [int offset = 0, int length]) =>
+  void writeUtf8List(List<String> list) =>
       _wIndex += bytes.setUtf8List(_wIndex, list);
 
   void writeStringList(List<String> list) => writeUtf8List(list);
@@ -261,14 +263,14 @@ mixin WriteBufferMixin {
   bool ensureCapacity(int capacity) => _ensureCapacity(capacity);
 
   bool _ensureCapacity(int capacity) {
-    if (capacity > length) return bytes.grow(capacity);
+    if (capacity > bytes.length) return bytes.grow(capacity);
     return false;
   }
 
   /// Grow the buffer if the _wIndex is at, or beyond,
   /// the end of the current buf.
   bool maybeGrow(int size) {
-    if (_wIndex + size < length) return false;
+    if (_wIndex + size < bytes.length) return false;
     return bytes.grow(_wIndex + size);
   }
 

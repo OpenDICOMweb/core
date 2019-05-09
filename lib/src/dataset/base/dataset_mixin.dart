@@ -122,22 +122,22 @@ mixin DatasetMixin {
   int counter(ElementTest test, [int total = 0, int level = 0]) {
     var _total = total;
     var count = 0;
-    log.debug('* DS start $level: count $count total $_total');
+//    log.debug('* DS start $level: count $count total $_total');
     for (final e in elements) {
       if (e is SQ) {
-        log.debug('*   DS SQ start: count $count total $_total: $e');
+//        log.debug('*   DS SQ start: count $count total $_total: $e');
         final n = e.counter(test, _total, level + 1);
         count += n;
         _total += n;
-        log.debug('*   DS SQ end: count $count total $_total');
+//        log.debug('*   DS SQ end: count $count total $_total');
       }
       if (test(e)) {
         _total++;
         count++;
-        log.debug('$_total: $e');
+//        log.debug('$_total: $e');
       }
     }
-    log.debug('* DS end $level: count $count total $_total');
+//    log.debug('* DS end $level: count $count total $_total');
     return count;
   }
 
@@ -185,7 +185,7 @@ mixin DatasetMixin {
       {Iterable<V> vList, bool required = false}) {
     vList ??= <V>[];
     final v = update(index, vList, required: required);
-    final result = <Element>[]..add(v);
+    final result = <Element>[v];
     for (final e in elements)
       if (e is SQ) {
         result.addAll(e.updateAll<V>(index, vList, required: required));

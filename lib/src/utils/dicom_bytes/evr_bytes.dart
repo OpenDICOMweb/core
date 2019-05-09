@@ -85,7 +85,7 @@ class EvrShortBytes extends EvrBytes {
 
   /// Returns an [EvrShortBytes] created from a view
   /// of a Value Field ([vfBytes]).
-  factory EvrShortBytes.makeFromVFBytes(int code, Bytes vfBytes, int vrCode,
+  factory EvrShortBytes.fromVFBytes(int code, Bytes vfBytes, int vrCode,
       [Endian endian = Endian.little]) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
@@ -150,7 +150,7 @@ class EvrLongBytes extends EvrBytes {
   }
 
   /// Creates an [EvrLongBytes].
-  factory EvrLongBytes.fromBytes(int code, Bytes vfBytes, int vrCode,
+  factory EvrLongBytes.fromVFBytes(int code, Bytes vfBytes, int vrCode,
       [Endian endian = Endian.little]) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);

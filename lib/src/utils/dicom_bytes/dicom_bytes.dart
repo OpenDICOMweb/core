@@ -108,9 +108,9 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
 /// Checks the Value Field length.
 bool checkVFLengthField(int vfLengthField, int vfLength) {
   if (vfLengthField != vfLength && vfLengthField != kUndefinedLength) {
-    log.warn('** vfLengthField($vfLengthField) != vfLength($vfLength)');
+//    log.warn('** vfLengthField($vfLengthField) != vfLength($vfLength)');
     if (vfLengthField == vfLength + 1) {
-      log.warn('** vfLengthField: Odd length field: $vfLength');
+      log.debug('** vfLengthField: Odd length field: $vfLength');
       return true;
     }
     return false;

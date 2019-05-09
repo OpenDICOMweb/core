@@ -58,4 +58,9 @@ class WriteBuffer with WriteBufferMixin {
 
   /// Returns the Endianness of _this_.
   Endian get endian => bytes.endian;
+
+  /// Return a view of _this_ of [length], starting at [start]. If [length]
+  /// is _null_ it defaults to [length].
+  Bytes view([int start = 0, int length]) =>
+      bytes.asBytes(start, length ?? length);
 }

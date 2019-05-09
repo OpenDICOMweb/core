@@ -92,7 +92,7 @@ class PTag extends Tag {
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
     // TODO: how to handle bad tag code
     if (isNotPublicCode(code)) {
-      log.warn('Invalid Public Tag Code: ${dcm(code)}');
+      log.warn('** Invalid Public Tag Code: ${dcm(code)}');
       return null;
     }
     final tag = pTagCodeMap[code];
