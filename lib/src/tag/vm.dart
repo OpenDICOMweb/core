@@ -147,16 +147,20 @@ class VM {
   // **** Rank 47 ****
   static const VM k47_47n = VM('k47-47n', 47, -1, 47, isPrivate: true);
 
-  static VM lookup(int min, int max, int columns) {
+/*
+  // Urgent: fix of flush
+  static VM _lookup(int min, int max, int columns) {
     for (var i = 0; i < byIndex.length; i++) {
       final vm = byIndex[i];
       if (vm.min != min) continue;
-      if (vm.max != max) continue;
+      // kMaxShortVF if wrong value should be vr.maxLength
+      if (vm.max(kMaxShortVF) != max) continue;
       if (vm.columns != columns) continue;
       return vm;
     }
     return null;
   }
+*/
 
   // Lookup Map
   static const List<VM> byIndex = [

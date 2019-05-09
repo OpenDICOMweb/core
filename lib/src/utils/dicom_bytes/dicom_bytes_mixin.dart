@@ -285,10 +285,8 @@ mixin DicomBytesMixin {
   /// UTF-8 encodes the specified range of [s] and then writes the
   /// code units to _this_ starting at [start]. Returns the offset
   /// of the last byte + 1.
-  int setUtf8(int start, String s,
-          [int offset = 0, int length, int padChar = kSpace]) =>
-      setUint8List(
-          start, cvt.utf8.encode(s), offset, length ?? s.length, padChar);
+  int setUtf8(int start, String s, [int padChar = kSpace]) => setUint8List(
+      start, cvt.utf8.encode(s), 0, null, padChar);
 
   /// Converts the [String]s in [sList] into a [Uint8List].
   /// Then copies the bytes into _this_ starting at
@@ -318,8 +316,7 @@ mixin DicomBytesMixin {
   /// [start]. If [padChar] is not _null_ and the final offset is odd,
   /// then [padChar] is written after the other elements have been written.
   /// Returns the number of bytes written.
-  int setAsciiList(int start, List<String> sList,
-      [int padChar = kSpace]) =>
+  int setAsciiList(int start, List<String> sList, [int padChar = kSpace]) =>
       _setLatinList(start, sList, padChar, 127);
 
   /// Writes the LATIN [String]s in [sList] to _this_ starting at

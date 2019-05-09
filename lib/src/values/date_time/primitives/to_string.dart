@@ -38,6 +38,9 @@ String dtToDateTimeString(DateTime dt,
         {bool asDicom = true, bool showFraction = false}) =>
     asDicom
         ? '${dtToDateString(dt)}${dtToTimeString(dt)}'
-        : '${dtToDateString(dt, asDicom: asDicom)}'
-            '${global.dateTimeSeparator}'
-            '${dtToTimeString(dt, asDicom: asDicom, showFraction: showFraction)}';
+        : _inetDateTimeString(dt, asDicom, showFraction);
+
+String _inetDateTimeString(DateTime dt, bool asDicom, bool showFraction) =>
+    '${dtToDateString(dt, asDicom: asDicom)}'
+    '${global.dateTimeSeparator}'
+    '${dtToTimeString(dt, asDicom: asDicom, showFraction: showFraction)}';

@@ -103,7 +103,7 @@ class Fmi {
     return version[1];
   }
 
-  static bool checkVersion(Dataset ds) => getVersion == 1;
+  static bool checkVersion(Dataset ds) => getVersion(ds) == 1;
 
   static Uid getMediaStorageSopClass(Dataset ds) =>
       ds.getUid(kMediaStorageSOPClassUID);

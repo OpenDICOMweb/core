@@ -14,7 +14,7 @@ RSG rsg = RSG(seed: 1);
 RNG rng = RNG(1);
 
 void main() {
-  Server.initialize(name: 'bd_element/special_test', level: Level.info);
+  Server.initialize(name: 'bd_element/special_test', level: Level.debug);
 
   final rds = ByteRootDataset.empty();
 
@@ -104,6 +104,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, i);
         for (final code in shVM1nTags) {
+          log.debug('vList0: $vList0');
           final e0 = SHbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
