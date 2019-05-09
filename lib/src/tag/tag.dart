@@ -512,11 +512,11 @@ abstract class Tag {
       msgs = ['Invalid Length($length) not a multiple of vmWidth($width)'];
     if (length < minLength) {
       final msg = 'Invalid Length($length) less than minLength($minLength)';
-      msgs = msgs ??= []..add(msg);
+      msgs = msgs ??= [msg];
     }
     if (length > maxLength) {
       final msg = 'Invalid Length($length) greater than maxLength($maxLength)';
-      msgs = msgs ??= []..add(msg);
+      msgs = msgs ??= [msg];
     }
     return (msgs == null) ? null : msgs;
   }
