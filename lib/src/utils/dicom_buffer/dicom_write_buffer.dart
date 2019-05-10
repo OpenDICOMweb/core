@@ -41,7 +41,7 @@ class DicomWriteBuffer extends WriteBuffer {
   /// Write a DICOM Tag Code to _this_.
   void writeCode(int code, [int eLength = 12]) {
     assert(_wIndex.isEven && code != null);
-    maybeGrow(eLength);
+    _maybeGrow(eLength);
     bytes
       ..setUint16(_wIndex, code >> 16)
       ..setUint16(_wIndex + 2, code & 0xFFFF);
@@ -58,7 +58,7 @@ class DicomWriteBuffer extends WriteBuffer {
   /// Write a DICOM Tag Code to _this_.
   void writeEvrShortHeader(int code, int vrCode, int vlf) {
     assert(_wIndex.isEven);
-    maybeGrow(8 + vlf);
+    _maybeGrow(8 + vlf);
     bytes
       ..setUint16(0, code >> 16)
       ..setUint16(2, code & 0xFFFF)
@@ -72,7 +72,7 @@ class DicomWriteBuffer extends WriteBuffer {
   void writeEvrLongHeader(int code, int vrCode, int vlf,
       {bool isUndefinedLength = false}) {
     assert(_wIndex.isEven);
-    maybeGrow(12 + vlf);
+    _maybeGrow(12 + vlf);
     bytes
       ..setUint16(0, code >> 16)
       ..setUint16(2, code & 0xFFFF)
@@ -86,7 +86,7 @@ class DicomWriteBuffer extends WriteBuffer {
   /// Write a DICOM Tag Code to _this_.
   void writeIvrHeader(int code, int vrCode, int vlf) {
     assert(_wIndex.isEven);
-    maybeGrow(8 + vlf);
+    _maybeGrow(8 + vlf);
     bytes
       ..setUint16(0, code >> 16)
       ..setUint16(2, code & 0xFFFF)

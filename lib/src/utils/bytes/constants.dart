@@ -44,4 +44,4 @@ const int kUint64MaxValue = 0xFFFFFFFFFFFFFFFF;
 
 const int kDefaultLength = 4096;
 
-const int kDefaultLimit = 1024 * 1024; // 1 GB
+const int kDefaultLimit = 1024 * 1024 * 1024; // 1 GB

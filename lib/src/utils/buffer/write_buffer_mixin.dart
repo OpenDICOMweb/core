@@ -78,7 +78,7 @@ mixin WriteBufferMixin {
 
   void writeInt8(int n) {
     assert(n >= -128 && n <= 127, 'Value out of range: $n');
-    maybeGrow(1024);
+    _maybeGrow(1024);
     bytes.setInt8(_wIndex, n);
     _wIndex++;
   }
@@ -89,7 +89,7 @@ mixin WriteBufferMixin {
   void writeInt16(int value) {
     assert(
         value >= -0x7FFF && value <= 0x7FFF - 1, 'Value out of range: $value');
-    maybeGrow(2);
+    _maybeGrow(2);
     bytes.setInt16(_wIndex, value);
     _wIndex += 2;
   }
@@ -100,7 +100,7 @@ mixin WriteBufferMixin {
   void writeInt32(int value) {
     assert(value >= -0x7FFFFFFF && value <= 0x7FFFFFFF - 1,
         'Value out if range: $value');
-    maybeGrow(4);
+    _maybeGrow(4);
     bytes.setInt32(_wIndex, value);
     _wIndex += 4;
   }
@@ -111,7 +111,7 @@ mixin WriteBufferMixin {
   void writeInt64(int value) {
     assert(value >= -0x7FFFFFFFFFFFFFFF && value <= 0x7FFFFFFFFFFFFFFF - 1,
         'Value out of range: $value');
-    maybeGrow(8);
+    _maybeGrow(8);
     bytes.setInt64(_wIndex, value);
     _wIndex += 8;
   }
@@ -121,7 +121,7 @@ mixin WriteBufferMixin {
   /// Writes a byte (Uint8) values to _this_.
   void writeUint8(int value) {
     assert(value >= 0 && value <= 255, 'Value out of range: $value');
-    maybeGrow(1);
+    _maybeGrow(1);
     bytes.setUint8(_wIndex, value);
     _wIndex++;
   }
@@ -131,7 +131,7 @@ mixin WriteBufferMixin {
   /// Writes a 16-bit unsigned integer (Uint16) values to _this_.
   void writeUint16(int value) {
     assert(value >= 0 && value <= 0xFFFF, 'Value out of range: $value');
-    maybeGrow(2);
+    _maybeGrow(2);
     bytes.setUint16(_wIndex, value);
     _wIndex += 2;
   }
@@ -141,7 +141,7 @@ mixin WriteBufferMixin {
   /// Writes a 32-bit unsigned integer (Uint32) values to _this_.
   void writeUint32(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFF, 'Value out if range: $value');
-    maybeGrow(4);
+    _maybeGrow(4);
     bytes.setUint32(_wIndex, value);
     _wIndex += 4;
   }
@@ -152,7 +152,7 @@ mixin WriteBufferMixin {
   void writeUint64(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFFFFFFFFFF,
         'Value out of range: $value');
-    maybeGrow(8);
+    _maybeGrow(8);
     bytes.setUint64(_wIndex, value);
     _wIndex += 8;
   }
@@ -176,7 +176,7 @@ mixin WriteBufferMixin {
 
   /// Writes [length] zeros to _this_.
   bool writeZeros(int length) {
-    maybeGrow(length);
+    _maybeGrow(length);
     for (var i = 0, j = _wIndex; i < length; i++, j++) bytes[j] = 0;
     _wIndex += length;
     return true;
@@ -269,7 +269,7 @@ mixin WriteBufferMixin {
 
   /// Grow the buffer if the _wIndex is at, or beyond,
   /// the end of the current buf.
-  bool maybeGrow(int size) {
+  bool _maybeGrow(int size) {
     if (_wIndex + size < bytes.length) return false;
     return bytes.grow(_wIndex + size);
   }

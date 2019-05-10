@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:core/core.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 import 'package:core/src/error.dart';
@@ -107,6 +108,10 @@ class EvrShortBytes extends EvrBytes {
     return vlf;
   }
 
+/* flush when working
+  int get vfLength => buf.length;
+*/
+
   /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
   /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
   /// An error occurs if [start] is outside the range 0 .. [length],
@@ -171,6 +176,12 @@ class EvrLongBytes extends EvrBytes {
     assert(checkVFLengthField(vlf, vfLength));
     return vlf;
   }
+
+/* flush when working
+  int get vfLength {
+    return (vfLengthField == kUndefinedLength) ? buf.length - 8 : buf.length;
+  }
+*/
 
   /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
   /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.

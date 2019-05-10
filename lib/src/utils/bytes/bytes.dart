@@ -12,6 +12,7 @@ import 'dart:typed_data';
 
 //import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes/bytes_mixin.dart';
+import 'package:core/src/utils/bytes/constants.dart';
 import 'package:core/src/utils/character/charset.dart';
 
 /// Bytes Package Overview
@@ -164,6 +165,32 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
   ByteData get bd => _bd ??= buf.buffer.asByteData(buf.offsetInBytes);
 
+  ///
+  void setBuffer(Uint8List uint8List) {
+    buf = uint8List;
+    _bd = uint8List.buffer.asByteData();
+  }
+
+  /// Ensures that [buf] is at least [length] long, and grows
+  /// the buf if necessary, preserving existing data.
+  bool ensureLength(int length) => _ensureLength(buf, length);
+
+  /// Creates a new buffer of length at least [minLength] in size, or if
+  /// [minLength == null, at least double the length of the current buffer;
+  /// and then copies the contents of the current buffer into the new buffer.
+  /// Finally, the new buffer becomes the buffer for _this_.
+  bool grow([int minLength]) {
+    final old = buf;
+    buf = _grow(old, minLength ??= old.lengthInBytes * 2);
+    _bd = buf.buffer.asByteData();
+    return buf == old;
+  }
+
+  /// Ensures that [list] is at least [minLength] long, and grows
+  /// the buf if necessary, preserving existing data.
+  static bool _ensureLength(Uint8List list, int minLength) =>
+      (minLength > list.lengthInBytes) ? _reallyGrow(list, minLength) : false;
+
   /// Minimum [Bytes] length.
   static const int kMinLength = 16;
 
@@ -188,3 +215,24 @@ String _listToString(List<String> vList, String separator) {
   if (vList.isEmpty) return '';
   return vList.length == 1 ? vList[0] : vList.join(separator);
 }
+
+/// If [minLength] is less than or equal to the current length of
+/// [buf] returns [buf]; otherwise, returns a new [ByteData] with a length
+/// of at least [minLength].
+Uint8List _grow(Uint8List buf, int minLength) {
+  final oldLength = buf.lengthInBytes;
+  return (minLength <= oldLength) ? buf : _reallyGrow(buf, minLength);
+}
+
+/// Returns a new [ByteData] with length at least [minLength].
+Uint8List _reallyGrow(Uint8List buf, int minLength) {
+  var newLength = minLength;
+  do {
+    newLength *= 2;
+    if (newLength >= kDefaultLimit) return null;
+  } while (newLength < minLength);
+  final newBD = Uint8List(newLength);
+  for (var i = 0; i < buf.lengthInBytes; i++) newBD[i] = buf[i];
+  return newBD;
+}
+
