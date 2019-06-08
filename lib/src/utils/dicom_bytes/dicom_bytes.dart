@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:core/src/utils/character/charset.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -52,12 +53,91 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
       [int offsetInBytes = 0, int lengthInBytes, Endian endian = Endian.little])
       : super.typedDataView(td, offsetInBytes, lengthInBytes, endian);
 
+  /// Returns a [Bytes] containing the ASCII encoding of [s].
+  factory DicomBytes.ascii(String s) {
+    if (s == null) return null;
+    return s.isEmpty ? kEmptyBytes : DicomBytes.typedDataView(cvt.ascii.encode(s));
+  }
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  factory DicomBytes.utf8(String s) {
+    if (s == null) return null;
+    if (s.isEmpty) return kEmptyBytes;
+    final Uint8List u8List = cvt.utf8.encode(s);
+    return DicomBytes.typedDataView(u8List);
+  }
+
+  /// Returns [Bytes] containing the Latin character set encoding of [s];
+  factory DicomBytes.latin(String s) {
+    if (s == null) return null;
+    if (s.isEmpty) return kEmptyBytes;
+    final u8List = cvt.latin1.encode(s);
+    return DicomBytes.typedDataView(u8List);
+  }
+
+
+  /// Returns a [Bytes] containing ASCII code units.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as ASCII, and returned as [Bytes].
+  factory DicomBytes.asciiFromList(List<String> vList, [String separator = '\\']) =>
+      DicomBytes.ascii(_listToString(vList, separator));
+
+  /// Returns a [Bytes] containing UTF-8 code units.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as UTF-8 and returned as [Bytes].
+  factory DicomBytes.utf8FromList(List<String> vList, [String separator = '\\']) =>
+      DicomBytes.utf8(_listToString(vList, separator));
+
+  /// Returns a [Bytes] containing Latin (1 - 9) code units.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as UTF-8, and returned as [Bytes].
+  factory DicomBytes.latinFromList(List<String> vList, [String separator = '\\']) =>
+      DicomBytes.latin(_listToString(vList, separator));
+
+  /// Returns a [Bytes] containing [charset] code units.
+  /// [charset] defaults to UTF8.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as UTF-8, and returned as [Bytes].
+  factory DicomBytes.fromStringList(List<String> vList,
+      {Ascii charset, String separator = '\\'}) =>
+      DicomBytes.fromString(_listToString(vList, separator), charset ?? utf8);
+
+  // TODO maxLength if for DICOM Value Field
+  String _listToString(List<String> vList, String separator) {
+    if (vList == null) return null;
+    if (vList.isEmpty) return '';
+    return vList.length == 1 ? vList[0] : vList.join(separator);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      (other is Bytes && ignorePadding && _bytesEqual(this, other)) ||
+          __bytesEqual(this, other, ignorePadding);
+
+  bool ignorePadding = true;
+
   @override
   String toString() {
     final vlf = vfLengthField;
     return '$runtimeType ${dcm(code)} $vrId($vrIndex, ${hex16(vrCode)}) '
         'vlf($vlf, ${hex32(vlf)}) vfl($vfLength) ${super.toString()}';
   }
+
+  /// Returns [Bytes] containing the [charset] encoding of [s];
+  static Bytes fromString(String s, [Charset charset = utf8]) {
+    if (s == null) return null;
+    if (s.isEmpty) return kEmptyBytes;
+    return Bytes.typedDataView(charset.encode(s));
+  }
+
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].
   /// If [s].length is odd, [padChar] is appended to [s] before
@@ -91,7 +171,7 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
       (vList.isEmpty) ? Bytes.kEmptyBytes : fromUtf8(vList.join('\\'));
 
   /// Returns a [Bytes] containing UTF-8 code units. See [fromUtf8List].
-  static Bytes fromStringList(List<String> vList, [String separator = '\\']) =>
+  static Bytes fromStringList(List<String> vList, {String separator = '\\'}) =>
       (vList.isEmpty) ? Bytes.kEmptyBytes : fromUtf8(vList.join('\\'));
 
   /// Returns a [ByteData] that is a copy of the specified region of _this_.
@@ -116,4 +196,89 @@ bool checkVFLengthField(int vfLengthField, int vfLength) {
     return false;
   }
   return true;
+}
+
+bool _bytesEqual(Bytes a, Bytes b) {
+  final aLen = a.length;
+  if (aLen != b.length) return false;
+  for (var i = 0; i < aLen; i++) if (a[i] != b[i]) return false;
+  return true;
+}
+
+// TODO: test performance of _uint16Equal and _uint32Equal
+bool __bytesEqual(Bytes a, Bytes b, bool ignorePadding) {
+  final len0 = a.length;
+  final len1 = b.length;
+  if (len0 != len1) return false;
+  if ((len0 % 4) == 0) {
+    return _uint32Equal(a, b, ignorePadding);
+  } else if ((len0 % 2) == 0) {
+    return _uint16Equal(a, b, ignorePadding);
+  } else {
+    return _uint8Equal(a, b, ignorePadding);
+  }
+}
+
+// Note: optimized to use 4 byte boundary
+bool _uint8Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.length; i += 1) {
+    final x = a.buf[i];
+    final y = b.buf[i];
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+// Note: optimized to use 2 byte boundary
+bool _uint16Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.length; i += 2) {
+    final x = a.getUint16(i);
+    final y = b.getUint16(i);
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+// Note: optimized to use 4 byte boundary
+bool _uint32Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.length; i += 4) {
+    final x = a.getUint32(i);
+    final y = b.getUint32(i);
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+bool _bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
+  var errorCount = 0;
+  final ok = __bytesMaybeNotEqual(i, a, b, ignorePadding);
+  if (!ok) {
+    errorCount++;
+    if (errorCount > 3) throw ArgumentError('Unequal');
+    return false;
+  }
+  return true;
+}
+
+bool __bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
+  if ((a[i] == 0 && b[i] == 32) || (a[i] == 32 && b[i] == 0)) {
+    //  log.warn('$i ${a[i]} | ${b[i]} Padding char difference');
+    return ignorePadding;
+  } else {
+    _warnBytes(i, a, b);
+    return false;
+  }
+}
+
+void _warnBytes(int i, Bytes a, Bytes b) {
+  final x = a[i];
+  final y = b[i];
+  print('''
+$i: $x | $y')
+	  "${String.fromCharCode(x)}" | "${String.fromCharCode(y)}"
+	    '    $a')
+      '    $b')
+      '    ${a.stringFromAscii()}')
+      '    ${b.stringFromAscii()}');
+''');
 }

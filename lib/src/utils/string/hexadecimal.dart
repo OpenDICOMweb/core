@@ -39,7 +39,6 @@ String hex8(int n, {bool prefix = false}) {
 /// Returns a hexadecimal [String] corresponding to [n] as a 16-bit
 /// unsigned integer. If the length of result is less than 4, it is
 /// left padded with zeros.
-/// _Deprecated_: Use [hex32] instead.
 String hex16(int n, {bool prefix = false}) {
   assert(n >= 0 && n <= 0xFFFF);
   return hex(n, width: 4, prefix: prefix);
