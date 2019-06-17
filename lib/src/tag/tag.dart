@@ -85,7 +85,7 @@ abstract class Tag {
   String get name; // => 'Unknown Tag';
   VM get vm => VM.k1_n;
   int get vmMin => vm.min;
-  int get vmMax => vm.max(vr.maxLength);
+  int get vmMax => vm.realMax(vr.maxLength);
   int get vmColumns => vm.columns;
 
   bool get isRetired => true;
@@ -141,7 +141,7 @@ abstract class Tag {
   int get minValues => vm.min;
 
   /// Returns the maximum number of values allowed for this [Tag].
-  int get maxValues => vm.max(vr.maxLength);
+  int get maxValues => vm.realMax(vr.maxLength);
 
   int get columns => vm.columns;
 

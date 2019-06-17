@@ -8,7 +8,7 @@
 //
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
 /// Returns [td] as a [Bytes].

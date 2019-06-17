@@ -6,12 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:bytes/bytes.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/map_dataset/map_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
 

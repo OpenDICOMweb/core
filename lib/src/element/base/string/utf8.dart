@@ -33,7 +33,7 @@ abstract class Utf8String extends StringBase {
   @override
   bool get isSingleValued => false;
 
-  Bytes get asBytes => Bytes.utf8FromList(values, maxVFLength);
+  Bytes get asBytes => BytesDicom.fromString(asString, maxVFLength);
 
   @override
   TypedData get typedData =>
@@ -43,7 +43,7 @@ abstract class Utf8String extends StringBase {
   Uint8List get bulkdata => typedData;
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.stringListFromUtf8(allowInvalid: global.allowMalformedUtf8);
+      bytes.getUtf8(allowInvalid: global.allowMalformedUtf8).split('\\');
 
   Utf8String append(String s) => update(values.append(s, maxValueLength));
 
@@ -59,7 +59,7 @@ abstract class Utf8String extends StringBase {
       {bool isAscii = false}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.stringListFromUtf8();
+    if (vf is BytesDicom) return vf.getUtf8().split('\\');
     if (vf is Uint8List)
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);

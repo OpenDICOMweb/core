@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
@@ -45,7 +45,7 @@ void main() {
       final box = ByteData(kFloat32Size);
 
       for (var i = 0; i < loopCount; i++) {
-        final a = Bytes(length * kFloat32Size);
+        final a = Bytes.empty(length * kFloat32Size);
         log.debug('a: $a');
         assert(a.length == length * kFloat32Size, true);
 

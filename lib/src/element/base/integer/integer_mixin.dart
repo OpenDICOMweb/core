@@ -16,7 +16,7 @@ import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/utils.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs

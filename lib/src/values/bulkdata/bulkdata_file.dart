@@ -11,7 +11,7 @@ import 'dart:convert' as cvt;
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/values/bulkdata/bulkdata.dart';
 
 // ignore_for_file: public_member_api_docs

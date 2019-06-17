@@ -8,6 +8,7 @@
 //
 import 'dart:collection';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/dataset/base/dataset_mixin.dart';
 import 'package:core/src/dataset/base/group/creators.dart';
 import 'package:core/src/dataset/base/history.dart';

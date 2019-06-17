@@ -45,7 +45,7 @@ mixin AsciiMixin {
 
   String get vfString {
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.stringFromAscii(length: length, allowInvalid: allowInvalid);
+    return vfBytes.getAscii(length: length, allowInvalid: allowInvalid);
   }
 }
 
@@ -53,12 +53,12 @@ mixin AsciiMixin {
 
 class AEbytes extends AE with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   AEbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static AEbytes fromBytes(DicomBytes bytes, [Ascii _]) => AEbytes(bytes);
+  static AEbytes fromBytes(Bytes bytes, [Ascii _]) => AEbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static AEbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -72,15 +72,15 @@ class AEbytes extends AE with ByteElement<String>, StringMixin, AsciiMixin {
 
 class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   ASbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ASbytes fromBytes(DicomBytes bytes, [Ascii _]) {
+  static ASbytes fromBytes(Bytes bytes, [Ascii _]) {
     final eLength = bytes.length;
     if (eLength != 12 && eLength != 8)
-      log.warn('Invalid Age (AS) "${bytes.stringFromAscii()}"');
+      log.warn('Invalid Age (AS) "${bytes.getAscii()}"');
     return ASbytes(bytes);
   }
 
@@ -96,12 +96,12 @@ class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
 
 class CSbytes extends CS with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   CSbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static CSbytes fromBytes(DicomBytes bytes, [Ascii _]) => CSbytes(bytes);
+  static CSbytes fromBytes(Bytes bytes, [Ascii _]) => CSbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static CSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -115,15 +115,15 @@ class CSbytes extends CS with ByteElement<String>, StringMixin, AsciiMixin {
 
 class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   DAbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static DAbytes fromBytes(DicomBytes bytes, [Ascii _]) {
+  static DAbytes fromBytes(Bytes bytes, [Ascii _]) {
     final eLength = bytes.length;
     if (eLength != 16 && eLength != 8)
-      log.debug('Invalid Date (DA) "${bytes.stringFromAscii()}"');
+      log.debug('Invalid Date (DA) "${bytes.getAscii()}"');
     return DAbytes(bytes);
   }
 
@@ -139,12 +139,12 @@ class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
 
 class DSbytes extends DS with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   DSbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static DSbytes fromBytes(DicomBytes bytes, [Ascii _]) => DSbytes(bytes);
+  static DSbytes fromBytes(Bytes bytes, [Ascii _]) => DSbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static DSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -158,12 +158,12 @@ class DSbytes extends DS with ByteElement<String>, StringMixin, AsciiMixin {
 
 class DTbytes extends DT with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   DTbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static DTbytes fromBytes(DicomBytes bytes, [Ascii _]) => DTbytes(bytes);
+  static DTbytes fromBytes(Bytes bytes, [Ascii _]) => DTbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static DTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -177,12 +177,12 @@ class DTbytes extends DT with ByteElement<String>, StringMixin, AsciiMixin {
 
 class ISbytes extends IS with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   ISbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ISbytes fromBytes(DicomBytes bytes, [Ascii _]) => ISbytes(bytes);
+  static ISbytes fromBytes(Bytes bytes, [Ascii _]) => ISbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static ISbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -196,16 +196,16 @@ class ISbytes extends IS with ByteElement<String>, StringMixin, AsciiMixin {
 
 class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   UIbytes(this.bytes);
 
   @override
   List<Uid> get uids => Uid.parseList(
-      bytes.stringListFromAscii(offset: vfOffset, length: vfLength));
+      bytes.getAsciiList(offset: vfOffset, length: vfLength));
 
   // ignore: prefer_constructors_over_static_methods
-  static UIbytes fromBytes(DicomBytes bytes, [Ascii _]) => UIbytes(bytes);
+  static UIbytes fromBytes(Bytes bytes, [Ascii _]) => UIbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static UIbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -219,12 +219,12 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
 
 class TMbytes extends TM with ByteElement<String>, StringMixin, AsciiMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   TMbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static TMbytes fromBytes(DicomBytes bytes, [Ascii _]) => TMbytes(bytes);
+  static TMbytes fromBytes(Bytes bytes, [Ascii _]) => TMbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static TMbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -252,18 +252,18 @@ mixin Utf8Mixin {
     //   final vf = hasPadding ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
     //   return vf.stringFromUtf8(allowInvalid: allowMalformed);
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.stringFromUtf8(length: length, allowInvalid: allowMalformed);
+    return vfBytes.getUtf8(length: length, allowInvalid: allowMalformed);
   }
 }
 
 class LObytes extends LO with ByteElement<String>, StringMixin, Utf8Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   LObytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static Element fromBytes(DicomBytes bytes, [Ascii _]) {
+  static Element fromBytes(Bytes bytes, [Ascii _]) {
     final group = bytes.getUint16(0);
     final elt = bytes.getUint16(2);
     return (group.isOdd && elt >= 0x10 && elt <= 0xFF)
@@ -283,7 +283,7 @@ class LObytes extends LO with ByteElement<String>, StringMixin, Utf8Mixin {
 
 class PCbytes extends PC with ByteElement<String>, StringMixin, Utf8Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   PCbytes(this.bytes);
 
@@ -291,7 +291,7 @@ class PCbytes extends PC with ByteElement<String>, StringMixin, Utf8Mixin {
   String get token => vfString;
 
   // ignore: prefer_constructors_over_static_methods
-  static PCbytes fromBytes(DicomBytes bytes, [Ascii _]) => PCbytes(bytes);
+  static PCbytes fromBytes(Bytes bytes, [Ascii _]) => PCbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static PCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -305,12 +305,12 @@ class PCbytes extends PC with ByteElement<String>, StringMixin, Utf8Mixin {
 
 class PNbytes extends PN with ByteElement<String>, StringMixin, Utf8Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   PNbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static PNbytes fromBytes(DicomBytes bytes, [Ascii _]) => PNbytes(bytes);
+  static PNbytes fromBytes(Bytes bytes, [Ascii _]) => PNbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static PNbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -324,12 +324,12 @@ class PNbytes extends PN with ByteElement<String>, StringMixin, Utf8Mixin {
 
 class SHbytes extends SH with ByteElement<String>, StringMixin, Utf8Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   SHbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static SHbytes fromBytes(DicomBytes bytes, [Ascii _]) => SHbytes(bytes);
+  static SHbytes fromBytes(Bytes bytes, [Ascii _]) => SHbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static SHbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -343,12 +343,12 @@ class SHbytes extends SH with ByteElement<String>, StringMixin, Utf8Mixin {
 
 class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   UCbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static UCbytes fromBytes(DicomBytes bytes, [Ascii _]) => UCbytes(bytes);
+  static UCbytes fromBytes(Bytes bytes, [Ascii _]) => UCbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static UCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -374,7 +374,7 @@ mixin TextMixin {
 
   String get vfString {
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.stringFromUtf8(length: length, allowInvalid: allowMalformed);
+    return vfBytes.getUtf8(length: length, allowInvalid: allowMalformed);
   }
 
   String get value => vfString;
@@ -391,12 +391,12 @@ int _stringValuesLength(Bytes vfBytes) {
 
 class LTbytes extends LT with ByteElement<String>, StringMixin, TextMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   LTbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static LTbytes fromBytes(DicomBytes bytes, [Ascii _]) => LTbytes(bytes);
+  static LTbytes fromBytes(Bytes bytes, [Ascii _]) => LTbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static LTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -410,12 +410,12 @@ class LTbytes extends LT with ByteElement<String>, StringMixin, TextMixin {
 
 class STbytes extends ST with ByteElement<String>, StringMixin, TextMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   STbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static STbytes fromBytes(DicomBytes bytes, [Ascii _]) => STbytes(bytes);
+  static STbytes fromBytes(Bytes bytes, [Ascii _]) => STbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static STbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -429,12 +429,12 @@ class STbytes extends ST with ByteElement<String>, StringMixin, TextMixin {
 
 class URbytes extends UR with ByteElement<String>, StringMixin, TextMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   URbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static URbytes fromBytes(DicomBytes bytes, [Ascii _]) => URbytes(bytes);
+  static URbytes fromBytes(Bytes bytes, [Ascii _]) => URbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static URbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -448,12 +448,12 @@ class URbytes extends UR with ByteElement<String>, StringMixin, TextMixin {
 
 class UTbytes extends UT with ByteElement<String>, StringMixin, TextMixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   UTbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static UTbytes fromBytes(DicomBytes bytes, [Ascii _]) => UTbytes(bytes);
+  static UTbytes fromBytes(Bytes bytes, [Ascii _]) => UTbytes(bytes);
 
   // ignore: prefer_constructors_over_static_method
   static UTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {

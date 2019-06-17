@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart';
 import 'package:test_tools/tools.dart';
 
@@ -25,7 +25,7 @@ void main() {
     assert(st.values == vList0);
     //fromBytes
     log.info0('vList0[0]: ${vList0[0]}');
-    final bytes =  Bytes.fromStringList(vList0, maxLength: kMaxShortVF);
+    final bytes =  BytesDicom.fromString(vList0.join('\\'), kMaxShortVF);
     log.info0('bytes: $bytes');
     final st0 = STtag.fromBytes(PTag.kMetaboliteMapDescription, bytes);
     log.info0('st0: ${st0.info}');

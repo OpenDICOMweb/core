@@ -8,7 +8,7 @@
 //
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/global.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/uid.dart';
 
@@ -104,7 +104,7 @@ class Fmi {
     return version[1];
   }
 
-  static bool checkVersion(Dataset ds) => getVersion == 1;
+  static bool checkVersion(Dataset ds) => getVersion(ds) == 1;
 
   static Uid getMediaStorageSopClass(Dataset ds) =>
       ds.getUid(kMediaStorageSOPClassUID);

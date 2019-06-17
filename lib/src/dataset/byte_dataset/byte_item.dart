@@ -11,7 +11,7 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/byte_dataset/byte_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_item.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 
 /// An [ByteItem] is a DICOM [Dataset], which is contained in an SQ Element.
 class ByteItem extends MapItem with ByteDataset {

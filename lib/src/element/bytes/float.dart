@@ -23,13 +23,13 @@ mixin BytesFloat32Mixin {
 
 class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   FLbytes(this.bytes) : assert(bytes != null);
 
   //TODO: fix all static constructors when constructors can be used as tear offs
   // ignore: prefer_constructors_over_static_methods
-  static FLbytes fromBytes(DicomBytes bytes, [Ascii _]) => FLbytes(bytes);
+  static FLbytes fromBytes(BytesDicom bytes, [Ascii _]) => FLbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static FLbytes fromValues(int code, Iterable<double> vList,
@@ -43,12 +43,12 @@ class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
 
 class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   OFbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OFbytes fromBytes(DicomBytes bytes, [Ascii _]) => OFbytes(bytes);
+  static OFbytes fromBytes(BytesDicom bytes, [Ascii _]) => OFbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static OFbytes fromValues(int code, List<double> vList,
@@ -74,12 +74,12 @@ mixin BytesFloat64Mixin {
 
 class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   FDbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static FDbytes fromBytes(DicomBytes bytes, [Ascii _]) => FDbytes(bytes);
+  static FDbytes fromBytes(BytesDicom bytes, [Ascii _]) => FDbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static FDbytes fromValues(int code, List<double> vList,
@@ -93,12 +93,12 @@ class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
 
 class ODbytes extends OD with ByteElement<double>, BytesFloat64Mixin {
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   ODbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ODbytes fromBytes(DicomBytes bytes, [Ascii _]) => ODbytes(bytes);
+  static ODbytes fromBytes(BytesDicom bytes, [Ascii _]) => ODbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static ODbytes fromValues(int code, List<double> vList,

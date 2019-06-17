@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert' as cvt;
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -30,9 +30,9 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(0, 1);
-        final bytes0 = Bytes.asciiFromList(vList0, kMaxShortVF);
+        final bytes0 = BytesDicom.fromAsciiList(vList0, kMaxShortVF);
         final sList0 = vList0.map((v) => '$v');
-        final vList1 = bytes0.stringListFromAscii();
+        final vList1 = bytes0.getAsciiList();
         final sList1 = vList1.map((v) => '$v');
         log
           ..debug('vList0: $vList0')
@@ -55,9 +55,9 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(0, 10);
-        final bytes0 = Bytes.asciiFromList(vList0);
+        final bytes0 = BytesDicom.fromAsciiList(vList0);
         final sList0 = vList0.map((v) => '"$v"');
-        final vList1 = bytes0.stringListFromAscii();
+        final vList1 = bytes0.getAsciiList();
         final sList1 = vList1.map((v) => '"$v"');
         log
           ..debug('vList0: $vList0')
@@ -81,9 +81,9 @@ void main() {
       final rsg = RSG();
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 10);
-        final bytes0 = Bytes.asciiFromList(vList0, kMaxShortVF);
-        final bytes = Bytes.ascii(vList0.join('\\'));
-        final vList1 = bytes.getStringList(ascii);
+        final bytes0 = BytesDicom.fromAsciiList(vList0, kMaxShortVF);
+        final bytes = BytesDicom.fromAscii(vList0.join('\\'));
+        final vList1 = bytes.getAsciiList();
         log
           ..debug('vList0: $vList0')
           ..debug('vList1: $vList1')

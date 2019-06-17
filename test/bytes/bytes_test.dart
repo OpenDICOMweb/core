@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
@@ -21,7 +21,7 @@ void main() {
 
       // Check initialized with zeros
       for (var i = 0; i < count; i++) {
-        final bytes = Bytes(count);
+        final bytes = Bytes.empty(count);
         expect(bytes.endian == Endian.little, true);
 
         expect(bytes.elementSizeInBytes == 1, true);
@@ -93,8 +93,8 @@ void main() {
 
     test('Test List interface: initial zeroed, equality, hashCode', () {
       const count = 255;
-      final a = Bytes(count);
-      final b = Bytes(count);
+      final a = Bytes.empty(count);
+      final b = Bytes.empty(count);
 
       // Check initialized with zeros
       for (var i = 0; i < count; i++) {
@@ -133,7 +133,7 @@ void main() {
       const loopCount = 100;
 
       for (var i = 0; i < loopCount; i++) {
-        final a = Bytes(0xFFFF * kInt16Size);
+        final a = Bytes.empty(0xFFFF * kInt16Size);
         assert(a.length == 0xFFFF * kInt16Size, true);
 
         for (var i = 0, j = -10; i <= 10; i++, j += 2) {
@@ -201,7 +201,7 @@ void main() {
         expect(fl32List0[i] == fl32List1[i], true);
 
       // Unaligned
-      final fl32b = Bytes(20)
+      final fl32b = Bytes.empty(20)
         ..setFloat32(2, floats[0])
         ..setFloat32(6, floats[1])
         ..setFloat32(10, floats[2])
@@ -219,8 +219,8 @@ void main() {
 
     test('bytes fromByteData', () {
       final list0 = rng.uint8List(1, 1);
-      final bd = list0.buffer.asByteData();
-      final byteFD0 = Bytes.fromByteData(bd);
+
+      final byteFD0 = Bytes.fromList(list0);
       log.debug('byteFD0: $byteFD0');
 
       expect(byteFD0.endian == Endian.little, true);
@@ -235,8 +235,8 @@ void main() {
       final vList = ['1q221'];
       final vList0 = ['1q221', 'sadaq223'];
       //final bytes = Bytes.fromList(vList);
-      final bytes = Bytes.asciiFromList(vList);
-      final bytes0 = Bytes.asciiFromList(vList0);
+      final bytes = Bytes.fromAsciiList(vList);
+      final bytes0 = Bytes.fromAsciiList(vList0);
       final dsBytes0 = RDSBytes(bytes, 0);
       final dsBytes1 = RDSBytes(bytes, 0);
       final dsBytes2 = RDSBytes(bytes0, 0);
@@ -277,8 +277,8 @@ void main() {
     test('IDSBytes', () {
       final vList = ['1q221'];
       final vList0 = ['1q221', 'sadaq223'];
-      final bytes = Bytes.asciiFromList(vList);
-      final bytes0 = Bytes.asciiFromList(vList0);
+      final bytes = Bytes.fromAsciiList(vList);
+      final bytes0 = Bytes.fromAsciiList(vList0);
       final idsBytes0 = IDSBytes(bytes);
       final idsBytes1 = IDSBytes(bytes);
       final idsBytes2 = IDSBytes(bytes0);
@@ -319,7 +319,7 @@ void main() {
 
     test('DicomReadBuffer', () {
       final vList0 = ['1q221', 'sadaq223'];
-      final bytes0 = Bytes.asciiFromList(vList0);
+      final bytes0 = Bytes.fromAsciiList(vList0);
       final dReadBuffer0 = DicomReadBuffer(bytes0);
       log.debug('dReadBuffer0:$dReadBuffer0');
 

@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/tag.dart';
 import 'package:core/src/element/base/sequence.dart';
@@ -106,7 +107,7 @@ class SQtag extends SQ with TagElement<Item> {
   }
 
   // ignore: prefer_constructors_over_static_methods
-  static SQtag fromBytes(Dataset parent, List<Item> vList, DicomBytes bytes) {
+  static SQtag fromBytes(Dataset parent, List<Item> vList, BytesDicom bytes) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
 

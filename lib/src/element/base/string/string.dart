@@ -10,6 +10,8 @@ library odw.sdk.element.base.string;
 
 import 'dart:typed_data';
 
+import 'package:bytes/bytes.dart';
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:collection/collection.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
@@ -67,6 +69,9 @@ abstract class StringBase extends Element<String> {
   bool get isLengthAlwaysValid => false;
   @override
   bool get isUndefinedLengthAllowed => false;
+
+  @override
+  String get asString => values.join('\\');
 
   // **** Getters that MUST be supported by every Element Type.
 

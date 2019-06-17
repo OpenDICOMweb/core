@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -24,7 +25,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getAEList(1, 1);
-        final bytes = DicomBytes.fromAsciiList(vList);
+        final bytes = BytesDicom.fromAsciiList(vList);
         log..debug('vList: $vList')..debug('bd: $bytes');
 
         final e0 = AEbytes.fromValues(kReceivingAE, vList);
@@ -57,13 +58,13 @@ void main() {
 
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getAEList(1, i);
-//        final bd0 = DicomBytes.fromAscii(vList0.join('\\'));
+//        final bd0 = BytesDicom.fromAscii(vList0.join('\\'));
 
         final e0 = AEbytes.fromValues(kSelectorOFValue, vList0);
         log.debug('ae1:$e0');
         expect(e0, isNull);
 /*
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ByteElement.makeFromBytesDicom(e0.bytes, rds, isEvr: true);
         log.debug('e1:$e1');
         expect(e1.hasValidValues, true);
         expect(e0 == e1, true);

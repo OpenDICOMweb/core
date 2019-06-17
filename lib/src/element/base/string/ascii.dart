@@ -32,7 +32,9 @@ abstract class AsciiString extends StringBase {
   @override
   bool get isSingleValued => false;
 
-  Bytes get asBytes => Bytes.asciiFromList(values, maxVFLength);
+// Urgent
+//  Bytes get asBytes => BytesDicom.fromAscii(values.asString, maxVFLength);
+  Bytes get asBytes => BytesDicom.fromAscii(values.join('\\'), maxVFLength);
 
   @override
   TypedData get typedData =>
@@ -42,7 +44,7 @@ abstract class AsciiString extends StringBase {
   Uint8List get bulkdata => typedData;
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.stringListFromAscii(allowInvalid: global.allowInvalidAscii);
+      bytes.getAscii(allowInvalid: global.allowInvalidAscii).split('\\');
 
   AsciiString append(String s) => update(values.append(s, maxValueLength));
 
@@ -58,7 +60,7 @@ abstract class AsciiString extends StringBase {
       {bool isAscii = true}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.stringListFromAscii();
+    if (vf is Bytes) return vf.getUtf8().split('\\');
     if (vf is Uint8List)
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);

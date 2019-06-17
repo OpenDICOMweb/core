@@ -9,7 +9,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/values/bulkdata/bulkdata.dart';
 import 'package:core/src/values/bulkdata/bulkdata_uri.dart';
 import 'package:path/path.dart';

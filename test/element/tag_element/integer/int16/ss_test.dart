@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
@@ -285,7 +285,7 @@ void main() {
     test('SS fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 10);
-        //    final bytes0 = DicomBytes.toAscii(vList0.toString());
+        //    final bytes0 = BytesDicom.toAscii(vList0.toString());
         final bytes0 = Bytes.typedDataView(vList0);
         final e0 = SStag.fromBytes(PTag.kSelectorSSValue, bytes0);
         log.debug('e0: $e0');

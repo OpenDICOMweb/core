@@ -14,7 +14,7 @@ import 'package:core/src/element/base/integer/pixel_data_mixin.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/image.dart';
 import 'package:core/src/values/uid/well_known/transfer_syntax.dart';

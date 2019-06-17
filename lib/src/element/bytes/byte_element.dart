@@ -10,6 +10,7 @@ library odw.sdk.element.bytes;
 
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/values/vf_fragments.dart';
@@ -28,15 +29,15 @@ part 'string.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef DecodeBinaryVF = Element Function(DicomBytes bytes, int vrIndex);
+typedef DecodeBinaryVF = Element Function(BytesDicom bytes, int vrIndex);
 
 typedef BDElementMaker = Element Function(
-    int code, int vrIndex, DicomBytes bytes);
+    int code, int vrIndex, BytesDicom bytes);
 
 mixin ByteElement<V> {
   V operator [](int index);
 
-  DicomBytes get bytes;
+  BytesDicom get bytes;
 
   /// The length of values;
   int get length;
@@ -82,7 +83,7 @@ mixin ByteElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  static Element fromBytes(DicomBytes bytes, Dataset ds, {bool isEvr}) {
+  static Element fromBytes(BytesDicom bytes, Dataset ds, {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return PCbytes(bytes);
     final vrIndex = isEvr ? bytes.vrIndex : kUNIndex;
@@ -117,7 +118,7 @@ mixin ByteElement<V> {
     USbytes.fromBytes
   ];
 
-  static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
+  static Element makeMaybeUndefinedFromBytes(BytesDicom bytes,
       [Dataset ds, int vfLengthField]) {
     final code = bytes.code;
     // Note: This shouldn't happen, but it does.
@@ -170,35 +171,46 @@ mixin ByteElement<V> {
   ];
 }
 
-DicomBytes _makeShort<V>(
-    int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize) {
-  final vfLength = vList.length * eSize;
+BytesDicom _makeShort<V>(
+    int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize,
+    {bool isLE = true}) {
+  final vfl = vList.length * eSize;
   return isEvr
-      ? EvrShortBytes.empty(code, vfLength, vrCode)
-      : IvrBytes.empty(code, vfLength, vrCode);
+      ? isLE
+          ? EvrLongLEBytes.element(code, vrCode, vfl)
+          : EvrLongBEBytes.element(code, vrCode, vfl)
+      : IvrBytes.element(code, vrCode, vfl);
 }
 
-DicomBytes _makeShortString(
-    int code, List<String> sList, int vrCode, bool isEvr) {
+BytesDicom _makeShortString(
+    int code, List<String> sList, int vrCode, bool isEvr,
+    {bool isLE = true}) {
   final tag = Tag.lookupByCode(code);
   if (tag.vrCode != vrCode) return null;
-  final vlf = stringListLength(sList, pad: true);
+  final vfl = stringListLength(sList, pad: true);
   return isEvr
-      ? EvrShortBytes.empty(code, vlf, vrCode)
-      : IvrBytes.empty(code, vlf, vrCode);
+      ? isLE
+          ? EvrLongLEBytes.element(code, vrCode, vfl)
+          : EvrLongBEBytes.element(code, vrCode, vfl)
+      : IvrBytes.element(code, vrCode, vfl);
 }
 
-DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
-  final vfLength = vList.length * eSize;
+BytesDicom _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize,
+    {bool isLE = true}) {
+  final vfl = vList.length * eSize;
   return isEvr
-      ? EvrLongBytes.empty(code, vfLength, vrCode)
-      : IvrBytes.empty(code, vfLength, vrCode);
+      ? isLE
+          ? EvrLongLEBytes.element(code, vrCode, vfl)
+          : EvrLongBEBytes.element(code, vrCode, vfl)
+      : IvrBytes.element(code, vrCode, vfl);
 }
 
-DicomBytes _makeLongString(
-    int code, List<String> sList, int vrCode, bool isEvr) {
-  final vlf = stringListLength(sList, pad: true);
+BytesDicom _makeLongString(int code, List<String> sList, int vrCode, bool isEvr,
+    {bool isLE = true}) {
+  final vfl = stringListLength(sList, pad: true);
   return isEvr
-      ? EvrLongBytes.empty(code, vlf, vrCode)
-      : IvrBytes.empty(code, vlf, vrCode);
+      ? isLE
+          ? EvrLongLEBytes.element(code, vrCode, vfl)
+          : EvrLongBEBytes.element(code, vrCode, vfl)
+      : IvrBytes.element(code, vrCode, vfl);
 }

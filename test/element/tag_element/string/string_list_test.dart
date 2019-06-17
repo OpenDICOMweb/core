@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert' as cvt;
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test_tools/tools.dart';
 import 'package:test/test.dart';
@@ -66,33 +66,33 @@ void main() {
     expect(sltb1, isNull);
   });
 
-  test('textListToBytes', () {
+  test('BytesDicom.fromTextList', () {
     for (var i = 0; i < 10; i++) {
       final vList = rsg.getAEList(1, 1);
-      final bytes = Bytes.asciiFromList(vList);
-      final bytes0 = textListToBytes(vList);
+      final bytes = BytesDicom.fromAsciiList(vList);
+      final bytes0 = Bytes.fromAscii(vList.join('\\'));
       log.debug('bytes0: $bytes0');
       expect(bytes0 == bytes, true);
     }
 
     global.throwOnError = false;
-    final bytes1 = textListToBytes([]);
+    final bytes1 = BytesDicom.fromTextList([]);
     expect(bytes1, kEmptyBytes);
 
-    final bytes2 = textListToBytes(['']);
+    final bytes2 = BytesDicom.fromTextList(['']);
     expect(bytes2, kEmptyBytes);
 
-    final bytes3 = textListToBytes([null]);
+    final bytes3 = BytesDicom.fromTextList([null]);
     expect(bytes3, isNull);
 
-    final bytes4 = textListToBytes(['abc', 'foo']);
+    final bytes4 = BytesDicom.fromTextList(['abc', 'foo']);
     expect(bytes4, isNull);
 
     global.throwOnError = true;
-    expect(() => textListToBytes([null]),
+    expect(() => BytesDicom.fromTextList([null]),
         throwsA(const TypeMatcher<GeneralError>()));
 
-    expect(() => textListToBytes(['abc', 'foo']),
+    expect(() => BytesDicom.fromTextList(['abc', 'foo']),
         throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
@@ -247,7 +247,7 @@ void main() {
     test('others', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLTList(1, i);
-        final bytes0 = Bytes.asciiFromList(vList0);
+        final bytes0 = BytesDicom.fromAsciiList(vList0);
         final sfrom0 = StringList.from(vList0);
 
         expect(sfrom0.length, equals(vList0.length));

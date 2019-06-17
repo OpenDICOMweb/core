@@ -20,18 +20,18 @@ class SQbytes extends SQ with ByteElement<Item> {
   final List<Item> values;
 
   @override
-  final DicomBytes bytes;
+  final BytesDicom bytes;
 
   SQbytes(this.parent, this.values, this.bytes);
 
   @override
   int get length => values.length;
 
-  /// Returns a new [SQbytes], where [bytes] is [DicomBytes]
+  /// Returns a new [SQbytes], where [bytes] is [BytesDicom]
   /// for complete sequence.
   // ignore: prefer_constructors_over_static_methods
   static SQbytes fromBytes(Dataset parent,
-      [Iterable<Item> items, DicomBytes bytes]) {
+      [Iterable<Item> items, BytesDicom bytes]) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
 

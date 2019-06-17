@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert' as cvt;
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -257,7 +257,7 @@ void main() {
     test('CS formBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getCSList(1, 1);
-        final bytes = Bytes.asciiFromList(vList1);
+        final bytes = BytesDicom.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
         final e1 = CStag.fromBytes(PTag.kGeometryOfKSpaceTraversal, bytes);
         log.debug('e1: ${e1.info}');
@@ -269,7 +269,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getCSList(1, 10);
         for (final listS in vList1) {
-          final bytes0 = Bytes.ascii(listS);
+          final bytes0 = Bytes.fromAscii(listS);
           final e1 = CStag.fromBytes(PTag.kSelectorCSValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
@@ -282,7 +282,7 @@ void main() {
         final vList1 = rsg.getCSList(1, 10);
         for (final listS in vList1) {
           global.throwOnError = false;
-          final bytes0 = Bytes.ascii(listS);
+          final bytes0 = Bytes.fromAscii(listS);
           final e1 = CStag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(e1, isNull);
 
@@ -433,7 +433,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
-        final bytes = Bytes.utf8FromList(vList0);
+        final bytes = Bytes.fromUtf8List(vList0);
         final e0 = CStag(PTag.kSelectorCSValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
@@ -856,22 +856,23 @@ void main() {
     test('CS fromBytes', () {
       //  system.level = Level.info;;
       final vList1 = rsg.getCSList(1, 1);
-      final bytes = Bytes.asciiFromList(vList1);
-      log.debug('bytes.getAsciiList(): ${bytes.stringListFromAscii()}, '
+      final bytes = BytesDicom.fromAsciiList(vList1);
+      log.debug('bytes.getAsciiList(): ${bytes.getAsciiList()}, '
           'bytes: $bytes');
-      expect(bytes.stringListFromAscii(), equals(vList1));
+      expect(bytes.getAsciiList(), equals(vList1));
     });
 
     test('CS Bytes.fromAsciiList', () {
       final vList1 = rsg.getCSList(1, 1);
-      log.debug('Bytes.fromAsciiList(vList1): ${Bytes.asciiFromList(vList1)}');
+      log.debug('BytesDicom.fromAsciiList(vList1): '
+          '${BytesDicom.fromAsciiList(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
-      expect(Bytes.asciiFromList(['s6V&:;s%?Q1g5v']), equals(val));
+      expect(BytesDicom.fromAsciiList(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(Bytes.asciiFromList(vList1), equals(values));
+      expect(BytesDicom.fromAsciiList(vList1), equals(values));
     });
 
     test('CS fromValueField', () {
@@ -908,7 +909,7 @@ void main() {
 
       global.throwOnError = false;
       final vList2 = rsg.getCSList(1, 1);
-      final bytes = Bytes.utf8FromList(vList2);
+      final bytes = Bytes.fromUtf8List(vList2);
       final fvf4 = AsciiString.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
 
@@ -956,8 +957,8 @@ void main() {
         final vList0 = rsg.getCSList(1, 1);
         global.throwOnError = false;
         final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = Bytes.asciiFromList(vList0);
-        final tbd1 = Bytes.asciiFromList(vList0);
+        final tbd0 = BytesDicom.fromAsciiList(vList0);
+        final tbd1 = BytesDicom.fromAsciiList(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -965,8 +966,8 @@ void main() {
       for (final s in goodCSList) {
         for (final a in s) {
           final values = cvt.ascii.encode(a);
-          final tbd2 = Bytes.asciiFromList(s);
-          final tbd3 = Bytes.asciiFromList(s);
+          final tbd2 = BytesDicom.fromAsciiList(s);
+          final tbd3 = BytesDicom.fromAsciiList(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -977,14 +978,14 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
         global.throwOnError = false;
-        final bd0 = Bytes.asciiFromList(vList0);
-        final fbd0 = bd0.stringListFromAscii();
+        final bd0 = BytesDicom.fromAsciiList(vList0);
+        final fbd0 = bd0.getAsciiList();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (final s in goodCSList) {
-        final bd0 = Bytes.asciiFromList(s);
-        final fbd0 = bd0.stringListFromAscii();
+        final bd0 = BytesDicom.fromAsciiList(s);
+        final fbd0 = bd0.getAsciiList();
         expect(fbd0, equals(s));
       }
     });
@@ -993,31 +994,31 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 10);
         global.throwOnError = false;
-        final toB0 = Bytes.asciiFromList(vList0, kMaxShortVF);
-        final bytes0 = Bytes.ascii(vList0.join('\\'));
+        final toB0 = BytesDicom.fromAsciiList(vList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAscii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (final s in goodCSList) {
-        final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
-        final bytes1 = Bytes.ascii(s.join('\\'));
+        final toB1 = BytesDicom.fromAsciiList(s, kMaxShortVF);
+        final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
       global.throwOnError = false;
-      final toB2 = Bytes.asciiFromList([''], kMaxShortVF);
+      final toB2 = BytesDicom.fromAsciiList([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.asciiFromList([], kMaxShortVF);
+      final toB3 = BytesDicom.fromAsciiList([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = Bytes.asciiFromList(null, kMaxShortVF);
+      final toB4 = BytesDicom.fromAsciiList(null, kMaxShortVF);
       expect(toB4, isNull);
 
       global.throwOnError = true;
-      expect(() => Bytes.asciiFromList(null, kMaxShortVF),
+      expect(() => BytesDicom.fromAsciiList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
     });
 
@@ -1025,7 +1026,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
-        final vfBytes = Bytes.utf8FromList(vList0);
+        final vfBytes = Bytes.fromUtf8List(vList0);
 
         if (vList0.length == 1) {
           for (final tag in csVM1Tags) {
@@ -1050,7 +1051,7 @@ void main() {
         }
       }
       final vList0 = rsg.getCSList(1, 1);
-      final vfBytes = Bytes.utf8FromList(vList0);
+      final vfBytes = Bytes.fromUtf8List(vList0);
 
       final e1 = CS.isValidBytesArgs(null, vfBytes);
       expect(e1, false);

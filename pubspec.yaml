@@ -14,8 +14,11 @@ dependencies:
   quiver: '>=2.0.0 <2.1.0'
 # TODO before V0.9.0: decide on using pub_semver or version - remove one
   version: ^1.0.2
-
-  decimal: ^0.3.0
+#  decimal: ^0.3.0
+  bytes:
+    path: ../bytes
+  bytes_dicom:
+    path: ../bytes_dicom
 
 dev_dependencies:
   benchmark_harness: any

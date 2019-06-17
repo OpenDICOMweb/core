@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
@@ -733,7 +734,7 @@ mixin DatasetMixin {
   /// _Note_: A [RootDataset] is its own [root].
   DatasetMixin get root => isRoot ? this : parent.root;
 
-  Ascii get charset => parent.charset;
+  Charset get charset => parent.charset;
 
   // **************** Element values accessors
   //TODO: when fast_tag is working replace code with index.

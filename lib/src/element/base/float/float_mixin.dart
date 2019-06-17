@@ -9,6 +9,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:bytes/bytes.dart';
 import 'package:collection/collection.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
@@ -16,8 +17,7 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/element/base/float/float.dart';
 import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/utils/bytes/bytes.dart';
-import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
@@ -73,7 +73,7 @@ mixin Float32Mixin {
   Float view([int start = 0, int length]) => update(
       typedData.buffer.asFloat32List(start, _toLength(length, values.length)));
 
-  bool equal(DicomBytes a, DicomBytes b) {
+  bool equal(Bytes a, Bytes b) {
     for (var i = 0; i < a.length; i += 4) {
       final x = a.getFloat32(i);
       final y = b.getFloat32(i);

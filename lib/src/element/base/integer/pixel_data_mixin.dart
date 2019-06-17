@@ -8,7 +8,7 @@
 import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values.dart';
 

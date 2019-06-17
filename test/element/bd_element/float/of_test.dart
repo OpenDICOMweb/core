@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
@@ -214,7 +214,7 @@ void main() {
     test('OFbytes', () {
       final vList = <double>[1, 1.1, 1.2];
       final e0 = OFbytes.fromValues(kSelectorOFValue, vList);
-      expect(e0.bytes is DicomBytes, true);
+      expect(e0.bytes is BytesDicom, true);
       expect(e0.vfBytes is Bytes, true);
       expect(e0.hasValidValues, true);
       expect(e0.vfByteData is ByteData, true);
@@ -223,7 +223,7 @@ void main() {
       expect(e0.isEmpty, false);
 
       final e1 = OFbytes(e0.bytes);
-      expect(e1.bytes is DicomBytes, true);
+      expect(e1.bytes is BytesDicom, true);
       expect(e1.vfBytes is Bytes, true);
       expect(e1.hasValidValues, true);
       expect(e1.vfByteData is ByteData, true);

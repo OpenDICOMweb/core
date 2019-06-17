@@ -7,7 +7,10 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'dart:collection';
+import 'dart:typed_data';
 
+import 'package:bytes/bytes.dart';
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/error/general_errors.dart';
@@ -39,8 +42,9 @@ class StringList extends ListBase<String> {
 
   StringList._(this._values);
 
-  StringList.decode(Bytes bytes, [Charset charset])
-      : _values = bytes.getStringList(charset ?? utf8);
+  StringList.decode(BytesDicom bytes, [Charset charset])
+      : _values = StringList.from(
+            bytes.getString(charset: charset ?? utf8).split('\\'));
 
   @override
   String operator [](int i) => _values[i];
@@ -72,7 +76,9 @@ class StringList extends ListBase<String> {
   // Performance: This is very inefficient
   int get lengthInBytes => asBytes.length;
 
-  Bytes get asBytes => Bytes.utf8FromList(_values);
+  Bytes get asBytes => BytesDicom.fromUtf8(_values.join('\\'));
+
+  Uint8List get asUint8List => BytesDicom.fromUtf8(_values.join('\\')).buf;
 
   List<String> get uppercase => _values.map((v) => v.toUpperCase());
 
@@ -187,7 +193,7 @@ class StringList extends ListBase<String> {
   }
 
   Bytes encode([int separator = kBackslash]) =>
-      Bytes.utf8FromList(_values, separator);
+      BytesDicom.fromUtf8(_values.join('\\'), separator);
 
   static final StringList kEmptyList = StringList._(kEmptyStringList);
 }
@@ -197,7 +203,7 @@ class AsciiList extends StringList {
       ? StringList.from(vList)
       : badStringList('Invalid AsciiList: $vList');
 
-  AsciiList.decode(Bytes bytes) : super._(bytes.stringListFromAscii());
+  AsciiList.decode(BytesDicom bytes) : super._(bytes.getAsciiList());
 
   @override
   int get lengthInBytes {
@@ -214,7 +220,7 @@ class AsciiList extends StringList {
     var length = lengthInBytes;
     if (pad != null && length.isOdd) length++;
     final last = length - 1;
-    final bytes = Bytes(length);
+    final bytes = Bytes.empty(length);
     int j;
     for (final s in _values) {
       for (var i = 0; i < s.length; i++) {

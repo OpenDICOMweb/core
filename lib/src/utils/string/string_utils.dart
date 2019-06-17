@@ -6,20 +6,20 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/error/general_errors.dart';
-import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string/string.dart';
 
 // ignore_for_file: public_member_api_docs
 
-// **** This file contains low-level [String] [List] functions
+// **** This file contains low-level [String] [List] utility functions
 
+// Urgent: find out which of this are really used and which are duplicated
 /// Returns the number of code points, plus separators, plus padding.
 int _stringListLength(Iterable<String> sList,
     {String separator = '\\', bool pad = true}) {
@@ -82,8 +82,8 @@ String typedDataToString(TypedData vf, {bool isAscii = false}) {
   final vfBytes = vf.buffer.asUint8List(vf.offsetInBytes, vf.lengthInBytes);
   final allow = global.allowInvalidCharacterEncodings;
   return (isAscii || global.useAscii)
-      ? ascii.decode(vfBytes, allowInvalid: allow)
-      : utf8.decode(vfBytes, allowMalformed: allow);
+      ? cvt.ascii.decode(vfBytes, allowInvalid: allow)
+      : cvt.utf8.decode(vfBytes, allowMalformed: allow);
 }
 
 List<String> textListFromBytes(TypedData vfBytes,
@@ -107,18 +107,6 @@ Uint8List textListToUint8List(Iterable<String> values, int maxVFLength) {
     if (s == null) return nullValueError();
     if (s.isEmpty) return kEmptyUint8List;
     return stringToUint8List(s, isAscii: false);
-  }
-  return badValuesLength(values, 1, 1);
-}
-
-/// Returns a [Uint8List] corresponding to a binary Value Field.
-Bytes textListToBytes(Iterable<String> values) {
-  if (values.isEmpty) return kEmptyBytes;
-  if (values.length == 1) {
-    final s = values.elementAt(0);
-    if (s == null) return nullValueError();
-    if (s.isEmpty) return kEmptyBytes;
-    return Bytes.utf8(s);
   }
   return badValuesLength(values, 1, 1);
 }

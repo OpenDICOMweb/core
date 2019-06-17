@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
@@ -247,7 +247,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint8List(1, 10);
-        final bytes0 = DicomBytes.fromAscii(vList.toString());
+        final bytes0 = BytesDicom.fromAscii(vList.toString());
         final e0 = OBtag.fromBytes(PTag.kSelectorOBValue, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -258,7 +258,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint8List(1, 10);
-        final bytes0 = DicomBytes.fromAscii(vList.toString());
+        final bytes0 = BytesDicom.fromAscii(vList.toString());
         final e0 = OBtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(e0, isNull);
         global.throwOnError = true;

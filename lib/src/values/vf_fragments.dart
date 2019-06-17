@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:bytes/bytes.dart';
 import 'package:core/src/element/utils.dart';
 import 'package:core/src/utils.dart';
 

@@ -15,7 +15,7 @@ import 'package:core/src/element/element_formatter.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/hash.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values.dart';
@@ -369,10 +369,10 @@ abstract class Element<V> extends ListBase<V> {
       (checkValues(values)) ? Bytes.typedDataView(typedData) : null;
 
   /// Converts [vfBytes] to an ASCII [String] and returns it.
-  String get vfBytesAsAscii => vfBytes.stringFromAscii();
+  String get vfBytesAsAscii => vfBytes.getAscii();
 
   /// Converts [vfBytes] to a [List<String>] of ASCII [String]s and returns it.
-  Iterable<String> get vfBytesAsAsciiList => vfBytes.stringListFromAscii();
+  Iterable<String> get vfBytesAsAsciiList => vfBytes.getAscii().split('\\');
 
   /// Converts [vfBytes] to a UTF8 [String] and returns it.
   String get vfBytesAsUtf8 => utf8.decode(vfBytes, allowMalformed: true);
@@ -557,7 +557,7 @@ abstract class Element<V> extends ListBase<V> {
     if (vList.isEmpty || allowInvalidVMs || tag.isLengthAlwaysValid)
       return true;
     final min = tag.vmMin;
-    final max = tag.vm.max(maxLengthForVR);
+    final max = tag.vm.realMax(maxLengthForVR);
     final length = vList.length;
     if (length >= min && length <= max && (length % tag.columns) == 0) {
       return true;

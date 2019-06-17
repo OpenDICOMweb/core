@@ -9,7 +9,7 @@
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs

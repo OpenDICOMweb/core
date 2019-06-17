@@ -73,8 +73,7 @@ abstract class DS extends AsciiString {
     return update(result.map((v) => _toValidDSString('$v')));
   }
 
-  String _toValidDSString(String s) =>
-      (s.length > 16) ? s.substring(0, 16) : s;
+  String _toValidDSString(String s) => (s.length > 16) ? s.substring(0, 16) : s;
 
   /// Returns a [Element] that is created by subtracting n from each
   /// element of [numbers].
@@ -225,10 +224,10 @@ abstract class DS extends AsciiString {
       StringBase.reallyTryParseList(vList, issues, tryParse);
 
   static List<num> tryParseBytes(Bytes vfBytes) =>
-      tryParseList(vfBytes.stringListFromAscii());
+      tryParseList(vfBytes.getAscii().split('\\'));
 
   static Iterable<String> validateValueField(Bytes vfBytes) =>
-      vfBytes.stringListFromAscii();
+      vfBytes.getAscii().split('\\');
 }
 
 abstract class IS extends AsciiString {
@@ -436,8 +435,8 @@ abstract class IS extends AsciiString {
       StringBase.reallyTryParseList(vList, issues, tryParse);
 
   static List<int> tryParseBytes(Bytes vfBytes) =>
-      tryParseList(vfBytes.stringListFromAscii());
+      tryParseList(vfBytes.getAscii().split('\\'));
 
   static Iterable<String> validateValueField(Bytes vfBytes) =>
-      vfBytes.stringListFromAscii();
+      vfBytes.getAscii().split('\\');
 }

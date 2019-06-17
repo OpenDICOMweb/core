@@ -14,7 +14,7 @@ import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/uid.dart';
 import 'package:core/src/vr.dart';

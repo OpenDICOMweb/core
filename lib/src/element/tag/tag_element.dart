@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag.dart';
@@ -62,8 +63,8 @@ mixin TagElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  static PC _getPCTagFromBytes(int code, DicomBytes bytes) {
-    final token = bytes.vfBytes.stringFromUtf8().trim();
+  static PC _getPCTagFromBytes(int code, BytesDicom bytes) {
+    final token = bytes.vfBytes.getUtf8().trim();
     final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
     return PCtag.fromBytes(tag, bytes.vfBytes);
   }
@@ -78,9 +79,9 @@ mixin TagElement<V> {
     return PCtag(tag, StringList.from([token]));
   }
 
-  /// Creates a [TagElement] from [DicomBytes] containing a binary encoded
+  /// Creates a [TagElement] from [BytesDicom] containing a binary encoded
   /// [Element].
-  static Element fromBytes(DicomBytes bytes, Dataset ds, {bool isEvr}) {
+  static Element fromBytes(BytesDicom bytes, Dataset ds, {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return _getPCTagFromBytes(code, bytes);
 
@@ -115,7 +116,7 @@ mixin TagElement<V> {
     UStag.fromBytes,
   ];
 
-  static Element maybeUndefinedFromBytes(DicomBytes bytes,
+  static Element maybeUndefinedFromBytes(BytesDicom bytes,
       [Dataset ds, TransferSyntax ts]) {
     final code = bytes.code;
     // Note: This shouldn't happen, but it does.

@@ -11,7 +11,7 @@ import 'package:core/src/tag/private/pc_tag_map.dart';
 import 'package:core/src/tag/private/pc_tag_definitions.dart';
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
-import 'package:core/src/tag/code.dart';
+//import 'package:core/src/tag/code.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils.dart';
@@ -56,7 +56,7 @@ abstract class PCTag extends PrivateTag {
   String get limitHex => hex32(limit);
 
   @override
-  bool get isValid => isPCCode(code) && vrIndex == kLOIndex;
+  bool get isValid => Tag.isPCCode(code) && vrIndex == kLOIndex;
 
   bool isValidDataCode(int code) {
     final ng = code >> 16;

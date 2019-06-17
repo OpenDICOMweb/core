@@ -8,6 +8,7 @@
 //
 import 'dart:collection';
 
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/utils/status_report.dart';
