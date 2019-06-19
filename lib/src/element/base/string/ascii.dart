@@ -44,7 +44,7 @@ abstract class AsciiString extends StringBase {
   Uint8List get bulkdata => typedData;
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.getAscii(allowInvalid: global.allowInvalidAscii).split('\\');
+      bytes.getAscii().split('\\');
 
   AsciiString append(String s) => update(values.append(s, maxValueLength));
 

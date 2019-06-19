@@ -43,7 +43,7 @@ abstract class Utf8String extends StringBase {
   Uint8List get bulkdata => typedData;
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.getUtf8(allowInvalid: global.allowMalformedUtf8).split('\\');
+      bytes.getUtf8().split('\\');
 
   Utf8String append(String s) => update(values.append(s, maxValueLength));
 
