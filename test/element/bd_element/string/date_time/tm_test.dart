@@ -52,7 +52,7 @@ void main() {
         for (final code in tmVM1Tags) {
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -81,7 +81,7 @@ void main() {
           global.throwOnError = false;
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
 
@@ -99,7 +99,7 @@ void main() {
           global.throwOnError = false;
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -113,7 +113,7 @@ void main() {
         for (final code in tmVM1nTags) {
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -140,7 +140,7 @@ void main() {
         final vList0 = rsg.getDAList(1, i);
         final e0 = TMbytes.fromValues(kSelectorTMValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, false);
       }

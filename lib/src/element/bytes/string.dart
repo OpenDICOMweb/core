@@ -51,7 +51,7 @@ mixin AsciiMixin {
 
 // **** Ascii Classes
 
-class AEbytes extends AE with ByteElement<String>, StringMixin, AsciiMixin {
+class AEbytes extends AE with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -70,7 +70,7 @@ class AEbytes extends AE with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
-class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
+class ASbytes extends AS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -94,7 +94,7 @@ class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
-class CSbytes extends CS with ByteElement<String>, StringMixin, AsciiMixin {
+class CSbytes extends CS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -113,7 +113,7 @@ class CSbytes extends CS with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
-class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
+class DAbytes extends DA with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -137,7 +137,7 @@ class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
-class DSbytes extends DS with ByteElement<String>, StringMixin, AsciiMixin {
+class DSbytes extends DS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -156,7 +156,7 @@ class DSbytes extends DS with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
-class DTbytes extends DT with ByteElement<String>, StringMixin, AsciiMixin {
+class DTbytes extends DT with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -175,7 +175,7 @@ class DTbytes extends DT with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
-class ISbytes extends IS with ByteElement<String>, StringMixin, AsciiMixin {
+class ISbytes extends IS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -194,7 +194,7 @@ class ISbytes extends IS with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
-class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
+class UIbytes extends UI with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -217,7 +217,7 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
-class TMbytes extends TM with ByteElement<String>, StringMixin, AsciiMixin {
+class TMbytes extends TM with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
   final BytesDicom bytes;
 
@@ -256,7 +256,7 @@ mixin Utf8Mixin {
   }
 }
 
-class LObytes extends LO with ByteElement<String>, StringMixin, Utf8Mixin {
+class LObytes extends LO with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
   final BytesDicom bytes;
 
@@ -281,9 +281,9 @@ class LObytes extends LO with ByteElement<String>, StringMixin, Utf8Mixin {
   }
 }
 
-class PCbytes extends PC with ByteElement<String>, StringMixin, Utf8Mixin {
+class PCbytes extends PC with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   PCbytes(this.bytes);
 
@@ -303,7 +303,7 @@ class PCbytes extends PC with ByteElement<String>, StringMixin, Utf8Mixin {
   }
 }
 
-class PNbytes extends PN with ByteElement<String>, StringMixin, Utf8Mixin {
+class PNbytes extends PN with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
   final BytesDicom bytes;
 
@@ -322,7 +322,7 @@ class PNbytes extends PN with ByteElement<String>, StringMixin, Utf8Mixin {
   }
 }
 
-class SHbytes extends SH with ByteElement<String>, StringMixin, Utf8Mixin {
+class SHbytes extends SH with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
   final BytesDicom bytes;
 
@@ -341,7 +341,7 @@ class SHbytes extends SH with ByteElement<String>, StringMixin, Utf8Mixin {
   }
 }
 
-class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
+class UCbytes extends UC with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
   final BytesDicom bytes;
 
@@ -389,7 +389,7 @@ int _stringValuesLength(Bytes vfBytes) {
   return count;
 }
 
-class LTbytes extends LT with ByteElement<String>, StringMixin, TextMixin {
+class LTbytes extends LT with ElementBytes<String>, StringMixin, TextMixin {
   @override
   final BytesDicom bytes;
 
@@ -408,7 +408,7 @@ class LTbytes extends LT with ByteElement<String>, StringMixin, TextMixin {
   }
 }
 
-class STbytes extends ST with ByteElement<String>, StringMixin, TextMixin {
+class STbytes extends ST with ElementBytes<String>, StringMixin, TextMixin {
   @override
   final BytesDicom bytes;
 
@@ -427,7 +427,7 @@ class STbytes extends ST with ByteElement<String>, StringMixin, TextMixin {
   }
 }
 
-class URbytes extends UR with ByteElement<String>, StringMixin, TextMixin {
+class URbytes extends UR with ElementBytes<String>, StringMixin, TextMixin {
   @override
   final BytesDicom bytes;
 
@@ -446,7 +446,7 @@ class URbytes extends UR with ByteElement<String>, StringMixin, TextMixin {
   }
 }
 
-class UTbytes extends UT with ByteElement<String>, StringMixin, TextMixin {
+class UTbytes extends UT with ElementBytes<String>, StringMixin, TextMixin {
   @override
   final BytesDicom bytes;
 

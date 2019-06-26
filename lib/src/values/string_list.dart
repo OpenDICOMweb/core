@@ -44,7 +44,7 @@ class StringList extends ListBase<String> {
 
   StringList.decode(BytesDicom bytes, [Charset charset])
       : _values = StringList.from(
-            bytes.getString(charset: charset ?? utf8).split('\\'));
+            bytes.getStringList(0, bytes.length, charset ?? utf8.decode));
 
   @override
   String operator [](int i) => _values[i];

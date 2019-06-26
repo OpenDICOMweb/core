@@ -12,7 +12,7 @@ part of odw.sdk.element.bytes;
 
 // **** Sequence Class
 
-class SQbytes extends SQ with ByteElement<Item> {
+class SQbytes extends SQ with ElementBytes<Item> {
   @override
   final Dataset parent;
 
@@ -20,18 +20,18 @@ class SQbytes extends SQ with ByteElement<Item> {
   final List<Item> values;
 
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   SQbytes(this.parent, this.values, this.bytes);
 
   @override
   int get length => values.length;
 
-  /// Returns a new [SQbytes], where [bytes] is [BytesDicom]
+  /// Returns a new [SQbytes], where [bytes] is [BytesElement]
   /// for complete sequence.
   // ignore: prefer_constructors_over_static_methods
   static SQbytes fromBytes(Dataset parent,
-      [Iterable<Item> items, BytesDicom bytes]) {
+      [Iterable<Item> items, BytesElement bytes]) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
 

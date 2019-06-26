@@ -42,7 +42,7 @@ void main() {
         for (final code in dtVM1Tags) {
           final e0 = DTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -71,7 +71,7 @@ void main() {
           global.throwOnError = false;
           final e0 = DTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
 
@@ -89,7 +89,7 @@ void main() {
           global.throwOnError = false;
           final e0 = DTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -102,7 +102,7 @@ void main() {
         final vList0 = rsg.getDTList(1, i);
         final e0 = DTbytes.fromValues(kSelectorDTValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
@@ -129,7 +129,7 @@ void main() {
         global.throwOnError = false;
         final e0 = DTbytes.fromValues(kSelectorDTValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, false);
 

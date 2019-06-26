@@ -218,7 +218,7 @@ void main() {
       for (final code in flVM1Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
@@ -247,7 +247,7 @@ void main() {
       for (final code in flVM2Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
@@ -276,7 +276,7 @@ void main() {
       for (final code in flVM3Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
@@ -305,7 +305,7 @@ void main() {
       for (final code in flVM6Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
@@ -333,7 +333,7 @@ void main() {
       global.throwOnError = false;
       for (final code in flVM1nTags) {
         final e0 = FLbytes.fromValues(code, vList0);
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
@@ -361,7 +361,7 @@ void main() {
       global.throwOnError = false;
       for (final code in flVM16Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 
@@ -389,7 +389,7 @@ void main() {
       global.throwOnError = false;
       for (final code in flVM1nTags) {
         final e0 = FLbytes.fromValues(code, vList0);
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
 

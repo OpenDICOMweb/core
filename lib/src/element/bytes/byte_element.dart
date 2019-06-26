@@ -34,10 +34,10 @@ typedef DecodeBinaryVF = Element Function(BytesDicom bytes, int vrIndex);
 typedef BDElementMaker = Element Function(
     int code, int vrIndex, BytesDicom bytes);
 
-mixin ByteElement<V> {
+mixin ElementBytes<V> {
   V operator [](int index);
 
-  BytesDicom get bytes;
+  BytesElement get bytes;
 
   /// The length of values;
   int get length;
@@ -53,7 +53,7 @@ mixin ByteElement<V> {
   /// The Tag Code of _this_.
   int get code => bytes.code;
 
-  /// The length in bytes of this [ByteElement]
+  /// The length in bytes of this [ElementBytes]
   int get eLength => bytes.length;
 
   bool get isEvr => bytes.isEvr;
@@ -72,7 +72,7 @@ mixin ByteElement<V> {
 
   Bytes get vfBytes => bytes.vfBytes;
 
-  int get vfBytesLast => bytes.vfBytesLast;
+ // int get vfBytesLast => bytes.vfBytesLast;
 
   Uint8List get bulkdata => unsupportedError();
 
@@ -83,7 +83,7 @@ mixin ByteElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  static Element fromBytes(BytesDicom bytes, Dataset ds, {bool isEvr}) {
+  static Element fromBytes(BytesElement bytes, Dataset ds, {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return PCbytes(bytes);
     final vrIndex = isEvr ? bytes.vrIndex : kUNIndex;
@@ -118,7 +118,7 @@ mixin ByteElement<V> {
     USbytes.fromBytes
   ];
 
-  static Element makeMaybeUndefinedFromBytes(BytesDicom bytes,
+  static Element makeMaybeUndefinedFromBytes(BytesElement bytes,
       [Dataset ds, int vfLengthField]) {
     final code = bytes.code;
     // Note: This shouldn't happen, but it does.
@@ -177,9 +177,9 @@ BytesDicom _makeShort<V>(
   final vfl = vList.length * eSize;
   return isEvr
       ? isLE
-          ? EvrLongLEBytes.element(code, vrCode, vfl)
-          : EvrLongBEBytes.element(code, vrCode, vfl)
-      : IvrBytes.element(code, vrCode, vfl);
+          ? BytesLELongEvr.header(code, vrCode, vfl)
+          : BytesBELongEvr.header(code, vrCode, vfl)
+      : BytesIvr.header(code, vrCode, vfl);
 }
 
 BytesDicom _makeShortString(
@@ -190,9 +190,9 @@ BytesDicom _makeShortString(
   final vfl = stringListLength(sList, pad: true);
   return isEvr
       ? isLE
-          ? EvrLongLEBytes.element(code, vrCode, vfl)
-          : EvrLongBEBytes.element(code, vrCode, vfl)
-      : IvrBytes.element(code, vrCode, vfl);
+          ? BytesLELongEvr.header(code, vrCode, vfl)
+          : BytesBELongEvr.header(code, vrCode, vfl)
+      : BytesIvr.header(code, vrCode, vfl);
 }
 
 BytesDicom _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize,
@@ -200,9 +200,9 @@ BytesDicom _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize,
   final vfl = vList.length * eSize;
   return isEvr
       ? isLE
-          ? EvrLongLEBytes.element(code, vrCode, vfl)
-          : EvrLongBEBytes.element(code, vrCode, vfl)
-      : IvrBytes.element(code, vrCode, vfl);
+          ? BytesLELongEvr.header(code, vrCode, vfl)
+          : BytesBELongEvr.header(code, vrCode, vfl)
+      : BytesIvr.header(code, vrCode, vfl);
 }
 
 BytesDicom _makeLongString(int code, List<String> sList, int vrCode, bool isEvr,
@@ -210,7 +210,7 @@ BytesDicom _makeLongString(int code, List<String> sList, int vrCode, bool isEvr,
   final vfl = stringListLength(sList, pad: true);
   return isEvr
       ? isLE
-          ? EvrLongLEBytes.element(code, vrCode, vfl)
-          : EvrLongBEBytes.element(code, vrCode, vfl)
-      : IvrBytes.element(code, vrCode, vfl);
+          ? BytesLELongEvr.header(code, vrCode, vfl)
+          : BytesBELongEvr.header(code, vrCode, vfl)
+      : BytesIvr.header(code, vrCode, vfl);
 }

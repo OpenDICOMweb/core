@@ -33,7 +33,7 @@ void main() {
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes == bytes, true);
 
-        final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log..debug('e1: $e1')..debug('vList: $vList')..debug('bd: $bytes');
         expect(e1.hasValidValues, true);
         expect(e1 == e0, true);

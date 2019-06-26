@@ -319,7 +319,7 @@ void main() {
 
     test('DicomReadBuffer', () {
       final vList0 = ['1q221', 'sadaq223'];
-      final bytes0 = Bytes.fromAsciiList(vList0);
+      final bytes0 = BytesDicom.fromAsciiList(vList0);
       final dReadBuffer0 = DicomReadBuffer(bytes0);
       log.debug('dReadBuffer0:$dReadBuffer0');
 

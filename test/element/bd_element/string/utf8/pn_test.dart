@@ -57,7 +57,7 @@ void main() {
         for (final code in pnVM1Tags) {
           final e0 = PNbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -86,7 +86,7 @@ void main() {
         for (final code in pnVM1Tags) {
           final e0 = PNbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -101,7 +101,7 @@ void main() {
         for (final code in pnVM1nTags) {
           final e0 = PNbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 

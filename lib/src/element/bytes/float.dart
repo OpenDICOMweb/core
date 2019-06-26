@@ -21,7 +21,7 @@ mixin BytesFloat32Mixin {
   Float32List get _values => vfBytes.asFloat32List();
 }
 
-class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
+class FLbytes extends FL with ElementBytes<double>, BytesFloat32Mixin {
   @override
   final BytesDicom bytes;
 
@@ -29,7 +29,7 @@ class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
 
   //TODO: fix all static constructors when constructors can be used as tear offs
   // ignore: prefer_constructors_over_static_methods
-  static FLbytes fromBytes(BytesDicom bytes, [Ascii _]) => FLbytes(bytes);
+  static FLbytes fromBytes(BytesDicom bytes, [Charcode _]) => FLbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static FLbytes fromValues(int code, Iterable<double> vList,
@@ -41,7 +41,7 @@ class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
   }
 }
 
-class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
+class OFbytes extends OF with ElementBytes<double>, BytesFloat32Mixin {
   @override
   final BytesDicom bytes;
 
@@ -72,7 +72,7 @@ mixin BytesFloat64Mixin {
   List<double> get values => vfBytes.asFloat64List();
 }
 
-class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
+class FDbytes extends FD with ElementBytes<double>, BytesFloat64Mixin {
   @override
   final BytesDicom bytes;
 
@@ -91,7 +91,7 @@ class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
   }
 }
 
-class ODbytes extends OD with ByteElement<double>, BytesFloat64Mixin {
+class ODbytes extends OD with ElementBytes<double>, BytesFloat64Mixin {
   @override
   final BytesDicom bytes;
 

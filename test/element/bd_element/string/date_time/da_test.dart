@@ -51,7 +51,7 @@ void main() {
         for (final code in daVM1Tags) {
           final e0 = DAbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -80,7 +80,7 @@ void main() {
           global.throwOnError = false;
           final e0 = DAbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
 
@@ -96,7 +96,7 @@ void main() {
           global.throwOnError = false;
           final e2 = DAbytes.fromValues(code, vList1);
           log.debug('e2: $e2');
-          final e3 = ByteElement.fromBytes(e2.bytes, rds, isEvr: true);
+          final e3 = ElementBytes.fromBytes(e2.bytes, rds, isEvr: true);
           log.debug('e3: $e3');
           expect(e2.hasValidValues, false);
 
@@ -114,7 +114,7 @@ void main() {
           global.throwOnError = false;
           final e0 = DAbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -128,7 +128,7 @@ void main() {
         for (final code in daVM1nTags) {
           final e0 = DAbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
 
@@ -157,7 +157,7 @@ void main() {
           global.throwOnError = false;
           final e0 = DAbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.fromBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
 

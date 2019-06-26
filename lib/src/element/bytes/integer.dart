@@ -9,7 +9,7 @@
 part of odw.sdk.element.bytes;
 
 /// Signed Short (SS)
-class SSbytes extends SS with ByteElement<int>, Int16Mixin {
+class SSbytes extends SS with ElementBytes<int>, Int16Mixin {
   @override
   final BytesDicom bytes;
 
@@ -22,7 +22,7 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
 
   /// Returns a new [SSbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static ByteElement fromValues(int code, List<int> vList,
+  static ElementBytes fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
     if (bytes == null) return null;
@@ -33,7 +33,7 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
 }
 
 /// Signed Long (SL)
-class SLbytes extends SL with ByteElement<int>, Int32Mixin {
+class SLbytes extends SL with ElementBytes<int>, Int32Mixin {
   @override
   final BytesDicom bytes;
 
@@ -58,7 +58,7 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
 // **** 8-bit Integer Elements (OB, UN)
 
 /// Other Bytes (OB).
-class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
+class OBbytes extends OB with ElementBytes<int>, Uint8Mixin {
   @override
   final BytesDicom bytes;
 
@@ -72,7 +72,7 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
   /// If [code] == [kPixelData] returns a [OBbytesPixelData]; otherwise,
   /// returns a new [OBbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static ByteElement fromValues(int code, List<int> vList,
+  static ElementBytes fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOBCode, isEvr, OB.kSizeInBytes)
       ..writeUint8VF(vList);
@@ -84,7 +84,7 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
 }
 
 /// Unknown (UN).
-class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
+class UNbytes extends UN with ElementBytes<int>, Uint8Mixin {
   @override
   final BytesDicom bytes;
 
@@ -98,7 +98,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
   /// If [code] == [kPixelData] returns a [UNbytesPixelData]; otherwise,
   /// returns a new [UNbytes] [Element].
   // ignore: prefer_constructors_over_static_methods
-  static ByteElement fromValues(int code, List<int> vList,
+  static ElementBytes fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kUNCode, isEvr, UN.kSizeInBytes)
       ..writeUint8VF(vList);
@@ -110,7 +110,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
 }
 
 /// Unsigned Short (US).
-class USbytes extends US with ByteElement<int>, Uint16Mixin {
+class USbytes extends US with ElementBytes<int>, Uint16Mixin {
   @override
   final BytesDicom bytes;
 
@@ -133,7 +133,7 @@ class USbytes extends US with ByteElement<int>, Uint16Mixin {
 }
 
 /// Other Word (OW).
-class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
+class OWbytes extends OW with ElementBytes<int>, Uint16Mixin {
   @override
   final BytesDicom bytes;
 
@@ -147,7 +147,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
   // ignore: prefer_constructors_over_static_methods
   /// If [code] == [kPixelData] returns a [OWbytesPixelData]; otherwise,
   /// returns a new [OWbytes] [Element].
-  static ByteElement fromValues(int code, List<int> vList,
+  static ElementBytes fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOWCode, isEvr, OW.kSizeInBytes);
     if (bytes == null) return null;
@@ -160,7 +160,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
 }
 
 /// Attribute (Element) Code (AT)
-class ATbytes extends AT with ByteElement<int>, Uint32Mixin {
+class ATbytes extends AT with ElementBytes<int>, Uint32Mixin {
   @override
   final BytesDicom bytes;
 
@@ -183,7 +183,7 @@ class ATbytes extends AT with ByteElement<int>, Uint32Mixin {
 }
 
 /// Other Long (OL)
-class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
+class OLbytes extends OL with ElementBytes<int>, Uint32Mixin {
   @override
   final BytesDicom bytes;
 
@@ -206,7 +206,7 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
 }
 
 /// Unsigned Long (UL)
-class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
+class ULbytes extends UL with ElementBytes<int>, Uint32Mixin {
   @override
   final BytesDicom bytes;
 

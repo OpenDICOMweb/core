@@ -61,8 +61,8 @@ class BulkdataFile {
   }
 
   static Future<BulkdataFile> readFile(File file, {bool doAsync = true}) async {
-    final bytes = doAsync ? await file.readAsBytes() : file.readAsBytesSync();
-    return BulkdataFile(file.path, bytes);
+    final u8List = doAsync ? await file.readAsBytes() : file.readAsBytesSync();
+    return BulkdataFile(file.path, Bytes.typedDataView(u8List));
   }
 
   static Future<BulkdataFile> readPath(String fPath,
