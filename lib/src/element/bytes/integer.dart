@@ -8,245 +8,270 @@
 //
 part of odw.sdk.element.bytes;
 
+// ignore_for_file: prefer_constructors_over_static_methods
+
+/// 16-bit signed integer Elements (SS)
+mixin Int16Mixin {
+  Bytes get vfBytes;
+
+  int get length {
+    assert(vfBytes.length.isEven);
+    return vfBytes.length ~/ 2;
+  }
+
+  Int16List get values => vfBytes.asInt16List();
+}
+
 /// Signed Short (SS)
 class SSbytes extends SS with ElementBytes<int>, Int16Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [SSbytes] [Element].
   SSbytes(this.bytes);
 
   /// Returns a new [SSbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static SSbytes fromBytes(BytesDicom bytes, [Ascii _]) => SSbytes(bytes);
+  static SSbytes fromBytes(BytesElement bytes, [Ascii _]) => SSbytes(bytes);
 
   /// Returns a new [SSbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static ElementBytes fromValues(int code, List<int> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
-    if (bytes == null) return null;
-    bytes.writeUint16VF(vList);
-    assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);
-    return fromBytes(bytes);
+  static SSbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Int32.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kSSCode, type, SS.kMaxVFLength);
+    return SSbytes(bytes);
   }
+}
+
+/// 32-bit signed integer Elements (SL)
+mixin Int32Mixin {
+  Bytes get vfBytes;
+  Int32List _values;
+
+  int get length {
+    assert(vfBytes.length % 4 == 0);
+    return vfBytes.length ~/ 4;
+  }
+
+  Int32List get values => _values ??= vfBytes.asInt32List();
 }
 
 /// Signed Long (SL)
 class SLbytes extends SL with ElementBytes<int>, Int32Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [SLbytes] [Element].
   SLbytes(this.bytes);
 
   /// Returns a new [SLbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static SLbytes fromBytes(BytesDicom bytes, [Ascii _]) => SLbytes(bytes);
+  static SLbytes fromBytes(BytesElement bytes, [Ascii _]) => SLbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   /// Returns a new [SLbytes] [Element].
-  static SLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSLCode, isEvr, SL.kSizeInBytes);
-    if (bytes == null) return null;
-    bytes.writeInt32VF(vList);
-    assert(vList.length * SL.kSizeInBytes <= SL.kMaxVFLength);
-    return fromBytes(bytes);
+  static SLbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Int32.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kSLCode, type, SL.kMaxVFLength);
+    return SLbytes(bytes);
   }
 }
 
 // **** 8-bit Integer Elements (OB, UN)
 
+/// Unsigned 8-bit Integer Elements (OB, UN)
+mixin Uint8Mixin {
+  Bytes get vfBytes;
+
+  int get length => vfBytes.length;
+
+  Uint8List get values => vfBytes.asUint8List();
+}
+
 /// Other Bytes (OB).
 class OBbytes extends OB with ElementBytes<int>, Uint8Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [OBbytes] [Element].
   OBbytes(this.bytes);
 
   /// Returns a new [OBbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static OBbytes fromBytes(BytesDicom bytes, [Ascii _]) => OBbytes(bytes);
+  static OBbytes fromBytes(BytesElement bytes, [Ascii _]) => OBbytes(bytes);
 
   /// If [code] == [kPixelData] returns a [OBbytesPixelData]; otherwise,
   /// returns a new [OBbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static ElementBytes fromValues(int code, List<int> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kOBCode, isEvr, OB.kSizeInBytes)
-      ..writeUint8VF(vList);
-    assert(vList.length * OB.kSizeInBytes <= OB.kMaxVFLength);
-    return (code == kPixelData)
-        ? OBbytesPixelData.fromBytes(bytes)
-        : fromBytes(bytes);
+  static ElementBytes fromValues(
+      int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint8.toBytes(vList);
+    final bytes =
+        _makeLongElement(code, vfBytes, kOBCode, type, OB.kMaxVFLength);
+    return (code == kPixelData) ? OBbytesPixelData(bytes) : OBbytes(bytes);
   }
 }
 
 /// Unknown (UN).
 class UNbytes extends UN with ElementBytes<int>, Uint8Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [UNbytes] [Element].
   UNbytes(this.bytes);
 
   /// Returns a new [UNbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static UNbytes fromBytes(BytesDicom bytes, [Ascii _]) => UNbytes(bytes);
+  static UNbytes fromBytes(BytesElement bytes, [Ascii _]) => UNbytes(bytes);
 
   /// If [code] == [kPixelData] returns a [UNbytesPixelData]; otherwise,
   /// returns a new [UNbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static ElementBytes fromValues(int code, List<int> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kUNCode, isEvr, UN.kSizeInBytes)
-      ..writeUint8VF(vList);
-    assert(vList.length * UN.kSizeInBytes <= UN.kMaxVFLength);
-    return (code == kPixelData)
-        ? UNbytesPixelData.fromBytes(bytes)
-        : fromBytes(bytes);
+  static ElementBytes fromValues(
+      int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint8.toBytes(vList);
+    final bytes =
+        _makeLongElement(code, vfBytes, kUNCode, type, UN.kMaxVFLength);
+    return (code == kPixelData) ? UNbytesPixelData(bytes) : UNbytes(bytes);
   }
+}
+
+/// 16-bit unsigned integer Elements (US, OW)
+mixin Uint16Mixin {
+  Bytes get vfBytes;
+
+  int get length {
+    assert(vfBytes.length.isEven);
+    return vfBytes.length ~/ 2;
+  }
+
+  Uint16List get values => vfBytes.asUint16List();
 }
 
 /// Unsigned Short (US).
 class USbytes extends US with ElementBytes<int>, Uint16Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [USbytes] [Element].
   USbytes(this.bytes);
 
   /// Returns a new [USbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static USbytes fromBytes(BytesDicom bytes, [Ascii _]) => USbytes(bytes);
+  static USbytes fromBytes(BytesElement bytes, [Ascii _]) => USbytes(bytes);
 
   /// Returns a new [USbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static USbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kUSCode, isEvr, US.kSizeInBytes);
-    if (bytes == null) return null;
-    bytes.writeUint16VF(vList);
-    assert(vList.length * US.kSizeInBytes <= US.kMaxVFLength);
-    return fromBytes(bytes);
+  static USbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint16.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kUSCode, type, US.kMaxVFLength);
+    return USbytes(bytes);
   }
 }
 
 /// Other Word (OW).
 class OWbytes extends OW with ElementBytes<int>, Uint16Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [OWbytes] [Element].
   OWbytes(this.bytes);
 
   /// Returns a new [OWbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static OWbytes fromBytes(BytesDicom bytes, [Ascii _]) => OWbytes(bytes);
+  static OWbytes fromBytes(BytesElement bytes, [Ascii _]) => OWbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   /// If [code] == [kPixelData] returns a [OWbytesPixelData]; otherwise,
   /// returns a new [OWbytes] [Element].
-  static ElementBytes fromValues(int code, List<int> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kOWCode, isEvr, OW.kSizeInBytes);
-    if (bytes == null) return null;
-    bytes.writeUint16VF(vList);
-    assert(vList.length * OW.kSizeInBytes <= OW.kMaxVFLength);
-    return (code == kPixelData)
-        ? OWbytesPixelData.fromBytes(bytes)
-        : fromBytes(bytes);
+  static ElementBytes fromValues(
+      int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint16.toBytes(vList);
+    final bytes =
+        _makeLongElement(code, vfBytes, kOWCode, type, OW.kMaxVFLength);
+    return (code == kPixelData) ? OWbytesPixelData(bytes) : OWbytes(bytes);
   }
+}
+
+/// 32-bit unsigned integer Elements (AT, UL, GL, OL)
+mixin Uint32Mixin {
+  Bytes get vfBytes;
+
+  int get length {
+    assert(vfBytes.length % 4 == 0);
+    return vfBytes.length ~/ 4;
+  }
+
+  Uint32List get values => vfBytes.asUint32List();
 }
 
 /// Attribute (Element) Code (AT)
 class ATbytes extends AT with ElementBytes<int>, Uint32Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [ATbytes] [Element].
   ATbytes(this.bytes);
 
   /// Returns a new [ATbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static ATbytes fromBytes(BytesDicom bytes, [Ascii _]) => ATbytes(bytes);
+  static ATbytes fromBytes(BytesElement bytes, [Ascii _]) => ATbytes(bytes);
 
   /// Returns a new [ATbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static ATbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kATCode, isEvr, AT.kSizeInBytes);
-    if (bytes == null) return null;
-    bytes.writeUint32VF(vList);
-    assert(vList.length * AT.kSizeInBytes <= AT.kMaxVFLength);
-    return fromBytes(bytes);
+  static ATbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint32.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kATCode, type, AT.kMaxVFLength);
+    return ATbytes(bytes);
   }
 }
 
 /// Other Long (OL)
 class OLbytes extends OL with ElementBytes<int>, Uint32Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [OLbytes] [Element].
   OLbytes(this.bytes);
 
   /// Returns a new [OLbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static OLbytes fromBytes(BytesDicom bytes, [Ascii _]) => OLbytes(bytes);
+  static OLbytes fromBytes(BytesElement bytes, [Ascii _]) => OLbytes(bytes);
 
   /// Returns a new [OLbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static OLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kOLCode, isEvr, OL.kSizeInBytes);
-    if (bytes == null) return null;
-    bytes.writeUint32VF(vList);
-    assert(vList.length * OL.kSizeInBytes <= OL.kMaxVFLength);
-    return fromBytes(bytes);
+  static OLbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint32.toBytes(vList);
+    final bytes =
+        _makeLongElement(code, vfBytes, kOLCode, type, OL.kMaxVFLength);
+    return OLbytes(bytes);
   }
 }
 
 /// Unsigned Long (UL)
 class ULbytes extends UL with ElementBytes<int>, Uint32Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   /// Returns a new [ULbytes] [Element].
   ULbytes(this.bytes);
 
   /// Returns a new [ULbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static ULbytes fromBytes(BytesDicom bytes, [Ascii _]) =>
+  static ULbytes fromBytes(BytesElement bytes, [Ascii _]) =>
       // If the code is (gggg,0000) create a Group Length element
       (bytes.getUint16(2) == 0) ? GLbytes(bytes) : ULbytes(bytes);
 
   /// Returns a new [ULbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static ULbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kULCode, isEvr, UL.kSizeInBytes);
-    if (bytes == null) return null;
-    bytes.writeUint32VF(vList);
-    assert(vList.length * UL.kSizeInBytes <= UL.kMaxVFLength);
-    return fromBytes(bytes);
+  static ULbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint32.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kULCode, type, UL.kMaxVFLength);
+    return ULbytes(bytes);
   }
 }
 
 /// Group Length (GL)
 class GLbytes extends ULbytes {
   /// Returns a new [GLbytes] [Element].
-  GLbytes(BytesDicom bytes) : super(bytes);
+  GLbytes(BytesElement bytes) : super(bytes);
 
   /// Returns a new [GLbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static GLbytes fromBytes(BytesDicom bytes, [Ascii _]) => GLbytes(bytes);
+  static GLbytes fromBytes(BytesElement bytes, [Ascii _]) => GLbytes(bytes);
 
   /// Returns a new [GLbytes] [Element].
-  // ignore: prefer_constructors_over_static_methods
-  static GLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
-    if (bytes == null) return null;
-    bytes.writeUint8VF(vList);
-    assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);
-    return fromBytes(bytes);
+  static GLbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint32.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kULCode, type, UL.kMaxVFLength);
+    return GLbytes(bytes);
   }
 
   /// The VR keyword for _this_.
@@ -254,4 +279,26 @@ class GLbytes extends ULbytes {
 
   /// The VR name for _this_.
   static const String kVRName = 'Group Length';
+}
+
+/// Unsigned 64-bit Very Long (UV)
+class UVbytes extends UV with ElementBytes<int>, Uint32Mixin {
+  @override
+  final BytesElement bytes;
+
+  /// Returns a new [UVbytes] [Element].
+  UVbytes(this.bytes);
+
+  /// Returns a new [UVbytes] [Element].
+  static UVbytes fromBytes(BytesElement bytes, [Ascii _]) =>
+      // If the code is (gggg,0000) create a Group Length element
+      (bytes.getUint16(2) == 0) ? GLbytes(bytes) : UVbytes(bytes);
+
+  /// Returns a new [UVbytes] [Element].
+  static UVbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint64.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kUVCode, type, UV.kMaxVFLength);
+    return UVbytes(bytes);
+  }
 }

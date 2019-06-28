@@ -25,8 +25,6 @@ abstract class Integer extends Element<int> {
   @override
   List<int> get values;
 
-  int get sizeInBytes;
-
   @override
   Element<int> update([Iterable<int> vList]);
 
@@ -302,6 +300,107 @@ abstract class SL extends Integer with Int32 {
   /// Returns _true_ if [tag] has a VR of [SL] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, SL);
+}
+
+
+/// Unsigned 64-bit Very Long (SV) [Element].
+abstract class SV extends Integer with Uint32 {
+  static const int kVRIndex = kSVIndex;
+  static const int kVRCode = kSVCode;
+  static const int kSizeInBytes = 8;
+  static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kVLFSize = 4;
+  static const int kMaxVFLength = k32BitMaxLongVF;
+  static const int kMaxLength = k64BitMaxLongLength;
+  static const int kMinValue = -(1 << (kSizeInBits - 1));
+  static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
+
+  static const bool kIsLengthAlwaysValid = true;
+  static const bool kIsUndefinedLengthAllowed = false;
+
+  static const String kVRName = 'Signed 64-bit Very Long';
+  static const String kVRKeyword = 'SV';
+
+  static const Type kType = SV;
+
+  @override
+  int get vlfSize => kVLFSize;
+  @override
+  int get vrIndex => kVRIndex;
+  @override
+  int get vrCode => kVRCode;
+  @override
+  int get maxVFLength => kMaxVFLength;
+  @override
+  int get maxLength => kMaxLength;
+  @override
+  String get vrKeyword => kVRKeyword;
+  @override
+  String get vrName => kVRName;
+  @override
+  bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
+  @override
+  bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
+
+  /// Returns _true_ if both [tag] and [vList] are valid for [SV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) {
+    if (tag == null || tag.vrIndex != kSVIndex)
+      return invalidTag(tag, null, SV);
+    if (!doTestElementValidity) return true;
+    return vList != null &&
+        isValidTag(tag, issues) &&
+        isValidValues(tag, vList, issues);
+  }
+
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [SV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null || tag.vrIndex != kSVIndex)
+      return invalidTag(tag, null, SV);
+    if (!doTestElementValidity) return true;
+    if (!doTestElementValidity) return true;
+    return vfBytes != null &&
+        isValidTag(tag, issues) &&
+        isValidVFLength(vfBytes.length, issues, tag);
+  }
+
+  /// Returns _true_ if [tag] is valid for [SV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidTag(Tag tag, [Issues issues]) =>
+      isValidTagAux(tag, issues, kSVIndex, SV);
+
+  /// Returns _true_ if [vrIndex] is valid for [SV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
+      VR.isValidIndex(vrIndex, issues, kSVIndex);
+
+  /// Returns _true_ if [vrCode] is valid for [SV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidVRCode(int vrCode, [Issues issues]) =>
+      VR.isValidCode(vrCode, issues, kSVCode);
+
+  /// Returns _true_ if [vfLength] is valid for this [SV].
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
+      (tag != null)
+          ? tag.isValidVFLength(vfLength, issues)
+          : _isValidVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
+
+  /// Returns _true_ if [vList].length is valid for [SV].
+  static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, SV);
+    if (vList == null) return nullValueError();
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
+  }
+
+  /// Returns _true_ if [values] is valid for [SV].
+  static bool isValidValue(int value, [Issues issues]) =>
+      _isValidValue(value, issues, kMinValue, kMaxValue);
+
+  /// Returns _true_ if [tag] has a VR of [SV] and [vList] is valid for [tag].
+  static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, SV);
 }
 
 /// Other Byte [Element].
@@ -660,6 +759,106 @@ abstract class US extends Integer with Uint16 {
   /// Returns _true_ if [tag] has a VR of [US] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, US);
+}
+
+/// Other 64-bit Very Long (OV) [Element].
+abstract class OV extends Integer with Uint32 {
+  static const int kVRIndex = kOVIndex;
+  static const int kVRCode = kOVCode;
+  static const int kSizeInBytes = 8;
+  static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kVLFSize = 4;
+  static const int kMaxVFLength = k32BitMaxLongVF;
+  static const int kMaxLength = k64BitMaxLongLength;
+  static const int kMinValue = 0;
+  static const int kMaxValue = 0xFFFFFFFF;
+
+  static const bool kIsLengthAlwaysValid = true;
+  static const bool kIsUndefinedLengthAllowed = false;
+
+  static const String kVRName = 'Other 64-bit Very Long';
+  static const String kVRKeyword = 'OV';
+
+  static const Type kType = OV;
+
+  @override
+  int get vlfSize => kVLFSize;
+  @override
+  int get vrIndex => kVRIndex;
+  @override
+  int get vrCode => kVRCode;
+  @override
+  int get maxVFLength => kMaxVFLength;
+  @override
+  int get maxLength => kMaxLength;
+  @override
+  String get vrKeyword => kVRKeyword;
+  @override
+  String get vrName => kVRName;
+  @override
+  bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
+  @override
+  bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
+
+  /// Returns _true_ if both [tag] and [vList] are valid for [OV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) {
+    if (tag == null || tag.vrIndex != kOVIndex)
+      return invalidTag(tag, null, OV);
+    if (!doTestElementValidity) return true;
+    return vList != null &&
+        isValidTag(tag, issues) &&
+        isValidValues(tag, vList, issues);
+  }
+
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [OV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null || tag.vrIndex != kOVIndex)
+      return invalidTag(tag, null, OV);
+    if (!doTestElementValidity) return true;
+    if (!doTestElementValidity) return true;
+    return vfBytes != null &&
+        isValidTag(tag, issues) &&
+        isValidVFLength(vfBytes.length, issues, tag);
+  }
+
+  /// Returns _true_ if [tag] is valid for [OV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidTag(Tag tag, [Issues issues]) =>
+      isValidTagAux(tag, issues, kOVIndex, OV);
+
+  /// Returns _true_ if [vrIndex] is valid for [OV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
+      VR.isValidIndex(vrIndex, issues, kOVIndex);
+
+  /// Returns _true_ if [vrCode] is valid for [OV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidVRCode(int vrCode, [Issues issues]) =>
+      VR.isValidCode(vrCode, issues, kOVCode);
+
+  /// Returns _true_ if [vfLength] is valid for this [OV].
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
+      (tag != null)
+          ? tag.isValidVFLength(vfLength, issues)
+          : _isValidVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
+
+  /// Returns _true_ if [vList].length is valid for [OV].
+  static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, OV);
+    if (vList == null) return nullValueError();
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
+  }
+
+  /// Returns _true_ if [values] is valid for [OV].
+  static bool isValidValue(int value, [Issues issues]) =>
+      _isValidValue(value, issues, kMinValue, kMaxValue);
+
+  /// Returns _true_ if [tag] has a VR of [OV] and [vList] is valid for [tag].
+  static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, OV);
 }
 
 /// Unknown (OW) [Element].
@@ -1112,6 +1311,106 @@ abstract class GL extends UL {
 
   static bool isValidValues(Tag tag, List<int> vList, [Issues issues]) =>
       UL.isValidValues(tag, vList, issues);
+}
+
+/// Unsigned 64-bit Very Long (UV) [Element].
+abstract class UV extends Integer with Uint32 {
+  static const int kVRIndex = kUVIndex;
+  static const int kVRCode = kUVCode;
+  static const int kSizeInBytes = 8;
+  static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kVLFSize = 4;
+  static const int kMaxVFLength = k32BitMaxLongVF;
+  static const int kMaxLength = k64BitMaxLongLength;
+  static const int kMinValue = 0;
+  static const int kMaxValue = 0xFFFFFFFF;
+
+  static const bool kIsLengthAlwaysValid = true;
+  static const bool kIsUndefinedLengthAllowed = false;
+
+  static const String kVRName = 'Unsigned 64-bit Very Long';
+  static const String kVRKeyword = 'UV';
+
+  static const Type kType = UV;
+
+  @override
+  int get vlfSize => kVLFSize;
+  @override
+  int get vrIndex => kVRIndex;
+  @override
+  int get vrCode => kVRCode;
+  @override
+  int get maxVFLength => kMaxVFLength;
+  @override
+  int get maxLength => kMaxLength;
+  @override
+  String get vrKeyword => kVRKeyword;
+  @override
+  String get vrName => kVRName;
+  @override
+  bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
+  @override
+  bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
+
+  /// Returns _true_ if both [tag] and [vList] are valid for [UV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) {
+    if (tag == null || tag.vrIndex != kUVIndex)
+      return invalidTag(tag, null, UV);
+    if (!doTestElementValidity) return true;
+    return vList != null &&
+        isValidTag(tag, issues) &&
+        isValidValues(tag, vList, issues);
+  }
+
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [UV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null || tag.vrIndex != kUVIndex)
+      return invalidTag(tag, null, UV);
+    if (!doTestElementValidity) return true;
+    if (!doTestElementValidity) return true;
+    return vfBytes != null &&
+        isValidTag(tag, issues) &&
+        isValidVFLength(vfBytes.length, issues, tag);
+  }
+
+  /// Returns _true_ if [tag] is valid for [UV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidTag(Tag tag, [Issues issues]) =>
+      isValidTagAux(tag, issues, kUVIndex, UV);
+
+  /// Returns _true_ if [vrIndex] is valid for [UV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
+      VR.isValidIndex(vrIndex, issues, kUVIndex);
+
+  /// Returns _true_ if [vrCode] is valid for [UV].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidVRCode(int vrCode, [Issues issues]) =>
+      VR.isValidCode(vrCode, issues, kUVCode);
+
+  /// Returns _true_ if [vfLength] is valid for this [UV].
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
+      (tag != null)
+          ? tag.isValidVFLength(vfLength, issues)
+          : _isValidVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
+
+  /// Returns _true_ if [vList].length is valid for [UV].
+  static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, UV);
+    if (vList == null) return nullValueError();
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
+  }
+
+  /// Returns _true_ if [values] is valid for [UV].
+  static bool isValidValue(int value, [Issues issues]) =>
+      _isValidValue(value, issues, kMinValue, kMaxValue);
+
+  /// Returns _true_ if [tag] has a VR of [UV] and [vList] is valid for [tag].
+  static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, UV);
 }
 
 /// Checks the the vfLengthField equal either the vfLength or

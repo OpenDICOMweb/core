@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -15,7 +16,7 @@ RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
-
+  const type = BytesElementType.leShortEvr;
   final rds = ByteRootDataset.empty();
 
   group('DSbytes', () {
@@ -104,7 +105,7 @@ void main() {
         var vList = rsg.getDSList(1, 1);
         vList = [vList[0].trim()];
         for (final code in dsVM1Tags) {
-          final e0 = DSbytes.fromValues(code, vList);
+          final e0 = DSbytes.fromValues(code, vList, type);
           log.debug('ds0:$e0');
           expect(e0.hasValidValues, true);
 
@@ -118,7 +119,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -137,7 +138,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
         for (final code in dsVM2Tags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -148,7 +149,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -166,7 +167,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 3);
         for (final code in dsVM2Tags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -181,7 +182,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 3);
         for (final code in dsVM3Tags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -192,7 +193,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -211,7 +212,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(4, 4);
         for (final code in dsVM3Tags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -226,7 +227,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(4, 4);
         for (final code in dsVM4Tags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -237,7 +238,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -256,7 +257,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(5, 5);
         for (final code in dsVM4Tags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -270,7 +271,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(6, 6);
         for (final code in dsVM6Tags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -281,7 +282,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -299,7 +300,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(7, 7);
         for (final code in dsVM6Tags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -313,7 +314,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(1, i);
         for (final code in dsVM1nTags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -324,7 +325,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -342,7 +343,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getDSList(1, 2);
-        final e0 = DSbytes.fromValues(kDetectorActiveDimensions, vList);
+        final e0 = DSbytes.fromValues(kDetectorActiveDimensions, vList, type);
         log.debug('e0: $e0');
         final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -353,7 +354,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -371,7 +372,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(10, 10);
         for (final code in dsVM22nTags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -382,7 +383,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -401,7 +402,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(9, 9);
         for (final code in dsVM3_3nTags) {
-          final e0 = DSbytes.fromValues(code, vList0);
+          final e0 = DSbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -412,7 +413,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);

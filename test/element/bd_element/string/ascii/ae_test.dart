@@ -16,7 +16,7 @@ RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
-
+  const type = BytesElementType.leShortEvr;
   final rds = ByteRootDataset.empty();
 
   group('AEbytes', () {
@@ -28,7 +28,7 @@ void main() {
         final bytes = BytesDicom.fromAsciiList(vList);
         log..debug('vList: $vList')..debug('bd: $bytes');
 
-        final e0 = AEbytes.fromValues(kReceivingAE, vList);
+        final e0 = AEbytes.fromValues(kReceivingAE, vList, type);
         log..debug('e0: $e0')..debug('vList: $vList')..debug('bd: $bytes');
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes == bytes, true);
@@ -39,13 +39,13 @@ void main() {
         expect(e1 == e0, true);
         expect(e1.vfBytes == bytes, true);
 
-        final e2 = AEbytes.fromValues(kReceivingAE, vList);
+        final e2 = AEbytes.fromValues(kReceivingAE, vList, type);
         log.debug('e2: $e2');
         expect(e2.hasValidValues, true);
         expect(e2.vfBytes == bytes, true);
         expect(e2 == e1, true);
 
-        final e3 = AEbytes.fromValues(kReceivingAE, vList);
+        final e3 = AEbytes.fromValues(kReceivingAE, vList, type);
         log.debug('e3:$e3');
         expect(e3.hasValidValues, true);
         expect(e3.vfBytes == bytes, true);
@@ -60,7 +60,7 @@ void main() {
         final vList0 = rsg.getAEList(1, i);
 //        final bd0 = BytesDicom.fromAscii(vList0.join('\\'));
 
-        final e0 = AEbytes.fromValues(kSelectorOFValue, vList0);
+        final e0 = AEbytes.fromValues(kSelectorOFValue, vList0, type);
         log.debug('ae1:$e0');
         expect(e0, isNull);
 /*

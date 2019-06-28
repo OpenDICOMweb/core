@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -17,6 +18,7 @@ void main() {
   Server.initialize(name: 'bd_element/ol_test', level: Level.info);
 
   final rds = ByteRootDataset.empty();
+  const type = BytesElementType.leLongEvr;
 
   group('OLbytes', () {
     const olVM1Tags = <int>[
@@ -34,7 +36,7 @@ void main() {
         final vList0 = rng.uint32List(1, 1);
         global.throwOnError = false;
         for (final code in olVM1Tags) {
-          final e0 = OLbytes.fromValues(code, vList0);
+          final e0 = OLbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -45,7 +47,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -63,7 +65,7 @@ void main() {
         final vList0 = rng.uint32List(1, i);
         global.throwOnError = false;
         for (final code in olVM1nTags) {
-          final e0 = OLbytes.fromValues(code, vList0);
+          final e0 = OLbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -74,7 +76,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);

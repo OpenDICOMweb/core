@@ -22,7 +22,6 @@ import 'package:core/src/vr.dart';
 
 part 'float.dart';
 part 'integer.dart';
-part 'integer_mixin.dart';
 part 'pixel_data.dart';
 part 'sequence.dart';
 part 'string.dart';
@@ -72,7 +71,7 @@ mixin ElementBytes<V> {
 
   Bytes get vfBytes => bytes.vfBytes;
 
- // int get vfBytesLast => bytes.vfBytesLast;
+  int get vfBytesLast => bytes.vfBytesLast;
 
   Uint8List get bulkdata => unsupportedError();
 
@@ -139,9 +138,10 @@ mixin ElementBytes<V> {
 
   /// Returns a new [Element] based on the arguments.
   static Element fromValues(int code, int vrIndex, Iterable vList,
-      {bool isEvr = true, Dataset ds}) {
+      BytesElementType type,
+      {Dataset ds}) {
     if (_isPrivateCreator(code))
-      return PCbytes.fromValues(code, vList, isEvr: isEvr);
+      return PCbytes.fromValues(code, vList, type);
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
     return _fromValueMakers[vrIndex](code, vList, index);
@@ -171,18 +171,36 @@ mixin ElementBytes<V> {
   ];
 }
 
-BytesDicom _makeShort<V>(
+/*
+// Urgent remove when _makeStringElement is working
+BytesElement _makeShortHeader<V>(
     int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize,
     {bool isLE = true}) {
   final vfl = vList.length * eSize;
   return isEvr
       ? isLE
-          ? BytesLELongEvr.header(code, vrCode, vfl)
-          : BytesBELongEvr.header(code, vrCode, vfl)
-      : BytesIvr.header(code, vrCode, vfl);
+          ? BytesLELongEvr.header(code, vfl, vrCode)
+          : BytesBELongEvr.header(code, vfl, vrCode)
+      : BytesIvr.header(code, vfl, vrCode);
 }
 
-BytesDicom _makeShortString(
+
+// Urgent remove when _makeStringElement is working
+BytesElement _makeShortElement<V>(
+    int code, Bytes vfBytes, int vrCode, bool isEvr, int eSize,
+    {bool isLE = true}) {
+  final tag = Tag.lookupByCode(code);
+  if (tag.vrCode != vrCode) return null;
+  return isEvr
+      ? isLE
+          ? BytesLELongEvr.element(code, vfBytes, vrCode)
+          : BytesBELongEvr.element(code, vfBytes, vrCode)
+      : BytesIvr.element(code, vfBytes, vrCode);
+}
+
+
+// Urgent remove when _makeStringElement is working
+BytesElement _makeShortStringHeader(
     int code, List<String> sList, int vrCode, bool isEvr,
     {bool isLE = true}) {
   final tag = Tag.lookupByCode(code);
@@ -194,8 +212,46 @@ BytesDicom _makeShortString(
           : BytesBELongEvr.header(code, vrCode, vfl)
       : BytesIvr.header(code, vrCode, vfl);
 }
+*/
 
-BytesDicom _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize,
+BytesElement _makeShortElement(
+    int code, Bytes vfBytes, int vrCode, BytesElementType type, int maxLength) {
+  assert(vfBytes.length <= maxLength);
+  final tag = Tag.lookupByCode(code);
+  if (tag.vrCode != vrCode) throw ArgumentError('Invalid VR $vrCode');
+  switch (type) {
+    case BytesElementType.leShortEvr:
+      return BytesLEShortEvr.element(code, vfBytes, vrCode);
+    case BytesElementType.beShortEvr:
+      return BytesBEShortEvr.element(code, vfBytes, vrCode);
+    case BytesElementType.leIvr:
+      return BytesIvr.element(code, vfBytes, vrCode);
+    default:
+      throw ArgumentError('Unknown BytesElementType $type');
+  }
+}
+
+BytesElement _makeLongElement(
+    int code, Bytes vfBytes, int vrCode, BytesElementType type, int maxLength) {
+  assert(vfBytes.length <= maxLength);
+  final tag = Tag.lookupByCode(code);
+  if (tag.vrCode != vrCode) throw ArgumentError('Invalid VR $vrCode');
+  switch (type) {
+    case BytesElementType.leLongEvr:
+      return BytesLELongEvr.element(code, vfBytes, vrCode);
+    case BytesElementType.beLongEvr:
+      return BytesBELongEvr.element(code, vfBytes, vrCode);
+    case BytesElementType.leIvr:
+      return BytesIvr.element(code, vfBytes, vrCode);
+    default:
+      throw ArgumentError('Unknown BytesElementType $type');
+  }
+}
+
+/*
+// Urgent remove when _makeStringElement is working
+BytesElement _makeLongHeader(
+    int code, List vList, int vrCode, bool isEvr, int eSize,
     {bool isLE = true}) {
   final vfl = vList.length * eSize;
   return isEvr
@@ -205,7 +261,9 @@ BytesDicom _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize,
       : BytesIvr.header(code, vrCode, vfl);
 }
 
-BytesDicom _makeLongString(int code, List<String> sList, int vrCode, bool isEvr,
+// Urgent remove when _makeStringElement is working
+BytesElement _makeLongStringHeader(
+    int code, List<String> sList, int vrCode, bool isEvr,
     {bool isLE = true}) {
   final vfl = stringListLength(sList, pad: true);
   return isEvr
@@ -214,3 +272,4 @@ BytesDicom _makeLongString(int code, List<String> sList, int vrCode, bool isEvr,
           : BytesBELongEvr.header(code, vrCode, vfl)
       : BytesIvr.header(code, vrCode, vfl);
 }
+*/

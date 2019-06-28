@@ -60,6 +60,10 @@ const int kSSIndex = 28;
 const int kULIndex = 29;
 const int kUSIndex = 30; // Short EVR Max and IVR Max
 
+const int kOVIndex = 31;
+const int kSVIndex = 32;
+const int kUVIndex = 33;
+
 const int _kMinNormalVRIndex = 0;
 const int kMaxNormalVRIndex = 30;
 bool isNormalVRIndex(int vrIndex) =>
@@ -266,12 +270,13 @@ const int kISCode = 0x4953;
 const int kLOCode = 0x4c4f;
 const int kLOMaxLength = 64;
 const int kLTCode = 0x4c54;
-
 const int kLTMaxLength = 10240;
+
 const int kOBCode = 0x4f42;
 const int kODCode = 0x4f44;
 const int kOFCode = 0x4f46;
 const int kOLCode = 0x4f4c;
+const int kOVCode = 0x4f56;
 
 const int kOWCode = 0x4f57;
 const int kPNCode = 0x504e;
@@ -283,6 +288,8 @@ const int kSQCode = 0x5351;
 const int kSSCode = 0x5353;
 const int kSTCode = 0x5354;
 const int kSTMaxLength = 1024;
+const int kSVCode = 0x5356;
+
 const int kTMCode = 0x544d;
 
 const int kUCCode = 0x5543;
@@ -295,6 +302,8 @@ const int kURCode = 0x5552;
 const int kUSCode = 0x5553;
 const int kUTCode = 0x5554;
 const int kUTMaxLength = kMaxLongVF;
+const int kUVCode = 0x5556;
+
 
 const Map<int, int> vrIndexByCode8Bit = <int, int>{
   kAECode: kAEIndex, kASCode: kASIndex, kATCode: kATIndex, kCSCode: kCSIndex,

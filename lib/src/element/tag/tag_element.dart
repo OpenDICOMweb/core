@@ -63,7 +63,7 @@ mixin TagElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  static PC _getPCTagFromBytes(int code, BytesDicom bytes) {
+  static PC _getPCTagFromBytes(int code, BytesElement bytes) {
     final token = bytes.vfBytes.getUtf8().trim();
     final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
     return PCtag.fromBytes(tag, bytes.vfBytes);
@@ -79,9 +79,9 @@ mixin TagElement<V> {
     return PCtag(tag, StringList.from([token]));
   }
 
-  /// Creates a [TagElement] from [BytesDicom] containing a binary encoded
+  /// Creates a [TagElement] from [BytesElement] containing a binary encoded
   /// [Element].
-  static Element fromBytes(BytesDicom bytes, Dataset ds, {bool isEvr}) {
+  static Element fromBytes(BytesElement bytes, Dataset ds, {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return _getPCTagFromBytes(code, bytes);
 
@@ -116,7 +116,7 @@ mixin TagElement<V> {
     UStag.fromBytes,
   ];
 
-  static Element maybeUndefinedFromBytes(BytesDicom bytes,
+  static Element maybeUndefinedFromBytes(BytesElement bytes,
       [Dataset ds, TransferSyntax ts]) {
     final code = bytes.code;
     // Note: This shouldn't happen, but it does.

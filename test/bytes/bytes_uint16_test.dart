@@ -145,10 +145,10 @@ void main() {
 
       for (var i = 0; i < vList0.length + 1; i++) {
         log.debug('i: $i length ${vList0.length - i}');
-        final Uint16List vList1 = vList0.sublist(i, vList0.length);
+        final vList1 = vList0.sublist(i, vList0.length);
         expect(vList1.buffer != vList0.buffer, true);
         log.debug('vList1: $vList1');
-        final Uint16List vList2 = vList0.sublist(0, vList0.length - i);
+        final vList2 = vList0.sublist(0, vList0.length - i);
         expect(vList2.buffer != vList0.buffer, true);
         log.debug('vList2: $vList2');
 
@@ -184,10 +184,10 @@ void main() {
 
       for (var i = 0; i < vList0.length + 1; i++) {
         log.debug('i: $i length ${vList0.length - i}');
-        final Uint16List vList1 = vList0.sublist(i, vList0.length);
+        final vList1 = vList0.sublist(i, vList0.length);
         expect(vList1.buffer != vList0.buffer, true);
         log.debug('vList1: $vList1');
-        final Uint16List vList2 = vList0.sublist(0, vList0.length - i);
+        final vList2 = vList0.sublist(0, vList0.length - i);
         expect(vList2.buffer != vList0.buffer, true);
         log.debug('vList2: $vList2');
 

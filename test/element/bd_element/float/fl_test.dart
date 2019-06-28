@@ -93,12 +93,13 @@ void main() {
 
   final rds = ByteRootDataset.empty();
   global.throwOnError = false;
+  const type = BytesElementType.leShortEvr;
 
   // group('FL Tests', () {
   test('FL hasValidValues: good values', () {
     global.throwOnError = false;
     log.debug('vList: $float32List');
-    final e0 = FLbytes.fromValues(kVectorAccuracy, doubleList);
+    final e0 = FLbytes.fromValues(kVectorAccuracy, doubleList, type);
     expect(e0.hasValidValues, true);
   });
 
@@ -106,7 +107,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       final vList = rng.float32List(1, 10);
       expect(vList is Float32List, true);
-      final e0 = FLbytes.fromValues(kSelectorFDValue, vList);
+      final e0 = FLbytes.fromValues(kSelectorFDValue, vList, type);
       expect(e0[0], equals(vList[0]));
       expect(e0.hasValidValues, true);
 
@@ -122,7 +123,7 @@ void main() {
   test('FL hasValidValues: good values', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.float32List(2, 2);
-      final e0 = FLbytes.fromValues(kCornealVertexLocation, vList0);
+      final e0 = FLbytes.fromValues(kCornealVertexLocation, vList0, type);
       log..debug('$i: e0: $e0, values: ${e0.values}')..debug('e0: $e0');
       final e1 = FLtag(e0.tag, e0.values);
       log..debug('$i: e0: $e1, values: ${e1.values}')..debug('e0: ${e1.info}');
@@ -136,14 +137,14 @@ void main() {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.float32List(3, 4);
       log.debug('$i: float32List: $vList0');
-      final flbd = FLbytes.fromValues(kCornealVertexLocation, vList0);
+      final flbd = FLbytes.fromValues(kCornealVertexLocation, vList0, type);
       final e0 = FLtag(flbd.tag, flbd.values);
       expect(e0, isNull);
     }
   });
 
   test('FL [] as values', () {
-    final e0 = FLbytes.fromValues(kTableOfParameterValues, []);
+    final e0 = FLbytes.fromValues(kTableOfParameterValues, [], type);
     expect(e0.hasValidValues, true);
     expect(e0.values, equals(<double>[]));
   });
@@ -156,10 +157,10 @@ void main() {
     log.debug('FL hashCode and ==');
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.float32List(1, 1);
-      final e0 = FLbytes.fromValues(kAbsoluteChannelDisplayScale, vList0);
+      final e0 = FLbytes.fromValues(kAbsoluteChannelDisplayScale, vList0, type);
 
       //bd = FLbytes.fromValues(kAbsoluteChannelDisplayScale, vList0);
-      final e1 = FLbytes.fromValues(kAbsoluteChannelDisplayScale, vList0);
+      final e1 = FLbytes.fromValues(kAbsoluteChannelDisplayScale, vList0, type);
       log
         ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
         ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -168,33 +169,35 @@ void main() {
 
       final vList1 = rng.float32List(1, 1);
       final e2 =
-          FLbytes.fromValues(kRecommendedDisplayFrameRateInFloat, vList1);
+          FLbytes.fromValues(kRecommendedDisplayFrameRateInFloat, vList1, type);
       log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
 
       final vList2 = rng.float32List(2, 2);
-      final e3 = FLbytes.fromValues(kCornealVertexLocation, vList2);
+      final e3 = FLbytes.fromValues(kCornealVertexLocation, vList2, type);
 
       log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
       expect(e0.hashCode == e3.hashCode, false);
       expect(e0 == e3, false);
 
       final vList3 = rng.float32List(3, 3);
-      final e4 = FLbytes.fromValues(kCornealPointLocation, vList3);
+      final e4 = FLbytes.fromValues(kCornealPointLocation, vList3, type);
       log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
       expect(e0.hashCode == e4.hashCode, false);
       expect(e0 == e4, false);
 
       final vList4 = rng.float32List(6, 6);
-      final e5 = FLbytes.fromValues(kPointsBoundingBoxCoordinates, vList4);
+      final e5 =
+          FLbytes.fromValues(kPointsBoundingBoxCoordinates, vList4, type);
 
       log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
       expect(e0.hashCode == e5.hashCode, false);
       expect(e0 == e5, false);
 
       final vList5 = rng.float32List(2, 3);
-      final e6 = FLbytes.fromValues(kFractionalChannelDisplayScale, vList5);
+      final e6 =
+          FLbytes.fromValues(kFractionalChannelDisplayScale, vList5, type);
       log.debug('vList5:$vList5 , e6.hash_code:${e6.hashCode}');
       expect(e1.hashCode == e6.hashCode, false);
       expect(e1 == e6, false);
@@ -204,8 +207,8 @@ void main() {
   test('Create FL.isValidValues', () {
     global.throwOnError = false;
     for (var i = 0; i <= doubleList.length - 1; i++) {
-      final e0 =
-          FLbytes.fromValues(kExaminedBodyThickness, <double>[doubleList[i]]);
+      final e0 = FLbytes.fromValues(
+          kExaminedBodyThickness, <double>[doubleList[i]], type);
       log.debug('e0: $e0');
       expect(FL.isValidValues(PTag.kExaminedBodyThickness, e0.values), true);
     }
@@ -216,7 +219,7 @@ void main() {
       final vList0 = rng.float64List(1, 1);
       global.throwOnError = false;
       for (final code in flVM1Tags) {
-        final e0 = FLbytes.fromValues(code, vList0);
+        final e0 = FLbytes.fromValues(code, vList0, type);
         log.debug('e0: $e0');
         final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -227,7 +230,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -245,7 +248,7 @@ void main() {
       final vList0 = rng.float64List(2, 2);
       global.throwOnError = false;
       for (final code in flVM2Tags) {
-        final e0 = FLbytes.fromValues(code, vList0);
+        final e0 = FLbytes.fromValues(code, vList0, type);
         log.debug('e0: $e0');
         final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -256,7 +259,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -274,7 +277,7 @@ void main() {
       final vList0 = rng.float64List(3, 3);
       global.throwOnError = false;
       for (final code in flVM3Tags) {
-        final e0 = FLbytes.fromValues(code, vList0);
+        final e0 = FLbytes.fromValues(code, vList0, type);
         log.debug('e0: $e0');
         final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -285,7 +288,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -303,7 +306,7 @@ void main() {
       final vList0 = rng.float64List(6, 6);
       global.throwOnError = false;
       for (final code in flVM6Tags) {
-        final e0 = FLbytes.fromValues(code, vList0);
+        final e0 = FLbytes.fromValues(code, vList0, type);
         log.debug('e0: $e0');
         final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -314,7 +317,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -332,7 +335,7 @@ void main() {
       final vList0 = rng.float64List(1, i);
       global.throwOnError = false;
       for (final code in flVM1nTags) {
-        final e0 = FLbytes.fromValues(code, vList0);
+        final e0 = FLbytes.fromValues(code, vList0, type);
         final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
@@ -342,7 +345,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -360,7 +363,7 @@ void main() {
       final vList0 = rng.float64List(6, 6);
       global.throwOnError = false;
       for (final code in flVM16Tags) {
-        final e0 = FLbytes.fromValues(code, vList0);
+        final e0 = FLbytes.fromValues(code, vList0, type);
         final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
@@ -370,7 +373,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -388,7 +391,7 @@ void main() {
       final vList0 = rng.float64List(1, i);
       global.throwOnError = false;
       for (final code in flVM1nTags) {
-        final e0 = FLbytes.fromValues(code, vList0);
+        final e0 = FLbytes.fromValues(code, vList0, type);
         final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
@@ -398,7 +401,7 @@ void main() {
         expect(e1.vfBytes == e0.vfBytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -413,7 +416,7 @@ void main() {
 
   test('FLbytes', () {
     final vList = <double>[1, 1.1, 1.2];
-    final e0 = FLbytes.fromValues(kSelectorFLValue, vList);
+    final e0 = FLbytes.fromValues(kSelectorFLValue, vList, type);
     expect(e0.bytes is BytesDicom, true);
     expect(e0.vfBytes is Bytes, true);
     expect(e0.hasValidValues, true);

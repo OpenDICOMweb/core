@@ -12,7 +12,7 @@ part of odw.sdk.element.bytes;
 
 /// PixelDataMixin class
 mixin BytePixelData {
-  BytesDicom get bytes;
+  BytesElement get bytes;
 
   VFFragmentList get fragments => VFFragmentList.parse(bytes.vfBytes);
 
@@ -38,10 +38,11 @@ class OBbytesPixelData extends OBbytes
   @override
   VFFragmentList fragments;
 
-  OBbytesPixelData(BytesDicom bytes, [this.ts, this.fragments]) : super(bytes);
+  OBbytesPixelData(BytesElement bytes, [this.ts, this.fragments])
+      : super(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OBbytesPixelData fromBytes(BytesDicom bytes,
+  static OBbytesPixelData fromBytes(BytesElement bytes,
           [TransferSyntax ts, VFFragmentList fragments]) =>
       OBbytesPixelData(bytes, ts, fragments);
 }
@@ -53,10 +54,11 @@ class UNbytesPixelData extends UNbytes
   @override
   VFFragmentList fragments;
 
-  UNbytesPixelData(BytesDicom bytes, [this.ts, this.fragments]) : super(bytes);
+  UNbytesPixelData(BytesElement bytes, [this.ts, this.fragments])
+      : super(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static UNbytesPixelData fromBytes(BytesDicom bytes,
+  static UNbytesPixelData fromBytes(BytesElement bytes,
           [TransferSyntax ts, VFFragmentList fragments]) =>
       UNbytesPixelData(bytes, ts, fragments);
 }
@@ -71,10 +73,11 @@ class OWbytesPixelData extends OWbytes
   @override
   VFFragmentList fragments;
 
-  OWbytesPixelData(BytesDicom bytes, [this.ts, this.fragments]) : super(bytes);
+  OWbytesPixelData(BytesElement bytes, [this.ts, this.fragments])
+      : super(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OWbytesPixelData fromBytes(BytesDicom bytes,
+  static OWbytesPixelData fromBytes(BytesElement bytes,
           [TransferSyntax ts, VFFragmentList fragments]) =>
       OWbytesPixelData(bytes, ts, fragments);
 }

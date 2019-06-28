@@ -9,6 +9,7 @@
 part of odw.sdk.element.bytes;
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: prefer_constructors_over_static_methods
 
 /// 32-bit Float Elements (FL, OF)
 mixin BytesFloat32Mixin {
@@ -23,40 +24,36 @@ mixin BytesFloat32Mixin {
 
 class FLbytes extends FL with ElementBytes<double>, BytesFloat32Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   FLbytes(this.bytes) : assert(bytes != null);
 
   //TODO: fix all static constructors when constructors can be used as tear offs
-  // ignore: prefer_constructors_over_static_methods
-  static FLbytes fromBytes(BytesDicom bytes, [Charcode _]) => FLbytes(bytes);
+  static FLbytes fromBytes(BytesElement bytes, [Charset _]) => FLbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static FLbytes fromValues(int code, Iterable<double> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kFLCode, isEvr, FL.kSizeInBytes)
-      ..writeFloat32VF(vList);
-    assert(vList.length * FL.kSizeInBytes <= FL.kMaxVFLength);
-    return FLbytes.fromBytes(bytes);
+  static FLbytes fromValues(
+      int code, Iterable<double> vList, BytesElementType type) {
+    final vfBytes = Float32Mixin.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kFLCode, type, FL.kMaxVFLength);
+    return FLbytes(bytes);
   }
 }
 
 class OFbytes extends OF with ElementBytes<double>, BytesFloat32Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   OFbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static OFbytes fromBytes(BytesDicom bytes, [Ascii _]) => OFbytes(bytes);
+  static OFbytes fromBytes(BytesElement bytes, [Ascii _]) => OFbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static OFbytes fromValues(int code, List<double> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kOFCode, isEvr, OF.kSizeInBytes)
-      ..writeFloat32VF(vList);
-    assert(vList.length * OF.kSizeInBytes <= OF.kMaxVFLength);
-    return OFbytes.fromBytes(bytes);
+  static OFbytes fromValues(
+      int code, List<double> vList, BytesElementType type) {
+    final vfBytes = Float32Mixin.toBytes(vList);
+    final bytes =
+        _makeLongElement(code, vfBytes, kOFCode, type, OF.kMaxVFLength);
+    return OFbytes(bytes);
   }
 }
 
@@ -74,38 +71,34 @@ mixin BytesFloat64Mixin {
 
 class FDbytes extends FD with ElementBytes<double>, BytesFloat64Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   FDbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static FDbytes fromBytes(BytesDicom bytes, [Ascii _]) => FDbytes(bytes);
+  static FDbytes fromBytes(BytesElement bytes, [Ascii _]) => FDbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static FDbytes fromValues(int code, List<double> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kFDCode, isEvr, FD.kSizeInBytes)
-      ..writeFloat64VF(vList);
-    assert(vList.length * FD.kSizeInBytes <= FD.kMaxVFLength);
-    return FDbytes.fromBytes(bytes);
+  static FDbytes fromValues(
+      int code, List<double> vList, BytesElementType type) {
+    final vfBytes = Float64Mixin.toBytes(vList);
+    final bytes =
+        _makeShortElement(code, vfBytes, kFDCode, type, FD.kMaxVFLength);
+    return FDbytes(bytes);
   }
 }
 
 class ODbytes extends OD with ElementBytes<double>, BytesFloat64Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   ODbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static ODbytes fromBytes(BytesDicom bytes, [Ascii _]) => ODbytes(bytes);
+  static ODbytes fromBytes(BytesElement bytes, [Ascii _]) => ODbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static ODbytes fromValues(int code, List<double> vList,
-      {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kODCode, isEvr, OD.kSizeInBytes)
-      ..writeFloat64VF(vList);
-    assert(vList.length * OD.kSizeInBytes <= OD.kMaxVFLength);
-    return ODbytes.fromBytes(bytes);
+  static ODbytes fromValues(
+      int code, List<double> vList, BytesElementType type) {
+    final vfBytes = Float64Mixin.toBytes(vList);
+    final bytes =
+        _makeLongElement(code, vfBytes, kODCode, type, OD.kMaxVFLength);
+    return ODbytes(bytes);
   }
 }

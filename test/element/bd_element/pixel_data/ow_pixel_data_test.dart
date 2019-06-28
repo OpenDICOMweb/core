@@ -16,6 +16,7 @@ RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/pixel_data', level: Level.info);
+  const type = BytesElementType.leLongEvr;
 
   group('OWbytes', () {
     test('OWbytes from VM.k1', () {
@@ -23,7 +24,7 @@ void main() {
         final vList0 = rng.uint16List(1, i);
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
-        final e0 = OWbytes.fromValues(kPixelData, vList0);
+        final e0 = OWbytes.fromValues(kPixelData, vList0, type);
         log.debug('e0: $e0');
         const ts = TransferSyntax.kExplicitVRLittleEndian;
         final e1 = OWbytesPixelData.fromBytes(e0.bytes, ts);
@@ -37,7 +38,7 @@ void main() {
         expect(e1.vfBytes == bytes, true);
 
         expect(e0.code == e0.bytes.code, true);
-        expect(e0.eLength == e0.bytes.eLength, true);
+        expect(e0.eLength == e0.bytes.length, true);
         expect(e0.vrCode == e0.bytes.vrCode, true);
         expect(e0.vrIndex == e0.bytes.vrIndex, true);
         expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);

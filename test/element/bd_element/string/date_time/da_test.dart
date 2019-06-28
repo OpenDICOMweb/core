@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -15,7 +16,7 @@ RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
-
+  const type = BytesElementType.leShortEvr;
   final rds = ByteRootDataset.empty();
 
   group('DAbytes', () {
@@ -49,7 +50,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
         for (final code in daVM1Tags) {
-          final e0 = DAbytes.fromValues(code, vList0);
+          final e0 = DAbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -60,7 +61,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -78,7 +79,7 @@ void main() {
         final vList0 = rsg.getDTList(1, 1, 3);
         for (final code in daVM1Tags) {
           global.throwOnError = false;
-          final e0 = DAbytes.fromValues(code, vList0);
+          final e0 = DAbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -94,7 +95,7 @@ void main() {
         final vList1 = rsg.getTMList(1, 1);
         for (final code in daVM1Tags) {
           global.throwOnError = false;
-          final e2 = DAbytes.fromValues(code, vList1);
+          final e2 = DAbytes.fromValues(code, vList1, type);
           log.debug('e2: $e2');
           final e3 = ElementBytes.fromBytes(e2.bytes, rds, isEvr: true);
           log.debug('e3: $e3');
@@ -112,7 +113,7 @@ void main() {
         final vList0 = rsg.getDAList(2, i + 1);
         for (final code in daVM1Tags) {
           global.throwOnError = false;
-          final e0 = DAbytes.fromValues(code, vList0);
+          final e0 = DAbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -126,7 +127,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
         for (final code in daVM1nTags) {
-          final e0 = DAbytes.fromValues(code, vList0);
+          final e0 = DAbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -137,7 +138,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -155,7 +156,7 @@ void main() {
         final vList0 = rsg.getDTList(1, 1, 3);
         for (final code in daVM1nTags) {
           global.throwOnError = false;
-          final e0 = DAbytes.fromValues(code, vList0);
+          final e0 = DAbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');

@@ -15,6 +15,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = RNG(1);
+  const type = BytesElementType.leLongEvr;
 
   const doubleList = <double>[
     0.1,
@@ -46,7 +47,7 @@ void main() {
   group('OD Tests', () {
     test('OD hasValidValues: good values', () {
       global.throwOnError = false;
-      final e0 = ODbytes.fromValues(kSelectorODValue, doubleList);
+      final e0 = ODbytes.fromValues(kSelectorODValue, doubleList, type);
       expect(e0.hasValidValues, true);
     });
 
@@ -56,7 +57,7 @@ void main() {
         expect(vList0 is Float64List, true);
         expect(vList0.length, 1);
         log.debug('$i: vList0: $vList0');
-        final e0 = ODbytes.fromValues(kSelectorODValue, vList0);
+        final e0 = ODbytes.fromValues(kSelectorODValue, vList0, type);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
@@ -75,13 +76,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e0 = ODbytes.fromValues(kDoubleFloatPixelData, vList0);
+        final e0 = ODbytes.fromValues(kDoubleFloatPixelData, vList0, type);
         final e1 = FLtag(e0.tag, e0.values);
         expect(e1, isNull);
       }
     });
     test('OD [] as values', () {
-      final e0 = ODbytes.fromValues(kDoubleFloatPixelData, []);
+      final e0 = ODbytes.fromValues(kDoubleFloatPixelData, [], type);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<double>[]));
     });
@@ -93,8 +94,8 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
-        final e0 = ODbytes.fromValues(kDoubleFloatPixelData, vList0);
-        final e1 = ODbytes.fromValues(kDoubleFloatPixelData, vList0);
+        final e0 = ODbytes.fromValues(kDoubleFloatPixelData, vList0, type);
+        final e1 = ODbytes.fromValues(kDoubleFloatPixelData, vList0, type);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -102,7 +103,7 @@ void main() {
         expect(e0 == e1, true);
 
         final vList1 = rng.float64List(1, 1);
-        final e2 = ODbytes.fromValues(kSelectorODValue, vList1);
+        final e2 = ODbytes.fromValues(kSelectorODValue, vList1, type);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
@@ -113,7 +114,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
         final e0 =
-            ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]]);
+            ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]], type);
         expect(OD.isValidValues(PTag.kDoubleFloatPixelData, e0.values), true);
       }
     });
@@ -123,7 +124,7 @@ void main() {
         final vList0 = rng.float64List(1, 1);
         global.throwOnError = false;
         for (final code in odVM1Tags) {
-          final e0 = ODbytes.fromValues(code, vList0);
+          final e0 = ODbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -134,7 +135,7 @@ void main() {
           expect(e1.vfBytes == e0.vfBytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -149,7 +150,7 @@ void main() {
 
     test('ODbytes', () {
       final vList = <double>[1, 1.1, 1.2];
-      final e0 = ODbytes.fromValues(kSelectorODValue, vList);
+      final e0 = ODbytes.fromValues(kSelectorODValue, vList, type);
       expect(e0.bytes is BytesDicom, true);
       expect(e0.vfBytes is Bytes, true);
       expect(e0.hasValidValues, true);

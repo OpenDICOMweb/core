@@ -56,7 +56,8 @@ int __parseTime(String t, int start, int end, Issues issues, [int separator]) {
   if ((index += 2) < end) {
     if (separator != null) _parseSeparator(t, index++, issues, separator);
     m = _parseMinute(t, index, issues);
-    if ((index += 2) < end) {
+    // TODO: change to ((index += 2) < end) when analyzer fixed
+    if ((index = index + 2) < end) {
       if (separator != null) _parseSeparator(t, index++, issues, separator);
       s = _parseSecond(t, index, issues);
       if ((index += 2) < end) {

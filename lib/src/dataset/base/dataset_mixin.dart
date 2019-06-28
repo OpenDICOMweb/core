@@ -8,7 +8,6 @@
 //
 import 'dart:typed_data';
 
-import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';

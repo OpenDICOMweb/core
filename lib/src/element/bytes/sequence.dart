@@ -9,6 +9,7 @@
 part of odw.sdk.element.bytes;
 
 // ignore_for_file: public_member_api_docs
+// ignore: prefer_constructors_over_static_methods
 
 // **** Sequence Class
 
@@ -47,7 +48,6 @@ class SQbytes extends SQ with ElementBytes<Item> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  // ignore: prefer_constructors_over_static_methods
   static SQbytes fromValues(int code, List<String> vList,
           {bool isEvr = true}) =>
       unsupportedError();

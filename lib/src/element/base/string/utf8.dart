@@ -64,6 +64,11 @@ abstract class Utf8String extends StringBase {
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);
   }
+
+  /// Returns a [Bytes] created from [vList];
+  static Bytes toBytes(Iterable<String> vList,
+      {bool asView = true, bool check = true}) =>
+      Bytes.fromUtf8List(vList);
 }
 
 /// A Long String (LO) Element

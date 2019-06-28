@@ -264,8 +264,8 @@ abstract class Element<V> extends ListBase<V> {
   /// The [vrCode] as a hexadecimal [String].
   String get vrHex => '0x${hex16(vrCode)}';
 
-  // The number of bytes in one values.
-//  int get sizeInBytes => vr.sizeInBytes;
+  /// The number of bytes in one value.
+  int get sizeInBytes => vr.eSize;
 
   /// The maximum Value Field length in bytes for this Element.
   int get maxVFLength => vr.maxVFLength;

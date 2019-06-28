@@ -48,6 +48,10 @@ abstract class Text extends Utf8String {
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);
   }
+
+  /// Returns a [Bytes] created from [value];
+  static Bytes toBytes(String value, {bool asView = true, bool check = true}) =>
+      Bytes.fromUtf8(value);
 }
 
 /// An Long Text (LT) Element

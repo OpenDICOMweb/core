@@ -107,7 +107,7 @@ class SQtag extends SQ with TagElement<Item> {
   }
 
   // ignore: prefer_constructors_over_static_methods
-  static SQtag fromBytes(Dataset parent, List<Item> vList, BytesDicom bytes) {
+  static SQtag fromBytes(Dataset parent, List<Item> vList, BytesElement bytes) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
 

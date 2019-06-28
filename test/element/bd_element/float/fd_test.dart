@@ -98,9 +98,11 @@ void main() {
   global.throwOnError = false;
 
   group('FD Tests', () {
+    const type = BytesElementType.leLongEvr;
+
     test('FD hasValidValues: good values', () {
       global.throwOnError = false;
-      final e0 = FDbytes.fromValues(kInversionTimes, doubleList);
+      final e0 = FDbytes.fromValues(kInversionTimes, doubleList, type);
       expect(e0.hasValidValues, true);
     });
 
@@ -109,7 +111,7 @@ void main() {
         final vList = rng.float64List(1, 1);
         log.debug('vList: $vList');
         expect(vList is Float64List, true);
-        final e0 = FDbytes.fromValues(kDiffusionBValue, vList);
+        final e0 = FDbytes.fromValues(kDiffusionBValue, vList, type);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
@@ -125,7 +127,7 @@ void main() {
     test('FD hasValidValues: good values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float64List(2, 2);
-        final e0 = FDbytes.fromValues(kReconstructionFieldOfView, vList);
+        final e0 = FDbytes.fromValues(kReconstructionFieldOfView, vList, type);
         expect(e0.hasValidValues, true);
         expect(e0.values, equals(vList));
         log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
@@ -140,7 +142,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float64List(3, 4);
         log.debug('$i: vList: $vList');
-        final e0 = FDbytes.fromValues(kTagThickness, vList);
+        final e0 = FDbytes.fromValues(kTagThickness, vList, type);
         log.debug('e0.values: ${e0.values}');
         expect(e0.hasValidValues, false);
         expect(e0.values, equals(vList));
@@ -148,7 +150,7 @@ void main() {
     });
 
     test('FD [] as values', () {
-      final e0 = FDbytes.fromValues(kTagThickness, []);
+      final e0 = FDbytes.fromValues(kTagThickness, [], type);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<double>[]));
     });
@@ -158,10 +160,11 @@ void main() {
 
     test('FD hashCode and == random', () {
       global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
-        final e0 = FDbytes.fromValues(kTagThickness, vList0);
-        final e1 = FDbytes.fromValues(kTagThickness, vList0);
+        final e0 = FDbytes.fromValues(kTagThickness, vList0, type);
+        final e1 = FDbytes.fromValues(kTagThickness, vList0, type);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -169,31 +172,31 @@ void main() {
         expect(e0 == e1, true);
 
         final vList1 = rng.float64List(1, 1);
-        final e2 = FDbytes.fromValues(kExposureTimeInms, vList1);
+        final e2 = FDbytes.fromValues(kExposureTimeInms, vList1, type);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rng.float64List(2, 2);
-        final e3 = FDbytes.fromValues(kRecommendedRotationPoint, vList2);
+        final e3 = FDbytes.fromValues(kRecommendedRotationPoint, vList2, type);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rng.float64List(3, 3);
-        final e4 = FDbytes.fromValues(kThreeDDegreeOfFreedomAxis, vList3);
+        final e4 = FDbytes.fromValues(kThreeDDegreeOfFreedomAxis, vList3, type);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
 
         final vList4 = rng.float64List(6, 6);
-        final e5 = FDbytes.fromValues(kImageOrientationVolume, vList4);
+        final e5 = FDbytes.fromValues(kImageOrientationVolume, vList4, type);
         log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
 
         final vList5 = rng.float64List(2, 3);
-        final e6 = FDbytes.fromValues(kTagThickness, vList5);
+        final e6 = FDbytes.fromValues(kTagThickness, vList5, type);
         log.debug('vList5:$vList5 , e6.hash_code:${e6.hashCode}');
         expect(e1.hashCode == e6.hashCode, false);
         expect(e1 == e6, false);
@@ -203,7 +206,8 @@ void main() {
     test('FD isValidValues', () {
       global.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
-        final e0 = FDbytes.fromValues(kTagThickness, <double>[doubleList[i]]);
+        final e0 =
+            FDbytes.fromValues(kTagThickness, <double>[doubleList[i]], type);
         expect(
             FD.isValidValues(PTag.kOverallTemplateSpatialTolerance, e0.values),
             true);
@@ -216,7 +220,7 @@ void main() {
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (final code in fdVM1Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -228,7 +232,7 @@ void main() {
           expect(e1.vfBytes == bytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -247,7 +251,7 @@ void main() {
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (final code in fdVM2Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -258,7 +262,7 @@ void main() {
           expect(e1.vfBytes == bytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -277,7 +281,7 @@ void main() {
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (final code in fdVM3Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -288,7 +292,7 @@ void main() {
           expect(e1.vfBytes == bytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -307,7 +311,7 @@ void main() {
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (final code in fdVM4Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -318,7 +322,7 @@ void main() {
           expect(e1.vfBytes == bytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -337,7 +341,7 @@ void main() {
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (final code in fdVM6Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -348,7 +352,7 @@ void main() {
           expect(e1.vfBytes == bytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -367,7 +371,7 @@ void main() {
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (final code in fdVM9Tags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -378,7 +382,7 @@ void main() {
           expect(e1.vfBytes == bytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -397,7 +401,7 @@ void main() {
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         for (final code in fdVM1nTags) {
-          final e0 = FDbytes.fromValues(code, vList0);
+          final e0 = FDbytes.fromValues(code, vList0, type);
           log.debug('e0: $e0');
           final e1 = ElementBytes.fromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
@@ -408,7 +412,7 @@ void main() {
           expect(e1.vfBytes == bytes, true);
 
           expect(e0.code == e0.bytes.code, true);
-          expect(e0.eLength == e0.bytes.eLength, true);
+          expect(e0.eLength == e0.bytes.length, true);
           expect(e0.vrCode == e0.bytes.vrCode, true);
           expect(e0.vrIndex == e0.bytes.vrIndex, true);
           expect(e0.vfLengthOffset == e0.bytes.vfLengthOffset, true);
@@ -423,7 +427,7 @@ void main() {
 
     test('FDbytes', () {
       final vList = <double>[1, 1.1, 1.2];
-      final e0 = FDbytes.fromValues(kSelectorFDValue, vList);
+      final e0 = FDbytes.fromValues(kSelectorFDValue, vList, type);
       expect(e0.bytes is BytesDicom, true);
       expect(e0.vfBytes is Bytes, true);
       expect(e0.hasValidValues, true);
@@ -469,7 +473,7 @@ void main() {
         final vList = rng.float32List(i, i);
         final readBuffer0 = ReadBuffer.typedDataView(vList);
         for (var j = 0; j < i; j++) {
-          final v = readBuffer0.getFloat32();
+          final v = readBuffer0.readFloat32();
           log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
           expect(vList[j] == v, true);
           readBuffer0.rSkip(4);
@@ -533,7 +537,7 @@ void main() {
         final vList = rng.float64List(i, i);
         final readBuffer0 = ReadBuffer.typedDataView(vList);
         for (var j = 0; j < i; j++) {
-          final v = readBuffer0.getFloat64();
+          final v = readBuffer0.readFloat64();
           log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
           expect(vList[j] == v, true);
           readBuffer0.rSkip(8);

@@ -65,6 +65,11 @@ abstract class AsciiString extends StringBase {
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);
   }
+
+  /// Returns a [Bytes] created from [vList];
+  static Bytes toBytes(Iterable<String> vList,
+      {bool asView = true, bool check = true}) =>
+      Bytes.fromAsciiList(vList);
 }
 
 /// A Application Entity Title ([AE]) Element

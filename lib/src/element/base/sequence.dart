@@ -33,7 +33,6 @@ abstract class SQ extends Element<Item> {
   List<Item> get items => (values is List) ? values : values.toList();
 
   @override
-  @override
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
@@ -41,7 +40,7 @@ abstract class SQ extends Element<Item> {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
-
+  @override
   int get sizeInBytes => kSizeInBytes;
   @override
   int get vlfSize => 4;

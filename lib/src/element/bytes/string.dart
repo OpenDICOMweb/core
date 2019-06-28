@@ -9,12 +9,13 @@
 part of odw.sdk.element.bytes;
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: prefer_constructors_over_static_methods
 
+// Urgent: how does this mixin relate to others
 /// [String] [Element]s that only have ASCII values.
 mixin StringMixin {
   int get vfLength;
   Bytes get vfBytes;
-  int get vfBytesLast;
   String get vfString;
 
   /// Returns _true if [vfBytes] ends with a padding character.
@@ -27,12 +28,27 @@ mixin StringMixin {
   /// returns the last Uint8 element in [vfBytes]; otherwise, returns null;
   int get padChar => (vfLength != 0 && vfLength.isEven) ? vfBytesLast : null;
 
+  /// Returns the last Uint8 element in [vfBytes], if [vfBytes]
+  /// is not empty; otherwise, returns _null_.
+  int get vfBytesLast {
+    final len = vfLength;
+    return (len == 0) ? null : vfBytes[len - 1];
+  }
+
   /// Returns the number of values in [vfBytes].
   int get length => _stringValuesLength(vfBytes);
 
   StringList get values => StringList.from(vfString.split('\\'));
 
   List<String> get emptyList => kEmptyStringList;
+
+  static int _stringValuesLength(Bytes vfBytes) {
+    if (vfBytes.isEmpty) return 0;
+    var count = 1;
+    for (var i = 0; i < vfBytes.length; i++)
+      if (vfBytes[i] == kBackslash) count++;
+    return count;
+  }
 }
 
 /// [String] [Element]s that only have ASCII values.
@@ -41,11 +57,9 @@ mixin AsciiMixin {
   int get vfLength;
   Bytes get vfBytes;
 
-  bool get allowInvalid => global.allowInvalidAscii;
-
   String get vfString {
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.getAscii(length: length, allowInvalid: allowInvalid);
+    return vfBytes.getAscii(0, length);
   }
 }
 
@@ -53,30 +67,25 @@ mixin AsciiMixin {
 
 class AEbytes extends AE with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   AEbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static AEbytes fromBytes(Bytes bytes, [Ascii _]) => AEbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static AEbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kAECode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList);
-    assert(vList.length <= AE.kMaxVFLength);
+  static AEbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kAECode, type, AE.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class ASbytes extends AS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   ASbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static ASbytes fromBytes(Bytes bytes, [Ascii _]) {
     final eLength = bytes.length;
     if (eLength != 12 && eLength != 8)
@@ -84,42 +93,34 @@ class ASbytes extends AS with ElementBytes<String>, StringMixin, AsciiMixin {
     return ASbytes(bytes);
   }
 
-  // ignore: prefer_constructors_over_static_methods
-  static ASbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kASCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList);
-    assert(vList.length <= AS.kMaxVFLength);
+  static ASbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kASCode, type, AS.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class CSbytes extends CS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   CSbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static CSbytes fromBytes(Bytes bytes, [Ascii _]) => CSbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static CSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kCSCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList);
-    assert(vList.length <= CS.kMaxVFLength);
+  static CSbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kCSCode, type, CS.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class DAbytes extends DA with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   DAbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static DAbytes fromBytes(Bytes bytes, [Ascii _]) {
     final eLength = bytes.length;
     if (eLength != 16 && eLength != 8)
@@ -127,111 +128,87 @@ class DAbytes extends DA with ElementBytes<String>, StringMixin, AsciiMixin {
     return DAbytes(bytes);
   }
 
-  // ignore: prefer_constructors_over_static_methods
-  static DAbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDACode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList);
-    assert(vList.length <= DA.kMaxVFLength);
+  static DAbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kDACode, type, DA.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class DSbytes extends DS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   DSbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static DSbytes fromBytes(Bytes bytes, [Ascii _]) => DSbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static DSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDSCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList, kSpace);
-    assert(bytes.length - bytes.vfOffset <= DS.kMaxVFLength);
+  static DSbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kDSCode, type, DS.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class DTbytes extends DT with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   DTbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static DTbytes fromBytes(Bytes bytes, [Ascii _]) => DTbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static DTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDTCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList);
-    assert(vList.length <= DT.kMaxVFLength);
+  static DTbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kDTCode, type, DT.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class ISbytes extends IS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   ISbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static ISbytes fromBytes(Bytes bytes, [Ascii _]) => ISbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static ISbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kISCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList);
-    assert(vList.length <= IS.kMaxVFLength);
+  static ISbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kISCode, type, IS.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class UIbytes extends UI with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   UIbytes(this.bytes);
 
   @override
-  List<Uid> get uids => Uid.parseList(
-      bytes.getAsciiList(offset: vfOffset, length: vfLength));
+  List<Uid> get uids => Uid.parseList(bytes.getAsciiList(vfOffset, vfLength));
 
-  // ignore: prefer_constructors_over_static_methods
   static UIbytes fromBytes(Bytes bytes, [Ascii _]) => UIbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static UIbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kUICode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList);
-    assert(vList.length <= UI.kMaxVFLength);
+  static UIbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kUICode, type, UI.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class TMbytes extends TM with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   TMbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static TMbytes fromBytes(Bytes bytes, [Ascii _]) => TMbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static TMbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kTMCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeAsciiVF(vList);
-    assert(vList.length <= TM.kMaxVFLength);
+  static TMbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortAscii(code, vList, kTMCode, type, TM.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
@@ -244,25 +221,19 @@ mixin Utf8Mixin {
   int get vfLength;
   Bytes get vfBytes;
 
-//  int get length => _stringValuesLength(vfBytes);
-
-  bool get allowMalformed => global.allowMalformedUtf8;
-
+  // Urgent: remove padding
   String get vfString {
-    //   final vf = hasPadding ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
-    //   return vf.stringFromUtf8(allowInvalid: allowMalformed);
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.getUtf8(length: length, allowInvalid: allowMalformed);
+    return vfBytes.getUtf8(0, length);
   }
 }
 
 class LObytes extends LO with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   LObytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static Element fromBytes(Bytes bytes, [Ascii _]) {
     final group = bytes.getUint16(0);
     final elt = bytes.getUint16(2);
@@ -271,12 +242,9 @@ class LObytes extends LO with ElementBytes<String>, StringMixin, Utf8Mixin {
         : LObytes(bytes);
   }
 
-  // ignore: prefer_constructors_over_static_methods
-  static LObytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLOCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeUtf8VF(vList);
-    assert(vList.length <= LO.kMaxVFLength);
+  static LObytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortUtf8(code, vList, kLOCode, type, LO.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
@@ -290,72 +258,56 @@ class PCbytes extends PC with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
   String get token => vfString;
 
-  // ignore: prefer_constructors_over_static_methods
   static PCbytes fromBytes(Bytes bytes, [Ascii _]) => PCbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static PCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLOCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeUtf8VF(vList);
-    assert(vList.length <= LO.kMaxVFLength);
+  static PCbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortUtf8(code, vList, kLOCode, type, LO.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class PNbytes extends PN with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   PNbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static PNbytes fromBytes(Bytes bytes, [Ascii _]) => PNbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static PNbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kPNCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeUtf8VF(vList);
-    assert(vList.length <= PN.kMaxVFLength);
+  static PNbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortUtf8(code, vList, kPNCode, type, PN.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class SHbytes extends SH with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   SHbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static SHbytes fromBytes(Bytes bytes, [Ascii _]) => SHbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static SHbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kSHCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeUtf8VF(vList);
-    assert(vList.length <= SH.kMaxVFLength);
+  static SHbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortUtf8(code, vList, kSHCode, type, SH.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class UCbytes extends UC with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   UCbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static UCbytes fromBytes(Bytes bytes, [Ascii _]) => UCbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static UCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kUCCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeUtf8VF(vList);
-    assert(vList.length <= UC.kMaxVFLength);
+  static UCbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeLongUtf8(code, vList, kUCCode, type, UC.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
@@ -368,99 +320,113 @@ mixin TextMixin {
   int get vfLength;
   Bytes get vfBytes;
 
-  int get length => 1;
-
-  bool allowMalformed = true;
-
   String get vfString {
     final length = hasPadding ? vfLength - 1 : vfLength;
-    return vfBytes.getUtf8(length: length, allowInvalid: allowMalformed);
+    return vfBytes.getUtf8(0, length);
   }
 
   String get value => vfString;
   StringList get values => StringList.from([vfString]);
 }
 
-int _stringValuesLength(Bytes vfBytes) {
-  if (vfBytes.isEmpty) return 0;
-  var count = 1;
-  for (var i = 0; i < vfBytes.length; i++)
-    if (vfBytes[i] == kBackslash) count++;
-  return count;
-}
-
 class LTbytes extends LT with ElementBytes<String>, StringMixin, TextMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   LTbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static LTbytes fromBytes(Bytes bytes, [Ascii _]) => LTbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static LTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLTCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeTextVF(vList);
-    assert(vList.length <= LT.kMaxVFLength);
+  static LTbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortText(code, vList, kLTCode, type, LT.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class STbytes extends ST with ElementBytes<String>, StringMixin, TextMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   STbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static STbytes fromBytes(Bytes bytes, [Ascii _]) => STbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static STbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kSTCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeTextVF(vList);
-    assert(vList.length <= ST.kMaxVFLength);
+  static STbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeShortText(code, vList, kUSCode, type, ST.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class URbytes extends UR with ElementBytes<String>, StringMixin, TextMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   URbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static URbytes fromBytes(Bytes bytes, [Ascii _]) => URbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_methods
-  static URbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kURCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeTextVF(vList);
-    assert(vList.length <= UR.kMaxVFLength);
+  static URbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeLongText(code, vList, kURCode, type, UR.kMaxVFLength);
     return fromBytes(bytes);
   }
 }
 
 class UTbytes extends UT with ElementBytes<String>, StringMixin, TextMixin {
   @override
-  final BytesDicom bytes;
+  final BytesElement bytes;
 
   UTbytes(this.bytes);
 
-  // ignore: prefer_constructors_over_static_methods
   static UTbytes fromBytes(Bytes bytes, [Ascii _]) => UTbytes(bytes);
 
-  // ignore: prefer_constructors_over_static_method
-  static UTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kUTCode, isEvr);
-    if (bytes == null) return null;
-    bytes.writeTextVF(vList);
-    assert(vList.length <= UT.kMaxVFLength);
+  static UTbytes fromValues(
+      int code, List<String> vList, BytesElementType type) {
+    final bytes = _makeLongText(code, vList, kUTCode, type, UT.kMaxVFLength);
     return fromBytes(bytes);
   }
+}
+
+BytesElement _makeShortAscii(int code, List<String> vList, int vrCode,
+    BytesElementType type, int maxLength) {
+  final vfBytes = AsciiString.toBytes(vList);
+  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
+}
+
+/* Flush when working
+BytesElement _makeLongAscii(int code, List<String> vList, int vrCode,
+    BytesElementType type, int maxLength) {
+  final vfBytes = AsciiString.toBytes(vList);
+  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
+}
+*/
+
+BytesElement _makeShortUtf8(int code, List<String> vList, int vrCode,
+    BytesElementType type, int maxLength) {
+  final vfBytes = Utf8String.toBytes(vList);
+  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
+}
+
+BytesElement _makeLongUtf8(int code, List<String> vList, int vrCode,
+    BytesElementType type, int maxLength) {
+  final vfBytes = Utf8String.toBytes(vList);
+  return _makeLongElement(code, vfBytes, vrCode, type, maxLength);
+}
+
+BytesElement _makeShortText(int code, List<String> vList, int vrCode,
+    BytesElementType type, int maxLength) {
+  assert(vList.length <= 1);
+  final value = vList.isEmpty ? '' : vList[0];
+  final vfBytes = Text.toBytes(value);
+  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
+}
+
+BytesElement _makeLongText(int code, List<String> vList, int vrCode,
+    BytesElementType type, int maxLength) {
+  assert(vList.length <= 1);
+  final value = vList.isEmpty ? '' : vList[0];
+  final vfBytes = Text.toBytes(value);
+  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
 }

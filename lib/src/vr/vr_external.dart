@@ -23,10 +23,14 @@ abstract class VR<T> {
   final int index; // done   // done
   final String id; // done called vrKeyword
   final int code;
+
+  /// The element size in bytes.
+  final int eSize;
   final int vlfSize;
   final int maxVFLength;
 
-  const VR._(this.index, this.id, this.code, this.vlfSize, this.maxVFLength);
+  const VR._(this.index, this.id, this.code, this.eSize, this.vlfSize,
+      this.maxVFLength);
 
   bool get isLengthAlwaysValid;
 
@@ -175,11 +179,11 @@ class VRFloat extends VR<double> {
   @override
   final bool isLengthAlwaysValid;
 
-  const VRFloat(int index, String id, int code, int vlfSize, int maxVFLength,
-      this.sizeInBytes,
+  const VRFloat(int index, String id, int code, int eSize, int vlfSize,
+      int maxVFLength, this.sizeInBytes,
       // ignore: avoid_positional_boolean_parameters
       [this.isLengthAlwaysValid = false])
-      : super._(index, id, code, vlfSize, maxVFLength);
+      : super._(index, id, code, eSize, vlfSize, maxVFLength);
 
   @override
   int get maxLength => maxVFLength ~/ sizeInBytes;
@@ -193,12 +197,14 @@ class VRFloat extends VR<double> {
       (vfLength >= minLengthInBytes(vmMin) &&
           vfLength <= maxLengthInBytes(vmMax));
 
-  static const kFL = VRFloat(kFLIndex, 'FL', kFLCode, 2, k32BitMaxShortVF, 4);
-  static const kFD = VRFloat(kFDIndex, 'FD', kFDCode, 2, k64BitMaxShortVF, 8);
+  static const kFL =
+      VRFloat(kFLIndex, 'FL', kFLCode, 4, 2, k32BitMaxShortVF, 4);
+  static const kFD =
+      VRFloat(kFDIndex, 'FD', kFDCode, 8, 2, k64BitMaxShortVF, 8);
   static const kOF =
-      VRFloat(kOFIndex, 'OF', kOFCode, 4, k32BitMaxLongVF, 4, true);
+      VRFloat(kOFIndex, 'OF', kOFCode, 4, 4, k32BitMaxLongVF, 4, true);
   static const kOD =
-      VRFloat(kODIndex, 'OD', kODCode, 4, k64BitMaxLongVF, 8, true);
+      VRFloat(kODIndex, 'OD', kODCode, 8, 4, k64BitMaxLongVF, 8, true);
 }
 
 class VRInt extends VR<int> {
@@ -208,11 +214,11 @@ class VRInt extends VR<int> {
   @override
   final bool isLengthAlwaysValid;
 
-  const VRInt(int index, String id, int code, int vlfSize, int maxVFLength,
-      this.sizeInBytes, this.minValue, this.maxValue,
+  const VRInt(int index, String id, int code, int eSize, int vlfSize,
+      int maxVFLength, this.sizeInBytes, this.minValue, this.maxValue,
       // ignore: avoid_positional_boolean_parameters
       [this.isLengthAlwaysValid = false])
-      : super._(index, id, code, vlfSize, maxVFLength);
+      : super._(index, id, code, eSize, vlfSize, maxVFLength);
 
   /// The maximum possible number of values for this VR.
   @override
@@ -228,29 +234,29 @@ class VRInt extends VR<int> {
           vfLength <= maxLengthInBytes(vmMax));
 
   static const kUN =
-      VRInt(kUNIndex, 'UN', kUNCode, 4, k8BitMaxLongVF, 1, 0, 255, true);
+      VRInt(kUNIndex, 'UN', kUNCode, 4, k8BitMaxLongVF, 1, 1, 0, 255, true);
   static const kOB =
-      VRInt(kOBIndex, 'OB', kOBCode, 4, k8BitMaxLongVF, 1, 0, 255, true);
+      VRInt(kOBIndex, 'OB', kOBCode, 4, k8BitMaxLongVF, 1, 1, 0, 255, true);
 
-  static const kSS = VRInt(kSSIndex, 'SS', kSSCode, 2, k16BitMaxShortVF, 2,
+  static const kSS = VRInt(kSSIndex, 'SS', kSSCode, 2, 2, k16BitMaxShortVF, 2,
       Int16.kMinValue, Int16.kMaxValue);
 
-  static const kUS = VRInt(kUSIndex, 'US', kUSCode, 2, k16BitMaxShortVF, 2,
+  static const kUS = VRInt(kUSIndex, 'US', kUSCode, 2, 2, k16BitMaxShortVF, 2,
       Uint16.kMinValue, Uint16.kMaxValue);
 
-  static const kOW = VRInt(kOWIndex, 'OW', kOWCode, 4, k16BitMaxLongVF, 2,
+  static const kOW = VRInt(kOWIndex, 'OW', kOWCode, 2, 4, k16BitMaxLongVF, 2,
       Uint16.kMinValue, Uint16.kMaxValue, true);
 
-  static const kSL = VRInt(kSLIndex, 'SL', kSLCode, 2, k32BitMaxShortVF, 4,
+  static const kSL = VRInt(kSLIndex, 'SL', kSLCode, 4, 2, k32BitMaxShortVF, 4,
       Int32.kMinValue, Int32.kMaxValue);
 
-  static const kUL = VRInt(kULIndex, 'UL', kULCode, 2, k32BitMaxShortVF, 4,
+  static const kUL = VRInt(kULIndex, 'UL', kULCode, 4, 2, k32BitMaxShortVF, 4,
       Uint32.kMinValue, Uint32.kMaxValue);
 
-  static const kAT = VRInt(kATIndex, 'AT', kATCode, 2, k32BitMaxShortVF, 4,
+  static const kAT = VRInt(kATIndex, 'AT', kATCode, 4, 2, k32BitMaxShortVF, 4,
       Uint32.kMinValue, Uint32.kMaxValue);
 
-  static const kOL = VRInt(kOLIndex, 'OL', kOLCode, 4, k32BitMaxLongVF, 4,
+  static const kOL = VRInt(kOLIndex, 'OL', kOLCode, 4, 4, k32BitMaxLongVF, 4,
       Uint32.kMinValue, Uint32.kMaxValue, true);
 }
 
@@ -263,9 +269,17 @@ abstract class VRString extends VR<String> {
   @override
   final bool isLengthAlwaysValid;
 
-  const VRString._(int index, String id, int code, int vlfSize, int maxVFLength,
-      this.minVLength, this.maxVLength, this.isLengthAlwaysValid)
-      : super._(index, id, code, vlfSize, maxVFLength);
+  const VRString._(
+      int index,
+      String id,
+      int code,
+      int eSize,
+      int vlfSize,
+      int maxVFLength,
+      this.minVLength,
+      this.maxVLength,
+      this.isLengthAlwaysValid)
+      : super._(index, id, code, eSize, vlfSize, maxVFLength);
 
   int get sizeInBytes => 1;
 
@@ -286,8 +300,8 @@ abstract class VRString extends VR<String> {
 class VRAscii extends VRString {
   const VRAscii._(int index, String id, int code, int vlfSize, int maxVFLength,
       int minVLength, int maxVLength)
-      : super._(index, id, code, vlfSize, maxVFLength, minVLength, maxVLength,
-            false);
+      : super._(index, id, code, 1, vlfSize, maxVFLength, minVLength,
+            maxVLength, false);
 
   @override
   bool get isLengthAlwaysValid => false;
@@ -316,8 +330,8 @@ class VRAscii extends VRString {
 class VRUtf8 extends VRString {
   const VRUtf8._(int index, String id, int code, int vlfSize, int maxVFLength,
       int minVLength, int maxVLength, bool isLengthAlwaysValid)
-      : super._(index, id, code, vlfSize, maxVFLength, minVLength, maxVLength,
-            isLengthAlwaysValid);
+      : super._(index, id, code, 1, vlfSize, maxVFLength, minVLength,
+            maxVLength, isLengthAlwaysValid);
 
   @override
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) {
@@ -339,8 +353,8 @@ class VRUtf8 extends VRString {
 class VRText extends VRString {
   const VRText._(int index, String id, int code, int vlfSize, int maxVFLength,
       bool isLengthAlwaysValid)
-      : super._(
-            index, id, code, vlfSize, maxVFLength, 1, 1, isLengthAlwaysValid);
+      : super._(index, id, code, 1, vlfSize, maxVFLength, 1, 1,
+            isLengthAlwaysValid);
 
   @override
   int get maxLength => 1;
@@ -366,8 +380,8 @@ class VRNumber extends VRString {
   /// Constructor
   const VRNumber(int index, String id, int code, int vlfSize, int maxVFLength,
       int minVLength, int maxVLength)
-      : super._(index, id, code, vlfSize, maxVFLength, minVLength, maxVLength,
-            false);
+      : super._(index, id, code, 1, vlfSize, maxVFLength, minVLength,
+            maxVLength, false);
 
   @override
   bool isValidVFLength(int vfLength, int _, int __) => vfLength <= maxVFLength;
@@ -383,7 +397,7 @@ class VRNumber extends VRString {
 class VRSequence extends VR<Item> {
   /// Constructor
   const VRSequence(int index, String id, int code, int vlfSize, int maxVFLength)
-      : super._(index, id, code, vlfSize, maxVFLength);
+      : super._(index, id, code, 1, vlfSize, maxVFLength);
 
   @override
   int get maxLength => unsupportedError();
@@ -400,9 +414,9 @@ class VRSequence extends VR<Item> {
 class VRSpecial extends VRInt {
   final List<VRInt> vrs;
 
-  const VRSpecial(int index, String id, int code, int vlfSize, int maxVFLength,
-      int sizeInBytes, this.vrs)
-      : super(index, id, code, vlfSize, maxVFLength, sizeInBytes,
+  const VRSpecial(int index, String id, int code, int eSize, int vlfSize,
+      int maxVFLength, int sizeInBytes, this.vrs)
+      : super(index, id, code, eSize, vlfSize, maxVFLength, sizeInBytes,
             Int16.kMinValue, Uint16.kMaxValue);
 
   @override
@@ -417,17 +431,17 @@ class VRSpecial extends VRInt {
     return false;
   }
 
-  static const kOBOW = VRSpecial(kOBOWIndex, 'OBOW', -1, 1, k32BitMaxLongVF, 2,
-      <VRInt>[VR.kOB, VR.kOW, VR.kUN]);
+  static const kOBOW = VRSpecial(kOBOWIndex, 'OBOW', -1, 1, 4, k32BitMaxLongVF,
+      2, <VRInt>[VR.kOB, VR.kOW, VR.kUN]);
 
-  static const kUSSS = VRSpecial(kUSSSIndex, 'USSS', -1, 2, k16BitMaxShortVF, 2,
-      <VRInt>[VR.kUS, VR.kSS, VR.kUN]);
+  static const kUSSS = VRSpecial(kUSSSIndex, 'USSS', -1, 2, 2, k16BitMaxShortVF,
+      2, <VRInt>[VR.kUS, VR.kSS, VR.kUN]);
 
-  static const kUSSSOW = VRSpecial(kUSSSOWIndex, 'kUSSSOW', -1, 2,
+  static const kUSSSOW = VRSpecial(kUSSSOWIndex, 'kUSSSOW', -1, 2, 2,
       k32BitMaxLongVF, 2, <VRInt>[VR.kUS, VR.kSS, VR.kOW, VR.kUN]);
 
-  static const kUSOW = VRSpecial(kUSOWIndex, 'USOW', -1, 2, k32BitMaxLongVF, 2,
-      <VRInt>[VR.kUS, VR.kOW, VR.kUN]);
+  static const kUSOW = VRSpecial(kUSOWIndex, 'USOW', -1, 2, 2, k32BitMaxLongVF,
+      2, <VRInt>[VR.kUS, VR.kOW, VR.kUN]);
 }
 
 const List<VR> vrByIndex = <VR>[

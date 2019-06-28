@@ -11,7 +11,6 @@ export 'package:core/src/element/base/bulkdata.dart';
 export 'package:core/src/element/base/crypto.dart';
 export 'package:core/src/element/base/element.dart';
 export 'package:core/src/element/base/float/float.dart';
-export 'package:core/src/element/base/float/float_mixin.dart';
 export 'package:core/src/element/base/integer/int_bulkdata_ref.dart';
 export 'package:core/src/element/base/integer/integer.dart';
 export 'package:core/src/element/base/integer/integer_mixin.dart';
