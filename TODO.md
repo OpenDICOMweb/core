@@ -1,5 +1,7 @@
 # TODO Core
 
+1. Add tests for all BytesElementType(s)
+
 1. Convert all ByteData and Uint8List to Bytes.
 
 1. All files that define errors should be re-organized so that errors files related to a specific class are stored with that class. General errors should be stored in utils/errors.
