@@ -17,8 +17,8 @@ abstract class HtmlHandler {
   static const _storeName = 'logger.store';
   final String name;
   final bool doPrint;
-  Storage _store;
-  Transformer _transform;
+  final Storage _store;
+  final Transformer _transform;
 
   HtmlHandler(this.name, {this.doPrint, Transformer transform})
       : _store = window.localStorage,

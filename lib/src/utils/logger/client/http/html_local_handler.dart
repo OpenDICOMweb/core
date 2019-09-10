@@ -21,8 +21,8 @@ class HtmlFileHandler {
   final String name;
   final LogMode mode;
   bool _doPrint;
-  Storage _store;
-  Transformer _transform;
+  final Storage _store;
+  final Transformer _transform;
 
   HtmlFileHandler(this.name, this.mode, {bool doPrint, Transformer transform})
       : _doPrint = doPrint,
@@ -50,8 +50,8 @@ class HtmlRemoteFileHandler {
   final String name;
   final LogMode mode;
   bool _doPrint;
-  Storage _store;
-  Transformer _transform;
+  final Storage _store;
+  final Transformer _transform;
 
   HtmlRemoteFileHandler(this.name, this.mode,
       {bool doPrint, Transformer transform})
