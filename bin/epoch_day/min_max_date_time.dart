@@ -8,6 +8,7 @@
 //
 import 'dart:math';
 
+import 'package:constants/constants.dart';
 import 'package:core/server.dart';
 
 final int min64BitInt = -pow(2, 62);
@@ -16,14 +17,14 @@ final int max64BitInt = pow(2, 62) - 1;
 void main() {
   Server.initialize(name: 'bin/date_time', level: Level.info0);
 
-  assert(min64BitInt == kMin64BitInt, true);
-  assert(max64BitInt == kMax64BitInt, true);
+  assert(min64BitInt == kInt64Min, true);
+  assert(max64BitInt == kInt64Max, true);
   print('        min 63-bit Int: $min64BitInt');
   print('        max 63-bit Int:  $max64BitInt');
-  print('        min dart smInt: $kMin64BitInt');
-  print('        max dart smint:  $kMax64BitInt');
-  print('Min Epoch Microseconds: $kMin64BitInt');
-  print('Max Epoch Microseconds:  $kMax64BitInt');
+  print('        min dart smInt: $kInt64Min');
+  print('        max dart smint:  $kInt64Max');
+  print('Min Epoch Microseconds: $kInt64Min');
+  print('Max Epoch Microseconds:  $kInt64Max');
 
   print('---------');
   const kMinTimeZoneMinute = -12 * 60;
@@ -43,7 +44,7 @@ void main() {
   print('Max Time Zone Microseconds: $kMaxTimeZoneMicroseconds');
 
   print('---------');
-  const maxEpochMicrosecondUTC = kMax64BitInt - kMaxTimeZoneMicroseconds;
+  const maxEpochMicrosecondUTC = kUint16Max - kMaxTimeZoneMicroseconds;
   print('    Min Epoch Microseconds: $kAbsoluteMinEpochMicroseconds');
   print('    Max Epoch Microseconds:  $kAbsoluteMaxEpochMicroseconds');
   print('Min Epoch Microseconds UTC: $kAbsoluteMinEpochMicrosecondsUTC');
@@ -100,8 +101,8 @@ void main() {
   print('acrBaselineDate: $acrBaseline');
 
   final out = '''
-                 Min dart SMIint: $kMin64BitInt
-                 Max dart SMIint:  $kMax64BitInt
+                 Min dart SMIint: $min64BitInt
+                 Max dart SMIint:  $max64BitInt
  Min Epoch microseconds with TZM: $kMinEpochMicrosecond
  Max Epoch microseconds with TZM:  $kMaxEpochMicrosecond
             Min Time Zone Minute: $kMinTimeZoneMinute

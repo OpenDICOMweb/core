@@ -75,7 +75,7 @@ abstract class SQ extends Element<Item> {
   @override
   int get total => counter((e) => true);
 
-  List sqMap(Object f(Element e)) {
+  List sqMap(Object Function(Element) f) {
     final iList = List<Object>(items.length);
     for (final item in items) {
       final eList = List<Object>(item.length);
@@ -125,10 +125,10 @@ Summary $tag
   }
 
   @override
-  void forEach(void action(Item element)) => items.forEach(action);
+  void forEach(void Function(Item) action) => items.forEach(action);
 
   @override
-  T fold<T>(T initialValue, T combine(T previous, Item item)) =>
+  T fold<T>(T initialValue, T Function(T, Item) combine) =>
       items.fold(initialValue, combine);
 
   Element lookup(int index, {bool required = false}) {
@@ -201,7 +201,7 @@ Summary $tag
     return eList;
   }
 
-  Iterable<Element> updateAllF<V>(int index, Iterable<V> f(List<V> vList),
+  Iterable<Element> updateAllF<V>(int index, Iterable<V> Function(List<V>) f,
       {bool required = false}) {
     final eList = <Element>[];
     for (final item in items) {
@@ -228,7 +228,7 @@ Summary $tag
   List<Item> replace([Iterable<Item> vList = kEmptyList]) => unsupportedError();
 
   @override
-  List<Item> replaceF(List<Item> f(List<Item> vList)) => unsupportedError();
+  List<Item> replaceF(List<Item> Function(List<Item>) f) => unsupportedError();
 
   Iterable<V> _replaceF<V>(Iterable<V> vList) => vList;
 
@@ -236,7 +236,7 @@ Summary $tag
       replaceAllF(index, _replaceF);
 
   Iterable<Iterable<V>> replaceAllF<V>(
-      int index, Iterable<V> f(List<V> vList)) {
+      int index, Iterable<V> Function(List<V>) f) {
     final result = <Iterable<V>>[];
     for (final item in items) {
       final e = item.lookup(index);

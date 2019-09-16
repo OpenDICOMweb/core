@@ -43,8 +43,7 @@ abstract class AsciiString extends StringBase {
   @override
   Uint8List get bulkdata => typedData;
 
-  List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.getAscii().split('\\');
+  List<String> valuesFromBytes(Bytes bytes) => bytes.getAscii().split('\\');
 
   AsciiString append(String s) => update(values.append(s, maxValueLength));
 
@@ -68,7 +67,7 @@ abstract class AsciiString extends StringBase {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<String> vList,
-      {bool asView = true, bool check = true}) =>
+          {bool asView = true, bool check = true}) =>
       Bytes.fromAsciiList(vList);
 }
 
@@ -315,12 +314,12 @@ abstract class UI extends AsciiString {
 
   UI updateUid(Iterable<Uid> uidList) => update(toStringList(uidList));
 
-  UI updateUidF(Iterable<Uid> f(Iterable<String> vList)) =>
+  UI updateUidF(Iterable<Uid> Function(Iterable<String>) f) =>
       updateUid(f(values));
 
   Iterable<Uid> replaceUid(Iterable<Uid> vList) => _replaceUid(vList);
 
-  Iterable<Uid> replaceUidF(Iterable<Uid> f(Iterable<Uid> vList)) =>
+  Iterable<Uid> replaceUidF(Iterable<Uid> Function(Iterable<Uid>) f) =>
       _replaceUid(f(uids) ?? Uid.kEmptyList);
 
   Iterable<Uid> _replaceUid(Iterable<Uid> uidList) {
@@ -332,8 +331,8 @@ abstract class UI extends AsciiString {
 
   static const int kVRIndex = kUIIndex;
   static const int kVRCode = kUICode;
-  //Issue: is 16 the right number?
-  static const int kMinValueLength = 14;
+  //Urgent: what is the correct kMinValueLength
+  static const int kMinValueLength = 6;
   static const int kMaxValueLength = 64;
   static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);

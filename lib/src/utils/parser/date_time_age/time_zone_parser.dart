@@ -33,7 +33,7 @@ int parseTimeZone(String s,
 /// valid time zone hour and 'mm' is a valid time zone minute values,
 /// i.e. 0, 30, or 45. A negative values is before UTC.
 int parseDcmTimeZone(String s,
-    {int start = 0, int end, Issues issues, int onError(String s)}) {
+    {int start = 0, int end, Issues issues, int Function(String) onError}) {
   end ??= s.length;
   try {
     return _parseDcmTimeZone(s, start, end, issues);

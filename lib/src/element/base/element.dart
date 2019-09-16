@@ -493,7 +493,7 @@ abstract class Element<V> extends ListBase<V> {
   bool get isValid => hasValidVR && hasValidLength && hasValidValues;
 
   /// Returns a copy of _this_ with [values] [f]([values]).
-  Element updateF(Iterable<V> f(List<V> vList)) => update(f(values));
+  Element updateF(Iterable<V> Function(List<V>) f) => update(f(values));
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -506,7 +506,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Replace the current [values] with the result of [f([values]])],
   /// and return the original [values]. This method modifies the [Element].
-  List<V> replaceF(List<V> f(List<V> vList)) => replace(f(values));
+  List<V> replaceF(List<V> Function(List<V>) f) => replace(f(values));
 
   /// Returns a copy of _this_.
   Element<V> get copy => update(valuesCopy);

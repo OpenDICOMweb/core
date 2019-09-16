@@ -104,7 +104,7 @@ bool isDcmText(String s, int max) {
 bool isNotDcmText(String s, int max) => !isDcmText(s, max);
 
 // Improvement: Handle escape sequences
-bool isFilteredString(String s, int min, int max, bool filter(int c),
+bool isFilteredString(String s, int min, int max, bool Function(int) filter,
     {bool allowLeadingSpaces = false,
     bool allowTrailingSpaces = false,
     bool allowBlank = true}) {
@@ -126,7 +126,7 @@ bool isFilteredString(String s, int min, int max, bool filter(int c),
   return true;
 }
 
-bool isNotFilteredString(String s, int min, int max, bool filter(int c),
+bool isNotFilteredString(String s, int min, int max, bool Function(int) filter,
         {bool allowLeading = false,
         bool allowTrailing = false,
         bool allowBlank = true}) =>

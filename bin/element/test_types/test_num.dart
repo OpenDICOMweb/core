@@ -98,7 +98,7 @@ final List<Function> functions = [
 ];
 
 List<double> testCoerce(
-    Iterable<num> vList, int loops, List<double> f(Iterable<num> v)) {
+    Iterable<num> vList, int loops, List<double> Function(Iterable<num> v) f) {
   List<double> v;
   try {
     for (var i = 0; i < loops; i++) v = f(vList);

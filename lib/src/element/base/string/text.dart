@@ -363,7 +363,7 @@ abstract class UR extends Text {
   }
 
   static Uri parse(String s,
-      {int start = 0, int end, Issues issues, Uri onError(String s)}) {
+      {int start = 0, int end, Issues issues, Uri Function(String) onError}) {
     final uri = tryParse(s, start: start, end: end, issues: issues);
     if (uri == null) {
       if (onError != null) return onError(s);

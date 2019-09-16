@@ -14,7 +14,7 @@ part of odw.sdk.core.parser;
 /// where 'd' is a decimal  digit and 't' is an age token,
 /// one of "D", "W", "M", "Y".
 int parseAgeString(String s,
-    {int onError(String s), bool allowLowercase = false}) {
+    {int Function(String) onError, bool allowLowercase = false}) {
   if (s == null || s.length != 4)
     return _onError(s, onError, 'Invalid age String');
 
@@ -27,7 +27,7 @@ int parseAgeString(String s,
   return n;
 }
 
-int _onError(String s, int onError(String s), String errorMsg) =>
+int _onError(String s, int Function(String) onError, String errorMsg) =>
     (onError != null) ? onError(s) : badAgeParse('$errorMsg: "$s"');
 
 /// Returns the number of days corresponding to [s], which is a

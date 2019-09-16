@@ -147,8 +147,7 @@ abstract class RootDataset extends Dataset {
 
   int get nSequences => counter((e) => e is SQ);
   int get nPrivate => counter((e) => isPrivateCode(e.code));
-  int get nPrivateSequences =>
-      counter((e) => isPrivateCode(e.code) && e is SQ);
+  int get nPrivateSequences => counter((e) => isPrivateCode(e.code) && e is SQ);
 
   /// Returns a formatted summary of _this_.
   String get summary {
@@ -170,7 +169,7 @@ abstract class RootDataset extends Dataset {
   }
 
   @override
-  Iterable<Object> findAllWhere(bool test(Element e)) {
+  Iterable<Object> findAllWhere(bool Function(Element) test) {
     final result = <Object>[];
     for (final e in fmi.elements) if (test(e)) result.add(e);
     for (final e in elements) if (test(e)) result.add(e);

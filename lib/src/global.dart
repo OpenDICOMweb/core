@@ -51,9 +51,11 @@ abstract class Global {
 
   /// The minimum valid year.
   final int minYear;
+  final int minEpochMicroseconds;
 
   /// The maximum valid year.
   final int maxYear;
+  final int maxEpochMicroseconds;
 
   /// FMI Values
   final String mediaStorageSopClassUid;
@@ -120,6 +122,8 @@ abstract class Global {
       this.showBanner = true,
       this.showSdkBanner = true})
       : assert(_isValidYearRange(minYear, maxYear)),
+        minEpochMicroseconds = minYear * kMicrosecondsPerYear,
+        maxEpochMicroseconds = maxYear * kMicrosecondsPerYear,
         version = (version == null) ? Version(0, 0, 1) : version,
         log = Logger(name, level) {
     hasher = hasher ??= const Hash64();
@@ -138,9 +142,6 @@ abstract class Global {
   void exit(int code, [String msg]);
 
   // **** End Interface
-
-  int get minYearInMicroseconds => minYear * kMicrosecondsPerYear;
-  int get maxYearInMicroseconds => maxYear * kMicrosecondsPerYear;
 
   bool showWarnings = false;
 

@@ -9,9 +9,9 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:constants/constants.dart';
+import 'package:core/src/values.dart';
 import 'package:core/src/utils/character/ascii.dart';
-import 'package:core/src/values/date_time.dart';
-import 'package:core/src/values/integer.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -124,7 +124,7 @@ class RNG {
 
   int _nextMicrosecond() {
     final us = _nextSMInt();
-    if (isValidDateTimeMicroseconds(us)) return us;
+    if (isValidEpochMicroseconds(us)) return us;
     return _nextMicrosecond();
   }
 
@@ -167,7 +167,7 @@ class RNG {
 
   /// Returns an ASCII character (code point). [predicate]
   /// defaults to always _true_.
-  int nextAsciiSatisfying([bool predicate(int char) = _always]) {
+  int nextAsciiSatisfying([bool Function(int) predicate = _always]) {
     final c = nextUint7;
     return (predicate(c)) ? c : nextAsciiSatisfying(predicate);
   }
@@ -193,15 +193,15 @@ class RNG {
   /// to [max] inclusive.
   ///
   /// Note: [min] and [max] can be negative, but [min] must be less than [max].
-  int nextInt([int min = kMin64BitInt, int max = kMax64BitInt]) {
-    RangeError.checkValueInInterval(min, kMin64BitInt, kMax64BitInt, 'min');
-    RangeError.checkValueInInterval(max, min, kMax64BitInt, 'max');
+  int nextInt([int min = kUint64Min, int max = kUint16Max]) {
+    RangeError.checkValueInInterval(min, kUint16Min, kUint16Max, 'min');
+    RangeError.checkValueInInterval(max, min, kUint16Max, 'max');
     var limit = _getLimit(min, max);
-    if (limit > kMax64BitInt) limit = kMax64BitInt;
-    if (limit < 0 || limit > kMax64BitInt)
+    if (limit > kUint16Max) limit = kUint16Max;
+    if (limit < 0 || limit > kUint16Max)
       // ignore: only_throw_errors
       throw 'Invalid range error: '
-          '$kMin64BitInt > $max - $min = $limit < $kMax64BitInt';
+          '$kUint16Min > $max - $min = $limit < $kUint16Max';
     final n = (limit < kUint32Max)
         ? __nextUint32(limit)
         : _nextSMUint().remainder(limit);
@@ -214,7 +214,7 @@ class RNG {
 
   // Always returns a positive integer that is less than Int32Max.
   int _getLimit(int min, int max) {
-    assert(min >= kMin64BitInt && max <= kMax64BitInt && min <= max);
+    assert(min >= kUint16Min && max <= kUint16Max && min <= max);
     final limit = max - min;
     return (limit < 0) ? -limit : limit;
   }
@@ -239,12 +239,12 @@ class RNG {
 
   // TODO: See _nextSMInt issue is same
   /// Returns a 64-bit random unsigned integer _n_, in the range
-  /// 0 >= n <= [kMax64BitInt]
+  /// 0 >= n <= [kUint16Max]
   int _nextSMUint() {
     final upper = generator.nextInt(kMaxRandom30BitInt);
     final lower = generator.nextInt(kMaxRandomIntExclusive);
     final n = (upper << 32) | lower;
-    assert(n >= 0 && n <= kMax64BitInt);
+    assert(n >= 0 && n <= kUint16Max);
     return n;
   }
 
@@ -260,8 +260,8 @@ class RNG {
     final lower = generator.nextInt(kMaxRandomIntExclusive);
     var n = (upper << 32) | lower;
     n = (generator.nextBool()) ? n : -n;
-    assert(n >= kMin64BitInt && n <= kMax64BitInt,
-        '$kMin64BitInt <= $n ${n.toRadixString(16)} <= $kMax64BitInt');
+    assert(n >= kUint16Min && n <= kUint16Max,
+        '$kUint16Min <= $n ${n.toRadixString(16)} <= $kUint16Max');
     return n;
   }
 
@@ -270,12 +270,12 @@ class RNG {
   // TODO: See _nextSMInt issue is same
   /// Returns a 63-bit random number between [min] and [max] inclusive,
   /// Where [min] >= 0, and [max] >= min && [max] <= 0xFFFFFFFF.
-  int nextUint([int min = 0, int max = kMax64BitInt]) {
-    RangeError.checkValueInInterval(min, 0, kMax64BitInt, 'min');
-    RangeError.checkValueInInterval(max, min, kMax64BitInt, 'max');
+  int nextUint([int min = 0, int max = kUint16Max]) {
+    RangeError.checkValueInInterval(min, 0, kUint16Max, 'min');
+    RangeError.checkValueInInterval(max, min, kUint16Max, 'max');
     var limit = max - min;
-    if (limit > kMax64BitInt) limit = kMax64BitInt;
-    if (limit < 0 || limit > kMax64BitInt)
+    if (limit > kUint16Max) limit = kUint16Max;
+    if (limit < 0 || limit > kUint16Max)
       // ignore: only_throw_errors
       throw 'Invalid range error: 0 > $max - $min = $limit < 0xFFFFFFFF';
     return (limit < kUint32Max)

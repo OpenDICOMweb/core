@@ -26,7 +26,7 @@ int parseRadix(String s,
         int minLength = 1,
         int maxLength,
         int radix = 16,
-        int onError(String s) = _defaultParseIntError}) =>
+        int Function(String) onError = _defaultParseIntError}) =>
     _parseRadix(s, start, issues, end ??= s.length, minLength, maxLength, radix,
         'parseRadix', onError);
 
@@ -40,7 +40,7 @@ int tryParseRadix(String s,
         int minLength = 1,
         int maxLength,
         int radix = 16,
-        int onError(String source) = _defaultParseIntError}) =>
+        int Function(String) onError = _defaultParseIntError}) =>
     _tryParseRadix(s, start, issues, end ??= s.length, minLength, maxLength,
         radix, 'tryParseRadix');
 
@@ -52,7 +52,7 @@ int parseBinary(String s,
         Issues issues,
         int minLength = 1,
         int maxLength,
-        int onError(String s) = _defaultParseIntError}) =>
+        int Function(String) onError = _defaultParseIntError}) =>
     _parseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 2,
         'parseBinary', onError);
 
@@ -64,7 +64,7 @@ int tryParseBinary(String s,
         Issues issues,
         int minLength = 1,
         int maxLength,
-        int onError(String source) = _defaultParseIntError}) =>
+        int Function(String) onError = _defaultParseIntError}) =>
     _tryParseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 2,
         'parseBinary');
 
@@ -79,7 +79,7 @@ int parseUint(String s,
         Issues issues,
         int minLength = 1,
         int maxLength,
-        int onError(String source) = _defaultParseIntError}) =>
+        int Function(String) onError = _defaultParseIntError}) =>
 //    _parseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 10,
 //        'parseUint', onError);
     parseBase10(s, start, issues, end ??= s.length, 'parseUint', onError);
@@ -92,7 +92,7 @@ int tryParseUint(String s,
         Issues issues,
         int minLength = 1,
         int maxLength,
-        int onError(String source) = _defaultParseIntError}) =>
+        int Function(String) onError = _defaultParseIntError}) =>
     _tryParseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 10,
         'parseUint');
 
@@ -104,7 +104,7 @@ int parseHex(String s,
         Issues issues,
         int minLength = 1,
         int maxLength,
-        int onError(String source) = _defaultParseIntError}) =>
+        int Function(String) onError = _defaultParseIntError}) =>
     _tryParseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 16,
         'parseHex');
 
@@ -116,7 +116,7 @@ int tryParseHex(String s,
         Issues issues,
         int minLength = 1,
         int maxLength,
-        int onError(String source) = _defaultParseIntError}) =>
+        int Function(String) onError = _defaultParseIntError}) =>
     _tryParseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 16,
         'parseHex');
 
@@ -130,7 +130,7 @@ int parseInt(String s,
     Issues issues,
     int minLength = 1,
     int maxLength,
-    int onError(String source) = _defaultParseIntError]) {
+    int Function(String) onError = _defaultParseIntError]) {
   end ??= s.length;
   const _intName = 'parseInt';
   _checkArgs(s, start, end, minLength, maxLength, _intName, issues);
@@ -170,7 +170,7 @@ double parseFloat(String s,
     Issues issues,
     int minLength = 1,
     int maxLength,
-    int onError(String source) = _defaultParseIntError]) {
+    int Function(String) onError = _defaultParseIntError]) {
   // end ??= s.length;
   const _intName = 'parseFloat';
   _checkArgs(s, start, end, minLength, maxLength, _intName, issues);
@@ -194,7 +194,7 @@ int parseFraction(String s,
     int minLength = 2,
     int max = 7,
     Issues issues,
-    int onError(String source) = _defaultParseIntError}) {
+    int Function(String) onError = _defaultParseIntError}) {
   try {
     end ??= s.length;
     _checkArgs(s, start, end, minLength, max, _fName, issues);
@@ -209,7 +209,7 @@ int parseFraction(String s,
 const _fName = 'parseFraction';
 
 int _parseFraction(String s, int start, Issues issues, int end,
-    [String name, int onError(String s)]) {
+    [String name, int Function(String) onError]) {
   _parseDecimalPoint(s, start, issues, _fName);
   return parseBase10(s, start + 1, issues, end, _fName, onError);
 }
@@ -235,7 +235,7 @@ bool _parseDecimalPoint(String s, int start, Issues issues, String name) {
 ///
 /// Note: we're using this because Dart doesn't provide a Uint parser.
 int _parseRadix(String s, int start, Issues issues, int end, int minLength,
-    int maxLength, int radix, String name, int onError(String s)) {
+    int maxLength, int radix, String name, int Function(String) onError) {
   if (radix < 2 || radix > 36)
     throw ArgumentError('Radix ($radix) not in range: 2 <= radix <= 36');
   _checkArgs(s, start, end, minLength, maxLength, 'parseUintRadix', issues);
@@ -243,21 +243,21 @@ int _parseRadix(String s, int start, Issues issues, int end, int minLength,
 }
 
 int __parseRadix(String s, int start, Issues issues, int end, String name,
-        int radix, int onError(String s)) =>
+        int radix, int Function(String) onError) =>
     (radix <= 10)
         ? __parseSmallRadix(s, start, issues, end, name, radix, onError)
         : __parseBigRadix(s, start, issues, end, name, radix, onError);
 
 int parseBase2(String s, int start, Issues issues, int end, String name,
-        int onError(String s)) =>
+        int Function(String) onError) =>
     __parseSmallRadix(s, start, issues, end, name, 2, onError);
 
 int parseBase8(String s, int start, Issues issues, int end, String name,
-        int onError(String s)) =>
+        int Function(String) onError) =>
     __parseSmallRadix(s, start, issues, end, name, 8, onError);
 
 int parseBase10(String s, int start, Issues issues, int end, String name,
-        int onError(String s)) =>
+        int Function(String) onError) =>
     __parseSmallRadix(s, start, issues, end, name, 10, onError);
 
 //TODO: replace with _parseRadix if performance doesn't suffer
@@ -266,7 +266,7 @@ int parseBase10(String s, int start, Issues issues, int end, String name,
 ///
 /// Note: we're using this because Dart doesn't provide a Uint parser.
 int __parseSmallRadix(String s, int start, Issues issues, int end, String name,
-    int radix, int onError(String s)) {
+    int radix, int Function(String) onError) {
   final maxChar = k0 + (radix - 1);
   assert(maxChar >= k0 && maxChar <= k9);
   var value = 0;
@@ -280,14 +280,14 @@ int __parseSmallRadix(String s, int start, Issues issues, int end, String name,
 }
 
 int parseBase16(String s, int start, Issues issues, int end, String name,
-        int onError(String s)) =>
+        int Function(String) onError) =>
     __parseBigRadix(s, start, issues, end, name, 16, onError);
 
 // The distance between uppercase and lowercase
 const _kLowerCaseOffset = ka - kA;
 
 int __parseBigRadix(String s, int start, Issues issues, int end, String name,
-    int radix, int onError(String s)) {
+    int radix, int Function(String) onError) {
   assert(radix > 10 && radix <= 36);
   var value = 0;
   final maxChar = kA + (radix - 11);

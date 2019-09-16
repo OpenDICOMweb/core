@@ -212,7 +212,7 @@ class Name {
 
   //TODO: these are taken from VRString
   /// Returns _true_ if all characters pass the filter.
-  static bool _filteredTest(String s, bool filter(int c)) {
+  static bool _filteredTest(String s, bool Function(int) filter) {
     for (var i = 0; i < s.length; i++)
       if (!filter(s.codeUnitAt(i))) return false;
     return true;
@@ -227,7 +227,10 @@ class Name {
   /// Parses a Component Group into a [Name]
   // ignore: prefer_constructors_over_static_methods
   static Name parse(String s,
-      {int start = 0, int end, Issues issues, PersonName onError(String s)}) {
+      {int start = 0,
+      int end,
+      Issues issues,
+      PersonName Function(String) onError}) {
     if (s == null || s == '' || s.length > 64 || !_filteredTest(s, _isPNChar))
       //TODO: return invalidPersonNameString(s)
       return null;
@@ -248,7 +251,7 @@ bool _isPNChar(int c) =>
 bool _isPNComponentGroup(String s) => _filteredTest(s, _isPNNameChar);
 
 /// Returns _true_ if all characters pass the filter.
-bool _filteredTest(String s, bool filter(int c)) {
+bool _filteredTest(String s, bool Function(int) filter) {
   if (s.isEmpty || s.length > 64) return false;
   for (var i = 0; i < s.length; i++) {
     if (!filter(s.codeUnitAt(i))) return false;

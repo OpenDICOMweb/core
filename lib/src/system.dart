@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+export 'package:constants/constants.dart';
 export 'package:core/src/global.dart';
 export 'package:core/src/system/sdk.dart';
 export 'package:core/src/system/sys_info.dart';

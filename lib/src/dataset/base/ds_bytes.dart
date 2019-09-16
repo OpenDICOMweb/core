@@ -143,9 +143,9 @@ class RDSBytes extends DSBytes {
   @override
   String toString() {
     final fmiLength = fmiEnd - 132;
-    final dsLength = dsEnd - dsStart;
+    final length = dsEnd - dsStart;
     return '$runtimeType: FMI 132-$fmiEnd:$fmiLength '
-        'RDS $dsStart-$dsEnd:$dsLength';
+        'RDS $dsStart-$dsEnd:$length';
   }
 
   static const int kPreambleOffset = 0;

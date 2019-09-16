@@ -130,7 +130,6 @@ mixin DatasetMixin {
         count += n;
         _total += n;
         log.debug('*   DS SQ end: count $count total $_total');
-
       }
       if (test(e)) {
         _total++;
@@ -170,7 +169,7 @@ mixin DatasetMixin {
   ///
   /// If updating the [Element] fails, the current element is left in
   /// place and _null_ is returned.
-  Element updateF<V>(int index, List<V> f(List vList),
+  Element updateF<V>(int index, List<V> Function(List) f,
       {bool required = false}) {
     final old = lookup(index, required: required);
     if (old == null) return required ? elementNotPresentError(index) : null;
@@ -200,7 +199,7 @@ mixin DatasetMixin {
   /// Items contained in it, with a new element whose values are
   /// [f(this.values)]. Returns a list containing all [Element]s that were
   /// replaced.
-  List<Element> updateAllF<V>(int index, List<V> f(List vList),
+  List<Element> updateAllF<V>(int index, List<V> Function(List) f,
       {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
@@ -271,7 +270,7 @@ mixin DatasetMixin {
   /// Replaces the [Element.values] at [index] with [f(vList)].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  List<V> replaceF<V>(int index, Iterable<V> f(List<V> vList),
+  List<V> replaceF<V>(int index, Iterable<V> Function(List<V>) f,
       {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
@@ -297,7 +296,7 @@ mixin DatasetMixin {
     return result;
   }
 
-  List<Iterable<V>> replaceAllF<V>(int index, Iterable<V> f(List<V> vList)) {
+  List<Iterable<V>> replaceAllF<V>(int index, Iterable<V> Function(List<V>) f) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (final e in elements)
@@ -405,7 +404,8 @@ mixin DatasetMixin {
   }
 
   // TODO Jim: maybe remove recursive call
-  List<Element> deleteIfTrue(bool test(Element e), {bool recursive = false}) {
+  List<Element> deleteIfTrue(bool Function(Element) test,
+      {bool recursive = false}) {
     final deleted = <Element>[];
     for (final e in elements) {
       if (test(e)) {
@@ -421,7 +421,7 @@ mixin DatasetMixin {
     return deleted;
   }
 
-  Iterable<Element> copyWhere(bool test(Element e)) {
+  Iterable<Element> copyWhere(bool Function(Element) test) {
     final result = <Element>[];
     for (final e in elements) {
       if (test(e)) result.add(e);
@@ -429,7 +429,7 @@ mixin DatasetMixin {
     return result;
   }
 
-  Iterable<Element> findWhere(bool test(Element e)) {
+  Iterable<Element> findWhere(bool Function(Element) test) {
     final result = <Element>[];
     for (final e in elements) {
       if (test(e)) result.add(e);
@@ -440,13 +440,13 @@ mixin DatasetMixin {
   /// Returns an [Iterable] where each element is either
   /// an [Element] or recursively an [Iterable].
   //TODO improve doc
-  Iterable<Object> findAllWhere(bool test(Element e)) {
+  Iterable<Object> findAllWhere(bool Function(Element) test) {
     final result = <Object>[];
     for (final e in elements) if (test(e)) result.add(e);
     return result;
   }
 
-  Map<SQ, Element> findSQWhere(bool test(Element e)) {
+  Map<SQ, Element> findSQWhere(bool Function(Element) test) {
     final map = <SQ, Element>{};
     for (final e in elements) {
       if (e is SQ) {

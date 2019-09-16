@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
 import 'package:core/src/values/date_time/primitives/date.dart';
-import 'package:core/src/values/integer.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -87,6 +87,13 @@ const int kSecondsPerMinute = 60;
 const int kMinutesPerHour = 60;
 const int kHoursPerDay = 24;
 
+const int kMillisecondsPerMinute = kSecondsPerMinute * kMillisecondsPerSecond;
+const int kMillisecondsPerHour = kSecondsPerHour * kMillisecondsPerSecond;
+const int kMillisecondsPerDay = kSecondsPerDay * kMillisecondsPerSecond;
+const int kSecondsPerHour = kMinutesPerHour * kSecondsPerMinute;
+const int kSecondsPerDay = kMinutesPerDay * kSecondsPerMinute;
+const int kMinutesPerDay = kHoursPerDay * kMinutesPerHour;
+
 const int kMicrosecondsPerSecond =
     kMillisecondsPerSecond * kMicrosecondsPerMillisecond;
 const int kMicrosecondsPerMinute =
@@ -96,13 +103,6 @@ const int kMicrosecondsPerHour =
 const int kMicrosecondsPerDay =
     kMillisecondsPerDay * kMicrosecondsPerMillisecond;
 const int kMicrosecondsPerYear = kMillisecondsPerDay * 365;
-
-const int kMillisecondsPerMinute = kSecondsPerMinute * kMillisecondsPerSecond;
-const int kMillisecondsPerHour = kSecondsPerHour * kMillisecondsPerSecond;
-const int kMillisecondsPerDay = kSecondsPerDay * kMillisecondsPerSecond;
-const int kSecondsPerHour = kMinutesPerHour * kSecondsPerMinute;
-const int kSecondsPerDay = kMinutesPerDay * kSecondsPerMinute;
-const int kMinutesPerDay = kHoursPerDay * kMinutesPerHour;
 
 // **** Time Zone Constants
 

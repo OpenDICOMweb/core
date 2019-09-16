@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
 import 'package:core/src/error.dart';
-import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/parser.dart';
 import 'package:core/src/utils/string/decimal.dart';
 import 'package:core/src/values/date_time/primitives/age.dart';
@@ -77,7 +77,7 @@ class Age {
       tryParseAgeString(s, allowLowercase: allowLowercase);
 
   static int parseDays(String s,
-          {Age onError(String s), bool allowLowercase = false}) =>
+          {Age Function(String) onError, bool allowLowercase = false}) =>
       parseAgeString(s, allowLowercase: allowLowercase);
 
   // ignore: prefer_constructors_over_static_methods
@@ -95,7 +95,7 @@ class Age {
 
   // ignore: prefer_constructors_over_static_methods
   static Age parse(String s,
-      {Age onError(String s), bool allowLowercase = false}) {
+      {Age Function(String) onError, bool allowLowercase = false}) {
     int days;
     try {
       days = parseAgeString(s, allowLowercase: allowLowercase);

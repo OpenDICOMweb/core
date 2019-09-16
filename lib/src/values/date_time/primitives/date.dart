@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
 import 'package:core/src/global.dart';
-import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/error/date_time_errors.dart';
 
@@ -40,10 +40,23 @@ final int kMaxEpochMicrosecond = ((kMaxEpochDay + 1) * kMicrosecondsPerDay) - 1;
 /// The total number of Epoch microseconds valid for this [Global].
 final int kEpochSpan = kMaxEpochMicrosecond - kMinEpochMicrosecond;
 
-bool isValidEpochMicroseconds(int us) => _isValidEpochMicrosecond(us);
-bool isNotValidEpochMicroseconds(int us) => _isNotValidEpochMicrosecond(us);
+/// Returns _true_ if [us] is valid.
+bool isValidEpochMicroseconds(int us) =>
+    us != null && (us >= kMinEpochMicrosecond) && (us <= kMaxEpochMicrosecond);
 
+/// Synonym for [isValidEpochMicroseconds].
+bool Function(int) isValidDateTimeMicroseconds = isValidEpochMicroseconds;
+
+/// Returns _true_ if [us] is invalid.
+bool isNotValidEpochMicroseconds(int us) => !isValidEpochMicroseconds(us);
+
+/// Synonym for [isNotValidEpochMicroseconds].
+bool Function(int) isNotValidDateTimeMicroseconds = isNotValidEpochMicroseconds;
+
+/// Returns _true_ if [day] is a valid day in Epoch.
 bool isValidEpochDay(int day) => day >= kMinEpochDay && day <= kMaxEpochDay;
+
+/// Returns _true_ if [day] is invalid.
 bool isNotValidEpochDay(int day) => !isValidEpochDay(day);
 
 /// Returns a valid DateTime microsecond. if [us] is out of range it is
@@ -144,7 +157,7 @@ Object epochMicrosecondToDate(int us,
 
 Object _epochMicrosecondToDate(int us,
     {DateToObject creator, bool asDicom = true}) {
-  if (_isNotValidEpochMicrosecond(us)) return null;
+  if (isNotValidEpochMicroseconds(us)) return null;
   final epochDay = us ~/ kMicrosecondsPerDay;
   return _epochDayToEpochDate(epochDay);
 }
@@ -187,7 +200,7 @@ const int daysInEra = 146097;
 
 Object _epochDayToEpochDate(int epochDay) {
   if (isNotValidEpochDay(epochDay)) return invalidEpochDay(epochDay);
-  if (epochDay == 0) return kEpochDateZero;
+  if (epochDay == 0) return EpochDate.kZero;
   final z = epochDay + 719468;
   final era = ((z >= 0) ? z : z - 146096) ~/ 146097;
   final doe = z - (era * 146097);
@@ -255,7 +268,7 @@ int previousWeekday(int weekday, [OnWeekdayError onError]) {
 }
 
 /// Returns a new Epoch microsecond that is a hash of [us].
-int hashDateMicroseconds(int us, [int onError(int n)]) {
+int hashDateMicroseconds(int us, [int Function(int) onError]) {
   // Note: Dart [int]s can be larger than 63 bits. This check makes
   // sure it is a Dart SMI (small integer).
   if (us < kMinEpochMicrosecond || us > kMaxEpochMicrosecond)
@@ -270,7 +283,7 @@ int hashDateMicroseconds(int us, [int onError(int n)]) {
 }
 
 /// Returns a new Epoch microsecond that is a hash of [epochDay].
-int hash(int epochDay, [int onError(int n)]) {
+int hash(int epochDay, [int Function(int) onError]) {
   final v = global.hash(epochDay);
   return (v < 0) ? v % kMinEpochDay : v % kMaxEpochDay;
 }
@@ -280,7 +293,7 @@ Iterable<int> hashDateMicrosecondsList(Iterable<int> daList) =>
 
 /// Returns a [String] in the format yyyymmdd.
 String microsecondToDateString(int us, {bool asDicom = true}) {
-  if (isNotValidEpochMicroseconds(us)) return null;
+  if (isNotValidDateMicroseconds(us)) return null;
   final eDay = us ~/ kMicrosecondsPerDay;
   final eDate = EpochDate.fromDay(eDay);
   return eDate.asString(asDicom: asDicom);
@@ -313,10 +326,6 @@ bool _inRange(int v, int min, int max) => v != null && v >= min && v <= max;
 bool _isValidEpochDay(int eDay) =>
     eDay != null && eDay >= kMinEpochDay && eDay <= kMaxEpochDay;
 
-bool _isValidEpochMicrosecond(int us) =>
-    us != null && (us >= kMinEpochMicrosecond) && (us <= kMaxEpochMicrosecond);
-
-bool _isNotValidEpochMicrosecond(int us) => !_isValidEpochMicrosecond(us);
 
 bool _isValidMonth(int m) => _inRange(m, 1, 12);
 

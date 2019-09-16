@@ -11,7 +11,7 @@ import 'package:core/src/utils.dart';
 /// Useful utilities for working with [Uid] [String]s.
 
 ///  The minimum length of a UID [String].
-const int kUidMinLength = 9;
+const int kUidMinLength = 6;
 
 ///  The maximum length of a UID [String].
 const int kUidMaxLength = 64;

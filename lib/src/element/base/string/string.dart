@@ -150,7 +150,7 @@ abstract class StringBase extends Element<String> {
       Tag tag,
       Iterable<String> vList,
       Issues issues,
-      bool isValidValue(String s, {Issues issues, bool allowInvalid}),
+      bool Function(String s, {Issues issues, bool allowInvalid}) isValidValue,
       int maxLength,
       Type type) {
     if (vList == null) return nullValueError();
@@ -167,7 +167,7 @@ abstract class StringBase extends Element<String> {
   }
 
   static List<V> reallyTryParseList<V>(Iterable<String> vList, Issues issues,
-      Object tryParse(String s, [Issues issues])) {
+      Object Function(String s, [Issues issues]) tryParse) {
     final result = <V>[];
     for (final s in vList) {
       final V v = tryParse(s, issues);
@@ -182,7 +182,8 @@ bool _isValidValues(
         Tag tag,
         Iterable<String> vList,
         Issues issues,
-        bool isValidValue(String s, {Issues issues, bool allowInvalid}),
+        bool Function(String s, {Issues issues, bool allowInvalid})
+            isValidValue,
         int maxLength,
         Type type) =>
     StringBase.isValidValues(tag, vList, issues, isValidValue, maxLength, type);

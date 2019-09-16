@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
 import 'package:core/src/error/date_time_errors.dart';
 import 'package:core/src/global.dart';
-import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/hash/sha256.dart' as sha256;
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/values/date_time.dart';
@@ -26,10 +26,8 @@ final int kMaxDcmDateTimeMicroseconds = global.maxYear * kMicrosecondsPerDay;
 final int kDcmDateTimeSpan =
     kMaxDcmDateTimeMicroseconds - kMinDcmDateTimeMicroseconds;
 
-bool isValidDateTimeMicroseconds(int us) => isValidEpochMicroseconds(us);
-bool isNotValidDateTimeMicroseconds(int us) => !isValidEpochMicroseconds(us);
-
-/// Returns
+/// Returns the Epoch microseconds that corresponds to the
+/// specified date and time.
 int dcmDateTimeInMicroseconds(
     int y, int m, int d, int h, int mm, int s, int ms, int us) {
   final day = (isValidDate(y, m, d))
@@ -60,11 +58,11 @@ Iterable<int> hashDateTimeMicrosecondsList(List<int> daList) =>
     daList.map(hashDateTimeMicroseconds);
 
 /// Returns a new Epoch microsecond that is a hash of [us].
-int hashMicroseconds(int us, [int onError(int n)]) =>
+int hashMicroseconds(int us, [int Function(int) onError]) =>
     _hashMicroseconds(us, global.hash, onError);
 
 /// Returns a new Epoch microsecond that is a SHA256 hash of [us].
-int sha256Microseconds(int us, [int onError(int n)]) =>
+int sha256Microseconds(int us, [int Function(int) onError]) =>
     _hashMicroseconds(us, sha256.int64Bit, onError);
 
 /// Returns a new Epoch microsecond that is a hash of [us].
@@ -73,7 +71,8 @@ int sha256Microseconds(int us, [int onError(int n)]) =>
 /// makes sure that result is is a Dart SMI (small integer).
 //TODO: when Dart 2.0 has 64 bit integers change this to use 64
 // instead of 63 bits.
-int _hashMicroseconds(int us, int hash(int v), [int onError(int n)]) {
+int _hashMicroseconds(int us, int Function(int) hash,
+    [int Function(int) onError]) {
   if (us < kMinYearInMicroseconds || us > kMaxYearInMicroseconds)
     return (onError == null) ? throw Error() : onError(us);
   var v = us;

@@ -20,7 +20,7 @@ bool isValidDcmDateTimeString(String s,
 
 /// Returns the date/time in microseconds or _null_ if [s] is not valid.
 int parseDcmDateTime(String s,
-    {int start = 0, int end, Issues issues, int onError(String s)}) {
+    {int start = 0, int end, Issues issues, int Function(String) onError}) {
   try {
     int date, time = 0, tz = 0, index = start;
     end ??= s.length;

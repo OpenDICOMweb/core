@@ -20,27 +20,27 @@ typedef DeIdUpdate<V> = Element<V> Function(
 
 // ignore: prefer_generic_function_type_aliases
 typedef Element<V> DeIdUpdateF<V>(
-    Dataset ds, int index, List<V> f(List<V> vList));
+    Dataset ds, int index, List<V> Function(List<V>) f);
 
 typedef DeIdUpdateAll = List<Element> Function<V>(
     Dataset ds, int index, List<Element<V>> e);
 
 // ignore: prefer_generic_function_type_aliases
 typedef List<Element> DeIdUpdateAllF<V>(
-    Dataset ds, int index, List<V> f(List<V> vList));
+    Dataset ds, int index, List<V> Function(List<V>) f);
 
 typedef DeIdReplace = List<V> Function<V>(Dataset ds, int index, List<V> vList);
 
 // ignore: prefer_generic_function_type_aliases
 typedef List<V> DeIdReplaceF<V>(
-    Dataset ds, int index, List<V> f(List<V> vList));
+    Dataset ds, int index, List<V> Function(List<V>) f);
 
 typedef DeIdReplaceAll = List<Element> Function<V>(
     Dataset ds, int index, List<V> vList);
 
 // ignore: prefer_generic_function_type_aliases
 typedef List<Element> DeIdReplaceAllF<V>(
-    Dataset ds, int index, List<V> f(List<V> vList));
+    Dataset ds, int index, List<V> Function(List<V>) f);
 
 typedef DeIdDelete = Element Function(Dataset ds, int index);
 typedef DeIdDeleteAll = List<Element> Function(Dataset ds, int index);
@@ -79,7 +79,7 @@ class DeIdBasic {
   List<Element> call(Dataset ds, int index, [Function f]) =>
       method(ds, index, f);
 
-  static const Function kNoOp = DeIdBasic(1, 'true', delete);
+  static Function kNoOp = DeIdBasic(1, 'true', delete);
 
   static const List<DeIdBasic> kByIndex = <DeIdBasic>[];
 
