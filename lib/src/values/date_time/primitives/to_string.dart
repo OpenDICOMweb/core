@@ -6,9 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
+import 'package:base/base.dart';
 import 'package:core/src/global.dart';
-import 'package:core/src/utils/string.dart';
 
 ///Returns a human-readable string for the date part of [dt].
 String dtToDateString(DateTime dt, {bool asDicom = true}) {
