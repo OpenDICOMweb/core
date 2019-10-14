@@ -6,6 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+export 'package:bytes/bytes.dart';
+export 'package:bytes/bytes.dart';
+export 'package:constants/constants.dart';
 export 'package:core/src/dataset.dart';
 export 'package:core/src/element.dart';
 export 'package:core/src/entity.dart';
@@ -16,6 +19,4 @@ export 'package:core/src/system.dart';
 export 'package:core/src/tag.dart';
 export 'package:core/src/utils.dart';
 export 'package:core/src/values.dart';
-export 'package:core/src/vr/vr_base.dart';
-export 'package:core/src/vr/vr_external.dart';
 

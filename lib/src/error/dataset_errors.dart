@@ -7,13 +7,13 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:bytes/bytes.dart';
+import 'package:constants/constants.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity.dart';
-import 'package:core/src/error/utils.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils.dart';
 import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: public_member_api_docs

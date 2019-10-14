@@ -10,25 +10,22 @@ part of odw.sdk.element.bytes;
 
 // ignore_for_file: prefer_constructors_over_static_methods
 
-/// 16-bit signed integer Elements (SS)
-mixin Int16Mixin {
-  Bytes get vfBytes;
+/// Signed Short (SS)
+class SSbytes extends SS with ElementBytes<int> {
+  @override
+  final BytesElement be;
 
+  /// Returns a new [SSbytes] [Element].
+  SSbytes(this.be);
+
+  @override
   int get length {
     assert(vfBytes.length.isEven);
     return vfBytes.length ~/ 2;
   }
 
-  Int16List get values => vfBytes.asInt16List();
-}
-
-/// Signed Short (SS)
-class SSbytes extends SS with ElementBytes<int>, Int16Mixin {
   @override
-  final BytesElement bytes;
-
-  /// Returns a new [SSbytes] [Element].
-  SSbytes(this.bytes);
+  Int16List get values => vfBytes.asInt16List();
 
   /// Returns a new [SSbytes] [Element].
   static SSbytes fromBytes(BytesElement bytes, [Ascii _]) => SSbytes(bytes);
@@ -36,32 +33,27 @@ class SSbytes extends SS with ElementBytes<int>, Int16Mixin {
   /// Returns a new [SSbytes] [Element].
   static SSbytes fromValues(int code, List<int> vList, BytesElementType type) {
     final vfBytes = Int32.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kSSCode, type, SS.kMaxVFLength);
+    final bytes = _makeShortElt(code, vfBytes, kSSCode, type, SS.kMaxVFLength);
     return SSbytes(bytes);
   }
 }
 
-/// 32-bit signed integer Elements (SL)
-mixin Int32Mixin {
-  Bytes get vfBytes;
-  Int32List _values;
+/// Signed Long (SL)
+class SLbytes extends SL with ElementBytes<int> {
+  @override
+  final BytesElement be;
 
+  /// Returns a new [SLbytes] [Element].
+  SLbytes(this.be);
+
+  @override
   int get length {
     assert(vfBytes.length % 4 == 0);
     return vfBytes.length ~/ 4;
   }
 
-  Int32List get values => _values ??= vfBytes.asInt32List();
-}
-
-/// Signed Long (SL)
-class SLbytes extends SL with ElementBytes<int>, Int32Mixin {
   @override
-  final BytesElement bytes;
-
-  /// Returns a new [SLbytes] [Element].
-  SLbytes(this.bytes);
+  Int32List get values => vfBytes.asInt32List();
 
   /// Returns a new [SLbytes] [Element].
   static SLbytes fromBytes(BytesElement bytes, [Ascii _]) => SLbytes(bytes);
@@ -69,9 +61,36 @@ class SLbytes extends SL with ElementBytes<int>, Int32Mixin {
   /// Returns a new [SLbytes] [Element].
   static SLbytes fromValues(int code, List<int> vList, BytesElementType type) {
     final vfBytes = Int32.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kSLCode, type, SL.kMaxVFLength);
+    final bytes = _makeShortElt(code, vfBytes, kSLCode, type, SL.kMaxVFLength);
     return SLbytes(bytes);
+  }
+}
+
+/// Signed Very Long Integer (SV) - 64 bit signed integer.
+class SVbytes extends SV with ElementBytes<int> {
+  @override
+  final BytesElement be;
+
+  /// Returns a new [SVbytes] [Element].
+  SVbytes(this.be);
+
+  @override
+  int get length {
+    assert(vfBytes.length % 8 == 0);
+    return vfBytes.length ~/ 8;
+  }
+
+  @override
+  Int64List get values => vfBytes.asInt64List();
+
+  /// Returns a new [SVbytes] [Element].
+  static SVbytes fromBytes(BytesElement bytes, [Ascii _]) => SVbytes(bytes);
+
+  /// Returns a new [SVbytes] [Element].
+  static SVbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Int32.toBytes(vList);
+    final bytes = _makeShortElt(code, vfBytes, kSLCode, type, SL.kMaxVFLength);
+    return SVbytes(bytes);
   }
 }
 
@@ -89,10 +108,10 @@ mixin Uint8Mixin {
 /// Other Bytes (OB).
 class OBbytes extends OB with ElementBytes<int>, Uint8Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
   /// Returns a new [OBbytes] [Element].
-  OBbytes(this.bytes);
+  OBbytes(this.be);
 
   /// Returns a new [OBbytes] [Element].
   static OBbytes fromBytes(BytesElement bytes, [Ascii _]) => OBbytes(bytes);
@@ -102,8 +121,7 @@ class OBbytes extends OB with ElementBytes<int>, Uint8Mixin {
   static ElementBytes fromValues(
       int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint8.toBytes(vList);
-    final bytes =
-        _makeLongElement(code, vfBytes, kOBCode, type, OB.kMaxVFLength);
+    final bytes = _makeLongElt(code, vfBytes, kOBCode, type, OB.kMaxVFLength);
     return (code == kPixelData) ? OBbytesPixelData(bytes) : OBbytes(bytes);
   }
 }
@@ -111,10 +129,10 @@ class OBbytes extends OB with ElementBytes<int>, Uint8Mixin {
 /// Unknown (UN).
 class UNbytes extends UN with ElementBytes<int>, Uint8Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
   /// Returns a new [UNbytes] [Element].
-  UNbytes(this.bytes);
+  UNbytes(this.be);
 
   /// Returns a new [UNbytes] [Element].
   static UNbytes fromBytes(BytesElement bytes, [Ascii _]) => UNbytes(bytes);
@@ -124,8 +142,7 @@ class UNbytes extends UN with ElementBytes<int>, Uint8Mixin {
   static ElementBytes fromValues(
       int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint8.toBytes(vList);
-    final bytes =
-        _makeLongElement(code, vfBytes, kUNCode, type, UN.kMaxVFLength);
+    final bytes = _makeLongElt(code, vfBytes, kUNCode, type, UN.kMaxVFLength);
     return (code == kPixelData) ? UNbytesPixelData(bytes) : UNbytes(bytes);
   }
 }
@@ -145,10 +162,10 @@ mixin Uint16Mixin {
 /// Unsigned Short (US).
 class USbytes extends US with ElementBytes<int>, Uint16Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
   /// Returns a new [USbytes] [Element].
-  USbytes(this.bytes);
+  USbytes(this.be);
 
   /// Returns a new [USbytes] [Element].
   static USbytes fromBytes(BytesElement bytes, [Ascii _]) => USbytes(bytes);
@@ -156,8 +173,7 @@ class USbytes extends US with ElementBytes<int>, Uint16Mixin {
   /// Returns a new [USbytes] [Element].
   static USbytes fromValues(int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint16.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kUSCode, type, US.kMaxVFLength);
+    final bytes = _makeShortElt(code, vfBytes, kUSCode, type, US.kMaxVFLength);
     return USbytes(bytes);
   }
 }
@@ -165,10 +181,10 @@ class USbytes extends US with ElementBytes<int>, Uint16Mixin {
 /// Other Word (OW).
 class OWbytes extends OW with ElementBytes<int>, Uint16Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
   /// Returns a new [OWbytes] [Element].
-  OWbytes(this.bytes);
+  OWbytes(this.be);
 
   /// Returns a new [OWbytes] [Element].
   static OWbytes fromBytes(BytesElement bytes, [Ascii _]) => OWbytes(bytes);
@@ -178,8 +194,7 @@ class OWbytes extends OW with ElementBytes<int>, Uint16Mixin {
   static ElementBytes fromValues(
       int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint16.toBytes(vList);
-    final bytes =
-        _makeLongElement(code, vfBytes, kOWCode, type, OW.kMaxVFLength);
+    final bytes = _makeLongElt(code, vfBytes, kOWCode, type, OW.kMaxVFLength);
     return (code == kPixelData) ? OWbytesPixelData(bytes) : OWbytes(bytes);
   }
 }
@@ -199,10 +214,10 @@ mixin Uint32Mixin {
 /// Attribute (Element) Code (AT)
 class ATbytes extends AT with ElementBytes<int>, Uint32Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
   /// Returns a new [ATbytes] [Element].
-  ATbytes(this.bytes);
+  ATbytes(this.be);
 
   /// Returns a new [ATbytes] [Element].
   static ATbytes fromBytes(BytesElement bytes, [Ascii _]) => ATbytes(bytes);
@@ -210,8 +225,7 @@ class ATbytes extends AT with ElementBytes<int>, Uint32Mixin {
   /// Returns a new [ATbytes] [Element].
   static ATbytes fromValues(int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint32.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kATCode, type, AT.kMaxVFLength);
+    final bytes = _makeShortElt(code, vfBytes, kATCode, type, AT.kMaxVFLength);
     return ATbytes(bytes);
   }
 }
@@ -219,10 +233,10 @@ class ATbytes extends AT with ElementBytes<int>, Uint32Mixin {
 /// Other Long (OL)
 class OLbytes extends OL with ElementBytes<int>, Uint32Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
   /// Returns a new [OLbytes] [Element].
-  OLbytes(this.bytes);
+  OLbytes(this.be);
 
   /// Returns a new [OLbytes] [Element].
   static OLbytes fromBytes(BytesElement bytes, [Ascii _]) => OLbytes(bytes);
@@ -230,8 +244,7 @@ class OLbytes extends OL with ElementBytes<int>, Uint32Mixin {
   /// Returns a new [OLbytes] [Element].
   static OLbytes fromValues(int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint32.toBytes(vList);
-    final bytes =
-        _makeLongElement(code, vfBytes, kOLCode, type, OL.kMaxVFLength);
+    final bytes = _makeLongElt(code, vfBytes, kOLCode, type, OL.kMaxVFLength);
     return OLbytes(bytes);
   }
 }
@@ -239,10 +252,10 @@ class OLbytes extends OL with ElementBytes<int>, Uint32Mixin {
 /// Unsigned Long (UL)
 class ULbytes extends UL with ElementBytes<int>, Uint32Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
   /// Returns a new [ULbytes] [Element].
-  ULbytes(this.bytes);
+  ULbytes(this.be);
 
   /// Returns a new [ULbytes] [Element].
   static ULbytes fromBytes(BytesElement bytes, [Ascii _]) =>
@@ -252,8 +265,7 @@ class ULbytes extends UL with ElementBytes<int>, Uint32Mixin {
   /// Returns a new [ULbytes] [Element].
   static ULbytes fromValues(int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint32.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kULCode, type, UL.kMaxVFLength);
+    final bytes = _makeShortElt(code, vfBytes, kULCode, type, UL.kMaxVFLength);
     return ULbytes(bytes);
   }
 }
@@ -269,8 +281,7 @@ class GLbytes extends ULbytes {
   /// Returns a new [GLbytes] [Element].
   static GLbytes fromValues(int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint32.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kULCode, type, UL.kMaxVFLength);
+    final bytes = _makeShortElt(code, vfBytes, kULCode, type, UL.kMaxVFLength);
     return GLbytes(bytes);
   }
 
@@ -281,24 +292,54 @@ class GLbytes extends ULbytes {
   static const String kVRName = 'Group Length';
 }
 
-/// Unsigned 64-bit Very Long (UV)
-class UVbytes extends UV with ElementBytes<int>, Uint32Mixin {
+/// 64-bit unsigned integer Elements (AT, UL, GL, OL)
+mixin Uint64Mixin {
+  Bytes get vfBytes;
+
+  int get length {
+    assert(vfBytes.length % 8 == 0);
+    return vfBytes.length ~/ 8;
+  }
+
+  Uint64List get values => vfBytes.asUint64List();
+}
+
+/// Unsigned 64-bit Other Very Long Integer (OV)
+class OVbytes extends OV with ElementBytes<int>, Uint64Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  /// Returns a new [UVbytes] [Element].
-  UVbytes(this.bytes);
+  /// Returns a new [OVbytes] [Element].
+  OVbytes(this.be);
 
-  /// Returns a new [UVbytes] [Element].
-  static UVbytes fromBytes(BytesElement bytes, [Ascii _]) =>
+  /// Returns a new [OVbytes] [Element].
+  static OVbytes fromBytes(BytesElement bytes, [Ascii _]) =>
       // If the code is (gggg,0000) create a Group Length element
-      (bytes.getUint16(2) == 0) ? GLbytes(bytes) : UVbytes(bytes);
+      (bytes.getUint16(2) == 0) ? GLbytes(bytes) : OVbytes(bytes);
+
+  /// Returns a new [OVbytes] [Element].
+  static OVbytes fromValues(int code, List<int> vList, BytesElementType type) {
+    final vfBytes = Uint64.toBytes(vList);
+    final bytes = _makeShortElt(code, vfBytes, kOVCode, type, OV.kMaxVFLength);
+    return OVbytes(bytes);
+  }
+}
+
+/// Unsigned 64-bit Very Long Integer (UV)
+class UVbytes extends UV with ElementBytes<int>, Uint64Mixin {
+  @override
+  final BytesElement be;
+
+  /// Returns a new [UVbytes] [Element].
+  UVbytes(this.be);
+
+  /// Returns a new [UVbytes] [Element].
+  static UVbytes fromBytes(BytesElement bytes, [Ascii _]) => UVbytes(bytes);
 
   /// Returns a new [UVbytes] [Element].
   static UVbytes fromValues(int code, List<int> vList, BytesElementType type) {
     final vfBytes = Uint64.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kUVCode, type, UV.kMaxVFLength);
+    final bytes = _makeShortElt(code, vfBytes, kUVCode, type, UV.kMaxVFLength);
     return UVbytes(bytes);
   }
 }

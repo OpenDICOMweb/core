@@ -12,7 +12,6 @@ import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/list_dataset/list_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/error.dart';
-import 'package:core/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
 

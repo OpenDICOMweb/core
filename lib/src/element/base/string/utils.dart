@@ -9,9 +9,6 @@
 import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -46,19 +43,19 @@ bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) {
 /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.
 bool isValidVRIndex(int vrIndex, Issues issues, int target) {
   if (vrIndex == target) return true;
-  return VR.invalidIndex(vrIndex, issues, target);
+  return invalidVRIndex(vrIndex, target);
 }
 
 /// Returns [vrIndex] if it is equal to [target], which MUST be a valid
 /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.
 int checkVRIndex(int vrIndex, Issues issues, int target) =>
-    (vrIndex == target) ? vrIndex : VR.badIndex(vrIndex, issues, target);
+    (vrIndex == target) ? vrIndex : badVRIndex(vrIndex, target);
 
 /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
 /// is be used.
 bool isValidVRCode(int vrCode, Issues issues, int target) {
   final ok = vrCode == target;
-  return ok ? ok : VR.invalidCode(vrCode, issues, target);
+  return ok ? ok : invalidVRCode(vrCode, target);
 }
 
 /// Checks that vfLength (vfl) is in range and the right size, based on the

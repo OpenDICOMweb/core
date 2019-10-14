@@ -4,9 +4,11 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/primitives.dart';
+
 
 /// A class containing a [Map] from Tag code to Private Creator Tags ([PCTag]).
 class PrivateCreatorTags {

@@ -6,11 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/profile/de_id/cid_7050.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: type_annotate_public_apis
 // ignore_for_file: public_member_api_docs

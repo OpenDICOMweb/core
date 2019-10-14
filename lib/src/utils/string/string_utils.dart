@@ -9,10 +9,10 @@
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
+import 'package:constants/constants.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/error/general_errors.dart';
-import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string/string.dart';
 
 // ignore_for_file: public_member_api_docs

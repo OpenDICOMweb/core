@@ -9,7 +9,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:core/src/utils/primitives.dart';
+import 'package:constants/constants.dart';
 
 // ignore_for_file: public_member_api_docs
 

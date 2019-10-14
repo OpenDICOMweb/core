@@ -155,13 +155,11 @@ abstract class DS extends AsciiString {
 
   /// Returns _true_ if [vrIndex] is valid for [DS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      VR.isValidIndex(vrIndex, issues, kVRIndex);
+  static bool isValidVRIndex(int vrIndex) => VR.isValidIndex(vrIndex, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [DS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kVRCode);
+  static bool isValidVRCode(int vrCode) => VR.isValidCode(vrCode, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [DS].
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
@@ -368,13 +366,11 @@ abstract class IS extends AsciiString {
 
   /// Returns _true_ if [vrIndex] is valid for [IS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      VR.isValidIndex(vrIndex, issues, kVRIndex);
+  static bool isValidVRIndex(int vrIndex) => VR.isValidIndex(vrIndex, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [IS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kVRCode);
+  static bool isValidVRCode(int vrCode) => VR.isValidCode(vrCode, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [IS].
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>

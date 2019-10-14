@@ -8,3 +8,4 @@
 //
 export 'package:core/core.dart';
 export 'package:core/src/system/server.dart';
+export 'package:core/src/vr/vr_external.dart';

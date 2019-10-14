@@ -67,9 +67,9 @@ mixin AsciiMixin {
 
 class AEbytes extends AE with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  AEbytes(this.bytes);
+  AEbytes(this.be);
 
   static AEbytes fromBytes(Bytes bytes, [Ascii _]) => AEbytes(bytes);
 
@@ -82,9 +82,9 @@ class AEbytes extends AE with ElementBytes<String>, StringMixin, AsciiMixin {
 
 class ASbytes extends AS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  ASbytes(this.bytes);
+  ASbytes(this.be);
 
   static ASbytes fromBytes(Bytes bytes, [Ascii _]) {
     final eLength = bytes.length;
@@ -102,9 +102,9 @@ class ASbytes extends AS with ElementBytes<String>, StringMixin, AsciiMixin {
 
 class CSbytes extends CS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  CSbytes(this.bytes);
+  CSbytes(this.be);
 
   static CSbytes fromBytes(Bytes bytes, [Ascii _]) => CSbytes(bytes);
 
@@ -117,9 +117,9 @@ class CSbytes extends CS with ElementBytes<String>, StringMixin, AsciiMixin {
 
 class DAbytes extends DA with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  DAbytes(this.bytes);
+  DAbytes(this.be);
 
   static DAbytes fromBytes(Bytes bytes, [Ascii _]) {
     final eLength = bytes.length;
@@ -137,9 +137,9 @@ class DAbytes extends DA with ElementBytes<String>, StringMixin, AsciiMixin {
 
 class DSbytes extends DS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  DSbytes(this.bytes);
+  DSbytes(this.be);
 
   static DSbytes fromBytes(Bytes bytes, [Ascii _]) => DSbytes(bytes);
 
@@ -152,9 +152,9 @@ class DSbytes extends DS with ElementBytes<String>, StringMixin, AsciiMixin {
 
 class DTbytes extends DT with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  DTbytes(this.bytes);
+  DTbytes(this.be);
 
   static DTbytes fromBytes(Bytes bytes, [Ascii _]) => DTbytes(bytes);
 
@@ -167,9 +167,9 @@ class DTbytes extends DT with ElementBytes<String>, StringMixin, AsciiMixin {
 
 class ISbytes extends IS with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  ISbytes(this.bytes);
+  ISbytes(this.be);
 
   static ISbytes fromBytes(Bytes bytes, [Ascii _]) => ISbytes(bytes);
 
@@ -182,12 +182,12 @@ class ISbytes extends IS with ElementBytes<String>, StringMixin, AsciiMixin {
 
 class UIbytes extends UI with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  UIbytes(this.bytes);
+  UIbytes(this.be);
 
   @override
-  List<Uid> get uids => Uid.parseList(bytes.getAsciiList(vfOffset, vfLength));
+  List<Uid> get uids => Uid.parseList(be.getAsciiList(vfOffset, vfLength));
 
   static UIbytes fromBytes(Bytes bytes, [Ascii _]) => UIbytes(bytes);
 
@@ -200,9 +200,9 @@ class UIbytes extends UI with ElementBytes<String>, StringMixin, AsciiMixin {
 
 class TMbytes extends TM with ElementBytes<String>, StringMixin, AsciiMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  TMbytes(this.bytes);
+  TMbytes(this.be);
 
   static TMbytes fromBytes(Bytes bytes, [Ascii _]) => TMbytes(bytes);
 
@@ -230,9 +230,9 @@ mixin Utf8Mixin {
 
 class LObytes extends LO with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  LObytes(this.bytes);
+  LObytes(this.be);
 
   static Element fromBytes(Bytes bytes, [Ascii _]) {
     final group = bytes.getUint16(0);
@@ -251,9 +251,9 @@ class LObytes extends LO with ElementBytes<String>, StringMixin, Utf8Mixin {
 
 class PCbytes extends PC with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  PCbytes(this.bytes);
+  PCbytes(this.be);
 
   @override
   String get token => vfString;
@@ -269,9 +269,9 @@ class PCbytes extends PC with ElementBytes<String>, StringMixin, Utf8Mixin {
 
 class PNbytes extends PN with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  PNbytes(this.bytes);
+  PNbytes(this.be);
 
   static PNbytes fromBytes(Bytes bytes, [Ascii _]) => PNbytes(bytes);
 
@@ -284,9 +284,9 @@ class PNbytes extends PN with ElementBytes<String>, StringMixin, Utf8Mixin {
 
 class SHbytes extends SH with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  SHbytes(this.bytes);
+  SHbytes(this.be);
 
   static SHbytes fromBytes(Bytes bytes, [Ascii _]) => SHbytes(bytes);
 
@@ -299,9 +299,9 @@ class SHbytes extends SH with ElementBytes<String>, StringMixin, Utf8Mixin {
 
 class UCbytes extends UC with ElementBytes<String>, StringMixin, Utf8Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  UCbytes(this.bytes);
+  UCbytes(this.be);
 
   static UCbytes fromBytes(Bytes bytes, [Ascii _]) => UCbytes(bytes);
 
@@ -331,9 +331,9 @@ mixin TextMixin {
 
 class LTbytes extends LT with ElementBytes<String>, StringMixin, TextMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  LTbytes(this.bytes);
+  LTbytes(this.be);
 
   static LTbytes fromBytes(Bytes bytes, [Ascii _]) => LTbytes(bytes);
 
@@ -346,9 +346,9 @@ class LTbytes extends LT with ElementBytes<String>, StringMixin, TextMixin {
 
 class STbytes extends ST with ElementBytes<String>, StringMixin, TextMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  STbytes(this.bytes);
+  STbytes(this.be);
 
   static STbytes fromBytes(Bytes bytes, [Ascii _]) => STbytes(bytes);
 
@@ -361,9 +361,9 @@ class STbytes extends ST with ElementBytes<String>, StringMixin, TextMixin {
 
 class URbytes extends UR with ElementBytes<String>, StringMixin, TextMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  URbytes(this.bytes);
+  URbytes(this.be);
 
   static URbytes fromBytes(Bytes bytes, [Ascii _]) => URbytes(bytes);
 
@@ -376,9 +376,9 @@ class URbytes extends UR with ElementBytes<String>, StringMixin, TextMixin {
 
 class UTbytes extends UT with ElementBytes<String>, StringMixin, TextMixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  UTbytes(this.bytes);
+  UTbytes(this.be);
 
   static UTbytes fromBytes(Bytes bytes, [Ascii _]) => UTbytes(bytes);
 
@@ -392,7 +392,7 @@ class UTbytes extends UT with ElementBytes<String>, StringMixin, TextMixin {
 BytesElement _makeShortAscii(int code, List<String> vList, int vrCode,
     BytesElementType type, int maxLength) {
   final vfBytes = AsciiString.toBytes(vList);
-  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
+  return _makeShortElt(code, vfBytes, vrCode, type, maxLength);
 }
 
 /* Flush when working
@@ -406,13 +406,13 @@ BytesElement _makeLongAscii(int code, List<String> vList, int vrCode,
 BytesElement _makeShortUtf8(int code, List<String> vList, int vrCode,
     BytesElementType type, int maxLength) {
   final vfBytes = Utf8String.toBytes(vList);
-  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
+  return _makeShortElt(code, vfBytes, vrCode, type, maxLength);
 }
 
 BytesElement _makeLongUtf8(int code, List<String> vList, int vrCode,
     BytesElementType type, int maxLength) {
   final vfBytes = Utf8String.toBytes(vList);
-  return _makeLongElement(code, vfBytes, vrCode, type, maxLength);
+  return _makeLongElt(code, vfBytes, vrCode, type, maxLength);
 }
 
 BytesElement _makeShortText(int code, List<String> vList, int vrCode,
@@ -420,7 +420,7 @@ BytesElement _makeShortText(int code, List<String> vList, int vrCode,
   assert(vList.length <= 1);
   final value = vList.isEmpty ? '' : vList[0];
   final vfBytes = Text.toBytes(value);
-  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
+  return _makeShortElt(code, vfBytes, vrCode, type, maxLength);
 }
 
 BytesElement _makeLongText(int code, List<String> vList, int vrCode,
@@ -428,5 +428,5 @@ BytesElement _makeLongText(int code, List<String> vList, int vrCode,
   assert(vList.length <= 1);
   final value = vList.isEmpty ? '' : vList[0];
   final vfBytes = Text.toBytes(value);
-  return _makeShortElement(code, vfBytes, vrCode, type, maxLength);
+  return _makeShortElt(code, vfBytes, vrCode, type, maxLength);
 }

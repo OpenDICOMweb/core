@@ -133,13 +133,13 @@ abstract class LO extends Utf8String {
 
   /// Returns _true_ if [vrIndex] is valid for [LO].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      VR.isValidIndex(vrIndex, issues, kVRIndex);
+  static bool isValidVRIndex(int vrIndex) =>
+      VR.isValidIndex(vrIndex, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [LO].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kVRCode);
+  static bool isValidVRCode(int vrCode) =>
+      VR.isValidCode(vrCode, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [LO].
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
@@ -192,7 +192,7 @@ abstract class PC extends LO {
       final tag = Tag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
-    return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
+    return invalidKey(code, 'Invalid Tag Code ${dcm(code)}');
   }
 
   static const String kVRKeyword = 'PC';
@@ -290,13 +290,13 @@ abstract class PN extends Utf8String {
 
   /// Returns _true_ if [vrIndex] is valid for [PN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      VR.isValidIndex(vrIndex, issues, kVRIndex);
+  static bool isValidVRIndex(int vrIndex) =>
+      VR.isValidIndex(vrIndex, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [PN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kVRCode);
+  static bool isValidVRCode(int vrCode) =>
+      VR.isValidCode(vrCode, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [PN].
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
@@ -389,13 +389,13 @@ abstract class SH extends Utf8String {
 
   /// Returns _true_ if [vrIndex] is valid for [SH].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      VR.isValidIndex(vrIndex, issues, kVRIndex);
+  static bool isValidVRIndex(int vrIndex) =>
+      VR.isValidIndex(vrIndex, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [SH].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kVRCode);
+  static bool isValidVRCode(int vrCode) =>
+      VR.isValidCode(vrCode, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [SH].
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
@@ -491,13 +491,13 @@ abstract class UC extends Utf8String {
 
   /// Returns _true_ if [vrIndex] is valid for [UC].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      VR.isValidIndex(vrIndex, issues, kVRIndex);
+  static bool isValidVRIndex(int vrIndex) =>
+      VR.isValidIndex(vrIndex, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [UC].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kVRCode);
+  static bool isValidVRCode(int vrCode) =>
+      VR.isValidCode(vrCode, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [UC].
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>

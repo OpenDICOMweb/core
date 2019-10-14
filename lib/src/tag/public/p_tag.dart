@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/utils/primitives.dart';
+import 'package:constants/constants.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/error/tag_errors.dart';
 import 'package:core/src/global.dart';
@@ -15,7 +15,7 @@ import 'package:core/src/tag/public/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/code.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr.dart';
+
 
 // ignore_for_file: public_member_api_docs
 
@@ -17434,7 +17434,7 @@ class PTagGroupLength extends PTag {
       : super._(
             'kPublicGroupLength_${hex(code)}',
             code,
-            'Public Group Length for ${toDcm(code)}',
+            'Public Group Length for ${dcm(code)}',
             kULIndex,
             VM.k1,
             true,

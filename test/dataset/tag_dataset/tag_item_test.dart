@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:constants/constants.dart';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -15,7 +14,7 @@ RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'tag_item_test', level: Level.info);
-  final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+  final rds = TagRootDataset.empty('', Bytes.kEmptyBytes, 0);
 
   group('TagItem', () {
     test('[] and []=', () {

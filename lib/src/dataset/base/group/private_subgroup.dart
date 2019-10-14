@@ -13,7 +13,6 @@ import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
 

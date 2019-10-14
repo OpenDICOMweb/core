@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/utils.dart';
+import 'package:constants/constants.dart';
 
 /// Useful utilities for working with [Uid] [String]s.
 

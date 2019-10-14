@@ -9,12 +9,12 @@
 import 'dart:typed_data';
 
 import 'package:bytes/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:constants/constants.dart';
 
 /// Returns [td] as a [Bytes].
 Bytes asBytes(TypedData td) {
   if (td == null) return null;
-  if (td.lengthInBytes == 0) return kEmptyBytes;
+  if (td.lengthInBytes == 0) return Bytes.kEmptyBytes;
   return Bytes.typedDataView(td);
 }
 

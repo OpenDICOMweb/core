@@ -9,7 +9,7 @@
 import 'dart:typed_data';
 
 import 'package:bytes/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:constants/constants.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -108,7 +108,7 @@ class RDSBytes extends DSBytes {
 
   /// Constructor for an empty [RDSBytes].
   RDSBytes.empty()
-      : bytes = kEmptyBytes,
+      : bytes = Bytes.kEmptyBytes,
         fmiEnd = 0,
         hasPrefix = false;
 
@@ -170,7 +170,7 @@ class IDSBytes extends DSBytes {
 
   IDSBytes(this.bytes);
 
-  IDSBytes.empty() : bytes = kEmptyBytes;
+  IDSBytes.empty() : bytes = Bytes.kEmptyBytes;
 
   factory IDSBytes.make(Bytes bd) => IDSBytes(bd);
 

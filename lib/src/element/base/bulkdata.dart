@@ -18,9 +18,13 @@ mixin BulkdataRef<V> {
   Uri get uri;
 
   /// The values in the Value Field of _this_.
-  Iterable<V> get values => _values ??= unimplementedError();
+  Iterable<V> get values {
+    _values ?? unimplementedError();
+    return _values;
+  }
+
   Iterable<V> _values;
-  set values(Iterable<V> vList) => _values ??= vList;
+  set values(Iterable<V> vList) => _values = vList;
 
   @override
   bool operator ==(Object other) =>
@@ -33,7 +37,10 @@ mixin BulkdataRef<V> {
   Iterator<V> get iterator => values.iterator;
 
   /// Returns a List of Bulkdata Values associated with this.
-  List<V> getBulkdata(int code, Uri uri) => unimplementedError();
+  List<V> getBulkdata(int code, Uri uri) {
+    unimplementedError();
+    return null;
+  }
 }
 
 

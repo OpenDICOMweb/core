@@ -7,12 +7,12 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:bytes/bytes.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
 

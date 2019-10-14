@@ -20,8 +20,10 @@ dependencies:
     version: ^0.7.6
   bytes:
     path: ../bytes
+    version: ^0.7.6
   bytes_dicom:
     path: ../bytes_dicom
+    version: ^0.7.0
 
 dev_dependencies:
   benchmark_harness: any

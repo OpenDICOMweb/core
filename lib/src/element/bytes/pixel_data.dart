@@ -12,18 +12,18 @@ part of odw.sdk.element.bytes;
 
 /// PixelDataMixin class
 mixin BytePixelData {
-  BytesElement get bytes;
+  BytesElement get be;
 
-  VFFragmentList get fragments => VFFragmentList.parse(bytes.vfBytes);
+  VFFragmentList get fragments => VFFragmentList.parse(be.vfBytes);
 
-  int get lengthInBytes => bytes.vfLength;
+  int get lengthInBytes => be.vfLength;
 
   /// A [Uint32List] of offsets into [fragments].
   Uint32List get offsets =>
       (fragments == null) ? kEmptyUint32List : fragments.offsets;
 
   Uint8List get bulkdata =>
-      (fragments == null) ? bytes.vfBytes : fragments.bulkdata;
+      (fragments == null) ? be.vfBytes : fragments.bulkdata;
 
   FrameList get frames => unimplementedError();
 }

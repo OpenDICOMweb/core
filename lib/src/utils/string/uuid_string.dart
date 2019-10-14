@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
 import 'package:core/src/error/string_errors.dart';
-import 'package:core/src/utils/character/ascii.dart';
 
 /// UUID [String]s. See https://tools.ietf.org/html/rfc4122.
 

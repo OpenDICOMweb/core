@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 export 'package:core/src/element/base.dart';
-export 'package:core/src/element/bytes/byte_element.dart';
+export 'package:core/src/element/bytes/element_bytes.dart';
 // export 'package:core/src/element/bytes/vf_fragments.dart';
 // export 'package:core/src/element/bytes/byte_mixin.dart';
 

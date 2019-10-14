@@ -6,11 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
 import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag/tag.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/vr/vr_base.dart';
 
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: prefer_void_to_null

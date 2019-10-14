@@ -11,7 +11,6 @@ import 'dart:typed_data';
 
 import 'package:constants/constants.dart';
 import 'package:core/src/values.dart';
-import 'package:core/src/utils/character/ascii.dart';
 
 // ignore_for_file: public_member_api_docs
 

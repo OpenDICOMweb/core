@@ -13,20 +13,18 @@ part of odw.sdk.element.bytes;
 
 /// 32-bit Float Elements (FL, OF)
 mixin BytesFloat32Mixin {
-  int get vfLength;
-  Bytes get vfBytes;
+  BytesElement get be;
 
-  int get length => Float32Mixin.getLength(vfLength);
+  int get vfLength => Float32Mixin.getLength(be.vfLength);
 
-  List<double> get values => _values;
-  Float32List get _values => vfBytes.asFloat32List();
+  Float32List get values => be.vfBytes.asFloat32List();
 }
 
 class FLbytes extends FL with ElementBytes<double>, BytesFloat32Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  FLbytes(this.bytes) : assert(bytes != null);
+  FLbytes(this.be) : assert(be != null);
 
   //TODO: fix all static constructors when constructors can be used as tear offs
   static FLbytes fromBytes(BytesElement bytes, [Charset _]) => FLbytes(bytes);
@@ -34,25 +32,23 @@ class FLbytes extends FL with ElementBytes<double>, BytesFloat32Mixin {
   static FLbytes fromValues(
       int code, Iterable<double> vList, BytesElementType type) {
     final vfBytes = Float32Mixin.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kFLCode, type, FL.kMaxVFLength);
+    final bytes = _makeShortElt(code, vfBytes, kFLCode, type, FL.kMaxVFLength);
     return FLbytes(bytes);
   }
 }
 
 class OFbytes extends OF with ElementBytes<double>, BytesFloat32Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  OFbytes(this.bytes);
+  OFbytes(this.be);
 
   static OFbytes fromBytes(BytesElement bytes, [Ascii _]) => OFbytes(bytes);
 
   static OFbytes fromValues(
       int code, List<double> vList, BytesElementType type) {
     final vfBytes = Float32Mixin.toBytes(vList);
-    final bytes =
-        _makeLongElement(code, vfBytes, kOFCode, type, OF.kMaxVFLength);
+    final bytes = _makeLongElt(code, vfBytes, kOFCode, type, OF.kMaxVFLength);
     return OFbytes(bytes);
   }
 }
@@ -71,34 +67,33 @@ mixin BytesFloat64Mixin {
 
 class FDbytes extends FD with ElementBytes<double>, BytesFloat64Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  FDbytes(this.bytes);
+  FDbytes(this.be);
 
   static FDbytes fromBytes(BytesElement bytes, [Ascii _]) => FDbytes(bytes);
 
   static FDbytes fromValues(
       int code, List<double> vList, BytesElementType type) {
     final vfBytes = Float64Mixin.toBytes(vList);
-    final bytes =
-        _makeShortElement(code, vfBytes, kFDCode, type, FD.kMaxVFLength);
-    return FDbytes(bytes);
+    final e = _makeShortElt(code, vfBytes, kFDCode, type, FD.kMaxVFLength);
+    print('$e');
+    return FDbytes(e);
   }
 }
 
 class ODbytes extends OD with ElementBytes<double>, BytesFloat64Mixin {
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  ODbytes(this.bytes);
+  ODbytes(this.be);
 
   static ODbytes fromBytes(BytesElement bytes, [Ascii _]) => ODbytes(bytes);
 
   static ODbytes fromValues(
       int code, List<double> vList, BytesElementType type) {
     final vfBytes = Float64Mixin.toBytes(vList);
-    final bytes =
-        _makeLongElement(code, vfBytes, kODCode, type, OD.kMaxVFLength);
+    final bytes = _makeLongElt(code, vfBytes, kODCode, type, OD.kMaxVFLength);
     return ODbytes(bytes);
   }
 }

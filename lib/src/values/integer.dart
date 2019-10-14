@@ -10,6 +10,7 @@ import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/parser.dart';
 
+/* Urgent delete
 /// Return [value], if it satisfies [min] <= [value] <= [max];
 /// otherwise, throws a [RangeError].
 int checkRange(int value, int min, int max, {bool throwOnError = false}) {
@@ -20,6 +21,7 @@ int checkRange(int value, int min, int max, {bool throwOnError = false}) {
   }
   return value;
 }
+*/
 
 /// Returns _true_ if [s] is a valid unsigned integer [String].
 bool isValidUintString(String s,

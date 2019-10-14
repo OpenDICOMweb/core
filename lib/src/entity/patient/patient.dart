@@ -13,7 +13,7 @@ import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/study.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/primitives.dart';
+
 import 'package:core/src/values/date_time.dart';
 import 'package:core/src/values/person.dart';
 import 'package:core/src/values/uid.dart';

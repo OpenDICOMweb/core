@@ -7,11 +7,10 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/element.dart';
-import 'package:core/src/error/issues/issues.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:bytes/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: prefer_void_to_null

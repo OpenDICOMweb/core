@@ -8,6 +8,7 @@
 //
 import 'dart:convert' as cvt;
 
+import 'package:constants/constants.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
@@ -23,8 +24,6 @@ import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/string.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
 // ignore_for_file: public_member_api_docs
@@ -132,8 +131,8 @@ abstract class Tag {
 
   bool get hasNormalVR => isNormalVRIndex(vrIndex);
   bool get hasSpecialVR => isSpecialVRIndex(vrIndex);
-
-  bool isValidVRIndex(int index) => VR.isValidIndex(index, null, vrIndex);
+//Flush
+//  bool isValidVRIndex(int index) => isValidVRIndex(index, vrIndex);
 
   // **** VM Getters
 
@@ -443,7 +442,7 @@ abstract class Tag {
     if (tag.vr.isValid(vrIndex)) return true;
     log.warn('Invalid VR ${vrIdFromIndex(vrIndex)} for $tag');
     if (allowInvalidVR) return true;
-    if (throwOnError) invalidVRIndex(vrIndex, null, tag.vrIndex, tag);
+    if (throwOnError) invalidVRIndex(vrIndex, tag.vrIndex, tag);
     return false;
   }
 

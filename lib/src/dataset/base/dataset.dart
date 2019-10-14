@@ -9,15 +9,14 @@
 import 'dart:collection';
 
 import 'package:bytes_dicom/bytes_dicom.dart';
+import 'package:constants/constants.dart';
 import 'package:core/src/dataset/base/dataset_mixin.dart';
 import 'package:core/src/dataset/base/group/creators.dart';
 import 'package:core/src/dataset/base/history.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/error/dataset_errors.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/vr.dart';
 
 // Meaning of method names:
 //    lookup:

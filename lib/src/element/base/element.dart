@@ -10,6 +10,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:constants/constants.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/element_formatter.dart';
 import 'package:core/src/error.dart';
@@ -17,9 +18,7 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:bytes/bytes.dart';
 import 'package:core/src/utils/hash.dart';
-import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values.dart';
-import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
 /// The base class for DICOM Data Elements
@@ -52,14 +51,13 @@ abstract class Element<V> extends ListBase<V> {
   List<V> toList({bool growable = true});
 
   /// Returns the [values] of _this_.
-  List<V> get values => (_values == null) ? nullValueError() : _values;
-
-  List<V> _values;
+  List<V> get values;
 
   /// Sets [values] to [v]. If [v] is [Iterable] it is first
   /// converted into a fixed length [List] and then assigned to [values].
-  set values(Iterable<V> v) =>
-      _values = (v is List) ? v : v.toList(growable: false);
+  set values(Iterable<V> v) {
+    unsupportedError();
+  }
 
   /// Returns the Tag Code ([code]) associated with this Element
   int get code;
@@ -296,10 +294,11 @@ abstract class Element<V> extends ListBase<V> {
 
   /// The minimum number of values that MUST be present for _this_,
   /// if any values are present.
-  int get minValues => vmMin;
+  int get minValues => tag.vmMin;
 
   /// The maximum number of values allowed for _this_.
   int get maxValues {
+    final vmMax = tag.vmMax;
     if (vmMax != -1) return vmMax;
     final n = maxLength - (maxLength % vmColumns);
     assert(n % vmColumns == 0);

@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:constants/constants.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
@@ -15,7 +16,7 @@ import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/series.dart';
 import 'package:core/src/entity/study.dart';
 import 'package:core/src/error.dart';
-import 'package:core/src/utils/primitives.dart';
+
 import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: public_member_api_docs

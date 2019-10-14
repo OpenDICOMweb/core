@@ -25,8 +25,8 @@ mixin MetaElementMixin  {
   String get name => e.name;
   int get vrIndex => e.vrIndex;
 
-  int get vmMin => e.vmMin;
-  int get vmMax => e.vmMax;
+  int get vmMin => e.minValues;
+  int get vmMax => e.maxValues;
   int get vmColumns => e.vmColumns;
   VM get vm => e.vm;
 

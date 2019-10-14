@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:constants/constants.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/primitives.dart';
 
 /// Returns a [String] containing the Type of [key].
 String keyTypeString<K>(K key) {

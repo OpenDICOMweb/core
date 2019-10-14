@@ -77,10 +77,10 @@ void main() {
 
     global.throwOnError = false;
     final bytes1 = BytesDicom.fromTextList([]);
-    expect(bytes1, kEmptyBytes);
+    expect(bytes1, Bytes.kEmptyBytes);
 
     final bytes2 = BytesDicom.fromTextList(['']);
-    expect(bytes2, kEmptyBytes);
+    expect(bytes2, Bytes.kEmptyBytes);
 
     final bytes3 = BytesDicom.fromTextList([null]);
     expect(bytes3, isNull);

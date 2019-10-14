@@ -5,11 +5,13 @@
 //  that can be found in the odw/LICENSE file.
 //  See the AUTHORS file for other contributors.
 //
+
 import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:bytes/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+
 import 'package:core/src/values.dart';
 
 // ignore_for_file: public_member_api_docs

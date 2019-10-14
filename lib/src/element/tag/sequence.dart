@@ -8,6 +8,7 @@
 //
 import 'dart:typed_data';
 
+import 'package:constants/constants.dart';
 import 'package:bytes_dicom/bytes_dicom.dart';
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/tag.dart';
@@ -17,7 +18,6 @@ import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -76,11 +76,11 @@ class SQtag extends SQ with TagElement<Item> {
       SQtag(parent, tag, items);
 
   Uint8List getValuesToBytes({bool addHeader, bool isAscii = true}) {
-    throw UnimplementedError('toDcm');
+    throw UnimplementedError();
   }
 
   Uint8List getBytesToValues({bool addHeader, bool isAscii = true}) {
-    throw UnimplementedError('toDcm');
+    throw UnimplementedError();
   }
 
   SQtag copySQ([Dataset parent]) => convert(parent ?? this.parent, this);

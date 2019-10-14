@@ -31,11 +31,6 @@ const int kMaxYearLimit = 148108;
 
 const String kDefaultTimeSeparator = ' ';
 
-const int k1KB = 1024;
-const int k1MB = k1KB * 1024;
-const int k1GB = k1MB * 1024;
-const int k1TB = k1GB * 1024;
-
 /// An abstract class that is the foundation of both Servers and Clients.
 abstract class Global {
   /// The name of this [Global].

@@ -15,7 +15,7 @@ RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'map_item_test', level: Level.info);
-  final rds = MapRootDataset.empty('', kEmptyBytes, 0);
+  final rds = MapRootDataset.empty('', Bytes.kEmptyBytes, 0);
 
   group('MapItem', () {
     test('[] and []=', () {

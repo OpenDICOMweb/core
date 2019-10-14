@@ -8,14 +8,14 @@
 //
 import 'dart:typed_data';
 
+import 'package:constants/constants.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/logger.dart';
-import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/uid.dart';
-import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -268,22 +268,22 @@ Summary $tag
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
+  static bool isValidVRIndex(int vrIndex) {
     if (vrIndex == kVRIndex) return true;
-    VR.badIndex(vrIndex, issues, kVRIndex);
+    badVRIndex(vrIndex, kVRIndex);
     return false;
   }
 
-  static bool isValidVRCode(int vrCode, [Issues issues]) {
+  static bool isValidVRCode(int vrCode) {
     if (vrCode == kVRCode) return true;
-    return VR.invalidCode(vrCode, issues, kVRIndex);
+    return invalidVRCode(vrCode, kVRIndex);
   }
 
-  static int checkVRIndex(int index, [Issues issues]) =>
-      (index == kVRIndex) ? index : VR.badIndex(index, issues, kVRIndex);
+  static int checkVRIndex(int index) =>
+      (index == kVRIndex) ? index : badVRIndex(index, kVRIndex);
 
-  static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
+  static int checkVRCode(int vrCode) =>
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 

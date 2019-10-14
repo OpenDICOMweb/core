@@ -7,8 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:constants/constants.dart';
-import 'package:core/src/error/date_time_errors.dart';
-import 'package:core/src/error/string_errors.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/values/date_time/primitives/dcm_date_time.dart';
 import 'package:core/src/values/date_time/primitives/time.dart';

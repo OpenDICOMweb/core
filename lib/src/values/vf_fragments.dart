@@ -9,8 +9,9 @@
 import 'dart:typed_data';
 
 import 'package:bytes/bytes.dart';
+import 'package:constants/constants.dart';
 import 'package:core/src/element/utils.dart';
-import 'package:core/src/utils.dart';
+
 
 // ignore_for_file: public_member_api_docs
 
@@ -82,21 +83,18 @@ class VFFragmentList {
 
     // [rIndex] is at first kItem delimiter, and [_endOf
     final fragments = <Uint8List>[];
-//    _log.debug('VFF code vf.length ${vf.lengthInBytes}');
     while (rIndex < endOfVF) {
       final code = readUint32();
       if (code == kSequenceDelimitationItem32BitLE) break;
-      assert(code == kItem32BitLE, 'Invalid Item code: ${toDcm(code)}');
+      assert(code == kItem32BitLE, 'Invalid Item code: ${dcm(code)}');
       final vfLength = readUint32();
-//      _log.debug('VFF code ${toDcm(code)} length: $vfLength');
       assert(
-          vfLength != kUndefinedLength, 'Invalid length: ${toDcm(vfLength)}');
+          vfLength != kUndefinedLength, 'Invalid length: ${dcm(vfLength)}');
       final startOfVF = rIndex;
       rIndex += vfLength;
       fragments.add(bd.buffer.asUint8List(startOfVF, rIndex - startOfVF));
     }
     final vfFragments = VFFragmentList(fragments);
-//    _log.debug('VFFragments: $fragments');
     return vfFragments;
   }
 }

@@ -39,11 +39,10 @@
 ///
 /// - finally, either _null_ or _false_ is returned depending on the
 ///   function prefix, i.e. _bad_ or _invalid_.
-
+///
 export 'package:core/src/error/issues/issues.dart';
 export 'package:core/src/error/issues/issues.dart';
 export 'package:core/src/error/issues/values_issues.dart';
-
 export 'package:core/src/error/dataset_errors.dart';
 export 'package:core/src/error/date_time_errors.dart';
 export 'package:core/src/error/element_errors.dart';
@@ -51,4 +50,4 @@ export 'package:core/src/error/general_errors.dart';
 export 'package:core/src/error/string_errors.dart';
 export 'package:core/src/error/system_errors.dart';
 export 'package:core/src/error/tag_errors.dart';
-export 'package:core/src/error/vr_errors.dart';
+export 'package:core/src/error/utils.dart';

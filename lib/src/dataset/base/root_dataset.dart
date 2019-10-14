@@ -67,10 +67,11 @@ abstract class RootDataset extends Dataset {
   int get lengthInBytes => (dsBytes != null) ? dsBytes.vfLength : -1;
 
   /// Returns the DICOM Preamble for _this_.
-  Bytes get preamble => (dsBytes != null) ? dsBytes.preamble : kEmptyBytes;
+  Bytes get preamble =>
+      (dsBytes != null) ? dsBytes.preamble : Bytes.kEmptyBytes;
 
   /// Returns the DICOM Prefix for _this_.
-  Bytes get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyBytes;
+  Bytes get prefix => (dsBytes != null) ? dsBytes.prefix : Bytes.kEmptyBytes;
 
   /// Returns _true_ if _this_ had an Undefined Length.
   bool get hadULength => false;

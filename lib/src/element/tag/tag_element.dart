@@ -15,7 +15,7 @@ import 'package:core/src/element/tag.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/values.dart';
-import 'package:core/src/vr.dart';
+
 
 // ignore_for_file: public_member_api_docs
 

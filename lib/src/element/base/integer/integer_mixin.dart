@@ -9,15 +9,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:constants/constants.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/int_bulkdata_ref.dart';
 import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/utils.dart';
 import 'package:core/src/element/base/utils.dart';
-import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/error.dart';
 import 'package:bytes/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+
 
 // ignore_for_file: public_member_api_docs
 

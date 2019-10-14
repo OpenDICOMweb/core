@@ -21,9 +21,9 @@ class SQbytes extends SQ with ElementBytes<Item> {
   final List<Item> values;
 
   @override
-  final BytesElement bytes;
+  final BytesElement be;
 
-  SQbytes(this.parent, this.values, this.bytes);
+  SQbytes(this.parent, this.values, this.be);
 
   @override
   int get length => values.length;
