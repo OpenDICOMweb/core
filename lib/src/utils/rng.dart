@@ -9,7 +9,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/values.dart';
 
 // ignore_for_file: public_member_api_docs

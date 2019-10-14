@@ -15,8 +15,8 @@ dependencies:
 # TODO before V0.9.0: decide on using pub_semver or version - remove one
   version: ^1.0.2
 #  decimal: ^0.3.0
-  constants:
-    path: ../../constants
+  base:
+    path: ../../base
     version: ^0.7.6
   bytes:
     path: ../bytes

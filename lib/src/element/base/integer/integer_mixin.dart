@@ -9,7 +9,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/int_bulkdata_ref.dart';

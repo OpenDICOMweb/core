@@ -9,7 +9,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/values/vf_fragments.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/values/image/frame.dart';

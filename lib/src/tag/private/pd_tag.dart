@@ -6,13 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/tag/code.dart';
 import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/utils/string.dart';
 
 // ignore_for_file: public_member_api_docs
 

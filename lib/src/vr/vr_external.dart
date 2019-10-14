@@ -6,12 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:base/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
-import 'package:core/src/utils.dart';
-
 
 // ignore_for_file: type_annotate_public_apis, public_member_api_docs
 // ignore_for_file: avoid_renaming_method_parameters

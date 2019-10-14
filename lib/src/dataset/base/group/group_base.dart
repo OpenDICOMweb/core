@@ -6,13 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/base/group/public_group.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/utils.dart';
 
 // ignore_for_file: only_throw_errors, public_member_api_docs
 

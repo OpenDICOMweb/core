@@ -8,7 +8,7 @@
 //
 import 'dart:typed_data';
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/utils.dart';

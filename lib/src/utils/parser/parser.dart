@@ -8,7 +8,7 @@
 //
 library odw.sdk.core.parser;
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/error/issues/issues.dart';

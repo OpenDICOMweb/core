@@ -8,7 +8,7 @@
 //
 import 'dart:convert' as cvt;
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
@@ -22,8 +22,6 @@ import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr/vr_external.dart';
 
 // ignore_for_file: public_member_api_docs

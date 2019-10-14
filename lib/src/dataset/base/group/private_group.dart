@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
+import 'package:base/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/group_base.dart';
 import 'package:core/src/dataset/base/group/private_subgroup.dart';

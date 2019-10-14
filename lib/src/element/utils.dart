@@ -9,7 +9,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 
 // ignore_for_file: public_member_api_docs
 

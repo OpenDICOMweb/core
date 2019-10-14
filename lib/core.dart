@@ -8,7 +8,7 @@
 //
 export 'package:bytes/bytes.dart';
 export 'package:bytes/bytes.dart';
-export 'package:constants/constants.dart';
+export 'package:base/base.dart';
 export 'package:core/src/dataset.dart';
 export 'package:core/src/element.dart';
 export 'package:core/src/entity.dart';

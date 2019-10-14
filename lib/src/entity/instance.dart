@@ -8,7 +8,7 @@
 //
 import 'dart:typed_data';
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';

@@ -9,7 +9,7 @@
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 
 typedef Decoder = String Function(Uint8List list, {bool allowInvalid});
 

@@ -6,9 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-export 'package:constants/src/integer/decimal.dart';
+export 'package:base/base.dart';
 export 'package:core/src/error/string_errors.dart';
-export 'package:constants/src/integer/hexadecimal.dart';
 export 'package:core/src/utils/string/string.dart';
 export 'package:core/src/utils/string/string_utils.dart';
 export 'package:core/src/utils/string/uuid_string.dart';

@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 
 /// A library of compile time constants for handling DICOM Directory data
 

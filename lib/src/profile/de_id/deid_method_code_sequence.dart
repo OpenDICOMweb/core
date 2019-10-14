@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/profile/de_id/cid_7050.dart';

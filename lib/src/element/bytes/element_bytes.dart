@@ -11,7 +11,7 @@ library odw.sdk.element.bytes;
 import 'dart:typed_data';
 
 import 'package:bytes_dicom/bytes_dicom.dart';
-import 'package:constants/constants.dart';
+import 'package:base/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/error.dart';

@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:base/base.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
