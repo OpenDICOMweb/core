@@ -19,4 +19,5 @@ export 'package:core/src/system.dart';
 export 'package:core/src/tag.dart';
 export 'package:core/src/utils.dart';
 export 'package:core/src/values.dart';
+export 'package:core/src/vr/vr_external.dart';
 

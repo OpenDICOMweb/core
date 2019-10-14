@@ -79,7 +79,7 @@ class DeIdBasic {
   List<Element> call(Dataset ds, int index, [Function f]) =>
       method(ds, index, f);
 
-  static const Function kNoOp = DeIdBasic(1, 'true', delete);
+  static const DeIdBasic kNoOp = DeIdBasic(1, 'true', delete);
 
   static const List<DeIdBasic> kByIndex = <DeIdBasic>[];
 

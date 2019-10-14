@@ -25,6 +25,7 @@ import 'package:core/src/utils.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/values.dart';
+import 'package:core/src/vr/vr_internal.dart';
 
 part 'package:core/src/element/base/string/ascii.dart';
 part 'package:core/src/element/base/string/date_time.dart';

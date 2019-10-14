@@ -242,15 +242,15 @@ void main() {
     ];
     for (final index in vrIndex) {
       final target = index;
-      final validIndex0 = VR.isValidIndex(index, target);
+      final validIndex0 = VR.isValidIndex(index, null, target);
       expect(validIndex0, true);
     }
 
-    final validIndex0 = VR.isValidIndex(AE.kVRIndex, 12);
+    final validIndex0 = VR.isValidIndex(AE.kVRIndex, null, 12);
     expect(validIndex0, false);
 
     global.throwOnError = true;
-    expect(() => VR.isValidIndex(AE.kVRIndex, 12),
+    expect(() => VR.isValidIndex(AE.kVRIndex, null, 12),
         throwsA(const TypeMatcher<InvalidVRError>()));
   });
 
@@ -258,16 +258,16 @@ void main() {
     global.throwOnError = false;
     final vrIndex = <int>[kOBOWIndex, kUSOWIndex, kUSSSOWIndex, kUSSSIndex];
     for (final index in vrIndex) {
-      final validSIndex0 = VR.isValidSpecialIndex(index, index);
+      final validSIndex0 = VR.isValidSpecialIndex(index, null, index);
       expect(validSIndex0, true);
     }
 
     global.throwOnError = false;
-    final validSIndex0 = VR.isValidSpecialIndex(kAEIndex, 12);
+    final validSIndex0 = VR.isValidSpecialIndex(kAEIndex, null, 12);
     expect(validSIndex0, false);
 
     global.throwOnError = true;
-    expect(() => VR.isValidSpecialIndex(kAEIndex, 12),
+    expect(() => VR.isValidSpecialIndex(kAEIndex, null, 12),
         throwsA(const TypeMatcher<InvalidVRError>()));
   });
 
@@ -294,16 +294,16 @@ void main() {
     ];
     for (final code in vrCode) {
       final target = code;
-      final validCode0 = VR.isValidCode(code, target);
+      final validCode0 = VR.isValidCode(code, null, target);
       expect(validCode0, true);
     }
 
     global.throwOnError = false;
-    final validCode0 = VR.isValidCode(AE.kVRCode, 12);
+    final validCode0 = VR.isValidCode(AE.kVRCode, null, 12);
     expect(validCode0, false);
 
     global.throwOnError = true;
-    expect(() => VR.isValidCode(AE.kVRCode, 12),
+    expect(() => VR.isValidCode(AE.kVRCode, null, 12),
         throwsA(const TypeMatcher<InvalidVRError>()));
   });
 
@@ -312,15 +312,15 @@ void main() {
 
     final vrIndices = <int>[kOBOWIndex, kUSOWIndex, kUSSSOWIndex, kUSSSIndex];
     for (final code in vrIndices) {
-      final validSIndex0 = VR.isValidSpecialIndex(code, code);
+      final validSIndex0 = VR.isValidSpecialIndex(code, null, code);
       expect(validSIndex0, true);
     }
 
-    final validSIndex0 = VR.isValidSpecialIndex(kAEIndex, kAEIndex);
+    final validSIndex0 = VR.isValidSpecialIndex(kAEIndex, null, kAEIndex);
     expect(validSIndex0, true);
 
     global.throwOnError = true;
-    expect(() => VR.isValidSpecialIndex(kAEIndex, kSSIndex),
+    expect(() => VR.isValidSpecialIndex(kAEIndex, null, kSSIndex),
         throwsA(const TypeMatcher<InvalidVRError>()));
   });
 }

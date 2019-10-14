@@ -19,6 +19,7 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/vr/vr_internal.dart';
 
 // ignore_for_file: public_member_api_docs
 

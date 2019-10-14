@@ -17,7 +17,7 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:bytes/bytes.dart';
 import 'package:core/src/values/uid.dart';
-
+import 'package:core/src/vr/vr_internal.dart';
 
 // ignore_for_file: public_member_api_docs
 

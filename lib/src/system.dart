@@ -8,5 +8,6 @@
 //
 export 'package:constants/constants.dart';
 export 'package:core/src/global.dart';
+export 'package:core/src/utils/logger.dart';
 export 'package:core/src/system/sdk.dart';
 export 'package:core/src/system/sys_info.dart';
